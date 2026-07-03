@@ -67,6 +67,16 @@ function shanelle_product_summary( WC_Product $product, array $args = array() ):
 }
 
 /**
+ * Render the product variation selector component.
+ *
+ * @param \WC_Product          $product Product instance.
+ * @param array<string, mixed> $args    Optional render arguments.
+ */
+function shanelle_product_variations( WC_Product $product, array $args = array() ): void {
+	\Shanelle\Components\ProductVariations::render( $product, $args );
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.
