@@ -1,0 +1,97 @@
+/**
+ * Shanelle Collection Archive Page Layout
+ *
+ * Page-specific hero and related navigation only.
+ */
+
+.collection-page {
+	padding-block: var(--space-6);
+}
+
+.collection-page__container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.collection-page__hero {
+	display: grid;
+	gap: var(--space-5);
+}
+
+.collection-page__hero-media {
+	overflow: hidden;
+	border-radius: var(--radius-xl);
+	background-color: var(--color-neutral-100);
+}
+
+.collection-page__hero-image,
+.collection-page__hero-placeholder {
+	display: block;
+	width: 100%;
+	aspect-ratio: 21 / 9;
+	object-fit: cover;
+}
+
+.collection-page__hero-placeholder {
+	background: linear-gradient(135deg, var(--color-brand-50), var(--color-neutral-100));
+}
+
+.collection-page__hero-copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	max-width: 48rem;
+}
+
+.collection-page__hero-title {
+	margin: 0;
+}
+
+.collection-page__hero-type,
+.collection-page__hero-description {
+	margin: 0;
+}
+
+.collection-page__count {
+	margin: 0;
+}
+
+.collection-page__related-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.collection-page__related-link {
+	display: inline-flex;
+	align-items: center;
+	padding: var(--space-2) var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-pill);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+	font-size: var(--font-size-sm);
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.collection-page__related-link:hover,
+.collection-page__related-link.is-active {
+	border-color: var(--color-brand-primary);
+	color: var(--color-brand-primary);
+}
+
+.collection-page__grid {
+	width: 100%;
+}
+
+@media (min-width: 48rem) {
+	.collection-page__hero {
+		grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+		align-items: center;
+	}
+}

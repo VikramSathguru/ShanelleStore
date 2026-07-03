@@ -13,6 +13,7 @@ Page-level documentation lives in [`docs/pages/`](pages/).
 | Checkout | [CHECKOUT.md](pages/CHECKOUT.md) |
 | My Account | [MY_ACCOUNT.md](pages/MY_ACCOUNT.md) |
 | Search | [SEARCH.md](pages/SEARCH.md) |
+| Collections | [COLLECTIONS.md](pages/COLLECTIONS.md) |
 
 ## Homepage sections
 

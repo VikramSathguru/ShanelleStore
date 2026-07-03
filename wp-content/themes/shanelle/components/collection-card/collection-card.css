@@ -1,0 +1,62 @@
+/**
+ * Shanelle Collection Card Component
+ *
+ * BEM: .collection-card, .collection-card__media, .collection-card__title
+ */
+
+.collection-card {
+	height: 100%;
+}
+
+.collection-card__link {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	height: 100%;
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	color: inherit;
+	text-decoration: none;
+	transition: var(--transition-all);
+}
+
+.collection-card__link:hover {
+	border-color: var(--color-brand-200);
+	box-shadow: var(--shadow-sm);
+	transform: translateY(-1px);
+}
+
+.collection-card__media {
+	overflow: hidden;
+	border-radius: var(--radius-lg);
+	background-color: var(--color-neutral-100);
+}
+
+.collection-card__image,
+.collection-card__placeholder {
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+}
+
+.collection-card__placeholder {
+	background: linear-gradient(135deg, var(--color-brand-50), var(--color-neutral-100));
+}
+
+.collection-card__copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.collection-card__title {
+	margin: 0;
+}
+
+.collection-card__type,
+.collection-card__count {
+	margin: 0;
+}

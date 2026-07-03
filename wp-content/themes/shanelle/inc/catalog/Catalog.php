@@ -44,6 +44,7 @@ final class Catalog {
 	 */
 	private static function load_dependencies(): void {
 		require_once __DIR__ . '/Helpers.php';
+		require_once __DIR__ . '/Queries.php';
 		require_once __DIR__ . '/Collections.php';
 		require_once __DIR__ . '/Admin.php';
 		require_once __DIR__ . '/Seeder.php';

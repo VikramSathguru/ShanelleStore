@@ -88,6 +88,26 @@ api.getSearchPageState
 
 api.announce
 
+shanelle:collections-page:ready
+
+Payload
+
+root
+
+state
+
+api.getCollectionsPageState
+
+shanelle:collection-page:ready
+
+Payload
+
+root
+
+state
+
+api.getCollectionPageState
+
 shanelle:hero-banner:ready
 
 shanelle:category-navigation:ready

@@ -180,6 +180,20 @@ function shanelle_search_page(): void {
 }
 
 /**
+ * Render the collections index page composition.
+ */
+function shanelle_collections_page(): void {
+	\Shanelle\Components\CollectionsPage::render();
+}
+
+/**
+ * Render a collection archive page composition.
+ */
+function shanelle_collection_page(): void {
+	\Shanelle\Components\CollectionPage::render();
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.
