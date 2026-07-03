@@ -1,0 +1,229 @@
+/**
+ * Shanelle Search Results Layout
+ *
+ * Suggestion rows only — not ProductCard or ProductGrid.
+ */
+
+.search-results {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.search-results__section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.search-results__section-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3);
+}
+
+.search-results__section-title {
+	margin: 0;
+	color: var(--color-text-secondary);
+}
+
+.search-results__list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.search-results__item {
+	margin: 0;
+}
+
+.search-results__item.is-active .search-results__link {
+	border-color: var(--color-border-focus);
+	background-color: var(--color-background-subtle);
+	box-shadow: var(--shadow-focus);
+}
+
+.search-results__link {
+	display: grid;
+	grid-template-columns: 4rem minmax(0, 1fr) auto;
+	gap: var(--space-3);
+	align-items: center;
+	width: 100%;
+	padding: var(--space-3);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-surface);
+	color: inherit;
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.search-results__link:hover,
+.search-results__link:focus-visible {
+	border-color: var(--color-border-focus);
+	background-color: var(--color-background-subtle);
+}
+
+.search-results__link--term {
+	grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.search-results__media {
+	display: block;
+	overflow: hidden;
+	border-radius: var(--radius-md);
+	background-color: var(--color-neutral-100);
+}
+
+.search-results__image {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+}
+
+.search-results__copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	min-width: 0;
+}
+
+.search-results__title {
+	margin: 0;
+	color: var(--color-text);
+}
+
+.search-results__meta {
+	margin: 0;
+}
+
+.search-results__price {
+	margin: 0;
+}
+
+.search-results__price--on-sale :where(.woocommerce-Price-amount) {
+	color: var(--color-sale, var(--color-error));
+}
+
+.search-results__badge {
+	justify-self: end;
+	align-self: start;
+}
+
+.search-results__quick {
+	justify-self: end;
+	color: var(--color-text-link);
+	white-space: nowrap;
+}
+
+.search-results__term-label {
+	margin: 0 0 var(--space-1);
+}
+
+.search-results__highlight {
+	padding: 0;
+	border-radius: var(--radius-sm);
+	background-color: rgb(255 214 102 / 35%);
+	color: inherit;
+	font-weight: var(--font-weight-semibold);
+}
+
+.search-results__chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.search-results__chip {
+	cursor: pointer;
+}
+
+.search-results__clear-recent {
+	padding: 0;
+	border: none;
+	background: transparent;
+	color: var(--color-text-link);
+	cursor: pointer;
+}
+
+.search-results__footer {
+	padding-top: var(--space-2);
+}
+
+.search-results__view-all {
+	text-align: center;
+}
+
+.search-results__empty-title {
+	margin: 0 0 var(--space-2);
+}
+
+.search-results__empty-message {
+	margin: 0 0 var(--space-4);
+}
+
+.search-results__skeleton-item {
+	display: grid;
+	grid-template-columns: 4rem minmax(0, 1fr);
+	gap: var(--space-3);
+	align-items: center;
+}
+
+.search-results__skeleton-media,
+.search-results__skeleton-line {
+	display: block;
+	border-radius: var(--radius-md);
+	background: linear-gradient(
+		90deg,
+		var(--color-neutral-100) 25%,
+		var(--color-neutral-50, #fafafa) 50%,
+		var(--color-neutral-100) 75%
+	);
+	background-size: 200% 100%;
+	animation: search-results-shimmer 1.2s ease-in-out infinite;
+}
+
+.search-results__skeleton-media {
+	width: 4rem;
+	aspect-ratio: 4 / 5;
+}
+
+.search-results__skeleton-copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.search-results__skeleton-line {
+	height: 0.875rem;
+}
+
+.search-results__skeleton-line--title {
+	width: 70%;
+}
+
+.search-results__skeleton-line--meta {
+	width: 45%;
+}
+
+@keyframes search-results-shimmer {
+	to {
+		background-position: -200% 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.search-results__skeleton-media,
+	.search-results__skeleton-line {
+		animation: none;
+	}
+}

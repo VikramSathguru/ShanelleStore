@@ -1,0 +1,157 @@
+/**
+ * Shanelle Search Overlay Layout
+ *
+ * Mobile full-screen overlay, desktop centered modal.
+ */
+
+.search-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-modal);
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+	padding: 0;
+	pointer-events: none;
+}
+
+.search-overlay.is-open {
+	pointer-events: auto;
+}
+
+.search-overlay[hidden] {
+	display: none;
+}
+
+.search-overlay__backdrop {
+	position: absolute;
+	inset: 0;
+	border: none;
+	background-color: rgb(23 23 23 / 45%);
+	opacity: 0;
+	transition: var(--transition-opacity);
+	cursor: pointer;
+}
+
+.search-overlay.is-open .search-overlay__backdrop {
+	opacity: 1;
+}
+
+.search-overlay__dialog {
+	position: relative;
+	z-index: var(--z-raised);
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	max-height: 100%;
+	overflow: hidden;
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-xl);
+	transform: translateY(100%);
+	transition: var(--transition-transform);
+}
+
+.search-overlay.is-open .search-overlay__dialog {
+	transform: translateY(0);
+}
+
+.search-overlay__header {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: var(--space-3);
+	align-items: start;
+	padding: var(--space-4);
+	border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.search-overlay__title {
+	grid-column: 1 / -1;
+	margin: 0;
+	font-size: var(--font-size-lg);
+	font-weight: var(--font-weight-semibold);
+}
+
+.search-overlay__form {
+	grid-column: 1;
+	min-width: 0;
+}
+
+.search-overlay__field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.search-overlay__input {
+	width: 100%;
+}
+
+.search-overlay__submit {
+	align-self: flex-start;
+}
+
+.search-overlay__close {
+	grid-column: 2;
+	grid-row: 2;
+}
+
+.search-overlay__body {
+	flex: 1;
+	min-height: 0;
+	padding: var(--space-4);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+body.is-search-overlay-open {
+	overflow: hidden;
+}
+
+@media (min-width: 48rem) {
+	.search-overlay {
+		align-items: flex-start;
+		padding: calc(var(--space-8) + 3rem) var(--space-6) var(--space-6);
+	}
+
+	.search-overlay__dialog {
+		width: min(100%, 40rem);
+		height: auto;
+		max-height: min(80vh, 42rem);
+		border-radius: var(--radius-xl);
+		transform: scale(0.96);
+		opacity: 0;
+		transition: var(--transition-all);
+	}
+
+	.search-overlay.is-open .search-overlay__dialog {
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	.search-overlay__header {
+		padding: var(--space-5);
+	}
+
+	.search-overlay__field {
+		flex-direction: row;
+		align-items: stretch;
+	}
+
+	.search-overlay__input {
+		flex: 1;
+	}
+
+	.search-overlay__body {
+		padding: var(--space-5);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.search-overlay__backdrop,
+	.search-overlay__dialog {
+		transition: none;
+		transform: none;
+		opacity: 1;
+	}
+}

@@ -88,6 +88,38 @@ api.getSearchPageState
 
 api.announce
 
+shanelle:search-overlay:ready
+
+Payload
+
+root
+
+state
+
+api.openSearchOverlay
+
+api.closeSearchOverlay
+
+api.getOverlayState
+
+api.rememberSearch
+
+api.announce
+
+shanelle:search-overlay:opened
+
+Payload
+
+root
+
+state
+
+shanelle:search-overlay:closed
+
+Payload
+
+root
+
 shanelle:collections-page:ready
 
 Payload

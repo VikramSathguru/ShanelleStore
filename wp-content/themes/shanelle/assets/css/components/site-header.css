@@ -1,0 +1,184 @@
+/**
+ * Shanelle Site Header Layout
+ */
+
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: var(--z-sticky);
+	border-bottom: 1px solid var(--color-border-subtle);
+	background-color: rgb(255 255 255 / 92%);
+	backdrop-filter: blur(10px);
+}
+
+.site-header__inner {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	gap: var(--space-4);
+	min-height: 4rem;
+}
+
+.site-header__start {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	min-width: 0;
+}
+
+.site-header__menu-toggle {
+	display: inline-flex;
+}
+
+.site-header__logo {
+	display: inline-flex;
+	align-items: center;
+	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.site-header__logo :where(img) {
+	display: block;
+	max-height: 2rem;
+	width: auto;
+}
+
+.site-header__nav {
+	display: none;
+	justify-self: center;
+}
+
+.site-header__menu {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-4);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.site-header__menu a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.site-header__menu a:hover {
+	color: var(--color-text-link);
+}
+
+.site-header__actions {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-1);
+}
+
+.site-header__shop-link {
+	display: none;
+	margin-left: var(--space-2);
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.site-header__drawer {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-drawer);
+	pointer-events: none;
+}
+
+.site-header__drawer.is-open {
+	pointer-events: auto;
+}
+
+.site-header__drawer[hidden] {
+	display: none;
+}
+
+.site-header__drawer-overlay {
+	position: absolute;
+	inset: 0;
+	border: none;
+	background-color: rgb(23 23 23 / 40%);
+	opacity: 0;
+	transition: var(--transition-opacity);
+}
+
+.site-header__drawer.is-open .site-header__drawer-overlay {
+	opacity: 1;
+}
+
+.site-header__drawer-panel {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	width: min(100%, 20rem);
+	height: 100%;
+	padding: var(--space-4);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-xl);
+	transform: translateX(-100%);
+	transition: var(--transition-transform);
+}
+
+.site-header__drawer.is-open .site-header__drawer-panel {
+	transform: translateX(0);
+}
+
+.site-header__drawer-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: var(--space-4);
+}
+
+.site-header__drawer-title {
+	margin: 0;
+}
+
+.site-header__drawer-menu {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin: 0 0 var(--space-5);
+	padding: 0;
+	list-style: none;
+}
+
+.site-header__drawer-menu a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.site-header__drawer-actions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin-top: auto;
+}
+
+@media (min-width: 48rem) {
+	.site-header__menu-toggle {
+		display: none;
+	}
+
+	.site-header__nav {
+		display: block;
+	}
+
+	.site-header__shop-link {
+		display: inline-flex;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.site-header__drawer-overlay,
+	.site-header__drawer-panel {
+		transition: none;
+		transform: none;
+		opacity: 1;
+	}
+}

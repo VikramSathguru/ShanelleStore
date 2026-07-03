@@ -180,6 +180,22 @@ function shanelle_search_page(): void {
 }
 
 /**
+ * Render the search overlay shell.
+ */
+function shanelle_search_overlay(): void {
+	\Shanelle\Components\SearchOverlay::render();
+}
+
+/**
+ * Render search suggestion results markup.
+ *
+ * @param array<string, mixed> $args Result arguments.
+ */
+function shanelle_search_results( array $args = array() ): void {
+	\Shanelle\Components\SearchResults::render( $args );
+}
+
+/**
  * Render the collections index page composition.
  */
 function shanelle_collections_page(): void {
