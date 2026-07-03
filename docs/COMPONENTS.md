@@ -1,30 +1,41 @@
-# ProductCard
+# Shanelle Components
 
-Purpose
+Component-level documentation lives in [`docs/components/`](components/).
 
-Displays a WooCommerce product consistently across the application.
+## Catalog & listing
 
-Dependencies
+| Component | Doc |
+|-----------|-----|
+| ProductCard | [ProductCard.md](components/ProductCard.md) |
+| ProductGrid | [ProductGrid.md](components/ProductGrid.md) |
 
-- Design System
-- WooCommerce Product
-- ProductGrid
+## Single product (PDP)
 
-Used By
+| Component | Doc |
+|-----------|-----|
+| ProductDetail | [ProductDetail.md](components/ProductDetail.md) |
+| ProductGallery | [ProductGallery.md](components/ProductGallery.md) |
+| ProductSummary | [ProductSummary.md](components/ProductSummary.md) |
+| ProductVariations | [ProductVariations.md](components/ProductVariations.md) |
+| ProductPurchase | [ProductPurchase.md](components/ProductPurchase.md) |
+| ProductInformation | [ProductInformation.md](components/ProductInformation.md) |
 
-- Homepage
-- Shop Archive
-- Search
-- Related Products
-- Collections
-- Wishlist
+## Related docs
 
-Public API
+- [ARCHITECTURE.md](ARCHITECTURE.md) — application structure
+- [EVENTS.md](EVENTS.md) — cross-component event catalog
 
-ProductCard::render()
+## Document template
 
-Customization
+Each component doc includes:
 
-Filters
-
-Actions
+- Purpose
+- Responsibilities
+- Public API
+- Dependencies
+- Events
+- Extension points
+- Filters
+- Actions
+- Example usage
+- Known limitations
