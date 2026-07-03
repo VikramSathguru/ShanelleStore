@@ -24,6 +24,9 @@ require_once SHANELLE_DIR . '/inc/woocommerce/ProductPrice.php';
 require_once SHANELLE_DIR . '/inc/components/ProductSummary.php';
 require_once SHANELLE_DIR . '/inc/components/ProductVariations.php';
 require_once SHANELLE_DIR . '/inc/components/ProductPurchase.php';
+require_once SHANELLE_DIR . '/inc/components/ProductDetail.php';
+require_once SHANELLE_DIR . '/inc/components/ProductInformation.php';
+require_once SHANELLE_DIR . '/inc/components/ProductRelated.php';
 require_once SHANELLE_DIR . '/inc/woocommerce.php';
 require_once SHANELLE_DIR . '/inc/catalog/Catalog.php';
 
@@ -35,3 +38,6 @@ Shanelle\Components\ProductGallery::boot();
 Shanelle\Components\ProductSummary::boot();
 Shanelle\Components\ProductVariations::boot();
 Shanelle\Components\ProductPurchase::boot();
+Shanelle\Components\ProductDetail::boot();
+Shanelle\Components\ProductInformation::boot();
+Shanelle\Components\ProductRelated::boot();

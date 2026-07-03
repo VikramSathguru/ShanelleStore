@@ -1,0 +1,38 @@
+/**
+ * Shanelle Related Products Component
+ */
+
+.product-related {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	min-width: 0;
+}
+
+.product-related__title {
+	margin: 0;
+}
+
+.product-related__grid {
+	min-width: 0;
+}
+
+.product-related .product-grid {
+	gap: var(--space-5);
+}
+
+.product-related .product-grid__items {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 48rem) {
+	.product-related .product-grid__items {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (min-width: 64rem) {
+	.product-related .product-grid__items {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
