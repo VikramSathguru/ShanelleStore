@@ -1,0 +1,262 @@
+/**
+ * Shanelle Checkout Page Layout
+ *
+ * Page-specific layout and scoped WooCommerce field styling only.
+ */
+
+.checkout-page {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+	width: 100%;
+}
+
+.checkout-page__header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.checkout-page__title {
+	margin: 0;
+}
+
+.checkout-page__notices :where(.woocommerce-message, .woocommerce-info, .woocommerce-error) {
+	margin-bottom: var(--space-4);
+}
+
+.checkout-page__layout {
+	display: grid;
+	gap: var(--space-8);
+}
+
+.checkout-page__main,
+.checkout-page__summary {
+	min-width: 0;
+}
+
+.checkout-page__customer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+}
+
+.checkout-page__billing :where(h3),
+.checkout-page__shipping :where(h3) {
+	margin: 0 0 var(--space-4);
+	font-size: var(--font-size-lg);
+	font-weight: var(--font-weight-semibold);
+}
+
+.checkout-page__billing :where(.woocommerce-billing-fields__field-wrapper),
+.checkout-page__shipping :where(.woocommerce-shipping-fields__field-wrapper),
+.checkout-page__customer :where(.woocommerce-account-fields) {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.checkout-page__billing :where(.form-row),
+.checkout-page__shipping :where(.form-row),
+.checkout-page__customer :where(.form-row) {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	margin: 0;
+}
+
+.checkout-page__billing :where(.form-row-wide),
+.checkout-page__shipping :where(.form-row-wide) {
+	grid-column: 1 / -1;
+}
+
+.checkout-page__billing :where(input.input-text, select, textarea),
+.checkout-page__shipping :where(input.input-text, select, textarea) {
+	width: 100%;
+	min-height: var(--input-height);
+	padding: var(--space-2) var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+}
+
+.checkout-page__billing :where(input.input-text:focus, select:focus, textarea:focus),
+.checkout-page__shipping :where(input.input-text:focus, select:focus, textarea:focus) {
+	outline: none;
+	box-shadow: var(--shadow-focus);
+	border-color: var(--color-border-focus);
+}
+
+.checkout-page__summary {
+	padding: var(--space-5);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+}
+
+.checkout-page__summary-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	margin-bottom: var(--space-4);
+}
+
+.checkout-page__summary-title {
+	margin: 0;
+}
+
+.checkout-page__edit-cart {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.checkout-page__edit-cart:hover {
+	color: var(--color-text-link-hover);
+}
+
+.checkout-page__items {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	margin: 0 0 var(--space-5);
+	padding: 0;
+	list-style: none;
+}
+
+.checkout-page__item {
+	display: grid;
+	grid-template-columns: 4rem minmax(0, 1fr) auto;
+	gap: var(--space-3);
+	align-items: start;
+}
+
+.checkout-page__item-media {
+	display: block;
+	overflow: hidden;
+	border-radius: var(--radius-md);
+	background-color: var(--color-neutral-100);
+}
+
+.checkout-page__item-media :where(img) {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 4 / 5;
+	object-fit: cover;
+}
+
+.checkout-page__item-title {
+	margin: 0;
+}
+
+.checkout-page__item-title a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.checkout-page__item-variation :where(dl) {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-1) var(--space-2);
+	margin: var(--space-1) 0 0;
+}
+
+.checkout-page__item-variation :where(dt) {
+	display: none;
+}
+
+.checkout-page__item-variation :where(dd) {
+	margin: 0;
+}
+
+.checkout-page__item-total {
+	justify-self: end;
+	font-weight: var(--font-weight-semibold);
+}
+
+.checkout-page__totals {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin: 0 0 var(--space-5);
+}
+
+.checkout-page__total-row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-4);
+}
+
+.checkout-page__total-row--total {
+	padding-top: var(--space-3);
+	border-top: 1px solid var(--color-border-subtle);
+}
+
+.checkout-page__total-row--total .checkout-page__total-label,
+.checkout-page__total-row--total .checkout-page__total-value {
+	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-semibold);
+}
+
+.checkout-page__total-label,
+.checkout-page__total-value {
+	margin: 0;
+}
+
+.checkout-page__order-review :where(#payment) {
+	margin-top: var(--space-2);
+}
+
+.checkout-page__order-review :where(.wc_payment_methods) {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin: 0 0 var(--space-4);
+	padding: 0;
+	list-style: none;
+}
+
+.checkout-page__order-review :where(.wc_payment_method) {
+	padding: var(--space-3);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background-subtle);
+}
+
+.checkout-page__order-review :where(.payment_box) {
+	margin-top: var(--space-3);
+}
+
+.checkout-page__order-review :where(.place-order) {
+	margin: 0;
+}
+
+.checkout-page__trust {
+	margin: var(--space-4) 0 0;
+}
+
+@media (min-width: 64rem) {
+	.checkout-page__layout {
+		grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+		align-items: start;
+	}
+
+	.checkout-page__summary {
+		position: sticky;
+		top: calc(var(--space-8) + 4rem);
+	}
+
+	.checkout-page__billing :where(.woocommerce-billing-fields__field-wrapper),
+	.checkout-page__shipping :where(.woocommerce-shipping-fields__field-wrapper) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.checkout-page__summary {
+		position: static;
+	}
+}

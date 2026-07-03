@@ -10,6 +10,7 @@ Page-level documentation lives in [`docs/pages/`](pages/).
 |------|-----|
 | Homepage | [HOMEPAGE.md](pages/HOMEPAGE.md) |
 | Cart | [CART.md](pages/CART.md) |
+| Checkout | [CHECKOUT.md](pages/CHECKOUT.md) |
 
 ## Homepage sections
 

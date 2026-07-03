@@ -44,21 +44,25 @@ api.applyCartPageResponse
 
 shanelle:cart-page:updated
 
+shanelle:checkout-page:ready
+
 Payload
 
 root
 
-sections
+state
 
-renderedSections
+api.getCheckoutPageState
 
-api.getHomepageSections
+api.announce
 
-api.getRenderedSections
+shanelle:checkout-page:updated
 
-api.getSectionByKey
+Payload
 
-api.scrollToSection
+root
+
+state
 
 shanelle:hero-banner:ready
 

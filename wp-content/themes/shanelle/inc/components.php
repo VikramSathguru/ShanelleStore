@@ -155,6 +155,15 @@ function shanelle_cart_page(): void {
 }
 
 /**
+ * Render the checkout page composition.
+ *
+ * @param \WC_Checkout $checkout Checkout instance.
+ */
+function shanelle_checkout_page( WC_Checkout $checkout ): void {
+	\Shanelle\Components\CheckoutPage::render_form( $checkout );
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.
