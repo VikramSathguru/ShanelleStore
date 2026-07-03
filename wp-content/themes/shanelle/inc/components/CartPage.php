@@ -28,6 +28,8 @@ final class CartPage {
 
 	private const MOD_CROSS_SELLS_LIMIT = 'shanelle_cart_page_cross_sells_limit';
 
+	private const MOD_SHIPPING_ESTIMATOR = 'shanelle_cart_page_shipping_estimator';
+
 	/**
 	 * Active page state for the render cycle.
 	 *
@@ -162,6 +164,13 @@ final class CartPage {
 				),
 			)
 		);
+
+		self::register_checkbox_control(
+			$wp_customize,
+			self::MOD_SHIPPING_ESTIMATOR,
+			__( 'Show shipping estimator', 'shanelle' ),
+			true
+		);
 	}
 
 	/**
@@ -220,6 +229,11 @@ final class CartPage {
 					'orderSummary'   => __( 'Order summary', 'shanelle' ),
 					'total'          => __( 'Total', 'shanelle' ),
 					'checkout'       => __( 'Proceed to checkout', 'shanelle' ),
+					'shipping'       => __( 'Shipping', 'shanelle' ),
+					'shippingEstimate' => __( 'Estimate shipping', 'shanelle' ),
+					'shippingToggle' => __( 'Estimate shipping', 'shanelle' ),
+					'shippingToggleClose' => __( 'Close shipping estimator', 'shanelle' ),
+					'shippingPending' => __( 'Estimate below', 'shanelle' ),
 					'updated'        => __( 'Bag updated', 'shanelle' ),
 					'removed'        => __( 'Item removed from bag', 'shanelle' ),
 					'error'          => __( 'Could not update your bag. Try again.', 'shanelle' ),
@@ -241,6 +255,11 @@ final class CartPage {
 
 		if ( ! wp_style_is( 'shanelle-cart-page', 'enqueued' ) ) {
 			self::enqueue_assets();
+		}
+
+		if ( self::should_enqueue_shipping_assets() ) {
+			wp_enqueue_script( 'wc-country-select' );
+			wp_enqueue_script( 'wc-address-i18n' );
 		}
 
 		require self::COMPONENT_DIR . '/cart-page.php';
@@ -286,16 +305,7 @@ final class CartPage {
 	 * Render cart form and summary layout.
 	 */
 	public static function render_cart_layout(): void {
-		?>
-		<form
-			class="cart-page__form woocommerce-cart-form"
-			action="<?php echo esc_url( wc_get_cart_url() ); ?>"
-			method="post"
-			data-shanelle-cart-page-form
-		>
-			<?php self::render_fragment(); ?>
-		</form>
-		<?php
+		self::render_fragment();
 	}
 
 	/**
@@ -305,9 +315,16 @@ final class CartPage {
 		?>
 		<div class="cart-page__layout" data-shanelle-cart-page-fragment>
 			<div class="cart-page__main">
-				<?php self::render_items_table(); ?>
-				<?php self::render_coupon_form(); ?>
-				<?php self::render_form_actions(); ?>
+				<form
+					class="cart-page__form woocommerce-cart-form"
+					action="<?php echo esc_url( wc_get_cart_url() ); ?>"
+					method="post"
+					data-shanelle-cart-page-form
+				>
+					<?php self::render_items_table(); ?>
+					<?php self::render_coupon_form(); ?>
+					<?php self::render_form_actions(); ?>
+				</form>
 			</div>
 
 			<aside class="cart-page__summary" aria-labelledby="<?php echo esc_attr( self::get_summary_heading_id() ); ?>">
@@ -510,6 +527,8 @@ final class CartPage {
 				<?php esc_html_e( 'Order summary', 'shanelle' ); ?>
 			</h2>
 
+			<?php self::render_shipping_estimator(); ?>
+
 			<dl class="cart-page__totals" data-shanelle-cart-page-totals>
 				<?php self::render_totals_rows( $totals ); ?>
 			</dl>
@@ -522,6 +541,31 @@ final class CartPage {
 					<?php esc_html_e( 'Continue shopping', 'shanelle' ); ?>
 				</a>
 			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render WooCommerce shipping calculator when enabled.
+	 */
+	public static function render_shipping_estimator(): void {
+		if ( empty( self::$state['settings']['shipping_estimator'] ) ) {
+			return;
+		}
+
+		if ( 'no' === get_option( 'woocommerce_enable_shipping_calc' ) || ! WC()->cart || ! WC()->cart->needs_shipping() ) {
+			return;
+		}
+		?>
+		<div class="cart-page__shipping" data-shanelle-cart-page-shipping>
+			<?php
+			woocommerce_shipping_calculator(
+				apply_filters(
+					'shanelle_cart_page_shipping_calculator_button_text',
+					__( 'Estimate shipping', 'shanelle' )
+				)
+			);
+			?>
 		</div>
 		<?php
 	}
@@ -770,17 +814,7 @@ final class CartPage {
 			);
 		}
 
-		if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) {
-			$shipping_total = (float) WC()->cart->get_shipping_total() + (float) WC()->cart->get_shipping_tax();
-
-			if ( $shipping_total > 0 || WC()->cart->get_shipping_total() > 0 ) {
-				$rows[] = array(
-					'class'      => 'shipping',
-					'label'      => esc_html__( 'Shipping', 'shanelle' ),
-					'value_html' => wc_price( $shipping_total ),
-				);
-			}
-		}
+		$rows = array_merge( $rows, self::build_shipping_totals_rows() );
 
 		foreach ( WC()->cart->get_fees() as $fee ) {
 			$rows[] = array(
@@ -819,6 +853,62 @@ final class CartPage {
 		);
 
 		return apply_filters( 'shanelle_cart_page_totals_rows', $rows, WC()->cart );
+	}
+
+	/**
+	 * Build shipping total rows from WooCommerce package rates.
+	 *
+	 * @return array<int, array<string, string>>
+	 */
+	public static function build_shipping_totals_rows(): array {
+		if ( ! WC()->cart || ! WC()->cart->needs_shipping() || ! WC()->cart->show_shipping() ) {
+			return array();
+		}
+
+		$rows     = array();
+		$packages = WC()->shipping()->get_packages();
+
+		foreach ( $packages as $index => $package ) {
+			$chosen_method = WC()->session->chosen_shipping_methods[ $index ] ?? '';
+
+			if ( $chosen_method && isset( $package['rates'][ $chosen_method ] ) ) {
+				$rate   = $package['rates'][ $chosen_method ];
+				$rows[] = array(
+					'class'      => 'shipping',
+					'label'      => esc_html( $rate->get_label() ),
+					'value_html' => wc_price( (float) $rate->cost + (float) array_sum( $rate->taxes ) ),
+				);
+			}
+		}
+
+		if ( ! empty( $rows ) ) {
+			return $rows;
+		}
+
+		$rows[] = array(
+			'class'      => 'shipping',
+			'label'      => esc_html__( 'Shipping', 'shanelle' ),
+			'value_html' => WC()->customer->has_calculated_shipping()
+				? esc_html__( 'Calculated at checkout', 'shanelle' )
+				: esc_html__( 'Estimate below', 'shanelle' ),
+		);
+
+		return $rows;
+	}
+
+	/**
+	 * Determine whether shipping scripts should load on the cart page.
+	 */
+	private static function should_enqueue_shipping_assets(): bool {
+		if ( ! WC()->cart || ! WC()->cart->needs_shipping() ) {
+			return false;
+		}
+
+		if ( empty( self::get_settings()['shipping_estimator'] ) ) {
+			return false;
+		}
+
+		return 'yes' === get_option( 'woocommerce_enable_shipping_calc' );
 	}
 
 	/**
@@ -890,6 +980,37 @@ final class CartPage {
 				'cross_sells_limit'   => self::sanitize_cross_sells_limit(
 					get_theme_mod( self::MOD_CROSS_SELLS_LIMIT, 4 )
 				),
+				'shipping_estimator'  => self::get_theme_mod_bool( self::MOD_SHIPPING_ESTIMATOR, true ),
+			)
+		);
+	}
+
+	/**
+	 * Register a checkbox customizer control.
+	 *
+	 * @param \WP_Customize_Manager $wp_customize Customizer manager.
+	 */
+	private static function register_checkbox_control(
+		\WP_Customize_Manager $wp_customize,
+		string $mod_name,
+		string $label,
+		bool $default
+	): void {
+		$wp_customize->add_setting(
+			$mod_name,
+			array(
+				'default'           => $default,
+				'sanitize_callback' => array( self::class, 'sanitize_checkbox' ),
+				'transport'         => 'refresh',
+			)
+		);
+
+		$wp_customize->add_control(
+			$mod_name,
+			array(
+				'label'   => $label,
+				'section' => 'shanelle_cart_page',
+				'type'    => 'checkbox',
 			)
 		);
 	}

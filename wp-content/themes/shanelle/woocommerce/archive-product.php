@@ -1,3 +1,4 @@
+<?php
 /**
  * The Template for displaying product archives, including the main shop page.
  *
@@ -8,10 +9,14 @@
 
 declare(strict_types=1);
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 get_header();
 
-\Shanelle\Components\ShopArchive::render();
+if ( is_tax( 'product_collection' ) ) {
+    \Shanelle\Components\CollectionPage::render();
+} else {
+    \Shanelle\Components\ShopArchive::render();
+}
 
 get_footer();

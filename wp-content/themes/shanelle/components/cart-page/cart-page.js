@@ -80,6 +80,9 @@ function applyCartPageResponse( response ) {
 		applyFragments( response.fragments );
 	}
 
+	bindPanelEvents();
+	bindShippingCalculator();
+
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:cart-page:updated', {
 			bubbles: true,
@@ -302,6 +305,44 @@ function bindPanelEvents() {
 }
 
 /**
+ * Toggle shipping estimator panel and keep toggle labels accessible.
+ */
+function bindShippingCalculator() {
+	if ( ! root || root.dataset.cartShippingBound === 'true' ) {
+		return;
+	}
+
+	root.dataset.cartShippingBound = 'true';
+
+	root.addEventListener( 'click', ( event ) => {
+		const target = event.target;
+
+		if ( ! ( target instanceof Element ) ) {
+			return;
+		}
+
+		const toggle = target.closest( '[data-shanelle-cart-page-shipping-toggle]' );
+
+		if ( ! ( toggle instanceof HTMLButtonElement ) ) {
+			return;
+		}
+
+		const panel = root.querySelector( '#shipping-calculator-form' );
+
+		if ( ! ( panel instanceof HTMLElement ) ) {
+			return;
+		}
+
+		const isOpen = panel.hidden;
+		panel.hidden = ! isOpen;
+		toggle.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
+		toggle.textContent = isOpen
+			? ( i18n.shippingToggleClose || 'Close shipping estimator' )
+			: ( i18n.shippingToggle || 'Estimate shipping' );
+	} );
+}
+
+/**
  * @param {HTMLElement|null} element
  */
 function initCartPage( element = null ) {
@@ -318,6 +359,7 @@ function initCartPage( element = null ) {
 	}
 
 	bindPanelEvents();
+	bindShippingCalculator();
 
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:cart-page:ready', {

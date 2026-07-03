@@ -17,8 +17,9 @@ CartPage
 ├── Line items (state from MiniCart::build_cart_state())
 ├── Coupon form (WC POST handler)
 ├── Update bag form (WC POST handler)
+├── Shipping estimator (WooCommerce shipping calculator)
 ├── Order summary (WC cart totals APIs)
-├── Proceed to checkout
+├── Proceed to checkout / Continue shopping
 └── Cross-sells (ProductGrid + ProductCard)
 ```
 
@@ -36,6 +37,7 @@ CartPage
 | Show cross-sell products | Toggle recommendations block |
 | Cross-sells section title | Section heading |
 | Cross-sells product limit | 2–12 products |
+| Show shipping estimator | Toggle WooCommerce shipping calculator in order summary |
 
 ## Filters
 
@@ -46,6 +48,7 @@ CartPage
 | `shanelle_cart_page_cross_sell_query` | Adjust cross-sell `WP_Query` args |
 | `shanelle_cart_page_settings` | Adjust Customizer-derived settings |
 | `shanelle_cart_page_ajax_response` | Adjust AJAX refresh payload |
+| `shanelle_cart_page_shipping_calculator_button_text` | Shipping estimator toggle label |
 
 Line items also pass through existing `shanelle_mini_cart_state` and `shanelle_mini_cart_item` filters via `MiniCart::build_cart_state()`.
 
@@ -92,19 +95,24 @@ Normally invoked automatically by the WooCommerce template overrides.
    - Apply a valid WooCommerce coupon code.
    - Discount row appears in order summary.
 
-7. **Checkout**
+7. **Shipping estimator**
+   - Enable shipping under **WooCommerce → Settings → Shipping** and turn on **Enable the shipping calculator on the cart page**.
+   - Open **Estimate shipping**, enter destination, submit **Update**.
+   - Shipping row in order summary should refresh after page reload.
+
+8. **Checkout**
    - Click **Proceed to checkout** → lands on checkout page with items intact.
 
-8. **Cross-sells**
+9. **Cross-sells**
    - With cross-sells assigned on products, confirm **You may also like** grid renders via `ProductGrid`.
 
-9. **Mini cart sync**
+10. **Mini cart sync**
    - Change cart on the cart page; header mini cart count/contents should stay in sync after add/remove elsewhere.
 
-10. **Customizer**
-    - Toggle cross-sells or change title/limit under **Cart Page** settings.
+11. **Customizer**
+    - Toggle cross-sells, shipping estimator, or change title/limit under **Cart Page** settings.
 
-11. **Console events**
+12. **Console events**
     - In DevTools: `shanelle:cart-page:ready` on load, `shanelle:cart-page:updated` after AJAX changes.
 
 ## Requirements
