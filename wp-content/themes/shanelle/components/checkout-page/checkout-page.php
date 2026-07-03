@@ -31,15 +31,17 @@ if ( ! $checkout instanceof WC_Checkout ) {
 
 	<?php CheckoutPage::render_notices(); ?>
 
-	<form
-		name="checkout"
-		method="post"
-		class="checkout-page__form checkout woocommerce-checkout"
-		action="<?php echo esc_url( wc_get_checkout_url() ); ?>"
-		enctype="multipart/form-data"
-		aria-label="<?php esc_attr_e( 'Checkout', 'shanelle' ); ?>"
-	>
-		<div class="checkout-page__layout">
+	<?php CheckoutPage::render_login(); ?>
+
+	<div class="checkout-page__layout">
+		<form
+			name="checkout"
+			method="post"
+			class="checkout-page__form checkout woocommerce-checkout"
+			action="<?php echo esc_url( wc_get_checkout_url() ); ?>"
+			enctype="multipart/form-data"
+			aria-label="<?php esc_attr_e( 'Checkout', 'shanelle' ); ?>"
+		>
 			<div class="checkout-page__main">
 				<?php CheckoutPage::render_customer_details(); ?>
 			</div>
@@ -64,8 +66,10 @@ if ( ! $checkout instanceof WC_Checkout ) {
 
 				<?php CheckoutPage::render_trust(); ?>
 			</aside>
-		</div>
-	</form>
+		</form>
+
+		<?php CheckoutPage::render_coupon(); ?>
+	</div>
 
 	<p class="screen-reader-text" data-shanelle-checkout-page-status role="status" aria-live="polite" aria-atomic="true"></p>
 </div>

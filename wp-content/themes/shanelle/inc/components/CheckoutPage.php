@@ -67,6 +67,8 @@ final class CheckoutPage {
 		remove_action( 'woocommerce_before_main_content', 'shanelle_before_main_content', 5 );
 		remove_action( 'woocommerce_after_main_content', 'shanelle_after_main_content', 50 );
 		remove_action( 'woocommerce_checkout_order_review', 'woocommerce_order_review', 10 );
+		remove_action( 'woocommerce_before_checkout_form', 'woocommerce_checkout_login_form', 10 );
+		remove_action( 'woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10 );
 
 		add_action( 'woocommerce_checkout_order_review', array( self::class, 'render_order_review' ), 10 );
 
@@ -184,6 +186,8 @@ final class CheckoutPage {
 					'payment'         => __( 'Payment', 'shanelle' ),
 					'secureCheckout'  => __( 'Secure checkout', 'shanelle' ),
 					'updated'         => __( 'Order summary updated', 'shanelle' ),
+					'validationError' => __( 'Please correct the errors below before placing your order.', 'shanelle' ),
+					'shippingMethods' => __( 'Shipping method', 'shanelle' ),
 				),
 			)
 		);
@@ -207,6 +211,34 @@ final class CheckoutPage {
 
 		self::$checkout = null;
 		self::$state    = array();
+	}
+
+	/**
+	 * Render returning customer login prompt and form.
+	 */
+	public static function render_login(): void {
+		if ( is_user_logged_in() || ! function_exists( 'woocommerce_checkout_login_form' ) ) {
+			return;
+		}
+		?>
+		<div class="checkout-page__login">
+			<?php woocommerce_checkout_login_form(); ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render checkout coupon form outside the main checkout form.
+	 */
+	public static function render_coupon(): void {
+		if ( ! function_exists( 'woocommerce_checkout_coupon_form' ) || ! wc_coupons_enabled() ) {
+			return;
+		}
+		?>
+		<div class="checkout-page__coupon" data-shanelle-checkout-coupon>
+			<?php woocommerce_checkout_coupon_form(); ?>
+		</div>
+		<?php
 	}
 
 	/**
@@ -254,6 +286,7 @@ final class CheckoutPage {
 		?>
 		<div class="checkout-page__review" data-shanelle-checkout-order-review>
 			<?php self::render_line_items(); ?>
+			<?php self::render_shipping_methods(); ?>
 			<?php self::render_totals(); ?>
 		</div>
 		<?php
@@ -320,6 +353,56 @@ final class CheckoutPage {
 	}
 
 	/**
+	 * Render shipping method selection using WooCommerce package rates.
+	 */
+	public static function render_shipping_methods(): void {
+		if ( ! function_exists( 'WC' ) || ! WC()->cart || ! WC()->cart->needs_shipping() || ! WC()->cart->show_shipping() ) {
+			return;
+		}
+
+		$packages = WC()->shipping()->get_packages();
+
+		if ( empty( $packages ) ) {
+			return;
+		}
+		?>
+		<section class="checkout-page__shipping" data-shanelle-checkout-shipping aria-label="<?php esc_attr_e( 'Shipping method', 'shanelle' ); ?>">
+			<h3 class="checkout-page__shipping-title text-label"><?php esc_html_e( 'Shipping method', 'shanelle' ); ?></h3>
+			<?php
+			foreach ( $packages as $index => $package ) {
+				$product_names = array();
+
+				if ( count( $packages ) > 1 ) {
+					foreach ( $package['contents'] as $item_id => $values ) {
+						$product_names[ $item_id ] = $values['data']->get_name() . ' &times;' . $values['quantity'];
+					}
+
+					$product_names = apply_filters( 'woocommerce_shipping_package_details_array', $product_names, $package );
+				}
+
+				wc_get_template(
+					'shipping-methods.php',
+					array(
+						'package'                  => $package,
+						'available_methods'        => $package['rates'],
+						'show_package_details'     => count( $packages ) > 1,
+						'package_details'          => implode( ', ', $product_names ),
+						'package_name'             => $package['package_name'],
+						'index'                    => $index,
+						'chosen_method'            => WC()->session->chosen_shipping_methods[ $index ] ?? '',
+						'formatted_destination'    => WC()->countries->get_formatted_address( $package['destination'], ', ' ),
+						'has_calculated_shipping'  => WC()->customer->has_calculated_shipping(),
+					),
+					'',
+					self::COMPONENT_DIR . '/partials/'
+				);
+			}
+			?>
+		</section>
+		<?php
+	}
+
+	/**
 	 * Render checkout totals rows.
 	 */
 	public static function render_totals(): void {
@@ -359,16 +442,32 @@ final class CheckoutPage {
 	}
 
 	/**
-	 * Render secure checkout trust copy.
+	 * Render secure checkout trust indicators.
 	 */
 	public static function render_trust(): void {
 		if ( empty( self::$state['settings']['trust_message'] ) ) {
 			return;
 		}
 		?>
-		<p class="checkout-page__trust text-caption text-muted">
-			<?php esc_html_e( 'Your payment information is processed securely. We do not store credit card details.', 'shanelle' ); ?>
-		</p>
+		<div class="checkout-page__trust">
+			<ul class="checkout-page__trust-list" aria-label="<?php esc_attr_e( 'Shopping guarantees', 'shanelle' ); ?>">
+				<li class="checkout-page__trust-item">
+					<?php self::render_icon( 'lock' ); ?>
+					<span><?php esc_html_e( 'Secure checkout', 'shanelle' ); ?></span>
+				</li>
+				<li class="checkout-page__trust-item">
+					<?php self::render_icon( 'returns' ); ?>
+					<span><?php esc_html_e( 'Easy returns', 'shanelle' ); ?></span>
+				</li>
+				<li class="checkout-page__trust-item">
+					<?php self::render_icon( 'quality' ); ?>
+					<span><?php esc_html_e( 'Quality guaranteed', 'shanelle' ); ?></span>
+				</li>
+			</ul>
+			<p class="checkout-page__trust-message text-caption text-muted">
+				<?php esc_html_e( 'Your payment information is processed securely. We do not store credit card details.', 'shanelle' ); ?>
+			</p>
+		</div>
 		<?php
 	}
 
@@ -475,7 +574,7 @@ final class CheckoutPage {
 			array_merge(
 				$cart_state,
 				array(
-					'totals'   => CartPage::build_totals_rows(),
+					'totals'   => self::build_checkout_totals_rows(),
 					'settings' => self::get_settings(),
 					'urls'     => array(
 						'cart'     => wc_get_cart_url(),
@@ -486,6 +585,51 @@ final class CheckoutPage {
 			),
 			WC()->cart
 		);
+	}
+
+	/**
+	 * Build checkout totals rows, omitting shipping when method selection is rendered separately.
+	 *
+	 * @return array<int, array<string, string>>
+	 */
+	public static function build_checkout_totals_rows(): array {
+		if ( ! WC()->cart ) {
+			return array();
+		}
+
+		$rows = CartPage::build_totals_rows();
+
+		if ( WC()->cart->needs_shipping() && WC()->cart->show_shipping() ) {
+			$rows = array_values(
+				array_filter(
+					$rows,
+					static function ( $row ): bool {
+						return is_array( $row ) && 'shipping' !== ( $row['class'] ?? '' );
+					}
+				)
+			);
+		}
+
+		return apply_filters( 'shanelle_checkout_page_totals_rows', $rows, WC()->cart );
+	}
+
+	/**
+	 * Output inline SVG icon markup.
+	 *
+	 * @param string $icon Icon slug.
+	 */
+	public static function render_icon( string $icon ): void {
+		$icons = array(
+			'lock'    => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+			'returns' => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7v6h6"/><path d="M21 17a8 8 0 0 0-14-5"/></svg>',
+			'quality' => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m12 3 2.4 4.8 5.4.8-3.9 3.8.9 5.3L12 15.8 7.2 17.7l.9-5.3L4.2 8.6l5.4-.8Z"/></svg>',
+		);
+
+		if ( ! isset( $icons[ $icon ] ) ) {
+			return;
+		}
+
+		echo $icons[ $icon ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

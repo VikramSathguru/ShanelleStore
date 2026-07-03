@@ -46,6 +46,29 @@ function announce( message ) {
 }
 
 /**
+ * Focus the first visible checkout validation error.
+ */
+function focusFirstCheckoutError() {
+	if ( ! root ) {
+		return;
+	}
+
+	const invalidField = root.querySelector( '.woocommerce-invalid input, .woocommerce-invalid select, .woocommerce-invalid textarea' );
+
+	if ( invalidField instanceof HTMLElement ) {
+		invalidField.focus();
+		return;
+	}
+
+	const errorNotice = root.querySelector( '.woocommerce-error' );
+
+	if ( errorNotice instanceof HTMLElement ) {
+		errorNotice.setAttribute( 'tabindex', '-1' );
+		errorNotice.focus();
+	}
+}
+
+/**
  * @param {HTMLElement|null} element
  */
 function initCheckoutPage( element = null ) {
@@ -93,6 +116,11 @@ function bindCheckoutUpdates() {
 				},
 			} )
 		);
+	} );
+
+	jQuery( document.body ).on( 'checkout_error', () => {
+		announce( i18n.validationError || 'Please correct the errors below before placing your order.' );
+		focusFirstCheckoutError();
 	} );
 }
 
