@@ -37,6 +37,29 @@ function announce( message ) {
 }
 
 /**
+ * Reveal hydrated account content and hide skeleton placeholders.
+ */
+function revealAccountContent() {
+	if ( ! root ) {
+		return;
+	}
+
+	root.classList.add( 'is-ready' );
+
+	root.querySelectorAll( '[data-shanelle-account-skeleton-host]' ).forEach( ( host ) => {
+		host.hidden = true;
+	} );
+
+	root.querySelectorAll( '[data-shanelle-account-order-list], [data-shanelle-account-download-list]' ).forEach( ( list ) => {
+		list.hidden = false;
+	} );
+
+	if ( i18n.contentReady ) {
+		announce( i18n.contentReady );
+	}
+}
+
+/**
  * @param {HTMLElement|null} element
  */
 function initMyAccountPage( element = null ) {
@@ -48,6 +71,7 @@ function initMyAccountPage( element = null ) {
 
 	root.dataset.accountHydrated = 'true';
 	bindMobileNavigation();
+	revealAccountContent();
 
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:my-account-page:ready', {
@@ -58,6 +82,7 @@ function initMyAccountPage( element = null ) {
 				api: {
 					getMyAccountPageState,
 					announce,
+					revealAccountContent,
 				},
 			},
 		} )
@@ -79,6 +104,12 @@ function bindMobileNavigation() {
 		const isOpen = panel.classList.toggle( 'is-open' );
 		toggle.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
 		toggle.textContent = isOpen ? closeLabel : openLabel;
+
+		if ( isOpen ) {
+			announce( openLabel );
+		} else {
+			announce( closeLabel );
+		}
 	} );
 }
 
@@ -92,4 +123,5 @@ export {
 	initMyAccountPage,
 	getMyAccountPageState,
 	announce,
+	revealAccountContent,
 };

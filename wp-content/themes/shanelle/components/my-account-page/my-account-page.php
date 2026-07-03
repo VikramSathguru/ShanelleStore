@@ -52,4 +52,6 @@ $welcome_line = MyAccountPage::get_welcome_line();
 	</div>
 
 	<p class="screen-reader-text" data-shanelle-my-account-page-status role="status" aria-live="polite" aria-atomic="true"></p>
+
+	<?php MyAccountPage::render_mobile_bottom_nav(); ?>
 </div>

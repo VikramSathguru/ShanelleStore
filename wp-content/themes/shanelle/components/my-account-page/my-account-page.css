@@ -9,6 +9,333 @@
 	flex-direction: column;
 	gap: var(--space-6);
 	width: 100%;
+	padding-bottom: calc(var(--space-20) + env(safe-area-inset-bottom, 0px));
+}
+
+.my-account-page__section,
+.my-account-page__subsection {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.my-account-page__section-lead,
+.my-account-page__subsection-header {
+	margin: 0;
+}
+
+.my-account-page__subsection-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+}
+
+.my-account-page__subsection-title,
+.my-account-page__section-intro {
+	margin: 0;
+}
+
+.my-account-page__subsection-link {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.my-account-page__subsection-link:hover {
+	color: var(--color-text-link-hover);
+}
+
+.my-account-page__quick-actions-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__quick-actions-item {
+	margin: 0;
+}
+
+.my-account-page__order-list,
+.my-account-page__address-grid,
+.my-account-page__download-list,
+.my-account-page__payment-list {
+	display: grid;
+	gap: var(--space-4);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__order-card,
+.my-account-page__address-card,
+.my-account-page__download-card,
+.my-account-page__payment-card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background-subtle);
+}
+
+.my-account-page__order-card-header,
+.my-account-page__address-card-header,
+.my-account-page__payment-card-body {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--space-4);
+}
+
+.my-account-page__order-card-meta {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.my-account-page__order-card-number,
+.my-account-page__address-card-edit {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.my-account-page__order-card-number:hover,
+.my-account-page__address-card-edit:hover {
+	color: var(--color-text-link-hover);
+}
+
+.my-account-page__order-card-actions,
+.my-account-page__payment-card-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+.my-account-page__status-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: var(--space-1) var(--space-3);
+	border-radius: var(--radius-pill);
+	background-color: var(--color-neutral-100);
+	color: var(--color-text-muted);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-semibold);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.my-account-page__status-badge--status-completed,
+.my-account-page__status-badge--status-processing {
+	background-color: var(--color-success-bg);
+	color: var(--color-success-text);
+}
+
+.my-account-page__status-badge--status-on-hold,
+.my-account-page__status-badge--status-pending {
+	background-color: var(--color-warning-bg);
+	color: var(--color-warning-text);
+}
+
+.my-account-page__status-badge--status-cancelled,
+.my-account-page__status-badge--status-failed,
+.my-account-page__status-badge--status-refunded {
+	background-color: var(--color-danger-bg);
+	color: var(--color-danger-text);
+}
+
+.my-account-page__address-card-content {
+	margin: 0;
+	font-style: normal;
+	line-height: var(--line-height-relaxed);
+}
+
+.my-account-page__address-card--empty {
+	background-color: var(--color-surface);
+}
+
+.my-account-page__download-card {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.my-account-page__download-card-meta {
+	display: grid;
+	gap: var(--space-2);
+	margin: var(--space-3) 0 0;
+}
+
+.my-account-page__download-card-meta-item {
+	display: grid;
+	gap: var(--space-1);
+}
+
+.my-account-page__download-card-meta-item dd {
+	margin: 0;
+}
+
+.my-account-page__payment-card--default {
+	border-color: var(--color-brand-200);
+	background-color: var(--color-brand-50);
+}
+
+.my-account-page__payment-card-badge {
+	display: inline-flex;
+	margin-top: var(--space-2);
+	color: var(--color-brand-700);
+}
+
+.my-account-page__empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-4);
+	padding: var(--space-8) var(--space-4);
+	border: 1px dashed var(--color-border);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-background-subtle);
+	text-align: left;
+}
+
+.my-account-page__empty-state-title,
+.my-account-page__empty-state-message {
+	margin: 0;
+}
+
+.my-account-page__skeleton {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.my-account-page__skeleton-card {
+	display: grid;
+	gap: var(--space-3);
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-surface);
+}
+
+.my-account-page__skeleton-line {
+	height: 0.875rem;
+}
+
+.my-account-page__skeleton-line--title {
+	width: 40%;
+	height: 1.125rem;
+}
+
+.my-account-page__skeleton-line--short {
+	width: 55%;
+}
+
+.my-account-page__loading-host:not([hidden]) + [hidden] {
+	display: none;
+}
+
+.my-account-page.is-ready .my-account-page__loading-host {
+	display: none;
+}
+
+.my-account-page.is-ready [data-shanelle-account-order-list],
+.my-account-page.is-ready [data-shanelle-account-download-list] {
+	display: grid;
+}
+
+.my-account-page__order-detail-header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin-bottom: var(--space-4);
+}
+
+.my-account-page__order-detail-summary {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-3);
+}
+
+.my-account-page__order-detail-title {
+	margin: 0;
+}
+
+.my-account-page__order-updates-list {
+	display: grid;
+	gap: var(--space-4);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__order-update {
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background-subtle);
+}
+
+.my-account-page__order-update-meta {
+	margin: 0 0 var(--space-2);
+}
+
+.my-account-page__pagination {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+	margin-top: var(--space-4);
+}
+
+.my-account-page__bottom-nav {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: var(--z-index-sticky, 20);
+	display: block;
+	padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
+	border-top: 1px solid var(--color-border-subtle);
+	background-color: var(--color-surface-overlay);
+	backdrop-filter: blur(12px);
+}
+
+.my-account-page__bottom-nav-list {
+	display: grid;
+	grid-template-columns: repeat(var(--bottom-nav-count, 5), minmax(0, 1fr));
+	gap: var(--space-1);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__bottom-nav-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--touch-target-min, 2.75rem);
+	padding: var(--space-1) var(--space-2);
+	border-radius: var(--radius-lg);
+	color: var(--color-text-muted);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	text-align: center;
+	text-decoration: none;
+	line-height: 1.2;
+}
+
+.my-account-page__bottom-nav-item.is-active .my-account-page__bottom-nav-link,
+.my-account-page__bottom-nav-link:hover {
+	background-color: var(--color-brand-50);
+	color: var(--color-brand-700);
+}
+
+.my-account-page__section-body :where(.woocommerce-EditAccountForm, .woocommerce-address-fields) {
+	display: grid;
+	gap: var(--space-4);
 }
 
 .my-account-page__header {
@@ -255,6 +582,10 @@
 }
 
 @media (min-width: 48rem) {
+	.my-account-page {
+		padding-bottom: 0;
+	}
+
 	.my-account-page__header {
 		flex-direction: row;
 		align-items: flex-end;
@@ -289,6 +620,14 @@
 
 	.my-account-page__content-inner :where(.form-row-wide) {
 		grid-column: 1 / -1;
+	}
+
+	.my-account-page__address-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.my-account-page__bottom-nav {
+		display: none;
 	}
 }
 
