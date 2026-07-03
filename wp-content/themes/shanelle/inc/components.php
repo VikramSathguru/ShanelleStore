@@ -164,6 +164,15 @@ function shanelle_checkout_page( WC_Checkout $checkout ): void {
 }
 
 /**
+ * Render the My Account page composition.
+ *
+ * @param array<string, mixed> $args Optional template arguments.
+ */
+function shanelle_my_account_page( array $args = array() ): void {
+	\Shanelle\Components\MyAccountPage::render( $args );
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.

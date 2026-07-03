@@ -64,6 +64,18 @@ root
 
 state
 
+shanelle:my-account-page:ready
+
+Payload
+
+root
+
+state
+
+api.getMyAccountPageState
+
+api.announce
+
 shanelle:hero-banner:ready
 
 shanelle:category-navigation:ready

@@ -33,6 +33,7 @@ require_once SHANELLE_DIR . '/inc/components/CategoryNavigation.php';
 require_once SHANELLE_DIR . '/inc/components/Homepage.php';
 require_once SHANELLE_DIR . '/inc/components/CartPage.php';
 require_once SHANELLE_DIR . '/inc/components/CheckoutPage.php';
+require_once SHANELLE_DIR . '/inc/components/MyAccountPage.php';
 require_once SHANELLE_DIR . '/inc/woocommerce.php';
 require_once SHANELLE_DIR . '/inc/catalog/Catalog.php';
 
@@ -53,3 +54,4 @@ Shanelle\Components\CategoryNavigation::boot();
 Shanelle\Components\Homepage::boot();
 Shanelle\Components\CartPage::boot();
 Shanelle\Components\CheckoutPage::boot();
+Shanelle\Components\MyAccountPage::boot();

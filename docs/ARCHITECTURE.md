@@ -30,6 +30,8 @@ Application
 
 │   ├── Checkout
 
+│   ├── My Account
+
 │   ├── MiniCart
 
 │   └── Coupons

@@ -1,0 +1,299 @@
+/**
+ * Shanelle My Account Page Layout
+ *
+ * Page-specific layout and scoped WooCommerce account styling only.
+ */
+
+.my-account-page {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+	width: 100%;
+}
+
+.my-account-page__header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.my-account-page__header-copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.my-account-page__title {
+	margin: 0;
+}
+
+.my-account-page__welcome {
+	margin: 0;
+}
+
+.my-account-page__shop-link {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.my-account-page__shop-link:hover {
+	color: var(--color-text-link-hover);
+}
+
+.my-account-page__notices :where(.woocommerce-message, .woocommerce-info, .woocommerce-error) {
+	margin-bottom: var(--space-4);
+}
+
+.my-account-page__layout {
+	display: grid;
+	gap: var(--space-8);
+}
+
+.my-account-page__nav,
+.my-account-page__content {
+	min-width: 0;
+}
+
+.my-account-page__nav-toggle {
+	width: 100%;
+}
+
+.my-account-page__nav-panel {
+	display: none;
+}
+
+.my-account-page__nav-panel.is-open {
+	display: block;
+}
+
+.my-account-page__navigation {
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+}
+
+.my-account-page__navigation-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__navigation-item {
+	margin: 0;
+}
+
+.my-account-page__navigation-link {
+	display: block;
+	padding: var(--space-3) var(--space-4);
+	border-radius: var(--radius-lg);
+	color: var(--color-text);
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.my-account-page__navigation-link:hover {
+	background-color: var(--color-background-subtle);
+	color: var(--color-text);
+}
+
+.my-account-page__navigation-item.is-active .my-account-page__navigation-link,
+.my-account-page__navigation-item.woocommerce-MyAccount-navigation-link--active .my-account-page__navigation-link {
+	background-color: var(--color-brand-50);
+	color: var(--color-brand-700);
+	font-weight: var(--font-weight-semibold);
+}
+
+.my-account-page__content-inner {
+	padding: var(--space-5);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+}
+
+.my-account-page__guest-card {
+	max-width: 40rem;
+	padding: var(--space-5);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+}
+
+.my-account-page__auth-columns {
+	display: grid;
+	gap: var(--space-8);
+}
+
+.my-account-page__form-title {
+	margin: 0 0 var(--space-4);
+}
+
+.my-account-page__form :where(.form-row) {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	margin: 0 0 var(--space-4);
+}
+
+.my-account-page__form :where(input.input-text, select, textarea) {
+	width: 100%;
+	min-height: var(--input-height);
+	padding: var(--space-2) var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+}
+
+.my-account-page__form :where(input.input-text:focus, select:focus, textarea:focus) {
+	outline: none;
+	box-shadow: var(--shadow-focus);
+	border-color: var(--color-border-focus);
+}
+
+.my-account-page__form-actions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.my-account-page__back-link {
+	margin: var(--space-5) 0 0;
+}
+
+.my-account-page__back-link a {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.my-account-page__back-link a:hover {
+	color: var(--color-text-link-hover);
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table, .woocommerce-table) {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table th, .woocommerce-orders-table td, .woocommerce-table th, .woocommerce-table td) {
+	padding: var(--space-3) var(--space-4);
+	border-bottom: 1px solid var(--color-border-subtle);
+	text-align: left;
+	vertical-align: top;
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table thead th) {
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text-muted);
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table__cell-order-actions .button, .woocommerce-button, .button) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--button-height-sm);
+	padding: var(--space-1-5) var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-pill);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table__cell-order-actions .button:hover, .woocommerce-button:hover, .button:hover) {
+	border-color: var(--color-brand-primary);
+	color: var(--color-brand-primary);
+}
+
+.my-account-page__content-inner :where(.woocommerce-address-fields__field-wrapper, .woocommerce-EditAccountForm .woocommerce-form-row) {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.my-account-page__content-inner :where(.woocommerce-Address-title) {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	margin-bottom: var(--space-4);
+}
+
+.my-account-page__content-inner :where(.woocommerce-Address address) {
+	margin: 0;
+	font-style: normal;
+	line-height: var(--line-height-relaxed);
+}
+
+.my-account-page__content-inner :where(.woocommerce-PaymentMethods) {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__content-inner :where(.woocommerce-PaymentMethod) {
+	padding: var(--space-3);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background-subtle);
+}
+
+.my-account-page__content-inner :where(.woocommerce-MyAccount-content > p:first-child) {
+	margin-top: 0;
+}
+
+@media (min-width: 48rem) {
+	.my-account-page__header {
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
+
+	.my-account-page__nav-toggle {
+		display: none;
+	}
+
+	.my-account-page__nav-panel {
+		display: block;
+	}
+
+	.my-account-page__layout {
+		grid-template-columns: minmax(14rem, 16rem) minmax(0, 1fr);
+		align-items: start;
+	}
+
+	.my-account-page__navigation {
+		position: sticky;
+		top: calc(var(--space-8) + 4rem);
+	}
+
+	.my-account-page__auth-columns {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.my-account-page__content-inner :where(.woocommerce-address-fields__field-wrapper, .woocommerce-EditAccountForm) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.my-account-page__content-inner :where(.form-row-wide) {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.my-account-page__navigation {
+		position: static;
+	}
+}
