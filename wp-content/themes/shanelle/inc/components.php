@@ -20,6 +20,33 @@ function shanelle_component( string $name, array $args = array() ): void {
 }
 
 /**
+ * Render the product card component.
+ *
+ * @param \WC_Product          $product Product instance.
+ * @param array<string, mixed> $args    Optional render arguments.
+ */
+function shanelle_product_card( WC_Product $product, array $args = array() ): void {
+	\Shanelle\Components\ProductCard::render( $product, $args );
+}
+
+/**
+ * Render the product grid component.
+ *
+ * @param \WP_Query|array<string, mixed>|null $query Query source.
+ * @param array<string, mixed>                $args  Grid configuration.
+ */
+function shanelle_product_grid( $query = null, array $args = array() ): void {
+	\Shanelle\Components\ProductGrid::render( $query, $args );
+}
+
+/**
+ * Render the shop archive component.
+ */
+function shanelle_shop_archive(): void {
+	\Shanelle\Components\ShopArchive::render();
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.

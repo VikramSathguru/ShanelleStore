@@ -1,0 +1,210 @@
+/**
+ * Shanelle Shop Archive Component
+ */
+
+.shop-archive {
+	padding-block: var(--space-6);
+}
+
+.shop-archive__container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.shop-archive__breadcrumbs-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.shop-archive__breadcrumbs-item {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: var(--font-size-xs);
+	color: var(--color-text-muted);
+}
+
+.shop-archive__breadcrumbs-item a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.shop-archive__breadcrumbs-item a:hover,
+.shop-archive__breadcrumbs-item a:focus-visible {
+	color: var(--color-brand-600);
+}
+
+.shop-archive__header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.shop-archive__title {
+	margin: 0;
+}
+
+.shop-archive__description {
+	max-width: 48rem;
+}
+
+.shop-archive__count {
+	margin: 0;
+}
+
+.shop-archive__toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	padding-block: var(--space-3);
+	border-block: 1px solid var(--color-border-subtle);
+}
+
+.shop-archive__ordering {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+}
+
+.shop-archive__ordering .woocommerce-ordering {
+	margin: 0;
+}
+
+.shop-archive__ordering select,
+.shop-archive__ordering .orderby {
+	min-height: var(--button-height-sm);
+	padding: var(--space-2) var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-pill);
+	background: var(--color-surface);
+	font-size: var(--font-size-sm);
+}
+
+.shop-archive__grid {
+	width: 100%;
+}
+
+.shop-archive__loading[hidden] {
+	display: none;
+}
+
+.shop-archive.is-filtering .shop-archive__loading {
+	display: block;
+}
+
+.shop-archive.is-filtering .shop-archive__grid {
+	opacity: 0.45;
+	pointer-events: none;
+}
+
+/* Filters panel — mobile bottom sheet default */
+.shop-archive__filters {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-drawer);
+}
+
+.shop-archive__filters[hidden] {
+	display: none;
+}
+
+.shop-archive__filters-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgb(23 23 23 / 40%);
+	opacity: 0;
+	transition: var(--transition-opacity);
+}
+
+.shop-archive__filters.is-open .shop-archive__filters-overlay {
+	opacity: 1;
+}
+
+.shop-archive__filters-panel {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	max-height: 85vh;
+	background: var(--color-surface);
+	border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+	box-shadow: var(--shadow-xl);
+	transform: translateY(100%);
+	transition: var(--transition-transform);
+}
+
+.shop-archive__filters.is-open .shop-archive__filters-panel {
+	transform: translateY(0);
+}
+
+.shop-archive__filters-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--space-5) var(--space-4) var(--space-3);
+	border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.shop-archive__filters-title {
+	margin: 0;
+}
+
+.shop-archive__filters-body {
+	flex: 1;
+	overflow-y: auto;
+	padding: var(--space-4);
+}
+
+.shop-archive__filters-footer {
+	padding: var(--space-4);
+	border-top: 1px solid var(--color-border-subtle);
+}
+
+.shop-archive__filters-apply {
+	width: 100%;
+}
+
+.shop-archive__filters-empty {
+	margin: 0;
+}
+
+body.shop-archive-filters-open {
+	overflow: hidden;
+}
+
+/* Desktop — slide-over panel from right, full-width grid */
+@media (min-width: 64rem) {
+	.shop-archive__filters-panel {
+		top: 0;
+		right: 0;
+		left: auto;
+		bottom: 0;
+		width: min(100%, 22rem);
+		max-height: none;
+		border-radius: 0;
+		transform: translateX(100%);
+	}
+
+	.shop-archive__filters.is-open .shop-archive__filters-panel {
+		transform: translateX(0);
+	}
+
+	.shop-archive__filters-apply {
+		width: auto;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.shop-archive__filters-overlay,
+	.shop-archive__filters-panel {
+		transition: none;
+	}
+}

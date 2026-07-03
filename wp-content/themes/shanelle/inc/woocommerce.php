@@ -119,7 +119,7 @@ function shanelle_product_card_start(): void {
 		return;
 	}
 
-	shanelle_component( 'product-card', array( 'product' => $product ) );
+	\Shanelle\Components\ProductCard::render( $product );
 }
 
 /**

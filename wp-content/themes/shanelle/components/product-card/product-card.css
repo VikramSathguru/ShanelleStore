@@ -1,0 +1,188 @@
+/**
+ * Shanelle Product Card Component
+ *
+ * Component-specific styles. Composes Design System primitives.
+ */
+
+.product-card {
+	position: relative;
+	height: 100%;
+}
+
+.product-card__media {
+	position: relative;
+}
+
+.product-card__badges {
+	position: absolute;
+	top: var(--space-2);
+	left: var(--space-2);
+	z-index: var(--z-raised);
+	pointer-events: none;
+}
+
+.product-card__media-link {
+	display: block;
+	color: inherit;
+	text-decoration: none;
+}
+
+.product-card__image-stack {
+	position: relative;
+	overflow: hidden;
+	aspect-ratio: 3 / 4;
+	border-radius: var(--radius-md);
+	background-color: var(--color-surface-sunken);
+}
+
+.product-card__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: var(--transition-transform), var(--transition-opacity);
+}
+
+.product-card__image--secondary {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.product-card__image-stack--has-hover:hover .product-card__image--primary {
+		opacity: 0;
+	}
+
+	.product-card__image-stack--has-hover:hover .product-card__image--secondary {
+		opacity: 1;
+	}
+
+	.product-card:hover .product-card__actions {
+		opacity: 1;
+		visibility: visible;
+		transform: translateY(0);
+	}
+}
+
+.product-card.is-touch .product-card__actions {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.product-card__actions {
+	position: absolute;
+	right: var(--space-2);
+	bottom: var(--space-2);
+	z-index: var(--z-raised);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(0.25rem);
+	transition: var(--transition-all);
+}
+
+.product-card__action {
+	position: relative;
+	width: 2.25rem;
+	min-height: 2.25rem;
+	padding: 0;
+	background-color: var(--color-surface-overlay);
+	backdrop-filter: blur(6px);
+	box-shadow: var(--shadow-sm);
+}
+
+.product-card__action:hover,
+.product-card__action:focus-visible {
+	background-color: var(--color-brand-50);
+}
+
+.product-card__action:disabled {
+	opacity: 0.45;
+}
+
+.product-card__quick-add.is-loading {
+	pointer-events: none;
+}
+
+.product-card__quick-add.is-loading::after {
+	content: '';
+	position: absolute;
+	width: 0.875rem;
+	height: 0.875rem;
+	border: 2px solid var(--color-brand-primary);
+	border-right-color: transparent;
+	border-radius: var(--radius-full);
+	animation: shanelle-spin 0.7s var(--ease-linear) infinite;
+}
+
+.product-card__body {
+	gap: var(--space-1-5);
+}
+
+.product-card__title a {
+	color: var(--color-text);
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.product-card__title a:hover,
+.product-card__title a:focus-visible {
+	color: var(--color-brand-600);
+}
+
+.product-card__attributes {
+	margin: 0;
+}
+
+.product-card__rating {
+	line-height: 1;
+}
+
+.product-card__rating .star-rating {
+	font-size: var(--font-size-xs);
+}
+
+.product-card__price ins {
+	text-decoration: none;
+	color: var(--color-brand-600);
+}
+
+.product-card__price del {
+	color: var(--color-text-muted);
+	font-weight: var(--font-weight-regular);
+}
+
+.product-card__price--sold-out {
+	opacity: 0.55;
+}
+
+.product-card.is-sold-out .product-card__image-stack {
+	opacity: 0.72;
+}
+
+.product-card:focus-within .product-card__media-link:focus-visible {
+	outline: 2px solid var(--color-border-focus);
+	outline-offset: 2px;
+	border-radius: var(--radius-md);
+}
+
+@media (max-width: 47.9375rem) {
+	.product-card__actions {
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		flex-direction: row;
+		right: var(--space-2);
+		left: auto;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.product-card__image,
+	.product-card__actions {
+		transition: none;
+	}
+}
