@@ -27,6 +27,10 @@ require_once SHANELLE_DIR . '/inc/components/ProductPurchase.php';
 require_once SHANELLE_DIR . '/inc/components/ProductDetail.php';
 require_once SHANELLE_DIR . '/inc/components/ProductInformation.php';
 require_once SHANELLE_DIR . '/inc/components/ProductRelated.php';
+require_once SHANELLE_DIR . '/inc/components/MiniCart.php';
+require_once SHANELLE_DIR . '/inc/components/HeroBanner.php';
+require_once SHANELLE_DIR . '/inc/components/CategoryNavigation.php';
+require_once SHANELLE_DIR . '/inc/components/Homepage.php';
 require_once SHANELLE_DIR . '/inc/woocommerce.php';
 require_once SHANELLE_DIR . '/inc/catalog/Catalog.php';
 
@@ -41,3 +45,7 @@ Shanelle\Components\ProductPurchase::boot();
 Shanelle\Components\ProductDetail::boot();
 Shanelle\Components\ProductInformation::boot();
 Shanelle\Components\ProductRelated::boot();
+Shanelle\Components\MiniCart::boot();
+Shanelle\Components\HeroBanner::boot();
+Shanelle\Components\CategoryNavigation::boot();
+Shanelle\Components\Homepage::boot();

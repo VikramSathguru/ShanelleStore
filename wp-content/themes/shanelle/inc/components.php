@@ -116,6 +116,38 @@ function shanelle_product_related( WC_Product $product, array $args = array() ):
 }
 
 /**
+ * Render the mini cart drawer component.
+ */
+function shanelle_mini_cart(): void {
+	\Shanelle\Components\MiniCart::render();
+}
+
+/**
+ * Render the homepage hero banner component.
+ *
+ * @param array<string, mixed> $args Optional render arguments.
+ */
+function shanelle_hero_banner( array $args = array() ): void {
+	\Shanelle\Components\HeroBanner::render( $args );
+}
+
+/**
+ * Render the homepage category navigation component.
+ *
+ * @param array<string, mixed> $args Optional render arguments.
+ */
+function shanelle_category_navigation( array $args = array() ): void {
+	\Shanelle\Components\CategoryNavigation::render( $args );
+}
+
+/**
+ * Render the homepage page composition.
+ */
+function shanelle_homepage(): void {
+	\Shanelle\Components\Homepage::render();
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.

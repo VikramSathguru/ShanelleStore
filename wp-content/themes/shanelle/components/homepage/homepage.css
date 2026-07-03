@@ -1,0 +1,86 @@
+/**
+ * Shanelle Homepage Page Layout
+ *
+ * Page-specific spacing and section composition only.
+ * Product cards and grids inherit component styles.
+ */
+
+.homepage {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.homepage__section {
+	padding-block: var(--space-8);
+}
+
+.homepage__section-inner {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.homepage__section-header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: end;
+	justify-content: space-between;
+	gap: var(--space-4);
+}
+
+.homepage__section-copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	max-width: 42rem;
+}
+
+.homepage__section-title {
+	margin: 0;
+}
+
+.homepage__section-subtitle {
+	margin: 0;
+}
+
+.homepage__section-link {
+	flex-shrink: 0;
+	color: var(--color-text-link);
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.homepage__section-link:hover {
+	color: var(--color-text-link-hover);
+}
+
+.homepage__section-link:focus-visible {
+	outline: none;
+	box-shadow: var(--shadow-focus);
+	border-radius: var(--radius-sm);
+}
+
+.homepage__grid {
+	min-width: 0;
+}
+
+.homepage__section--products + .homepage__section--products {
+	border-top: 1px solid var(--color-border-subtle);
+}
+
+@media (min-width: 48rem) {
+	.homepage__section {
+		padding-block: var(--space-10);
+	}
+
+	.homepage__section-inner {
+		gap: var(--space-6);
+	}
+}
+
+@media (min-width: 64rem) {
+	.homepage__section {
+		padding-block: var(--space-12);
+	}
+}

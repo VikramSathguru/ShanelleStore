@@ -1,0 +1,151 @@
+/**
+ * Shanelle Hero Banner Component
+ *
+ * BEM: .hero-banner, .hero-banner__slide, .hero-banner__media
+ */
+
+.hero-banner {
+	position: relative;
+	width: 100%;
+}
+
+.hero-banner__viewport {
+	position: relative;
+	overflow: hidden;
+}
+
+.hero-banner__slides {
+	position: relative;
+}
+
+.hero-banner__slide {
+	position: relative;
+	display: grid;
+	align-items: end;
+	min-height: clamp(22rem, 62vh, 40rem);
+}
+
+.hero-banner__media {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	background-color: var(--color-neutral-100);
+}
+
+.hero-banner__media--fallback {
+	background:
+		linear-gradient(
+			135deg,
+			var(--color-brand-50) 0%,
+			var(--color-neutral-50) 45%,
+			var(--color-brand-100) 100%
+		);
+}
+
+.hero-banner__picture,
+.hero-banner__image,
+.hero-banner__fallback {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.hero-banner__picture {
+	position: absolute;
+	inset: 0;
+}
+
+.hero-banner__image {
+	object-fit: cover;
+	object-position: center;
+}
+
+.hero-banner__overlay {
+	position: absolute;
+	inset: 0;
+	background-color: var(--hero-banner-overlay-color, rgb(23 23 23));
+	opacity: var(--hero-banner-overlay-opacity, 0.35);
+	pointer-events: none;
+}
+
+.hero-banner__content {
+	position: relative;
+	z-index: var(--z-raised);
+	display: flex;
+	align-items: flex-end;
+	width: 100%;
+	padding-block: var(--space-10) var(--space-8);
+}
+
+.hero-banner__copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	max-width: 36rem;
+}
+
+.hero-banner__headline {
+	margin: 0;
+	color: var(--color-text-inverse);
+	text-wrap: balance;
+}
+
+.hero-banner__subheadline {
+	margin: 0;
+	font-size: var(--font-size-md);
+	line-height: var(--line-height-relaxed);
+	color: rgb(255 255 255 / 88%);
+	text-wrap: pretty;
+}
+
+.hero-banner__actions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	width: 100%;
+	margin-top: var(--space-2);
+}
+
+.hero-banner__action {
+	min-width: min(100%, 14rem);
+}
+
+.hero-banner__media--fallback .hero-banner__overlay {
+	opacity: calc(var(--hero-banner-overlay-opacity, 0.35) * 0.35);
+}
+
+.hero-banner__media--fallback ~ .hero-banner__content .hero-banner__headline,
+.hero-banner__media--fallback ~ .hero-banner__content .hero-banner__subheadline {
+	color: var(--color-text);
+}
+
+.hero-banner__media--fallback ~ .hero-banner__content .hero-banner__subheadline {
+	color: var(--color-text-secondary);
+}
+
+@media (min-width: 48rem) {
+	.hero-banner__slide {
+		min-height: clamp(28rem, 72vh, 45rem);
+	}
+
+	.hero-banner__content {
+		padding-block: var(--space-16) var(--space-10);
+	}
+
+	.hero-banner__copy {
+		gap: var(--space-5);
+		max-width: 42rem;
+	}
+
+	.hero-banner__actions {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hero-banner__slide {
+		transition: none;
+	}
+}

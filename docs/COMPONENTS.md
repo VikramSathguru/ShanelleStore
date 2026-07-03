@@ -2,6 +2,22 @@
 
 Component-level documentation lives in [`docs/components/`](components/).
 
+Page-level documentation lives in [`docs/pages/`](pages/).
+
+## Pages
+
+| Page | Doc |
+|------|-----|
+| Homepage | [HOMEPAGE.md](pages/HOMEPAGE.md) |
+
+## Homepage sections
+
+| Component | Doc |
+|-----------|-----|
+| Homepage composer | [HOMEPAGE.md](pages/HOMEPAGE.md) |
+| Hero Banner | Customizer: Shanelle Homepage → Hero Banner |
+| Category Navigation | Customizer: Shanelle Homepage → Category Navigation |
+
 ## Catalog & listing
 
 | Component | Doc |
