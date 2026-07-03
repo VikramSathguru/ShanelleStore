@@ -24,6 +24,26 @@ shanelle:shop-archive:filter-complete
 
 shanelle:homepage:ready
 
+shanelle:cart-page:ready
+
+Payload
+
+root
+
+state
+
+api.getCartPageState
+
+api.refreshCartPage
+
+api.updateCartItemQuantity
+
+api.removeCartItem
+
+api.applyCartPageResponse
+
+shanelle:cart-page:updated
+
 Payload
 
 root

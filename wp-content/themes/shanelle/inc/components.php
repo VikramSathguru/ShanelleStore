@@ -148,6 +148,13 @@ function shanelle_homepage(): void {
 }
 
 /**
+ * Render the cart page composition.
+ */
+function shanelle_cart_page(): void {
+	\Shanelle\Components\CartPage::render();
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.
