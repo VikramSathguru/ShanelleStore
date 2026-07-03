@@ -1,0 +1,67 @@
+<?php
+/**
+ * Reusable component helpers.
+ *
+ * @package Shanelle
+ */
+
+declare(strict_types=1);
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Render a reusable template component.
+ *
+ * @param string               $name Component slug (template-parts/components/{name}.php).
+ * @param array<string, mixed> $args Arguments passed to the template.
+ */
+function shanelle_component( string $name, array $args = array() ): void {
+	get_template_part( 'template-parts/components/' . $name, null, $args );
+}
+
+/**
+ * Render a responsive image with lazy loading.
+ *
+ * @param int                  $attachment_id Attachment ID.
+ * @param string               $size          Image size slug.
+ * @param array<string, mixed> $attr          Additional attributes.
+ */
+function shanelle_responsive_image( int $attachment_id, string $size = 'full', array $attr = array() ): void {
+	if ( $attachment_id <= 0 ) {
+		return;
+	}
+
+	$defaults = array(
+		'loading'       => 'lazy',
+		'decoding'      => 'async',
+		'fetchpriority' => 'auto',
+	);
+
+	$attr = wp_parse_args( $attr, $defaults );
+
+	echo wp_get_attachment_image( $attachment_id, $size, false, $attr ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
+/**
+ * Get formatted product sale badge text.
+ *
+ * @param mixed $product Product object.
+ * @return string Empty string when not on sale.
+ */
+function shanelle_get_sale_badge( $product ): string {
+	if ( ! $product instanceof WC_Product || ! $product->is_on_sale() ) {
+		return '';
+	}
+
+	$regular = (float) $product->get_regular_price();
+	$sale    = (float) $product->get_sale_price();
+
+	if ( $regular <= 0 || $sale <= 0 ) {
+		return __( 'Sale', 'shanelle' );
+	}
+
+	$percent = (int) round( ( ( $regular - $sale ) / $regular ) * 100 );
+
+	/* translators: %d: discount percentage */
+	return sprintf( __( '-%d%%', 'shanelle' ), $percent );
+}

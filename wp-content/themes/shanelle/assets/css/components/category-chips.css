@@ -1,0 +1,46 @@
+.category-chips {
+	padding-block: var(--space-4);
+	border-bottom: 1px solid var(--color-border);
+	background: var(--color-background);
+}
+
+.category-chips__scroll {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+}
+
+.category-chips__scroll::-webkit-scrollbar {
+	display: none;
+}
+
+.category-chips__list {
+	display: flex;
+	gap: var(--space-2);
+	width: max-content;
+	min-width: 100%;
+	padding-bottom: var(--space-1);
+}
+
+.category-chips__list a {
+	display: inline-flex;
+	align-items: center;
+	padding: var(--space-2) var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-pill);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	white-space: nowrap;
+	transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.category-chips__list a:hover,
+.category-chips__list a:focus-visible,
+.category-chips__list .current-menu-item > a {
+	border-color: var(--color-primary);
+	color: var(--color-accent);
+}
+
+.category-chips__list .current-menu-item > a {
+	font-weight: var(--font-weight-bold);
+}

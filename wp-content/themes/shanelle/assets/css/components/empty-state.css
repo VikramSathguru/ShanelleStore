@@ -1,0 +1,20 @@
+.empty-state {
+	padding-block: var(--space-8);
+	text-align: center;
+}
+
+.empty-state__title {
+	margin-bottom: var(--space-3);
+	font-size: var(--font-size-2xl);
+}
+
+.empty-state__message {
+	max-width: 36ch;
+	margin-inline: auto;
+	margin-bottom: var(--space-5);
+	color: var(--color-text-muted);
+}
+
+.empty-state__cta {
+	margin-top: var(--space-5);
+}

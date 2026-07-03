@@ -1,0 +1,30 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 var(--space-3);
+	font-weight: var(--font-weight-bold);
+	line-height: var(--line-height-tight);
+}
+
+p {
+	margin: 0 0 var(--space-4);
+}
+
+.entry__title {
+	font-size: var(--font-size-2xl);
+}
+
+.entry__content > :last-child {
+	margin-bottom: 0;
+}
+
+.site-main {
+	padding-block: var(--space-5);
+}
+
+.front-page .site-main {
+	padding-block: 0;
+}
