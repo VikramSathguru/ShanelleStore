@@ -76,6 +76,18 @@ api.getMyAccountPageState
 
 api.announce
 
+shanelle:search-page:ready
+
+Payload
+
+root
+
+state
+
+api.getSearchPageState
+
+api.announce
+
 shanelle:hero-banner:ready
 
 shanelle:category-navigation:ready

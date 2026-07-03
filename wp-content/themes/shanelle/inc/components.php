@@ -173,6 +173,13 @@ function shanelle_my_account_page( array $args = array() ): void {
 }
 
 /**
+ * Render the product search results page composition.
+ */
+function shanelle_search_page(): void {
+	\Shanelle\Components\SearchPage::render();
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.
