@@ -1,0 +1,229 @@
+/**
+ * Shanelle Product Summary Component
+ */
+
+.product-summary {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.product-summary__header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.product-summary__brand {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-2);
+	margin: 0;
+}
+
+.product-summary__brand-value {
+	color: var(--color-text-muted);
+	font-style: italic;
+}
+
+.product-summary__title {
+	margin: 0;
+	font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--line-height-tight);
+	letter-spacing: var(--letter-spacing-tight);
+	color: var(--color-text);
+}
+
+.product-summary__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-3) var(--space-5);
+	margin: 0;
+}
+
+.product-summary__meta-item {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	margin: 0;
+}
+
+.product-summary__meta-label {
+	margin: 0;
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	color: var(--color-text-muted);
+	text-transform: uppercase;
+	letter-spacing: var(--letter-spacing-wide);
+}
+
+.product-summary__meta-value {
+	margin: 0;
+	font-size: var(--font-size-sm);
+	color: var(--color-text-secondary);
+}
+
+.product-summary__rating {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-2);
+	margin: 0;
+}
+
+.product-summary__rating .star-rating {
+	font-size: var(--font-size-sm);
+}
+
+.product-summary__review-link {
+	color: var(--color-text-muted);
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.product-summary__review-link:hover,
+.product-summary__review-link:focus-visible {
+	color: var(--color-brand-600);
+	text-decoration: underline;
+}
+
+.product-summary__commerce {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	padding-block: var(--space-4);
+	border-block: 1px solid var(--color-border-subtle);
+}
+
+.product-summary__price {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-2) var(--space-3);
+}
+
+.product-summary__price-current {
+	margin: 0;
+	color: var(--color-text);
+}
+
+.product-summary__price--on-sale .product-summary__price-current {
+	color: var(--color-brand-600);
+}
+
+.product-summary__price-regular {
+	margin: 0;
+}
+
+.product-summary__price-value--regular {
+	color: var(--color-text-muted);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-regular);
+	text-decoration: line-through;
+}
+
+.product-summary__price-savings {
+	margin: 0;
+}
+
+.product-summary__stock {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	margin: 0;
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+}
+
+.product-summary__stock-indicator {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: var(--radius-full);
+	background: currentColor;
+}
+
+.product-summary__stock--instock {
+	color: var(--color-success-text);
+}
+
+.product-summary__stock--outofstock {
+	color: var(--color-danger-text);
+}
+
+.product-summary__stock--onbackorder {
+	color: var(--color-warning-text);
+}
+
+.product-summary__stock--lowstock {
+	color: var(--color-warning-text);
+}
+
+.product-summary__description {
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-secondary);
+}
+
+.product-summary__description p:first-child {
+	margin-top: 0;
+}
+
+.product-summary__description p:last-child {
+	margin-bottom: 0;
+}
+
+.product-summary__highlights {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.product-summary__highlights-title {
+	margin: 0;
+	color: var(--color-text);
+}
+
+.product-summary__highlights-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.product-summary__highlights-item {
+	position: relative;
+	padding-left: var(--space-4);
+	font-size: var(--font-size-sm);
+	color: var(--color-text-secondary);
+}
+
+.product-summary__highlights-item::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0.55em;
+	width: 0.375rem;
+	height: 0.375rem;
+	border-radius: var(--radius-full);
+	background: var(--color-brand-300);
+}
+
+.product-summary__highlights-item--placeholder {
+	color: var(--color-text-muted);
+	font-style: italic;
+}
+
+.product-summary__highlights-item--placeholder::before {
+	background: var(--color-neutral-300);
+}
+
+@media (min-width: 48rem) {
+	.product-summary__commerce {
+		padding-block: var(--space-5);
+	}
+}

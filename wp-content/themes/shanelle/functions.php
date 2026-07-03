@@ -20,6 +20,8 @@ require_once SHANELLE_DIR . '/inc/components/ProductCard.php';
 require_once SHANELLE_DIR . '/inc/components/ProductGrid.php';
 require_once SHANELLE_DIR . '/inc/components/ShopArchive.php';
 require_once SHANELLE_DIR . '/inc/components/ProductGallery.php';
+require_once SHANELLE_DIR . '/inc/woocommerce/ProductPrice.php';
+require_once SHANELLE_DIR . '/inc/components/ProductSummary.php';
 require_once SHANELLE_DIR . '/inc/woocommerce.php';
 require_once SHANELLE_DIR . '/inc/catalog/Catalog.php';
 
@@ -28,3 +30,4 @@ Shanelle\Components\ProductCard::boot();
 Shanelle\Components\ProductGrid::boot();
 Shanelle\Components\ShopArchive::boot();
 Shanelle\Components\ProductGallery::boot();
+Shanelle\Components\ProductSummary::boot();

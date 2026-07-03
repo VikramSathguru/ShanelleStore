@@ -57,6 +57,16 @@ function shanelle_product_gallery( WC_Product $product, array $args = array() ):
 }
 
 /**
+ * Render the product summary component.
+ *
+ * @param \WC_Product          $product Product instance.
+ * @param array<string, mixed> $args    Optional render arguments.
+ */
+function shanelle_product_summary( WC_Product $product, array $args = array() ): void {
+	\Shanelle\Components\ProductSummary::render( $product, $args );
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.
@@ -90,15 +100,5 @@ function shanelle_get_sale_badge( $product ): string {
 		return '';
 	}
 
-	$regular = (float) $product->get_regular_price();
-	$sale    = (float) $product->get_sale_price();
-
-	if ( $regular <= 0 || $sale <= 0 ) {
-		return __( 'Sale', 'shanelle' );
-	}
-
-	$percent = (int) round( ( ( $regular - $sale ) / $regular ) * 100 );
-
-	/* translators: %d: discount percentage */
-	return sprintf( __( '-%d%%', 'shanelle' ), $percent );
+	return \Shanelle\WooCommerce\ProductPrice::get_sale_badge_label( $product );
 }

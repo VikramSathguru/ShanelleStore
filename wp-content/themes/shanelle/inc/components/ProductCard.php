@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Shanelle\Components;
 
+use Shanelle\WooCommerce\ProductPrice;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -195,18 +197,8 @@ final class ProductCard {
 		if ( ! $product->get_price_html() ) {
 			return;
 		}
-
-		$classes = array( 'product-card__price', 'text-price-sm' );
-
-		if ( $product->is_on_sale() ) {
-			$classes[] = 'product-card__price--on-sale';
-		}
-
-		if ( ! $product->is_in_stock() ) {
-			$classes[] = 'product-card__price--sold-out';
-		}
 		?>
-		<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
+		<div class="<?php echo esc_attr( implode( ' ', ProductPrice::get_compact_classes( $product ) ) ); ?>">
 			<?php echo wp_kses_post( $product->get_price_html() ); ?>
 		</div>
 		<?php
@@ -382,7 +374,7 @@ final class ProductCard {
 
 		if ( $product->is_on_sale() ) {
 			$badges[] = array(
-				'label' => self::get_sale_badge_label( $product ),
+				'label' => ProductPrice::get_sale_badge_label( $product ),
 				'class' => 'badge--sale',
 			);
 		}
@@ -409,23 +401,6 @@ final class ProductCard {
 		$threshold = time() - ( $days * DAY_IN_SECONDS );
 
 		return $created->getTimestamp() >= $threshold;
-	}
-
-	/**
-	 * Return sale badge label with optional percentage.
-	 */
-	private static function get_sale_badge_label( \WC_Product $product ): string {
-		$regular = (float) $product->get_regular_price();
-		$sale    = (float) $product->get_sale_price();
-
-		if ( $regular <= 0 || $sale <= 0 ) {
-			return __( 'Sale', 'shanelle' );
-		}
-
-		$percent = (int) round( ( ( $regular - $sale ) / $regular ) * 100 );
-
-		/* translators: %d: discount percentage */
-		return sprintf( __( '-%d%%', 'shanelle' ), $percent );
 	}
 
 	/**
