@@ -47,6 +47,16 @@ function shanelle_shop_archive(): void {
 }
 
 /**
+ * Render the product gallery component.
+ *
+ * @param \WC_Product          $product Product instance.
+ * @param array<string, mixed> $args    Optional render arguments.
+ */
+function shanelle_product_gallery( WC_Product $product, array $args = array() ): void {
+	\Shanelle\Components\ProductGallery::render( $product, $args );
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.

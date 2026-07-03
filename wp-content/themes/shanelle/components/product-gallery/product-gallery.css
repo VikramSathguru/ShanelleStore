@@ -1,0 +1,199 @@
+/**
+ * Shanelle Product Gallery Component
+ */
+
+.product-gallery {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.product-gallery__stage {
+	position: relative;
+}
+
+.product-gallery__main {
+	position: relative;
+	margin: 0;
+	overflow: hidden;
+	border-radius: var(--radius-lg);
+	aspect-ratio: 3 / 4;
+	background: var(--color-surface-sunken);
+}
+
+.product-gallery__image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.product-gallery__zoom-lens {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	opacity: 0;
+	background: radial-gradient(circle at center, rgb(255 255 255 / 10%), transparent 60%);
+	transition: opacity var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.product-gallery__main:hover .product-gallery__zoom-lens {
+		opacity: 1;
+	}
+}
+
+.product-gallery__nav {
+	position: absolute;
+	inset: 0;
+	z-index: var(--z-raised);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-inline: var(--space-2);
+	pointer-events: none;
+}
+
+.product-gallery__nav-btn {
+	pointer-events: auto;
+	background: var(--color-surface-overlay);
+	backdrop-filter: blur(6px);
+	box-shadow: var(--shadow-sm);
+}
+
+.product-gallery__nav-btn:disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+}
+
+.product-gallery__actions {
+	position: absolute;
+	top: var(--space-3);
+	right: var(--space-3);
+	z-index: var(--z-raised);
+	display: flex;
+	gap: var(--space-2);
+}
+
+.product-gallery__action {
+	background: var(--color-surface-overlay);
+	backdrop-filter: blur(6px);
+	box-shadow: var(--shadow-sm);
+}
+
+.product-gallery__thumbs-wrap {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+}
+
+.product-gallery__thumbs-wrap::-webkit-scrollbar {
+	display: none;
+}
+
+.product-gallery__thumbs {
+	display: flex;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.product-gallery__thumb {
+	display: block;
+	padding: 0;
+	border: 2px solid transparent;
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	background: transparent;
+	cursor: pointer;
+	transition: var(--transition-colors);
+}
+
+.product-gallery__thumb img {
+	display: block;
+	width: 4.5rem;
+	height: auto;
+	aspect-ratio: 3 / 4;
+	object-fit: cover;
+}
+
+.product-gallery__thumb:hover,
+.product-gallery__thumb:focus-visible {
+	border-color: var(--color-brand-300);
+}
+
+.product-gallery__thumb.is-active {
+	border-color: var(--color-brand-primary);
+}
+
+.product-gallery__modal {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-modal);
+}
+
+.product-gallery__modal[hidden] {
+	display: none;
+}
+
+.product-gallery__modal-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgb(17 17 17 / 92%);
+}
+
+.product-gallery__modal-dialog {
+	position: relative;
+	z-index: var(--z-raised);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	padding: var(--space-6);
+}
+
+.product-gallery__modal-close {
+	position: absolute;
+	top: var(--space-4);
+	right: var(--space-4);
+	background: rgb(255 255 255 / 12%);
+	color: var(--color-text-inverse);
+}
+
+.product-gallery__modal-figure {
+	margin: 0;
+	max-width: min(100%, 56rem);
+	max-height: calc(100vh - 8rem);
+}
+
+.product-gallery__modal-image {
+	width: 100%;
+	height: auto;
+	max-height: calc(100vh - 8rem);
+	object-fit: contain;
+}
+
+.product-gallery__modal-nav {
+	display: flex;
+	gap: var(--space-3);
+	margin-top: var(--space-4);
+}
+
+.product-gallery__modal-nav .btn {
+	background: rgb(255 255 255 / 12%);
+	color: var(--color-text-inverse);
+}
+
+.product-gallery.is-swiping .product-gallery__image {
+	transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.product-gallery__image,
+	.product-gallery__zoom-lens {
+		transition: none;
+	}
+}
