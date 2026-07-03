@@ -1,0 +1,193 @@
+/**
+ * Shanelle Design System — Buttons
+ *
+ * BEM: .btn, .btn--{variant}, .btn--{size}
+ */
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	min-height: var(--button-height-md);
+	padding: var(--space-2) var(--space-6);
+	border: 1px solid transparent;
+	border-radius: var(--radius-pill);
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--line-height-none);
+	letter-spacing: var(--letter-spacing-wide);
+	text-decoration: none;
+	text-transform: uppercase;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: var(--transition-all);
+	user-select: none;
+}
+
+.btn:focus-visible {
+	outline: none;
+	box-shadow: var(--shadow-focus);
+}
+
+.btn:disabled,
+.btn.is-disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+/* Sizes */
+.btn--sm {
+	min-height: var(--button-height-sm);
+	padding: var(--space-1-5) var(--space-4);
+	font-size: var(--font-size-xs);
+}
+
+.btn--lg {
+	min-height: var(--button-height-lg);
+	padding: var(--space-3) var(--space-8);
+	font-size: var(--font-size-base);
+}
+
+.btn--block {
+	width: 100%;
+}
+
+/* Primary — brand rose */
+.btn--primary {
+	background-color: var(--color-brand-primary);
+	border-color: var(--color-brand-primary);
+	color: var(--color-text-inverse);
+	box-shadow: var(--shadow-xs);
+}
+
+.btn--primary:hover {
+	background-color: var(--color-brand-600);
+	border-color: var(--color-brand-600);
+	color: var(--color-text-inverse);
+	box-shadow: var(--shadow-brand);
+}
+
+.btn--primary:active {
+	background-color: var(--color-brand-700);
+	border-color: var(--color-brand-700);
+	transform: translateY(1px);
+}
+
+/* Secondary — soft blush surface */
+.btn--secondary {
+	background-color: var(--color-brand-100);
+	border-color: var(--color-brand-100);
+	color: var(--color-brand-700);
+}
+
+.btn--secondary:hover {
+	background-color: var(--color-brand-200);
+	border-color: var(--color-brand-200);
+	color: var(--color-brand-800);
+}
+
+/* Ghost — text only */
+.btn--ghost {
+	background-color: transparent;
+	border-color: transparent;
+	color: var(--color-text);
+}
+
+.btn--ghost:hover {
+	background-color: var(--color-neutral-100);
+	color: var(--color-brand-600);
+}
+
+/* Outline — bordered */
+.btn--outline {
+	background-color: transparent;
+	border-color: var(--color-border-strong);
+	color: var(--color-text);
+}
+
+.btn--outline:hover {
+	border-color: var(--color-brand-primary);
+	color: var(--color-brand-600);
+	background-color: var(--color-brand-50);
+}
+
+/* Icon button */
+.btn--icon {
+	min-width: var(--button-height-md);
+	padding: var(--space-2);
+	border-radius: var(--radius-full);
+	text-transform: none;
+	letter-spacing: var(--letter-spacing-normal);
+}
+
+.btn--icon.btn--sm {
+	min-width: var(--button-height-sm);
+	min-height: var(--button-height-sm);
+}
+
+.btn--icon.btn--lg {
+	min-width: var(--button-height-lg);
+	min-height: var(--button-height-lg);
+}
+
+.btn__icon {
+	display: inline-flex;
+	flex-shrink: 0;
+	width: 1.125em;
+	height: 1.125em;
+}
+
+.btn__icon svg {
+	width: 100%;
+	height: 100%;
+}
+
+/* Loading state */
+.btn.is-loading {
+	position: relative;
+	color: transparent;
+	pointer-events: none;
+}
+
+.btn.is-loading::after {
+	content: '';
+	position: absolute;
+	width: 1em;
+	height: 1em;
+	border: 2px solid currentcolor;
+	border-right-color: transparent;
+	border-radius: var(--radius-full);
+	animation: shanelle-spin 0.7s var(--ease-linear) infinite;
+}
+
+.btn--primary.is-loading::after {
+	border-color: var(--color-text-inverse);
+	border-right-color: transparent;
+}
+
+.btn-group {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+.btn-group--attached {
+	gap: 0;
+}
+
+.btn-group--attached .btn {
+	border-radius: 0;
+}
+
+.btn-group--attached .btn:first-child {
+	border-top-left-radius: var(--radius-pill);
+	border-bottom-left-radius: var(--radius-pill);
+}
+
+.btn-group--attached .btn:last-child {
+	border-top-right-radius: var(--radius-pill);
+	border-bottom-right-radius: var(--radius-pill);
+}

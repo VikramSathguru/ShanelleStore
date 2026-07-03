@@ -1,0 +1,49 @@
+/**
+ * Shanelle Design System — Grid Utilities
+ */
+
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+
+.col-span-full { grid-column: 1 / -1; }
+
+.grid-products {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-3);
+}
+
+.grid-auto-fill {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 1fr));
+	gap: var(--space-4);
+}
+
+@media (min-width: 48rem) {
+	.tablet\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.tablet\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+	.grid-products {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-4);
+	}
+}
+
+@media (min-width: 64rem) {
+	.desktop\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+	.desktop\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+	.grid-products {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: var(--space-5);
+	}
+}
+
+@media (min-width: 80rem) {
+	.lg\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+	.lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}

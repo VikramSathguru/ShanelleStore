@@ -1,0 +1,112 @@
+/**
+ * Shanelle Design System — Layout Utilities
+ *
+ * Container, width, position, and overflow utilities.
+ */
+
+/* Container */
+.container {
+	width: min(100% - (var(--container-padding) * 2), var(--container-max));
+	margin-inline: auto;
+}
+
+.container-sm {
+	width: min(100% - (var(--container-padding) * 2), var(--container-sm));
+	margin-inline: auto;
+}
+
+.container-md {
+	width: min(100% - (var(--container-padding) * 2), var(--container-md));
+	margin-inline: auto;
+}
+
+.container-lg {
+	width: min(100% - (var(--container-padding) * 2), var(--container-lg));
+	margin-inline: auto;
+}
+
+.container-xl {
+	width: min(100% - (var(--container-padding) * 2), var(--container-xl));
+	margin-inline: auto;
+}
+
+.container-2xl {
+	width: min(100% - (var(--container-padding) * 2), var(--container-2xl));
+	margin-inline: auto;
+}
+
+.container-fluid {
+	width: 100%;
+	padding-inline: var(--container-padding);
+	margin-inline: auto;
+}
+
+/* Width */
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.w-fit { width: fit-content; }
+.max-w-full { max-width: 100%; }
+.min-w-0 { min-width: 0; }
+
+/* Height */
+.h-full { height: 100%; }
+.h-auto { height: auto; }
+.min-h-screen { min-height: 100vh; min-height: 100dvh; }
+
+/* Position */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+.static { position: static; }
+
+.inset-0 {
+	inset: 0;
+}
+
+.top-0 { top: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0 { left: 0; }
+
+/* Z-index */
+.z-base { z-index: var(--z-base); }
+.z-raised { z-index: var(--z-raised); }
+.z-dropdown { z-index: var(--z-dropdown); }
+.z-sticky { z-index: var(--z-sticky); }
+.z-fixed { z-index: var(--z-fixed); }
+.z-drawer { z-index: var(--z-drawer); }
+.z-modal { z-index: var(--z-modal); }
+
+/* Overflow */
+.overflow-auto { overflow: auto; }
+.overflow-hidden { overflow: hidden; }
+.overflow-visible { overflow: visible; }
+.overflow-scroll { overflow: scroll; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-auto { overflow-y: auto; }
+.overflow-x-hidden { overflow-x: hidden; }
+
+/* Scroll behavior */
+.scroll-smooth { scroll-behavior: smooth; }
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+
+/* Aspect ratio */
+.aspect-square { aspect-ratio: 1 / 1; }
+.aspect-product { aspect-ratio: 3 / 4; }
+.aspect-video { aspect-ratio: 16 / 9; }
+.aspect-portrait { aspect-ratio: 4 / 5; }
+
+/* Object fit */
+.object-cover { object-fit: cover; }
+.object-contain { object-fit: contain; }
+
+/* Isolation */
+.isolate { isolation: isolate; }
