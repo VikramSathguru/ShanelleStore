@@ -41,6 +41,7 @@ require_once SHANELLE_DIR . '/inc/components/SearchOverlay.php';
 require_once SHANELLE_DIR . '/inc/components/CollectionCard.php';
 require_once SHANELLE_DIR . '/inc/components/CollectionsPage.php';
 require_once SHANELLE_DIR . '/inc/components/CollectionPage.php';
+require_once SHANELLE_DIR . '/inc/components/Footer.php';
 require_once SHANELLE_DIR . '/inc/woocommerce.php';
 require_once SHANELLE_DIR . '/inc/catalog/Catalog.php';
 
@@ -68,3 +69,4 @@ Shanelle\Components\SearchOverlay::boot();
 Shanelle\Components\CollectionCard::boot();
 Shanelle\Components\CollectionsPage::boot();
 Shanelle\Components\CollectionPage::boot();
+Shanelle\Components\Footer::boot();

@@ -196,6 +196,13 @@ function shanelle_search_results( array $args = array() ): void {
 }
 
 /**
+ * Render the site footer composition.
+ */
+function shanelle_footer(): void {
+	\Shanelle\Components\Footer::render();
+}
+
+/**
  * Render the collections index page composition.
  */
 function shanelle_collections_page(): void {

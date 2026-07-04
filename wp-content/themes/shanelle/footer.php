@@ -8,7 +8,7 @@
 declare(strict_types=1);
 
 ?>
-	<?php shanelle_component( 'site-footer' ); ?>
+	<?php shanelle_footer(); ?>
 </div><!-- #page -->
 
 <?php wp_footer(); ?>
