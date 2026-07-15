@@ -27,7 +27,7 @@ $available_methods       = isset( $available_methods ) && is_array( $available_m
 	<?php endif; ?>
 
 	<?php if ( ! empty( $available_methods ) ) : ?>
-		<ul id="shipping_method" class="checkout-page__shipping-methods woocommerce-shipping-methods" role="radiogroup" aria-label="<?php echo esc_attr( $package_name ?: __( 'Shipping options', 'shanelle' ) ); ?>">
+		<ul id="shipping_method" class="checkout-page__shipping-methods woocommerce-shipping-methods" role="radiogroup" aria-label="<?php echo esc_attr( $package_name ?: __( 'Opciones de envío', 'shanelle' ) ); ?>">
 			<?php foreach ( $available_methods as $method ) : ?>
 				<li class="checkout-page__shipping-method">
 					<?php

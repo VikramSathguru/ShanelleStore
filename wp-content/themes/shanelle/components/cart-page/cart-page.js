@@ -102,7 +102,7 @@ function applyCartPageResponse( response ) {
  */
 async function requestCartAction( endpoint, payload = {} ) {
 	if ( ! config.ajaxUrl ) {
-		throw new Error( i18n.error || 'Could not update your bag. Try again.' );
+		throw new Error( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' );
 	}
 
 	const url = String( config.ajaxUrl ).replace( '%%endpoint%%', endpoint );
@@ -117,13 +117,13 @@ async function requestCartAction( endpoint, payload = {} ) {
 	} );
 
 	if ( ! response.ok ) {
-		throw new Error( i18n.error || 'Could not update your bag. Try again.' );
+		throw new Error( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' );
 	}
 
 	const data = await response.json();
 
 	if ( ! data.success ) {
-		throw new Error( data?.data?.message || i18n.error || 'Could not update your bag. Try again.' );
+		throw new Error( data?.data?.message || i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' );
 	}
 
 	return data.data ?? {};
@@ -134,7 +134,7 @@ async function requestCartAction( endpoint, payload = {} ) {
  */
 async function refreshCartPage() {
 	root?.classList.add( 'is-loading' );
-	announce( i18n.loading || 'Updating bag…' );
+	announce( i18n.loading || 'Actualizando bolsa…' );
 
 	try {
 		const response = await requestCartAction( 'shanelle_cart_page_get' );
@@ -153,7 +153,7 @@ async function refreshCartPage() {
 async function updateCartItemQuantity( cartItemKey, quantity ) {
 	const item = root?.querySelector( `[data-shanelle-cart-page-item][data-cart-item-key="${ CSS.escape( cartItemKey ) }"]` );
 	item?.classList.add( 'is-loading' );
-	announce( i18n.loading || 'Updating bag…' );
+	announce( i18n.loading || 'Actualizando bolsa…' );
 
 	try {
 		await requestCartAction( 'shanelle_mini_cart_update', {
@@ -163,7 +163,7 @@ async function updateCartItemQuantity( cartItemKey, quantity ) {
 
 		const response = await requestCartAction( 'shanelle_cart_page_get' );
 		applyCartPageResponse( response );
-		announce( quantity <= 0 ? ( i18n.removed || 'Item removed from bag' ) : ( i18n.updated || 'Bag updated' ) );
+		announce( quantity <= 0 ? ( i18n.removed || 'Artículo eliminado de la bolsa' ) : ( i18n.updated || 'Bolsa actualizada' ) );
 
 		document.body.dispatchEvent(
 			new CustomEvent( 'shanelle:mini-cart:updated', {
@@ -248,7 +248,7 @@ function bindPanelEvents() {
 
 			if ( key ) {
 				removeCartItem( key ).catch( ( error ) => {
-					announce( error instanceof Error ? error.message : ( i18n.error || 'Could not update your bag. Try again.' ) );
+					announce( error instanceof Error ? error.message : ( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' ) );
 				} );
 			}
 
@@ -263,7 +263,7 @@ function bindPanelEvents() {
 
 			if ( key ) {
 				stepItemQuantity( key, -1 ).catch( ( error ) => {
-					announce( error instanceof Error ? error.message : ( i18n.error || 'Could not update your bag. Try again.' ) );
+					announce( error instanceof Error ? error.message : ( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' ) );
 				} );
 			}
 
@@ -278,7 +278,7 @@ function bindPanelEvents() {
 
 			if ( key ) {
 				stepItemQuantity( key, 1 ).catch( ( error ) => {
-					announce( error instanceof Error ? error.message : ( i18n.error || 'Could not update your bag. Try again.' ) );
+					announce( error instanceof Error ? error.message : ( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' ) );
 				} );
 			}
 		}
@@ -299,7 +299,7 @@ function bindPanelEvents() {
 		}
 
 		updateCartItemQuantity( key, quantity ).catch( ( error ) => {
-			announce( error instanceof Error ? error.message : ( i18n.error || 'Could not update your bag. Try again.' ) );
+			announce( error instanceof Error ? error.message : ( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' ) );
 		} );
 	} );
 }
@@ -337,8 +337,8 @@ function bindShippingCalculator() {
 		panel.hidden = ! isOpen;
 		toggle.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
 		toggle.textContent = isOpen
-			? ( i18n.shippingToggleClose || 'Close shipping estimator' )
-			: ( i18n.shippingToggle || 'Estimate shipping' );
+			? ( i18n.shippingToggleClose || 'Cerrar estimador de envío' )
+			: ( i18n.shippingToggle || 'Estimar envío' );
 	} );
 }
 

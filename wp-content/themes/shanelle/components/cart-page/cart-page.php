@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 >
 	<header class="cart-page__header">
 		<h1 id="<?php echo esc_attr( CartPage::get_heading_id() ); ?>" class="cart-page__title text-h1">
-			<?php esc_html_e( 'Your bag', 'shanelle' ); ?>
+			<?php esc_html_e( 'Tu bolsa', 'shanelle' ); ?>
 		</h1>
 	</header>
 

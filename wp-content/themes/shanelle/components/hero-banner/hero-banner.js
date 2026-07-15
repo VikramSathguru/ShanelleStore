@@ -98,8 +98,8 @@ function initHeroBanner( root ) {
 	root.setAttribute(
 		'aria-label',
 		slides.length > 1
-			? ( i18n.carouselLabel || 'Homepage hero carousel' )
-			: ( i18n.carouselLabel || 'Homepage hero banner' )
+			? ( i18n.carouselLabel || 'Carrusel del banner principal' )
+			: ( i18n.carouselLabel || 'Banner principal del inicio' )
 	);
 
 	document.body.dispatchEvent(

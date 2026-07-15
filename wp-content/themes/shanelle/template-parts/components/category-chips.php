@@ -15,7 +15,7 @@ if ( ! has_nav_menu( 'categories' ) ) {
 	return;
 }
 ?>
-<nav class="category-chips" aria-label="<?php esc_attr_e( 'Browse categories', 'shanelle' ); ?>">
+<nav class="category-chips" aria-label="<?php esc_attr_e( 'Explorar categorías', 'shanelle' ); ?>">
 	<div class="container category-chips__scroll">
 		<?php
 		wp_nav_menu( array(

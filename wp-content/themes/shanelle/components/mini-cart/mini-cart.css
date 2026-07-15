@@ -357,9 +357,21 @@ body.is-mini-cart-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.mini-cart__overlay,
+	.mini-cart__overlay {
+		transition: none;
+	}
+
 	.mini-cart__panel {
 		transition: none;
-		transform: none;
+	}
+
+	.mini-cart:not(.is-open) .mini-cart__panel {
+		transform: translateY(100%);
+	}
+
+	@media (min-width: 48rem) {
+		.mini-cart:not(.is-open) .mini-cart__panel {
+			transform: translateX(100%);
+		}
 	}
 }

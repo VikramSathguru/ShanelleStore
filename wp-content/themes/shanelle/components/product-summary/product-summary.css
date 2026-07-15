@@ -29,7 +29,8 @@
 
 .product-summary__title {
 	margin: 0;
-	font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.5rem, 2.8vw, 2.125rem);
 	font-weight: var(--font-weight-semibold);
 	line-height: var(--line-height-tight);
 	letter-spacing: var(--letter-spacing-tight);
@@ -107,6 +108,10 @@
 
 .product-summary__price-current {
 	margin: 0;
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-2xl);
+	font-weight: var(--font-weight-bold);
+	letter-spacing: var(--letter-spacing-tight);
 	color: var(--color-text);
 }
 
@@ -162,9 +167,32 @@
 }
 
 .product-summary__description {
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-relaxed);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-loose);
 	color: var(--color-text-secondary);
+}
+
+.product-summary__description p {
+	margin: 0 0 var(--space-3);
+}
+
+.product-summary__description ul,
+.product-summary__description ol {
+	margin: 0 0 var(--space-3);
+	padding-left: var(--space-5);
+}
+
+.product-summary__description li {
+	margin-bottom: var(--space-1);
+}
+
+.product-summary__description li::marker {
+	color: var(--color-brand-400);
+}
+
+.product-summary__description strong {
+	color: var(--color-text);
+	font-weight: var(--font-weight-semibold);
 }
 
 .product-summary__description p:first-child {

@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_before_shipping_calculator' );
 
-$button_text = ! empty( $button_text ) ? $button_text : __( 'Estimate shipping', 'shanelle' );
+$button_text = ! empty( $button_text ) ? $button_text : __( 'Calcular envío', 'shanelle' );
 ?>
 
 <form class="woocommerce-shipping-calculator cart-page__shipping-form" action="<?php echo esc_url( wc_get_cart_url() ); ?>" method="post">

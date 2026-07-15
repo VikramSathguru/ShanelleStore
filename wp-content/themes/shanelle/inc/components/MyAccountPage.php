@@ -119,8 +119,8 @@ final class MyAccountPage {
 		$wp_customize->add_section(
 			'shanelle_my_account_page',
 			array(
-				'title'       => __( 'My Account Page', 'shanelle' ),
-				'description' => __( 'Configure account page presentation.', 'shanelle' ),
+				'title'       => __( 'Página de Mi cuenta', 'shanelle' ),
+				'description' => __( 'Configura la presentación de la página de cuenta.', 'shanelle' ),
 				'priority'    => 172,
 			)
 		);
@@ -128,35 +128,35 @@ final class MyAccountPage {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_WELCOME,
-			__( 'Show welcome line in account header', 'shanelle' ),
+			__( 'Mostrar saludo en el encabezado de la cuenta', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_SHOP_LINK,
-			__( 'Show return to shop link', 'shanelle' ),
+			__( 'Mostrar enlace para volver a la tienda', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_MOBILE_NAV,
-			__( 'Enable mobile account navigation toggle', 'shanelle' ),
+			__( 'Activar menú de cuenta en móvil', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_MOBILE_BOTTOM_NAV,
-			__( 'Enable mobile bottom account navigation', 'shanelle' ),
+			__( 'Activar navegación inferior de cuenta en móvil', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_QUICK_ACTIONS,
-			__( 'Show dashboard quick actions', 'shanelle' ),
+			__( 'Mostrar acciones rápidas del panel', 'shanelle' ),
 			true
 		);
 	}
@@ -195,11 +195,11 @@ final class MyAccountPage {
 			array(
 				'initialState' => self::build_page_state(),
 				'i18n'         => array(
-					'pageTitle'       => __( 'My account', 'shanelle' ),
-					'navToggle'       => __( 'Account menu', 'shanelle' ),
-					'navToggleClose'  => __( 'Close account menu', 'shanelle' ),
-					'returnToShop'    => __( 'Continue shopping', 'shanelle' ),
-					'contentReady'    => __( 'Account content loaded', 'shanelle' ),
+					'pageTitle'       => __( 'Mi cuenta', 'shanelle' ),
+					'navToggle'       => __( 'Menú de cuenta', 'shanelle' ),
+					'navToggleClose'  => __( 'Cerrar menú de cuenta', 'shanelle' ),
+					'returnToShop'    => __( 'Continuar comprando', 'shanelle' ),
+					'contentReady'    => __( 'Contenido de la cuenta cargado', 'shanelle' ),
 				),
 			)
 		);
@@ -273,7 +273,7 @@ final class MyAccountPage {
 				aria-expanded="false"
 				aria-controls="<?php echo esc_attr( self::get_nav_panel_id() ); ?>"
 			>
-				<?php esc_html_e( 'Account menu', 'shanelle' ); ?>
+				<?php esc_html_e( 'Menú de cuenta', 'shanelle' ); ?>
 			</button>
 		<?php endif; ?>
 
@@ -328,7 +328,7 @@ final class MyAccountPage {
 			return $title;
 		}
 
-		return __( 'My account', 'shanelle' );
+		return __( 'Mi cuenta', 'shanelle' );
 	}
 
 	/**
@@ -349,7 +349,7 @@ final class MyAccountPage {
 
 		return sprintf(
 			/* translators: %s: user display name */
-			__( 'Welcome back, %s', 'shanelle' ),
+			__( 'Bienvenida de nuevo, %s', 'shanelle' ),
 			$user->display_name
 		);
 	}
@@ -449,7 +449,7 @@ final class MyAccountPage {
 
 		if ( ! $order instanceof \WC_Order || ! current_user_can( 'view_order', $order_id ) ) {
 			wc_print_notice(
-				esc_html__( 'Invalid order.', 'woocommerce' ) . ' <a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="wc-forward">' . esc_html__( 'My account', 'woocommerce' ) . '</a>',
+				esc_html__( 'Invalid order.', 'woocommerce' ) . ' <a href="' . esc_url( wc_get_page_permalink( 'myaccount' ) ) . '" class="wc-forward">' . esc_html__( 'Mi cuenta', 'woocommerce' ) . '</a>',
 				'error'
 			);
 			return;
@@ -670,22 +670,22 @@ final class MyAccountPage {
 			'shanelle_my_account_page_quick_actions',
 			array(
 				array(
-					'label'    => __( 'View orders', 'shanelle' ),
+					'label'    => __( 'Ver pedidos', 'shanelle' ),
 					'url'      => wc_get_account_endpoint_url( 'orders' ),
 					'endpoint' => 'orders',
 				),
 				array(
-					'label'    => __( 'Manage addresses', 'shanelle' ),
+					'label'    => __( 'Administrar direcciones', 'shanelle' ),
 					'url'      => wc_get_account_endpoint_url( 'edit-address' ),
 					'endpoint' => 'edit-address',
 				),
 				array(
-					'label'    => __( 'Account details', 'shanelle' ),
+					'label'    => __( 'Detalles de la cuenta', 'shanelle' ),
 					'url'      => wc_get_account_endpoint_url( 'edit-account' ),
 					'endpoint' => 'edit-account',
 				),
 				array(
-					'label'    => __( 'Continue shopping', 'shanelle' ),
+					'label'    => __( 'Continuar comprando', 'shanelle' ),
 					'url'      => $shop_url,
 					'endpoint' => 'shop',
 				),
@@ -706,7 +706,7 @@ final class MyAccountPage {
 			if ( 'dashboard' === $endpoint ) {
 				$items[] = array(
 					'endpoint' => '',
-					'label'    => __( 'Dashboard', 'shanelle' ),
+					'label'    => __( 'Panel', 'shanelle' ),
 					'url'      => wc_get_page_permalink( 'myaccount' ) ?: home_url( '/' ),
 				);
 				continue;
@@ -801,7 +801,7 @@ final class MyAccountPage {
 			'item_count'    => $item_count,
 			'items_label'   => sprintf(
 				/* translators: %d: number of items */
-				_n( '%d item', '%d items', $item_count, 'shanelle' ),
+				_n( '%d artículo', '%d artículos', $item_count, 'shanelle' ),
 				$item_count
 			),
 			'view_url'      => $order->get_view_order_url(),
@@ -831,12 +831,12 @@ final class MyAccountPage {
 				'edit_label'  => $formatted
 					? sprintf(
 						/* translators: %s: address title */
-						__( 'Edit %s', 'shanelle' ),
+						__( 'Editar %s', 'shanelle' ),
 						$address_title
 					)
 					: sprintf(
 						/* translators: %s: address title */
-						__( 'Add %s', 'shanelle' ),
+						__( 'Agregar %s', 'shanelle' ),
 						$address_title
 					),
 			);
@@ -865,7 +865,7 @@ final class MyAccountPage {
 				'downloads_remaining' => $download['downloads_remaining'] ?? '',
 				'access_expires' => ! empty( $download['access_expires'] )
 					? date_i18n( get_option( 'date_format' ), strtotime( (string) $download['access_expires'] ) )
-					: __( 'Never', 'shanelle' ),
+					: __( 'Nunca', 'shanelle' ),
 				'file' => (string) ( $download['download_name'] ?? $download['product_name'] ?? '' ),
 			);
 		}
@@ -1081,10 +1081,10 @@ final class MyAccountPage {
 	 */
 	private static function resolve_page_title( string $view, string $endpoint ): string {
 		return match ( $view ) {
-			'login' => __( 'Sign in', 'shanelle' ),
-			'lost-password' => __( 'Reset password', 'shanelle' ),
-			'reset-password' => __( 'Choose a new password', 'shanelle' ),
-			'lost-password-confirmation' => __( 'Check your email', 'shanelle' ),
+			'login' => __( 'Iniciar sesión', 'shanelle' ),
+			'lost-password' => __( 'Restablecer contraseña', 'shanelle' ),
+			'reset-password' => __( 'Elige una nueva contraseña', 'shanelle' ),
+			'lost-password-confirmation' => __( 'Revisa tu correo', 'shanelle' ),
 			default => self::resolve_endpoint_title( $endpoint ),
 		};
 	}
@@ -1094,7 +1094,7 @@ final class MyAccountPage {
 	 */
 	private static function resolve_endpoint_title( string $endpoint ): string {
 		if ( '' === $endpoint ) {
-			return __( 'My account', 'shanelle' );
+			return __( 'Mi cuenta', 'shanelle' );
 		}
 
 		if ( function_exists( 'wc_get_endpoint_title' ) ) {
@@ -1111,7 +1111,7 @@ final class MyAccountPage {
 			return (string) $menu_items[ $endpoint ];
 		}
 
-		return __( 'My account', 'shanelle' );
+		return __( 'Mi cuenta', 'shanelle' );
 	}
 
 	/**

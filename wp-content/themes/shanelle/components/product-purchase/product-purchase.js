@@ -105,7 +105,7 @@ function setQuantity( panel, quantity ) {
 		} )
 	);
 
-	const template = i18n.quantityUpdated || 'Quantity updated to %d';
+	const template = i18n.quantityUpdated || 'Cantidad actualizada a %d';
 	announce( panel, template.replace( '%d', String( next ) ) );
 
 	return next;
@@ -201,8 +201,8 @@ function updateNotices( panel, state ) {
 			visible = showLow;
 			if ( visible ) {
 				notice.textContent = state.stockQuantity
-					? ( i18n.onlyLeft || 'Only %d left in stock' ).replace( '%d', String( state.stockQuantity ) )
-					: String( state.stockLabel || i18n.lowStock || 'Low stock — order soon' );
+					? ( i18n.onlyLeft || 'Solo quedan %d en stock' ).replace( '%d', String( state.stockQuantity ) )
+					: String( state.stockLabel || i18n.lowStock || 'Poco stock — pide pronto' );
 			}
 		}
 
@@ -216,6 +216,8 @@ function updateNotices( panel, state ) {
  */
 function updateControls( panel, state ) {
 	const addButton = panel.querySelector( '[data-shanelle-purchase-add]' );
+	const stickyAdd = panel.querySelector( '[data-shanelle-purchase-sticky-add]' );
+	const buyNowButton = panel.querySelector( '[data-shanelle-purchase-buy-now]' );
 	const stepperButtons = panel.querySelectorAll( '[data-shanelle-purchase-decrement], [data-shanelle-purchase-increment]' );
 	const quantityInput = getQuantityInput( panel );
 	const requiresVariation = Boolean( state.requiresVariation ?? state.requires_variation );
@@ -224,9 +226,16 @@ function updateControls( panel, state ) {
 	const purchasable = canPurchase && ( ! requiresVariation || variationId > 0 );
 	const disabled = ! purchasable || ( ! state.isInStock && ! state.isOnBackorder );
 
-	if ( addButton instanceof HTMLButtonElement ) {
-		addButton.disabled = disabled;
-		addButton.setAttribute( 'aria-disabled', disabled ? 'true' : 'false' );
+	[ addButton, stickyAdd ].forEach( ( button ) => {
+		if ( button instanceof HTMLButtonElement ) {
+			button.disabled = disabled;
+			button.setAttribute( 'aria-disabled', disabled ? 'true' : 'false' );
+		}
+	} );
+
+	if ( buyNowButton instanceof HTMLButtonElement ) {
+		buyNowButton.disabled = disabled;
+		buyNowButton.setAttribute( 'aria-disabled', disabled ? 'true' : 'false' );
 	}
 
 	stepperButtons.forEach( ( button ) => {
@@ -260,6 +269,11 @@ function applyVariationState( panel, variation ) {
 		nextState.stockLabel = String( variation.shanelle_stock_label || '' );
 		nextState.canPurchase = Boolean( variation.is_purchasable );
 		nextState.maxQuantity = Number( variation.max_qty ?? state.maxQuantity ?? 0 ) || state.maxQuantity;
+
+		const stickyPrice = panel.querySelector( '[data-shanelle-purchase-sticky-price]' );
+		if ( stickyPrice instanceof HTMLElement && variation.shanelle_current_html ) {
+			stickyPrice.innerHTML = String( variation.shanelle_current_html );
+		}
 	}
 
 	setPurchaseState( panel, nextState );
@@ -317,7 +331,7 @@ function collectVariationAttributes( form ) {
 
 /**
  * @param {HTMLElement} panel
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>}
  */
 async function addToCart( panel ) {
 	const state = getPurchaseState( panel );
@@ -328,13 +342,13 @@ async function addToCart( panel ) {
 	const addButton = panel.querySelector( '[data-shanelle-purchase-add]' );
 
 	if ( ! productId || ! config.ajaxUrl ) {
-		dispatchError( panel, i18n.error || 'Could not add to bag. Try again.' );
-		return;
+		dispatchError( panel, i18n.error || 'No se pudo agregar a la bolsa. Intenta de nuevo.' );
+		return false;
 	}
 
 	if ( requiresVariation && variationId <= 0 ) {
-		dispatchError( panel, i18n.selectOptions || 'Select product options' );
-		return;
+		dispatchError( panel, i18n.selectOptions || 'Selecciona las opciones del producto' );
+		return false;
 	}
 
 	if ( addButton instanceof HTMLButtonElement ) {
@@ -371,7 +385,7 @@ async function addToCart( panel ) {
 		} );
 
 		if ( ! response.ok ) {
-			throw new Error( 'Add to cart failed' );
+			throw new Error( i18n.error || 'No se pudo agregar a la bolsa. Intenta de nuevo.' );
 		}
 
 		const data = await response.json();
@@ -381,7 +395,7 @@ async function addToCart( panel ) {
 		}
 
 		applyWooFragments( data.fragments );
-		announce( panel, i18n.added || 'Added to bag' );
+		announce( panel, i18n.added || 'Agregado a la bolsa' );
 
 		document.body.dispatchEvent(
 			new CustomEvent( 'shanelle:product-purchase:added', {
@@ -407,9 +421,12 @@ async function addToCart( panel ) {
 				},
 			} )
 		);
+
+		return true;
 	} catch ( error ) {
-		const message = error instanceof Error ? error.message : ( i18n.error || 'Could not add to bag. Try again.' );
+		const message = error instanceof Error ? error.message : ( i18n.error || 'No se pudo agregar a la bolsa. Intenta de nuevo.' );
 		dispatchError( panel, message );
+		return false;
 	} finally {
 		if ( addButton instanceof HTMLButtonElement ) {
 			addButton.classList.remove( 'is-loading' );
@@ -460,11 +477,226 @@ function bindQuantityControls( panel ) {
 
 /**
  * @param {HTMLElement} panel
+ * @returns {Promise<void>}
+ */
+async function buyNow( panel ) {
+	const buyNowButton = panel.querySelector( '[data-shanelle-purchase-buy-now]' );
+
+	if ( buyNowButton instanceof HTMLButtonElement ) {
+		buyNowButton.classList.add( 'is-loading' );
+		buyNowButton.disabled = true;
+	}
+
+	const success = await addToCart( panel );
+
+	if ( buyNowButton instanceof HTMLButtonElement ) {
+		buyNowButton.classList.remove( 'is-loading' );
+		updateControls( panel, getPurchaseState( panel ) );
+	}
+
+	if ( success && config.checkoutUrl ) {
+		window.location.href = String( config.checkoutUrl );
+	}
+}
+
+const WISHLIST_STORAGE_KEY = 'shanelle_wishlist';
+
+/**
+ * @returns {number[]}
+ */
+function getWishlistIds() {
+	try {
+		const parsed = JSON.parse( localStorage.getItem( WISHLIST_STORAGE_KEY ) || '[]' );
+		return Array.isArray( parsed ) ? parsed.map( Number ).filter( Number.isFinite ) : [];
+	} catch ( error ) {
+		return [];
+	}
+}
+
+/**
+ * @param {number[]} ids
+ */
+function saveWishlistIds( ids ) {
+	localStorage.setItem( WISHLIST_STORAGE_KEY, JSON.stringify( ids ) );
+}
+
+/**
+ * @param {HTMLElement} panel
+ * @param {boolean} isActive
+ */
+function setWishlistState( panel, isActive ) {
+	const button = panel.querySelector( '[data-shanelle-purchase-wishlist]' );
+
+	if ( ! ( button instanceof HTMLButtonElement ) ) {
+		return;
+	}
+
+	button.classList.toggle( 'is-active', isActive );
+	button.setAttribute( 'aria-pressed', isActive ? 'true' : 'false' );
+	button.setAttribute(
+		'aria-label',
+		isActive ? ( i18n.removeFromWishlist || 'Quitar de favoritos' ) : ( i18n.addToWishlist || 'Agregar a favoritos' )
+	);
+}
+
+/**
+ * @param {HTMLElement} panel
+ */
+function syncWishlistState( panel ) {
+	const productId = Number( panel.querySelector( '[data-shanelle-purchase-wishlist]' )?.dataset.productId || getPurchaseState( panel ).productId || 0 );
+	setWishlistState( panel, getWishlistIds().includes( productId ) );
+}
+
+/**
+ * @param {HTMLElement} panel
+ */
+function toggleWishlist( panel ) {
+	const button = panel.querySelector( '[data-shanelle-purchase-wishlist]' );
+	const productId = Number( button?.dataset.productId || getPurchaseState( panel ).productId || 0 );
+
+	if ( ! productId ) {
+		return;
+	}
+
+	const ids = getWishlistIds();
+	const index = ids.indexOf( productId );
+	const isActive = index >= 0;
+
+	if ( isActive ) {
+		ids.splice( index, 1 );
+	} else {
+		ids.push( productId );
+	}
+
+	saveWishlistIds( ids );
+	setWishlistState( panel, ! isActive );
+
+	announce(
+		panel,
+		isActive ? ( i18n.removedFromWishlist || 'Eliminado de favoritos' ) : ( i18n.addedToWishlist || 'Agregado a favoritos' )
+	);
+
+	document.body.dispatchEvent(
+		new CustomEvent( 'shanelle:wishlist:change', {
+			bubbles: true,
+			detail: {
+				productId,
+				isActive: ! isActive,
+				wishlistIds: ids,
+			},
+		} )
+	);
+}
+
+/**
+ * Open a product-information accordion section without toggling it closed.
+ *
+ * @param {string} sectionId
+ */
+function openInformationSection( sectionId ) {
+	const target = document.querySelector( `[data-shanelle-information-section="${ sectionId }"]` );
+
+	if ( ! ( target instanceof HTMLElement ) ) {
+		return;
+	}
+
+	const trigger = target.querySelector( '[data-shanelle-information-trigger]' );
+
+	if ( trigger instanceof HTMLElement && trigger.getAttribute( 'aria-expanded' ) !== 'true' ) {
+		trigger.click();
+	}
+
+	target.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+}
+
+/**
+ * @param {HTMLElement} panel
+ */
+function bindEstimateActions( panel ) {
+	panel.querySelector( '[data-shanelle-purchase-shipping]' )?.addEventListener( 'click', () => {
+		openInformationSection( 'shipping' );
+	} );
+
+	panel.querySelector( '[data-shanelle-purchase-delivery]' )?.addEventListener( 'click', () => {
+		openInformationSection( 'shipping' );
+	} );
+}
+
+/**
+ * Sticky mobile ATC bar when primary add button leaves the viewport.
+ *
+ * @param {HTMLElement} panel
+ */
+function bindStickyBar( panel ) {
+	const sticky = panel.querySelector( '[data-shanelle-purchase-sticky]' );
+	const mainAdd = panel.querySelector( '[data-shanelle-purchase-add]' );
+	const stickyAdd = panel.querySelector( '[data-shanelle-purchase-sticky-add]' );
+
+	if ( ! ( sticky instanceof HTMLElement ) || ! ( mainAdd instanceof HTMLElement ) || ! ( stickyAdd instanceof HTMLButtonElement ) ) {
+		return;
+	}
+
+	const media = window.matchMedia( '(max-width: 47.99rem)' );
+
+	const syncVisibility = ( intersecting ) => {
+		const show = media.matches && ! intersecting;
+		sticky.hidden = ! show;
+		document.documentElement.classList.toggle( 'has-product-purchase-sticky', show );
+	};
+
+	stickyAdd.addEventListener( 'click', ( event ) => {
+		event.preventDefault();
+
+		if ( stickyAdd.disabled ) {
+			mainAdd.scrollIntoView( { behavior: 'smooth', block: 'center' } );
+			return;
+		}
+
+		addToCart( panel );
+	} );
+
+	const observer = new IntersectionObserver(
+		( entries ) => {
+			const entry = entries[ 0 ];
+			syncVisibility( Boolean( entry?.isIntersecting ) );
+		},
+		{
+			threshold: 0,
+			rootMargin: '0px',
+		}
+	);
+
+	observer.observe( mainAdd );
+
+	const onMediaChange = () => {
+		if ( ! media.matches ) {
+			syncVisibility( true );
+		}
+	};
+
+	if ( typeof media.addEventListener === 'function' ) {
+		media.addEventListener( 'change', onMediaChange );
+	} else if ( typeof media.addListener === 'function' ) {
+		media.addListener( onMediaChange );
+	}
+}
+
+/**
+ * @param {HTMLElement} panel
  */
 function bindPurchaseActions( panel ) {
 	panel.querySelector( '[data-shanelle-purchase-add]' )?.addEventListener( 'click', ( event ) => {
 		event.preventDefault();
 		addToCart( panel );
+	} );
+
+	panel.querySelector( '[data-shanelle-purchase-buy-now]' )?.addEventListener( 'click', ( event ) => {
+		event.preventDefault();
+		buyNow( panel );
+	} );
+
+	panel.querySelector( '[data-shanelle-purchase-wishlist]' )?.addEventListener( 'click', () => {
+		toggleWishlist( panel );
 	} );
 }
 
@@ -533,9 +765,12 @@ function initPurchase( panel ) {
 
 	bindQuantityControls( panel );
 	bindPurchaseActions( panel );
+	bindEstimateActions( panel );
+	bindStickyBar( panel );
 	bindVariationEvents( panel );
 	updateNotices( panel, state );
 	updateControls( panel, state );
+	syncWishlistState( panel );
 
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:product-purchase:ready', {
@@ -555,6 +790,8 @@ export {
 	getQuantity,
 	stepQuantity,
 	addToCart,
+	buyNow,
+	toggleWishlist,
 	updateStockState,
 	applyVariationState,
 	syncVariationId,

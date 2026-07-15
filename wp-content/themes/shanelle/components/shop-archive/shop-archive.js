@@ -98,6 +98,16 @@ function initFilters( archive ) {
 	overlay?.addEventListener( 'click', close );
 
 	applyBtn?.addEventListener( 'click', () => {
+		const mobileForm = archive.querySelector( '#catalog-filters-mobile' );
+
+		if ( mobileForm instanceof HTMLFormElement ) {
+			if ( typeof mobileForm.requestSubmit === 'function' ) {
+				mobileForm.requestSubmit();
+			} else {
+				mobileForm.submit();
+			}
+		}
+
 		document.body.dispatchEvent(
 			new CustomEvent( 'shanelle:shop-archive:apply-filters', {
 				bubbles: true,
@@ -133,7 +143,7 @@ function setFilteringState( archive, loading ) {
 	const status = archive.querySelector( '[data-shanelle-archive-status]' );
 
 	if ( status && loading ) {
-		status.textContent = i18n.loading || 'Updating products…';
+		status.textContent = i18n.loading || 'Actualizando productos…';
 	} else if ( status ) {
 		status.textContent = '';
 	}
@@ -142,8 +152,28 @@ function setFilteringState( archive, loading ) {
 /**
  * @param {HTMLElement} archive
  */
+function initOrdering( archive ) {
+	const orderSelect = archive.querySelector( '#shop-archive-orderby, .shop-archive__ordering select.orderby' );
+
+	if ( ! ( orderSelect instanceof HTMLSelectElement ) ) {
+		return;
+	}
+
+	orderSelect.addEventListener( 'change', () => {
+		const form = orderSelect.closest( 'form' );
+
+		if ( form instanceof HTMLFormElement ) {
+			form.submit();
+		}
+	} );
+}
+
+/**
+ * @param {HTMLElement} archive
+ */
 function initArchive( archive ) {
 	initFilters( archive );
+	initOrdering( archive );
 
 	document.body.addEventListener( 'shanelle:shop-archive:filter-start', () => {
 		setFilteringState( archive, true );

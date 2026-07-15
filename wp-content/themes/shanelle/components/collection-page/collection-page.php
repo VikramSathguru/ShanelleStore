@@ -28,12 +28,18 @@ defined( 'ABSPATH' ) || exit;
 			<?php ShopArchive::render_breadcrumbs(); ?>
 		<?php endif; ?>
 
-		<?php CollectionPage::render_product_count(); ?>
-		<?php ShopArchive::render_toolbar(); ?>
-		<?php ShopArchive::render_loading_placeholder(); ?>
+		<div class="shop-archive__layout">
+			<?php ShopArchive::render_sidebar(); ?>
 
-		<div class="collection-page__grid shop-archive__grid" data-shanelle-archive-grid>
-			<?php ShopArchive::render_grid(); ?>
+			<div class="shop-archive__main collection-page__main">
+				<?php CollectionPage::render_product_count(); ?>
+				<?php ShopArchive::render_toolbar(); ?>
+				<?php ShopArchive::render_loading_placeholder(); ?>
+
+				<div class="collection-page__grid shop-archive__grid" data-shanelle-archive-grid>
+					<?php ShopArchive::render_grid(); ?>
+				</div>
+			</div>
 		</div>
 	</div>
 

@@ -263,9 +263,9 @@ function updateTitleCount( state ) {
 
 		if ( title ) {
 			const label = count === 1
-				? ( i18n.itemCount || '%d item in bag' ).replace( '%d', String( count ) )
-				: ( i18n.itemsCount || '%d items in bag' ).replace( '%d', String( count ) );
-			title.setAttribute( 'aria-label', `${ i18n.title || 'Your bag' } — ${ label }` );
+				? ( i18n.itemCount || '%d artículo en la bolsa' ).replace( '%d', String( count ) )
+				: ( i18n.itemsCount || '%d artículos en la bolsa' ).replace( '%d', String( count ) );
+			title.setAttribute( 'aria-label', `${ i18n.title || 'Tu bolsa' } — ${ label }` );
 		}
 	}
 }
@@ -277,7 +277,7 @@ function updateTitleCount( state ) {
  */
 async function requestCartAction( endpoint, payload = {} ) {
 	if ( ! config.ajaxUrl ) {
-		throw new Error( i18n.error || 'Could not update your bag. Try again.' );
+		throw new Error( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' );
 	}
 
 	const url = String( config.ajaxUrl ).replace( '%%endpoint%%', endpoint );
@@ -292,13 +292,13 @@ async function requestCartAction( endpoint, payload = {} ) {
 	} );
 
 	if ( ! response.ok ) {
-		throw new Error( i18n.error || 'Could not update your bag. Try again.' );
+		throw new Error( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' );
 	}
 
 	const data = await response.json();
 
 	if ( ! data.success ) {
-		throw new Error( data?.data?.message || i18n.error || 'Could not update your bag. Try again.' );
+		throw new Error( data?.data?.message || i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' );
 	}
 
 	return data.data ?? {};
@@ -328,13 +328,13 @@ async function refreshMiniCart() {
  */
 async function updateCartItemQuantity( cartItemKey, quantity ) {
 	if ( ! cartItemKey ) {
-		throw new Error( i18n.error || 'Could not update your bag. Try again.' );
+		throw new Error( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' );
 	}
 
 	const item = root?.querySelector( `[data-cart-item-key="${ CSS.escape( cartItemKey ) }"]` );
 	item?.classList.add( 'is-loading' );
 	setBusy( true );
-	announce( i18n.loading || 'Updating bag…' );
+	announce( i18n.loading || 'Actualizando bolsa…' );
 
 	try {
 		const response = await requestCartAction( 'shanelle_mini_cart_update', {
@@ -344,7 +344,7 @@ async function updateCartItemQuantity( cartItemKey, quantity ) {
 
 		applyCartResponse( response );
 		applyWooFragments( response.fragments );
-		announce( i18n.updated || 'Bag updated' );
+		announce( i18n.updated || 'Bolsa actualizada' );
 
 		return response;
 	} finally {
@@ -359,7 +359,7 @@ async function updateCartItemQuantity( cartItemKey, quantity ) {
  */
 async function removeCartItem( cartItemKey ) {
 	return updateCartItemQuantity( cartItemKey, 0 ).then( ( response ) => {
-		announce( i18n.removed || 'Item removed from bag' );
+		announce( i18n.removed || 'Artículo eliminado de la bolsa' );
 		return response;
 	} );
 }
@@ -455,7 +455,7 @@ function bindPanelEvents() {
 
 			if ( key ) {
 				removeCartItem( key ).catch( ( error ) => {
-					announce( error instanceof Error ? error.message : ( i18n.error || 'Could not update your bag. Try again.' ) );
+					announce( error instanceof Error ? error.message : ( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' ) );
 				} );
 			}
 
@@ -470,7 +470,7 @@ function bindPanelEvents() {
 
 			if ( key ) {
 				stepItemQuantity( key, -1 ).catch( ( error ) => {
-					announce( error instanceof Error ? error.message : ( i18n.error || 'Could not update your bag. Try again.' ) );
+					announce( error instanceof Error ? error.message : ( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' ) );
 				} );
 			}
 
@@ -485,7 +485,7 @@ function bindPanelEvents() {
 
 			if ( key ) {
 				stepItemQuantity( key, 1 ).catch( ( error ) => {
-					announce( error instanceof Error ? error.message : ( i18n.error || 'Could not update your bag. Try again.' ) );
+					announce( error instanceof Error ? error.message : ( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' ) );
 				} );
 			}
 		}
@@ -506,7 +506,7 @@ function bindPanelEvents() {
 		}
 
 		updateCartItemQuantity( key, quantity ).catch( ( error ) => {
-			announce( error instanceof Error ? error.message : ( i18n.error || 'Could not update your bag. Try again.' ) );
+			announce( error instanceof Error ? error.message : ( i18n.error || 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.' ) );
 		} );
 	} );
 }
@@ -611,7 +611,15 @@ function initMiniCart( element = null ) {
 	);
 }
 
-initMiniCart();
+function bootMiniCart() {
+	initMiniCart();
+}
+
+if ( document.readyState === 'loading' ) {
+	document.addEventListener( 'DOMContentLoaded', bootMiniCart );
+} else {
+	bootMiniCart();
+}
 
 export {
 	initMiniCart,

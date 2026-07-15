@@ -40,7 +40,7 @@ final class MiniCart {
 		}
 
 		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
-		add_action( 'wp_footer', array( self::class, 'render' ), 20 );
+		add_action( 'wp_footer', array( self::class, 'render' ), 5 );
 		add_filter( 'woocommerce_add_to_cart_fragments', array( self::class, 'add_fragments' ) );
 
 		add_action( 'wc_ajax_shanelle_mini_cart_update', array( self::class, 'ajax_update_item' ) );
@@ -93,24 +93,24 @@ final class MiniCart {
 				'mobileQuery'   => '(max-width: 47.99rem)',
 				'initialState'  => self::build_cart_state(),
 				'i18n'          => array(
-					'title'             => __( 'Your bag', 'shanelle' ),
-					'close'             => __( 'Close bag', 'shanelle' ),
-					'emptyTitle'        => __( 'Your bag is empty', 'shanelle' ),
-					'emptyMessage'      => __( 'Add something you love — we will keep it here while you browse.', 'shanelle' ),
-					'continueShopping'  => __( 'Continue shopping', 'shanelle' ),
-					'viewCart'          => __( 'View cart', 'shanelle' ),
-					'checkout'          => __( 'Checkout', 'shanelle' ),
+					'title'             => __( 'Tu bolsa', 'shanelle' ),
+					'close'             => __( 'Cerrar bolsa', 'shanelle' ),
+					'emptyTitle'        => __( 'Tu bolsa está vacía', 'shanelle' ),
+					'emptyMessage'      => __( 'Agrega algo que te guste; lo guardaremos aquí mientras navegas.', 'shanelle' ),
+					'continueShopping'  => __( 'Continuar comprando', 'shanelle' ),
+					'viewCart'          => __( 'Ver bolsa', 'shanelle' ),
+					'checkout'          => __( 'Pagar', 'shanelle' ),
 					'subtotal'          => __( 'Subtotal', 'shanelle' ),
-					'remove'            => __( 'Remove item', 'shanelle' ),
-					'decrease'          => __( 'Decrease quantity', 'shanelle' ),
-					'increase'          => __( 'Increase quantity', 'shanelle' ),
-					'quantity'          => __( 'Quantity', 'shanelle' ),
-					'itemCount'         => __( '%d item in bag', 'shanelle' ),
-					'itemsCount'        => __( '%d items in bag', 'shanelle' ),
-					'updated'           => __( 'Bag updated', 'shanelle' ),
-					'removed'           => __( 'Item removed from bag', 'shanelle' ),
-					'error'             => __( 'Could not update your bag. Try again.', 'shanelle' ),
-					'loading'           => __( 'Updating bag…', 'shanelle' ),
+					'remove'            => __( 'Eliminar artículo', 'shanelle' ),
+					'decrease'          => __( 'Disminuir cantidad', 'shanelle' ),
+					'increase'          => __( 'Aumentar cantidad', 'shanelle' ),
+					'quantity'          => __( 'Cantidad', 'shanelle' ),
+					'itemCount'         => __( '%d artículo en la bolsa', 'shanelle' ),
+					'itemsCount'        => __( '%d artículos en la bolsa', 'shanelle' ),
+					'updated'           => __( 'Bolsa actualizada', 'shanelle' ),
+					'removed'           => __( 'Artículo eliminado de la bolsa', 'shanelle' ),
+					'error'             => __( 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.', 'shanelle' ),
+					'loading'           => __( 'Actualizando bolsa…', 'shanelle' ),
 				),
 			)
 		);
@@ -168,7 +168,7 @@ final class MiniCart {
 		if ( '' === $cart_item_key || ! WC()->cart ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Invalid cart item.', 'shanelle' ),
+					'message' => __( 'Artículo de bolsa no válido.', 'shanelle' ),
 				),
 				400
 			);
@@ -179,7 +179,7 @@ final class MiniCart {
 		if ( empty( $cart_item ) ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'Cart item not found.', 'shanelle' ),
+					'message' => __( 'Artículo de bolsa no encontrado.', 'shanelle' ),
 				),
 				404
 			);
@@ -193,7 +193,7 @@ final class MiniCart {
 			if ( false === $updated ) {
 				wp_send_json_error(
 					array(
-						'message' => __( 'Could not update quantity.', 'shanelle' ),
+						'message' => __( 'No se pudo actualizar la cantidad.', 'shanelle' ),
 					),
 					400
 				);
@@ -312,7 +312,7 @@ final class MiniCart {
 						class="mini-cart__remove btn btn--ghost btn--icon btn--sm"
 						data-shanelle-mini-cart-remove
 						data-cart-item-key="<?php echo esc_attr( $key ); ?>"
-						aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name */ __( 'Remove %s from bag', 'shanelle' ), $title ) ); ?>"
+						aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name */ __( 'Eliminar %s de la bolsa', 'shanelle' ), $title ) ); ?>"
 					>
 						<?php self::render_icon( 'close' ); ?>
 					</button>
@@ -339,14 +339,14 @@ final class MiniCart {
 				</div>
 
 				<div class="mini-cart__item-quantity">
-					<span class="mini-cart__quantity-label text-label"><?php esc_html_e( 'Quantity', 'shanelle' ); ?></span>
+					<span class="mini-cart__quantity-label text-label"><?php esc_html_e( 'Cantidad', 'shanelle' ); ?></span>
 					<div class="mini-cart__stepper" data-shanelle-mini-cart-stepper>
 						<button
 							type="button"
 							class="mini-cart__stepper-btn btn btn--icon btn--sm"
 							data-shanelle-mini-cart-decrement
 							data-cart-item-key="<?php echo esc_attr( $key ); ?>"
-							aria-label="<?php esc_attr_e( 'Decrease quantity', 'shanelle' ); ?>"
+							aria-label="<?php esc_attr_e( 'Disminuir cantidad', 'shanelle' ); ?>"
 							aria-controls="<?php echo esc_attr( $input_id ); ?>"
 						>
 							<?php self::render_icon( 'minus' ); ?>
@@ -366,14 +366,14 @@ final class MiniCart {
 							pattern="[0-9]*"
 							data-shanelle-mini-cart-quantity
 							data-cart-item-key="<?php echo esc_attr( $key ); ?>"
-							aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name */ __( 'Quantity for %s', 'shanelle' ), $title ) ); ?>"
+							aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name */ __( 'Cantidad de %s', 'shanelle' ), $title ) ); ?>"
 						>
 						<button
 							type="button"
 							class="mini-cart__stepper-btn btn btn--icon btn--sm"
 							data-shanelle-mini-cart-increment
 							data-cart-item-key="<?php echo esc_attr( $key ); ?>"
-							aria-label="<?php esc_attr_e( 'Increase quantity', 'shanelle' ); ?>"
+							aria-label="<?php esc_attr_e( 'Aumentar cantidad', 'shanelle' ); ?>"
 							aria-controls="<?php echo esc_attr( $input_id ); ?>"
 						>
 							<?php self::render_icon( 'plus' ); ?>
@@ -395,12 +395,12 @@ final class MiniCart {
 			<div class="mini-cart__empty-icon" aria-hidden="true">
 				<?php self::render_icon( 'bag' ); ?>
 			</div>
-			<h3 class="mini-cart__empty-title"><?php esc_html_e( 'Your bag is empty', 'shanelle' ); ?></h3>
+			<h3 class="mini-cart__empty-title"><?php esc_html_e( 'Tu bolsa está vacía', 'shanelle' ); ?></h3>
 			<p class="mini-cart__empty-message text-muted">
-				<?php esc_html_e( 'Add something you love — we will keep it here while you browse.', 'shanelle' ); ?>
+				<?php esc_html_e( 'Agrega algo que te guste; lo guardaremos aquí mientras navegas.', 'shanelle' ); ?>
 			</p>
 			<a class="btn btn--primary btn--block mini-cart__empty-action" href="<?php echo esc_url( $shop_url ); ?>">
-				<?php esc_html_e( 'Continue shopping', 'shanelle' ); ?>
+				<?php esc_html_e( 'Continuar comprando', 'shanelle' ); ?>
 			</a>
 		</div>
 		<?php
@@ -426,13 +426,13 @@ final class MiniCart {
 
 			<div class="mini-cart__actions">
 				<a class="btn btn--outline btn--block mini-cart__action mini-cart__action--continue" href="<?php echo esc_url( $shop_url ); ?>">
-					<?php esc_html_e( 'Continue shopping', 'shanelle' ); ?>
+					<?php esc_html_e( 'Continuar comprando', 'shanelle' ); ?>
 				</a>
 				<a class="btn btn--secondary btn--block mini-cart__action mini-cart__action--cart" href="<?php echo esc_url( $cart_url ); ?>">
-					<?php esc_html_e( 'View cart', 'shanelle' ); ?>
+					<?php esc_html_e( 'Ver bolsa', 'shanelle' ); ?>
 				</a>
 				<a class="btn btn--primary btn--block mini-cart__action mini-cart__action--checkout" href="<?php echo esc_url( $checkout_url ); ?>">
-					<?php esc_html_e( 'Checkout', 'shanelle' ); ?>
+					<?php esc_html_e( 'Pagar', 'shanelle' ); ?>
 				</a>
 			</div>
 		</div>
@@ -524,7 +524,7 @@ final class MiniCart {
 				),
 				'title_label'    => sprintf(
 					/* translators: %d: number of items in cart */
-					_n( '%d item in bag', '%d items in bag', $count, 'shanelle' ),
+					_n( '%d artículo en la bolsa', '%d artículos en la bolsa', $count, 'shanelle' ),
 					$count
 				),
 			),
@@ -714,7 +714,7 @@ final class MiniCart {
 				'cart'     => wc_get_cart_url(),
 				'checkout' => wc_get_checkout_url(),
 			),
-			'title_label'   => __( '0 items in bag', 'shanelle' ),
+			'title_label'   => __( '0 artículos en la bolsa', 'shanelle' ),
 		);
 	}
 }

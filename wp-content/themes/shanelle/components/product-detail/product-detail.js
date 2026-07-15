@@ -51,7 +51,7 @@ function toggleAccordionPanel( trigger ) {
 		otherTrigger.setAttribute( 'aria-expanded', 'false' );
 		otherTrigger.setAttribute(
 			'aria-label',
-			`${ otherTrigger.textContent?.trim() || '' } — ${ i18n.expandSection || 'Expand section' }`
+			`${ otherTrigger.textContent?.trim() || '' } — ${ i18n.expandSection || 'Expandir sección' }`
 		);
 
 		if ( otherPanel instanceof HTMLElement ) {
@@ -62,7 +62,7 @@ function toggleAccordionPanel( trigger ) {
 	trigger.setAttribute( 'aria-expanded', expanded ? 'false' : 'true' );
 	trigger.setAttribute(
 		'aria-label',
-		`${ trigger.textContent?.trim() || '' } — ${ expanded ? i18n.expandSection || 'Expand section' : i18n.collapseSection || 'Collapse section' }`
+		`${ trigger.textContent?.trim() || '' } — ${ expanded ? i18n.expandSection || 'Expandir sección' : i18n.collapseSection || 'Contraer sección' }`
 	);
 	panel.hidden = expanded;
 

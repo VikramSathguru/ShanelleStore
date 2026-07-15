@@ -444,6 +444,7 @@
 }
 
 .my-account-page__guest-card {
+	width: 100%;
 	max-width: 40rem;
 	padding: var(--space-5);
 	border: 1px solid var(--color-border-subtle);
@@ -452,9 +453,14 @@
 	box-shadow: var(--shadow-sm);
 }
 
+.my-account-page__guest-card:has(.my-account-page__auth-columns) {
+	max-width: min(100%, 56rem);
+}
+
 .my-account-page__auth-columns {
 	display: grid;
 	gap: var(--space-8);
+	scroll-margin-top: calc(var(--space-20) + 4rem);
 }
 
 .my-account-page__form-title {

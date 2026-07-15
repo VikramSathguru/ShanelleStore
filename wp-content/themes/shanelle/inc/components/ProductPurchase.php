@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Shanelle\Components;
 
+use Shanelle\WooCommerce\ProductPrice;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -85,26 +87,29 @@ final class ProductPurchase {
 			'shanelle-product-purchase',
 			'shanelleProductPurchase',
 			array(
-				'ajaxUrl' => \WC_AJAX::get_endpoint( '%%endpoint%%' ),
-				'i18n'    => array(
-					'quantity'         => __( 'Quantity', 'shanelle' ),
-					'decrease'         => __( 'Decrease quantity', 'shanelle' ),
-					'increase'         => __( 'Increase quantity', 'shanelle' ),
-					'addToCart'        => __( 'Add to bag', 'shanelle' ),
-					'adding'           => __( 'Adding…', 'shanelle' ),
-					'added'            => __( 'Added to bag', 'shanelle' ),
-					'error'            => __( 'Could not add to bag. Try again.', 'shanelle' ),
-					'selectOptions'    => __( 'Select product options', 'shanelle' ),
-					'buyNowSoon'       => __( 'Buy now (coming soon)', 'shanelle' ),
-					'wishlistSoon'     => __( 'Wishlist (coming soon)', 'shanelle' ),
-					'shippingSoon'     => __( 'Shipping estimate (coming soon)', 'shanelle' ),
-					'deliverySoon'     => __( 'Delivery estimate (coming soon)', 'shanelle' ),
-					'secureCheckout'   => __( 'Secure checkout', 'shanelle' ),
-					'outOfStock'       => __( 'Out of stock', 'shanelle' ),
-					'onBackorder'      => __( 'Available on backorder', 'shanelle' ),
-					'lowStock'         => __( 'Low stock — order soon', 'shanelle' ),
-					'onlyLeft'         => __( 'Only %d left in stock', 'shanelle' ),
-					'quantityUpdated'  => __( 'Quantity updated to %d', 'shanelle' ),
+				'ajaxUrl'     => \WC_AJAX::get_endpoint( '%%endpoint%%' ),
+				'checkoutUrl' => wc_get_checkout_url(),
+				'i18n'        => array(
+					'quantity'        => __( 'Cantidad', 'shanelle' ),
+					'decrease'          => __( 'Disminuir cantidad', 'shanelle' ),
+					'increase'          => __( 'Aumentar cantidad', 'shanelle' ),
+					'addToCart'         => __( 'Agregar a la bolsa', 'shanelle' ),
+					'adding'            => __( 'Agregando…', 'shanelle' ),
+					'added'             => __( 'Agregado a la bolsa', 'shanelle' ),
+					'error'             => __( 'No se pudo agregar a la bolsa. Intenta de nuevo.', 'shanelle' ),
+					'selectOptions'     => __( 'Selecciona las opciones del producto', 'shanelle' ),
+					'buyNow'            => __( 'Comprar ahora', 'shanelle' ),
+					'buying'            => __( 'Procesando…', 'shanelle' ),
+					'addToWishlist'     => __( 'Agregar a favoritos', 'shanelle' ),
+					'removeFromWishlist'=> __( 'Quitar de favoritos', 'shanelle' ),
+					'addedToWishlist'   => __( 'Agregado a favoritos', 'shanelle' ),
+					'removedFromWishlist'=> __( 'Eliminado de favoritos', 'shanelle' ),
+					'secureCheckout'    => __( 'Pago seguro', 'shanelle' ),
+					'outOfStock'        => __( 'Agotado', 'shanelle' ),
+					'onBackorder'       => __( 'Disponible bajo pedido', 'shanelle' ),
+					'lowStock'          => __( 'Poco stock — pide pronto', 'shanelle' ),
+					'onlyLeft'          => __( 'Solo quedan %d en stock', 'shanelle' ),
+					'quantityUpdated'   => __( 'Cantidad actualizada a %d', 'shanelle' ),
 				),
 			)
 		);
@@ -135,6 +140,39 @@ final class ProductPurchase {
 	}
 
 	/**
+	 * Render mobile sticky add-to-cart bar (shown when main ATC scrolls out of view).
+	 */
+	public static function render_sticky_bar(): void {
+		$state = self::$state;
+		$price = ProductPrice::get_display_data( self::get_product() );
+		?>
+		<div
+			class="product-purchase__sticky"
+			data-shanelle-purchase-sticky
+			hidden
+		>
+			<div class="product-purchase__sticky-inner">
+				<?php if ( ! empty( $price['has_price'] ) && '' !== (string) $price['current_html'] ) : ?>
+					<p class="product-purchase__sticky-price" data-shanelle-purchase-sticky-price>
+						<?php echo wp_kses_post( (string) $price['current_html'] ); ?>
+					</p>
+				<?php endif; ?>
+				<button
+					type="button"
+					class="btn btn--primary btn--lg product-purchase__sticky-add"
+					data-shanelle-purchase-sticky-add
+					data-product-id="<?php echo esc_attr( (string) $state['product_id'] ); ?>"
+					<?php echo $state['requires_variation'] ? 'disabled aria-disabled="true"' : ''; ?>
+					<?php echo ! $state['requires_variation'] && ! $state['can_purchase'] ? 'disabled aria-disabled="true"' : ''; ?>
+				>
+					<?php echo esc_html( self::get_add_to_cart_text() ); ?>
+				</button>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Render stock and availability notices.
 	 */
 	public static function render_notices(): void {
@@ -160,7 +198,7 @@ final class ProductPurchase {
 						null !== $state['stock_quantity']
 							? sprintf(
 								/* translators: %d: items in stock */
-								__( 'Only %d left in stock', 'shanelle' ),
+								__( 'Solo quedan %d en stock', 'shanelle' ),
 								(int) $state['stock_quantity']
 							)
 							: (string) $state['stock_label']
@@ -187,14 +225,14 @@ final class ProductPurchase {
 		?>
 		<div class="product-purchase__quantity">
 			<label class="product-purchase__quantity-label text-label" for="<?php echo esc_attr( self::get_quantity_input_id() ); ?>">
-				<?php esc_html_e( 'Quantity', 'shanelle' ); ?>
+				<?php esc_html_e( 'Cantidad', 'shanelle' ); ?>
 			</label>
 			<div class="product-purchase__stepper" data-shanelle-purchase-stepper>
 				<button
 					type="button"
 					class="product-purchase__stepper-btn btn btn--icon btn--sm"
 					data-shanelle-purchase-decrement
-					aria-label="<?php esc_attr_e( 'Decrease quantity', 'shanelle' ); ?>"
+					aria-label="<?php esc_attr_e( 'Disminuir cantidad', 'shanelle' ); ?>"
 					aria-controls="<?php echo esc_attr( self::get_quantity_input_id() ); ?>"
 					<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				>
@@ -221,7 +259,7 @@ final class ProductPurchase {
 					type="button"
 					class="product-purchase__stepper-btn btn btn--icon btn--sm"
 					data-shanelle-purchase-increment
-					aria-label="<?php esc_attr_e( 'Increase quantity', 'shanelle' ); ?>"
+					aria-label="<?php esc_attr_e( 'Aumentar cantidad', 'shanelle' ); ?>"
 					aria-controls="<?php echo esc_attr( self::get_quantity_input_id() ); ?>"
 					<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				>
@@ -255,21 +293,19 @@ final class ProductPurchase {
 					type="button"
 					class="btn btn--secondary btn--block product-purchase__buy-now"
 					data-shanelle-purchase-buy-now
-					disabled
-					aria-disabled="true"
-					aria-label="<?php esc_attr_e( 'Buy now (coming soon)', 'shanelle' ); ?>"
+					<?php echo $state['requires_variation'] ? 'disabled aria-disabled="true"' : ''; ?>
+					<?php echo ! $state['requires_variation'] && ! $state['can_purchase'] ? 'disabled aria-disabled="true"' : ''; ?>
 				>
-					<?php esc_html_e( 'Buy now', 'shanelle' ); ?>
-					<span class="product-purchase__soon text-caption"><?php esc_html_e( 'Coming soon', 'shanelle' ); ?></span>
+					<?php esc_html_e( 'Comprar ahora', 'shanelle' ); ?>
 				</button>
 
 				<button
 					type="button"
 					class="btn btn--outline btn--icon product-purchase__wishlist"
 					data-shanelle-purchase-wishlist
-					disabled
-					aria-disabled="true"
-					aria-label="<?php esc_attr_e( 'Wishlist (coming soon)', 'shanelle' ); ?>"
+					data-product-id="<?php echo esc_attr( (string) $state['product_id'] ); ?>"
+					aria-pressed="false"
+					aria-label="<?php esc_attr_e( 'Agregar a favoritos', 'shanelle' ); ?>"
 				>
 					<?php self::render_icon( 'heart' ); ?>
 				</button>
@@ -282,22 +318,36 @@ final class ProductPurchase {
 	 * Render shipping and delivery estimate placeholders.
 	 */
 	public static function render_estimates(): void {
+		$shipping = self::get_shipping_estimate();
+		$delivery = self::get_delivery_estimate();
 		?>
 		<div class="product-purchase__estimates">
-			<div class="product-purchase__estimate product-purchase__estimate--shipping" data-shanelle-purchase-shipping aria-disabled="true">
-				<?php self::render_icon( 'shipping' ); ?>
-				<div class="product-purchase__estimate-copy">
-					<p class="product-purchase__estimate-title text-label"><?php esc_html_e( 'Shipping', 'shanelle' ); ?></p>
-					<p class="product-purchase__estimate-note text-caption text-muted"><?php esc_html_e( 'Shipping estimate (coming soon)', 'shanelle' ); ?></p>
-				</div>
-			</div>
-			<div class="product-purchase__estimate product-purchase__estimate--delivery" data-shanelle-purchase-delivery aria-disabled="true">
-				<?php self::render_icon( 'delivery' ); ?>
-				<div class="product-purchase__estimate-copy">
-					<p class="product-purchase__estimate-title text-label"><?php esc_html_e( 'Delivery', 'shanelle' ); ?></p>
-					<p class="product-purchase__estimate-note text-caption text-muted"><?php esc_html_e( 'Delivery estimate (coming soon)', 'shanelle' ); ?></p>
-				</div>
-			</div>
+			<button
+				type="button"
+				class="product-purchase__estimate product-purchase__estimate--shipping"
+				data-shanelle-purchase-shipping
+				aria-label="<?php echo esc_attr( (string) $shipping['aria'] ); ?>"
+			>
+				<span class="product-purchase__estimate-icon" aria-hidden="true"><?php self::render_icon( 'shipping' ); ?></span>
+				<span class="product-purchase__estimate-copy">
+					<span class="product-purchase__estimate-title text-label"><?php echo esc_html( (string) $shipping['title'] ); ?></span>
+					<span class="product-purchase__estimate-value"><?php echo esc_html( (string) $shipping['value'] ); ?></span>
+					<span class="product-purchase__estimate-note text-caption text-muted"><?php echo esc_html( (string) $shipping['note'] ); ?></span>
+				</span>
+			</button>
+			<button
+				type="button"
+				class="product-purchase__estimate product-purchase__estimate--delivery"
+				data-shanelle-purchase-delivery
+				aria-label="<?php echo esc_attr( (string) $delivery['aria'] ); ?>"
+			>
+				<span class="product-purchase__estimate-icon" aria-hidden="true"><?php self::render_icon( 'delivery' ); ?></span>
+				<span class="product-purchase__estimate-copy">
+					<span class="product-purchase__estimate-title text-label"><?php echo esc_html( (string) $delivery['title'] ); ?></span>
+					<span class="product-purchase__estimate-value"><?php echo esc_html( (string) $delivery['value'] ); ?></span>
+					<span class="product-purchase__estimate-note text-caption text-muted"><?php echo esc_html( (string) $delivery['note'] ); ?></span>
+				</span>
+			</button>
 		</div>
 		<?php
 	}
@@ -308,22 +358,22 @@ final class ProductPurchase {
 	public static function render_trust(): void {
 		?>
 		<div class="product-purchase__trust">
-			<ul class="product-purchase__trust-list" aria-label="<?php esc_attr_e( 'Shopping guarantees', 'shanelle' ); ?>">
+			<ul class="product-purchase__trust-list" aria-label="<?php esc_attr_e( 'Garantías de compra', 'shanelle' ); ?>">
 				<li class="product-purchase__trust-item">
 					<?php self::render_icon( 'lock' ); ?>
-					<span><?php esc_html_e( 'Secure checkout', 'shanelle' ); ?></span>
+					<span><?php esc_html_e( 'Pago seguro', 'shanelle' ); ?></span>
 				</li>
 				<li class="product-purchase__trust-item">
 					<?php self::render_icon( 'returns' ); ?>
-					<span><?php esc_html_e( 'Easy returns', 'shanelle' ); ?></span>
+					<span><?php esc_html_e( 'Devoluciones fáciles', 'shanelle' ); ?></span>
 				</li>
 				<li class="product-purchase__trust-item">
 					<?php self::render_icon( 'quality' ); ?>
-					<span><?php esc_html_e( 'Quality guaranteed', 'shanelle' ); ?></span>
+					<span><?php esc_html_e( 'Calidad garantizada', 'shanelle' ); ?></span>
 				</li>
 			</ul>
 			<p class="product-purchase__secure-message text-caption text-muted">
-				<?php esc_html_e( 'Your payment information is processed securely. We do not store credit card details.', 'shanelle' ); ?>
+				<?php esc_html_e( 'Tu información de pago se procesa de forma segura. No almacenamos los datos de tarjetas de crédito.', 'shanelle' ); ?>
 			</p>
 		</div>
 		<?php
@@ -354,9 +404,71 @@ final class ProductPurchase {
 	 * Return add to cart button text.
 	 */
 	public static function get_add_to_cart_text(): string {
-		$text = self::get_product()->single_add_to_cart_text();
+		return __( 'Agregar a la bolsa', 'shanelle' );
+	}
 
-		return is_string( $text ) && '' !== $text ? $text : __( 'Add to bag', 'shanelle' );
+	/**
+	 * Return shipping estimate copy.
+	 *
+	 * @return array{title: string, value: string, note: string, aria: string}
+	 */
+	public static function get_shipping_estimate(): array {
+		$ship_date = wp_date( 'M j', strtotime( '+2 weekdays' ) );
+
+		$data = array(
+			'title' => __( 'Envío', 'shanelle' ),
+			'value' => sprintf(
+				/* translators: %s: estimated ship date */
+				__( 'Sale el %s', 'shanelle' ),
+				$ship_date
+			),
+			'note'  => __( 'Estimación · Envío estándar en Nicaragua', 'shanelle' ),
+			'aria'  => sprintf(
+				/* translators: %s: estimated ship date */
+				__( 'Estimación de envío: sale el %s. Ver detalles de envío.', 'shanelle' ),
+				$ship_date
+			),
+		);
+
+		/**
+		 * Filter product page shipping estimate copy.
+		 *
+		 * @param array<string, string> $data Shipping estimate data.
+		 * @param \WC_Product           $product Product object.
+		 */
+		return apply_filters( 'shanelle_product_shipping_estimate', $data, self::get_product() );
+	}
+
+	/**
+	 * Return delivery estimate copy.
+	 *
+	 * @return array{title: string, value: string, note: string, aria: string}
+	 */
+	public static function get_delivery_estimate(): array {
+		$delivery_date = wp_date( 'M j', strtotime( '+5 weekdays' ) );
+
+		$data = array(
+			'title' => __( 'Entrega', 'shanelle' ),
+			'value' => sprintf(
+				/* translators: %s: estimated delivery date */
+				__( 'Llega el %s', 'shanelle' ),
+				$delivery_date
+			),
+			'note'  => __( 'Estimación · Express disponible al pagar', 'shanelle' ),
+			'aria'  => sprintf(
+				/* translators: %s: estimated delivery date */
+				__( 'Estimación de entrega: llega el %s. Ver detalles de envío.', 'shanelle' ),
+				$delivery_date
+			),
+		);
+
+		/**
+		 * Filter product page delivery estimate copy.
+		 *
+		 * @param array<string, string> $data Delivery estimate data.
+		 * @param \WC_Product           $product Product object.
+		 */
+		return apply_filters( 'shanelle_product_delivery_estimate', $data, self::get_product() );
 	}
 
 	/**
@@ -480,7 +592,7 @@ final class ProductPurchase {
 				'is_on_backorder' => false,
 				'is_low_stock'    => false,
 				'status'          => 'outofstock',
-				'label'           => __( 'Out of stock', 'shanelle' ),
+				'label'           => __( 'Agotado', 'shanelle' ),
 			);
 		}
 
@@ -490,7 +602,7 @@ final class ProductPurchase {
 				'is_on_backorder' => true,
 				'is_low_stock'    => false,
 				'status'          => 'onbackorder',
-				'label'           => __( 'Available on backorder', 'shanelle' ),
+				'label'           => __( 'Disponible bajo pedido', 'shanelle' ),
 			);
 		}
 
@@ -508,8 +620,8 @@ final class ProductPurchase {
 			'is_low_stock'    => $is_low_stock,
 			'status'          => $is_low_stock ? 'lowstock' : 'instock',
 			'label'           => $is_low_stock
-				? __( 'Low stock — order soon', 'shanelle' )
-				: __( 'In stock', 'shanelle' ),
+				? __( 'Poco stock — pide pronto', 'shanelle' )
+				: __( 'En stock', 'shanelle' ),
 		);
 	}
 }

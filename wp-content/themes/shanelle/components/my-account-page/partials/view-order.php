@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 <section class="my-account-page__section my-account-page__section--view-order" data-shanelle-account-endpoint="view-order">
 	<header class="my-account-page__order-detail-header">
 		<a class="my-account-page__back-link text-label" href="<?php echo esc_url( wc_get_account_endpoint_url( 'orders' ) ); ?>">
-			<?php esc_html_e( 'Back to orders', 'shanelle' ); ?>
+			<?php esc_html_e( 'Volver a pedidos', 'shanelle' ); ?>
 		</a>
 
 		<div class="my-account-page__order-detail-summary">
@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 				<?php
 				printf(
 					/* translators: %s: order number */
-					esc_html__( 'Order #%s', 'shanelle' ),
+					esc_html__( 'Pedido #%s', 'shanelle' ),
 					esc_html( $order['number'] )
 				);
 				?>

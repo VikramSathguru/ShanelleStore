@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) || exit;
 
 		<?php if ( MyAccountPage::show_shop_link() ) : ?>
 			<a class="my-account-page__shop-link text-label" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ?: home_url( '/' ) ); ?>">
-				<?php esc_html_e( 'Continue shopping', 'shanelle' ); ?>
+				<?php esc_html_e( 'Continuar comprando', 'shanelle' ); ?>
 			</a>
 		<?php endif; ?>
 	</header>

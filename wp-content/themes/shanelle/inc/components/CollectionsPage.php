@@ -96,8 +96,8 @@ final class CollectionsPage {
 		$wp_customize->add_section(
 			'shanelle_collections_page',
 			array(
-				'title'       => __( 'Collections Page', 'shanelle' ),
-				'description' => __( 'Configure the collections index page. Assign the Collections page template to a WordPress page.', 'shanelle' ),
+				'title'       => __( 'Página de colecciones', 'shanelle' ),
+				'description' => __( 'Configura la página índice de colecciones. Asigna la plantilla de Colecciones a una página de WordPress.', 'shanelle' ),
 				'priority'    => 174,
 			)
 		);
@@ -105,7 +105,7 @@ final class CollectionsPage {
 		$wp_customize->add_setting(
 			self::MOD_TITLE,
 			array(
-				'default'           => __( 'Collections', 'shanelle' ),
+				'default'           => __( 'Colecciones', 'shanelle' ),
 				'sanitize_callback' => 'sanitize_text_field',
 				'transport'         => 'refresh',
 			)
@@ -114,7 +114,7 @@ final class CollectionsPage {
 		$wp_customize->add_control(
 			self::MOD_TITLE,
 			array(
-				'label'   => __( 'Page title', 'shanelle' ),
+				'label'   => __( 'Título de la página', 'shanelle' ),
 				'section' => 'shanelle_collections_page',
 				'type'    => 'text',
 			)
@@ -123,7 +123,7 @@ final class CollectionsPage {
 		$wp_customize->add_setting(
 			self::MOD_INTRO,
 			array(
-				'default'           => __( 'Browse curated edits by season, featured picks, and campaigns.', 'shanelle' ),
+				'default'           => __( 'Explora ediciones curadas por temporada, destacados y campañas.', 'shanelle' ),
 				'sanitize_callback' => 'sanitize_textarea_field',
 				'transport'         => 'refresh',
 			)
@@ -132,7 +132,7 @@ final class CollectionsPage {
 		$wp_customize->add_control(
 			self::MOD_INTRO,
 			array(
-				'label'   => __( 'Intro copy', 'shanelle' ),
+				'label'   => __( 'Texto introductorio', 'shanelle' ),
 				'section' => 'shanelle_collections_page',
 				'type'    => 'textarea',
 			)
@@ -141,28 +141,28 @@ final class CollectionsPage {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_COUNTS,
-			__( 'Show product counts on cards', 'shanelle' ),
+			__( 'Mostrar cantidad de productos en las tarjetas', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_TYPE_BADGES,
-			__( 'Show collection type badges', 'shanelle' ),
+			__( 'Mostrar insignias del tipo de colección', 'shanelle' ),
 			false
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_ACTIVE_ONLY,
-			__( 'Hide inactive collections', 'shanelle' ),
+			__( 'Ocultar colecciones inactivas', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_GROUP_BY_TYPE,
-			__( 'Group collections by type', 'shanelle' ),
+			__( 'Agrupar colecciones por tipo', 'shanelle' ),
 			true
 		);
 	}
@@ -201,7 +201,7 @@ final class CollectionsPage {
 			array(
 				'initialState' => self::build_page_state(),
 				'i18n'         => array(
-					'pageTitle' => __( 'Collections', 'shanelle' ),
+					'pageTitle' => __( 'Colecciones', 'shanelle' ),
 				),
 			)
 		);
@@ -332,10 +332,10 @@ final class CollectionsPage {
 		shanelle_component(
 			'empty-state',
 			array(
-				'title'    => __( 'No collections available', 'shanelle' ),
-				'message'  => __( 'Check back soon for new curated edits.', 'shanelle' ),
+				'title'    => __( 'No hay colecciones disponibles', 'shanelle' ),
+				'message'  => __( 'Vuelve pronto para nuevas ediciones curadas.', 'shanelle' ),
 				'cta_url'  => wc_get_page_permalink( 'shop' ) ?: home_url( '/' ),
-				'cta_text' => __( 'Shop all', 'shanelle' ),
+				'cta_text' => __( 'Ver toda la tienda', 'shanelle' ),
 			)
 		);
 	}
@@ -374,7 +374,7 @@ final class CollectionsPage {
 	public static function get_page_title(): string {
 		$settings = is_array( self::$state['settings'] ?? null ) ? self::$state['settings'] : self::get_settings();
 
-		return (string) ( $settings['title'] ?? __( 'Collections', 'shanelle' ) );
+		return (string) ( $settings['title'] ?? __( 'Colecciones', 'shanelle' ) );
 	}
 
 	/**
@@ -438,10 +438,10 @@ final class CollectionsPage {
 		return apply_filters(
 			'shanelle_collections_page_settings',
 			array(
-				'title'          => self::get_theme_mod_string( self::MOD_TITLE, __( 'Collections', 'shanelle' ) ),
+				'title'          => self::get_theme_mod_string( self::MOD_TITLE, __( 'Colecciones', 'shanelle' ) ),
 				'intro'          => self::get_theme_mod_string(
 					self::MOD_INTRO,
-					__( 'Browse curated edits by season, featured picks, and campaigns.', 'shanelle' )
+					__( 'Explora ediciones curadas por temporada, destacados y campañas.', 'shanelle' )
 				),
 				'show_counts'    => self::get_theme_mod_bool( self::MOD_SHOW_COUNTS, true ),
 				'show_type_badges' => self::get_theme_mod_bool( self::MOD_SHOW_TYPE_BADGES, false ),

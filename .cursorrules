@@ -1,18 +1,13 @@
-# SHANELLE STORE
+1. Project Identity
+Project Name
 
-You are the Lead Software Architect responsible for building Shanelle Store.
+Shanelle Store
 
-This is a production ecommerce project.
+Premium minimalist WooCommerce fashion store.
 
-Never generate demo code.
+Target
 
-Never generate placeholder architecture unless requested.
-
-Always generate production ready code.
-
-==================================================
-PROJECT
-==================================================
+Women's fashion.
 
 Platform
 
@@ -22,204 +17,662 @@ WooCommerce
 
 PHP 8.3
 
-Hostinger
-
-Future PWA
-
 No Elementor.
 
 No Bootstrap.
 
-No jQuery unless WooCommerce requires it.
+Architecture is complete.
+
+Never redesign the architecture.
 
 ==================================================
-CLIENT GOAL
+DOCUMENTATION SOURCE OF TRUTH
 ==================================================
 
-Build a premium women's fashion ecommerce platform.
+The project's architectural source of truth is the /docs folder.
 
-Inspired by SHEIN.
+Entry point:
 
-This is NOT a clone.
+docs/README.md
 
-The design language should be
+Before making architectural decisions, Cursor must consult the relevant documents under /docs.
 
-Minimal
+Required reading depending on the task:
+
+• Architecture decisions → docs/PROJECT_ARCHITECTURE.md
+• Plugin vs custom code → docs/PLUGIN_FIRST_ARCHITECTURE.md
+• Theme structure → docs/THEME_ARCHITECTURE.md
+• Commerce surfaces → docs/WOOCOMMERCE_ARCHITECTURE.md
+• Request / cart / checkout flows → docs/DATA_FLOW.md
+• Installed plugins → docs/PLUGIN_DEPENDENCIES.md
+• Integrations / roadmap → docs/FUTURE_INTEGRATIONS.md
+• Security-sensitive work → docs/SECURITY.md
+• Performance-sensitive work → docs/PERFORMANCE.md
+• Deploy / Hostinger → docs/DEPLOYMENT.md
+• Status of features → docs/PROJECT_STATUS.md
+• Known debt → docs/TECH_DEBT.md
+
+Rules about documentation:
+
+• Treat /docs as authoritative for architecture and ownership.
+• Do not invent APIs, routes, or components that docs mark as "Not implemented yet."
+• Prefer documenting policy in /docs over expanding unspoken conventions.
+• When code and docs disagree on facts, believe the code and update the docs in the same change.
+• When proposing custom business logic, follow Plugin First and the Code Review Rule; cite which doc was consulted.
+• After meaningful architecture or integration changes, update the matching core doc.
+
+2. Architecture Rules
+Never rewrite controllers.
+Never duplicate business logic.
+Reuse existing components.
+Reuse Design System.
+Do not modify unrelated files.
+Consult /docs (especially PROJECT_ARCHITECTURE, THEME_ARCHITECTURE, PLUGIN_FIRST_ARCHITECTURE) before changing structure or ownership boundaries.
+
+3. Design Rules
+
+Design Style
+
+Premium
 
 Elegant
 
-Fast
+Minimal
 
-Mobile First
+Luxury
 
-Clean
+Soft pastel palette
 
-The client specifically requested
+Large whitespace
 
-No giant banners
+Large photography
+
+Editorial style
+
+Image first
 
 No clutter
 
-No left filter permanently visible
-
-Simple navigation
-
-Fast checkout
-
-WooCommerce manages
-
-Products
-
-Inventory
-
-Orders
-
-Coupons
-
-Shipping
-
-Payments
-
-==================================================
-DESIGN PRINCIPLES
-==================================================
-
-Pastel pink palette
-
-White backgrounds
-
-Lots of whitespace
+No heavy borders
 
 Rounded corners
 
-Soft shadows
+Subtle shadows
 
-Elegant typography
+Large typography
 
-Modern ecommerce UX
+Clean spacing
 
-Every UI component must be reusable.
+Mobile first
 
-==================================================
-ARCHITECTURE
-==================================================
+4. Coding Rules
+Business logic
 
-Component Based Architecture.
+PHP controllers only
 
-Every feature must be modular.
+Templates
 
-Keep business logic separate from templates.
+Markup only
 
-Keep CSS modular.
+CSS
 
-Keep JavaScript modular.
+Layout only
 
-Never generate one huge CSS file.
+JavaScript
 
-Never generate one huge PHP file.
+Interactions only
 
-==================================================
-PROJECT STRUCTURE
-==================================================
+No duplicated logic.
 
-components/
+No inline styles.
 
-inc/
+No inline scripts.
 
-woocommerce/
+5. Component Rules
+Always reuse
 
-template-parts/
+Hero Banner
 
-assets/
+Category Navigation
 
-css/
+Product Grid
 
-js/
+Product Card
 
-images/
+Product Gallery
 
-fonts/
+Product Summary
 
-==================================================
-CODING
-==================================================
+Product Purchase
 
-Follow WordPress Coding Standards.
+Product Information
 
-Follow WooCommerce Best Practices.
+Related Products
 
-Escape all output.
-
-Sanitize all input.
-
-Use WordPress hooks whenever possible.
-
-Never modify WooCommerce core.
-
-Never modify WordPress core.
-
-Explain every generated file.
-
-==================================================
-DESIGN SYSTEM
-==================================================
-
-Use CSS Variables.
-
-Use BEM.
-
-Mobile First.
-
-Accessibility First.
-
-Semantic HTML.
-
-==================================================
-PERFORMANCE
-==================================================
-
-Lazy Load Images.
-
-Responsive Images.
-
-Optimize Queries.
-
-Load assets only where needed.
-
-Prepare architecture for future PWA.
-
-==================================================
-SHOPPING EXPERIENCE
-==================================================
-
-Customer Flow
-
-Homepage
-
-↓
-
-Category
-
-↓
-
-Product
-
-↓
+Mini Cart
 
 Cart
 
-↓
-
 Checkout
 
-Do not introduce unnecessary navigation steps.
+Footer
+
+Design System
+
+Never recreate existing components.
+
+6. Plugin Policy
+Before writing custom code
+
+Ask
+
+Can WooCommerce do this?
+
+Can a mature plugin solve this?
+
+If yes
+
+Prefer plugin configuration.
+
+Only build custom code for branding or UX.
+
+7. Visual Design Policy
+
+When given
+
+Screenshot
+
+Figma
+
+Website URL
+
+Prototype
+
+Your task is
+
+Reproduce
+
+Layout
+
+Spacing
+
+Visual hierarchy
+
+Grid
+
+UX
+
+Interaction
+
+while preserving
+
+Architecture
+
+Business logic
+
+Components
+
+Never copy
+
+Logos
+
+Artwork
+
+Brand assets
+
+Copyrighted graphics.
+8. Output Rules
+At the end of every task explain
+
+Files modified
+
+Files created
+
+Components reused
+
+CSS changes
+
+Templates changed
+
+Animations changed
+
+Integration steps
+
+Git commit message
 
 ==================================================
-WHEN GENERATING CODE
+PROJECT VISION
 ==================================================
 
-Always think like a Senior WooCommerce Engineer.
+Shanelle Store is a premium women's fashion ecommerce platform inspired by the shopping experience of SHEIN.
 
-Prefer long term maintainability over shortcuts.
+The objective is NOT to clone SHEIN.
 
-If a request would create technical debt, explain why and propose a better solution.
+The objective is to reproduce the same level of usability, shopping flow, product discovery, and mobile-first experience while maintaining a unique Shanelle brand identity.
+
+The visual identity must use soft pastel colors, especially pastel pinks, warm neutrals, and elegant feminine tones.
+
+Never copy SHEIN branding, logos, graphics, copyrighted assets, or proprietary layouts.
+
+Instead, reproduce the following UX principles:
+
+• Image-first shopping experience
+• Fast browsing
+• Large product grids
+• Minimal cognitive load
+• Clean product pages
+• Mobile-first interactions
+• Quick product discovery
+• Simple checkout flow
+• Smooth navigation
+• Premium fashion presentation
+
+==================================================
+BUSINESS OBJECTIVES
+==================================================
+
+The primary objective is to create a scalable women's fashion store for the Nicaragua market.
+
+The customer must be able to:
+
+• Manage products directly in WooCommerce.
+• Organize products by seasons.
+• Organize products by clothing type.
+• Organize products by collections.
+• Manage inventory.
+• Manage prices.
+• Manage promotions.
+• Manage coupons.
+• Receive online payments.
+
+The website must support future expansion into Latin America.
+
+The architecture should remain scalable.
+
+==================================================
+CATALOG EXPERIENCE
+==================================================
+
+The catalog experience should feel effortless.
+
+Example categories
+
+• Summer
+• Winter
+• Casual
+• Sleepwear
+• Dresses
+• Sportswear
+• Accessories
+
+Category pages should immediately display products.
+
+Never require unnecessary navigation.
+
+Users should reach a product in as few clicks as possible.
+
+Filtering must be simple.
+
+Product cards should prioritize photography.
+
+Product pages should emphasize
+
+Images
+
+Price
+
+Size
+
+Color
+
+Quantity
+
+Add to Cart
+
+Everything else is secondary.
+
+==================================================
+UX PRINCIPLES
+==================================================
+
+Reduce cognitive load.
+
+Avoid unnecessary menus.
+
+Avoid complex side navigation.
+
+Avoid information overload.
+
+Present product options directly inside the product page.
+
+Keep interfaces clean.
+
+Prioritize shopping over navigation.
+
+Every page should answer one question:
+
+"What does the customer want to do next?"
+
+The answer should always be obvious.
+
+==================================================
+PAYMENT
+==================================================
+
+WooCommerce remains the commerce engine.
+
+The design must support future integration with
+
+Stripe
+
+PayPal
+
+PixelPay
+
+BAC Credomatic
+
+Other Latin American payment gateways.
+
+Do not hardcode payment providers.
+
+Use WooCommerce gateways.
+
+==================================================
+HOSTING
+==================================================
+
+Development
+
+FlyEnv
+
+Production
+
+Hostinger
+
+Do not implement features that depend on a specific hosting provider.
+
+Keep deployment portable.
+
+Avoid vendor lock-in.
+
+==================================================
+PWA
+==================================================
+
+The website is the primary product.
+
+The PWA will be built only after the website is production complete.
+
+All components should remain PWA-ready.
+
+JavaScript modules should expose reusable APIs whenever appropriate.
+
+Do not build PWA-specific code until the web storefront is finalized.
+
+==================================================
+PLUGIN POLICY
+==================================================
+
+Before implementing any feature
+
+Check
+
+1. WooCommerce
+
+2. Mature WordPress plugins
+
+3. Custom development
+
+Custom development should only be used when it improves the Shanelle brand experience or when no reliable plugin exists.
+
+Prefer configuration over code whenever possible.
+
+See also: PLUGIN FIRST ARCHITECTURE below and docs/PLUGIN_FIRST_ARCHITECTURE.md.
+
+==================================================
+PLUGIN FIRST PRINCIPLE
+==================================================
+
+Shanelle Store follows a Plugin First Architecture.
+
+Before writing any code, Cursor must always determine whether the requested functionality already exists as a reliable WordPress or WooCommerce plugin.
+
+Never reinvent mature plugin functionality.
+
+Official guideline:
+
+docs/PLUGIN_FIRST_ARCHITECTURE.md
+
+==================================================
+THEME RESPONSIBILITY
+==================================================
+
+The theme is responsible only for
+
+• UI
+
+• UX
+
+• WooCommerce presentation
+
+• Components
+
+• Design System
+
+• Layout
+
+• Styling
+
+• Theme Customizer
+
+The theme must never become a business logic application.
+
+==================================================
+PLUGIN RESPONSIBILITY
+==================================================
+
+Plugins are responsible for
+
+SEO
+
+Analytics
+
+Payments
+
+Shipping
+
+Social Commerce
+
+Authentication
+
+Caching
+
+Security
+
+Forms
+
+Email
+
+Product Feeds
+
+Catalog Sync
+
+Pixels
+
+Tracking
+
+Any third-party service
+
+==================================================
+PLUGIN EVALUATION
+==================================================
+
+Before implementing a feature, Cursor must evaluate:
+
+1. Does an official plugin exist?
+
+2. Is it actively maintained?
+
+3. Is it WooCommerce compatible?
+
+4. Can it be extended using hooks?
+
+5. Does it solve at least 90 percent of the requirement?
+
+If YES
+
+Recommend using the plugin.
+
+If NO
+
+Document why.
+
+Only then write custom code.
+
+==================================================
+CUSTOM DEVELOPMENT
+==================================================
+
+Custom code is allowed only when
+
+No plugin exists.
+
+The plugin is abandoned.
+
+The plugin cannot satisfy business requirements.
+
+Performance requires replacement.
+
+The client explicitly requests custom implementation.
+
+==================================================
+INTEGRATION RULES
+==================================================
+
+Never place integration logic inside UI components.
+
+Integrations belong inside
+
+inc/integrations/
+
+Each integration must remain isolated.
+
+Examples
+
+inc/integrations/stripe
+
+inc/integrations/paypal
+
+inc/integrations/cargo-mobil
+
+inc/integrations/meta
+
+inc/integrations/tiktok
+
+inc/integrations/google
+
+==================================================
+PLUGIN COMPATIBILITY
+==================================================
+
+The theme must always remain compatible with
+
+WooCommerce
+
+Rank Math
+
+Meta for WooCommerce
+
+TikTok for WooCommerce
+
+Google Site Kit
+
+Stripe
+
+PayPal
+
+PixelPay
+
+BAC Credomatic
+
+LiteSpeed Cache
+
+Hostinger Cache
+
+Wordfence
+
+Fluent Forms
+
+WPML
+
+Polylang
+
+TranslatePress
+
+Advanced Custom Fields
+
+==================================================
+NEVER
+==================================================
+
+Never modify plugin files.
+
+Never overwrite plugin business logic.
+
+Never duplicate plugin functionality.
+
+Never bypass WooCommerce APIs.
+
+Never tightly couple the theme to a plugin.
+
+==================================================
+WHEN A PLUGIN IS INSTALLED
+==================================================
+
+The theme should
+
+Detect it.
+
+Enhance it.
+
+Style it.
+
+Extend it using hooks.
+
+Remain operational if the plugin is disabled whenever possible.
+
+==================================================
+LONG TERM ARCHITECTURE
+==================================================
+
+The project should always remain ready for
+
+PWA
+
+Mobile Apps
+
+REST API
+
+Headless Commerce
+
+Additional Payment Gateways
+
+Additional Shipping Providers
+
+Additional Social Commerce Platforms
+
+without requiring a theme rewrite.
+
+==================================================
+CODE REVIEW RULE
+==================================================
+
+Before proposing any custom implementation, Cursor must explicitly explain
+
+Why an existing plugin is insufficient.
+
+What business requirement cannot be achieved.
+
+Why custom code is justified.
+
+If this justification cannot be provided, Cursor should recommend the plugin instead.

@@ -88,7 +88,7 @@ final class Footer {
 
 		foreach ( self::MENU_LOCATIONS as $slug => $label ) {
 			/* translators: %s: footer menu column title */
-			$labels[ $slug ] = sprintf( __( 'Footer: %s', 'shanelle' ), $label );
+			$labels[ $slug ] = sprintf( __( 'Pie de página: %s', 'shanelle' ), $label );
 		}
 
 		register_nav_menus( $labels );
@@ -103,8 +103,8 @@ final class Footer {
 		$wp_customize->add_section(
 			'shanelle_footer',
 			array(
-				'title'       => __( 'Footer', 'shanelle' ),
-				'description' => __( 'Configure footer branding, menus, newsletter copy, and payment icons.', 'shanelle' ),
+				'title'       => __( 'Pie de página', 'shanelle' ),
+				'description' => __( 'Configura la marca del pie de página, menús, texto del boletín e íconos de pago.', 'shanelle' ),
 				'priority'    => 120,
 			)
 		);
@@ -112,7 +112,7 @@ final class Footer {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_LOGO,
-			__( 'Show logo', 'shanelle' ),
+			__( 'Mostrar logo', 'shanelle' ),
 			true
 		);
 
@@ -130,8 +130,8 @@ final class Footer {
 				$wp_customize,
 				self::MOD_LOGO,
 				array(
-					'label'       => __( 'Footer logo', 'shanelle' ),
-					'description' => __( 'Optional footer logo. Falls back to the site logo when empty.', 'shanelle' ),
+					'label'       => __( 'Logo del pie de página', 'shanelle' ),
+					'description' => __( 'Logo opcional del pie de página. Si está vacío, se usa el logo del sitio.', 'shanelle' ),
 					'section'     => 'shanelle_footer',
 					'mime_type'   => 'image',
 				)
@@ -141,7 +141,7 @@ final class Footer {
 		$wp_customize->add_setting(
 			self::MOD_BRAND_DESCRIPTION,
 			array(
-				'default'           => get_bloginfo( 'description', 'display' ) ?: __( 'Curated styles for every moment.', 'shanelle' ),
+				'default'           => get_bloginfo( 'description', 'display' ) ?: __( 'Estilos seleccionados para cada momento.', 'shanelle' ),
 				'sanitize_callback' => array( self::class, 'sanitize_textarea' ),
 				'transport'         => 'refresh',
 			)
@@ -150,7 +150,7 @@ final class Footer {
 		$wp_customize->add_control(
 			self::MOD_BRAND_DESCRIPTION,
 			array(
-				'label'   => __( 'Brand description', 'shanelle' ),
+				'label'   => __( 'Descripción de la marca', 'shanelle' ),
 				'section' => 'shanelle_footer',
 				'type'    => 'textarea',
 			)
@@ -159,34 +159,34 @@ final class Footer {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_SOCIAL,
-			__( 'Show social links', 'shanelle' ),
+			__( 'Mostrar redes sociales', 'shanelle' ),
 			true
 		);
 
-		self::register_url_control( $wp_customize, self::MOD_SOCIAL_INSTAGRAM, __( 'Instagram URL', 'shanelle' ) );
-		self::register_url_control( $wp_customize, self::MOD_SOCIAL_TIKTOK, __( 'TikTok URL', 'shanelle' ) );
-		self::register_url_control( $wp_customize, self::MOD_SOCIAL_PINTEREST, __( 'Pinterest URL', 'shanelle' ) );
-		self::register_url_control( $wp_customize, self::MOD_SOCIAL_FACEBOOK, __( 'Facebook URL', 'shanelle' ) );
-		self::register_url_control( $wp_customize, self::MOD_SOCIAL_YOUTUBE, __( 'YouTube URL', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_SOCIAL_INSTAGRAM, __( 'URL de Instagram', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_SOCIAL_TIKTOK, __( 'URL de TikTok', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_SOCIAL_PINTEREST, __( 'URL de Pinterest', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_SOCIAL_FACEBOOK, __( 'URL de Facebook', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_SOCIAL_YOUTUBE, __( 'URL de YouTube', 'shanelle' ) );
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_NEWSLETTER,
-			__( 'Show newsletter block', 'shanelle' ),
+			__( 'Mostrar bloque de boletín', 'shanelle' ),
 			true
 		);
 
 		self::register_text_control(
 			$wp_customize,
 			self::MOD_NEWSLETTER_TITLE,
-			__( 'Newsletter title', 'shanelle' ),
-			__( 'Join our list', 'shanelle' )
+			__( 'Título del boletín', 'shanelle' ),
+			__( 'Únete a nuestra lista', 'shanelle' )
 		);
 
 		$wp_customize->add_setting(
 			self::MOD_NEWSLETTER_DESCRIPTION,
 			array(
-				'default'           => __( 'Be the first to know about new arrivals, exclusive offers, and style edits.', 'shanelle' ),
+				'default'           => __( 'Sé la primera en saber de novedades, ofertas exclusivas y ediciones de estilo.', 'shanelle' ),
 				'sanitize_callback' => array( self::class, 'sanitize_textarea' ),
 				'transport'         => 'refresh',
 			)
@@ -195,7 +195,7 @@ final class Footer {
 		$wp_customize->add_control(
 			self::MOD_NEWSLETTER_DESCRIPTION,
 			array(
-				'label'   => __( 'Newsletter description', 'shanelle' ),
+				'label'   => __( 'Descripción del boletín', 'shanelle' ),
 				'section' => 'shanelle_footer',
 				'type'    => 'textarea',
 			)
@@ -204,15 +204,15 @@ final class Footer {
 		self::register_text_control(
 			$wp_customize,
 			self::MOD_COPYRIGHT,
-			__( 'Copyright text', 'shanelle' ),
-			'© {year} {site_name}. ' . __( 'All rights reserved.', 'shanelle' ),
-			__( 'Use {year} and {site_name} placeholders.', 'shanelle' )
+			__( 'Texto de copyright', 'shanelle' ),
+			'© {year} {site_name}. ' . __( 'Todos los derechos reservados.', 'shanelle' ),
+			__( 'Usa los marcadores {year} y {site_name}.', 'shanelle' )
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_PAYMENT_ICONS,
-			__( 'Show payment icons', 'shanelle' ),
+			__( 'Mostrar íconos de pago', 'shanelle' ),
 			true
 		);
 
@@ -228,8 +228,8 @@ final class Footer {
 		$wp_customize->add_control(
 			self::MOD_PAYMENT_ICONS,
 			array(
-				'label'       => __( 'Payment icons', 'shanelle' ),
-				'description' => __( 'Comma-separated slugs: visa, mastercard, amex, paypal, apple_pay, google_pay.', 'shanelle' ),
+				'label'       => __( 'Íconos de pago', 'shanelle' ),
+				'description' => __( 'Slugs separados por comas: visa, mastercard, amex, paypal, apple_pay, google_pay.', 'shanelle' ),
 				'section'     => 'shanelle_footer',
 				'type'        => 'text',
 			)
@@ -270,10 +270,10 @@ final class Footer {
 			array(
 				'initialState' => self::build_footer_state(),
 				'i18n'         => array(
-					'newsletterSuccess' => __( 'Thanks for subscribing. We will be in touch soon.', 'shanelle' ),
-					'newsletterInvalid' => __( 'Please enter a valid email address.', 'shanelle' ),
-					'menuExpand'        => __( 'Expand menu', 'shanelle' ),
-					'menuCollapse'      => __( 'Collapse menu', 'shanelle' ),
+					'newsletterSuccess' => __( 'Gracias por suscribirte. Pronto estaremos en contacto.', 'shanelle' ),
+					'newsletterInvalid' => __( 'Ingresa un correo electrónico válido.', 'shanelle' ),
+					'menuExpand'        => __( 'Expandir menú', 'shanelle' ),
+					'menuCollapse'      => __( 'Contraer menú', 'shanelle' ),
 				),
 			)
 		);
@@ -359,7 +359,7 @@ final class Footer {
 			return;
 		}
 		?>
-		<ul class="footer__social" aria-label="<?php esc_attr_e( 'Social media', 'shanelle' ); ?>">
+		<ul class="footer__social" aria-label="<?php esc_attr_e( 'Redes sociales', 'shanelle' ); ?>">
 			<?php foreach ( $links as $network => $url ) : ?>
 				<li>
 					<a
@@ -401,7 +401,7 @@ final class Footer {
 
 			<form class="footer__newsletter-form" data-shanelle-footer-newsletter novalidate>
 				<label class="footer__newsletter-label text-label" for="<?php echo esc_attr( self::get_newsletter_input_id() ); ?>">
-					<?php esc_html_e( 'Email address', 'shanelle' ); ?>
+					<?php esc_html_e( 'Correo electrónico', 'shanelle' ); ?>
 				</label>
 				<div class="footer__newsletter-row">
 					<input
@@ -409,13 +409,13 @@ final class Footer {
 						class="footer__newsletter-input input"
 						id="<?php echo esc_attr( self::get_newsletter_input_id() ); ?>"
 						name="footer_newsletter_email"
-						placeholder="<?php esc_attr_e( 'you@example.com', 'shanelle' ); ?>"
+						placeholder="<?php esc_attr_e( 'tu@ejemplo.com', 'shanelle' ); ?>"
 						autocomplete="email"
 						inputmode="email"
 						required
 					/>
 					<button type="submit" class="btn btn--primary footer__newsletter-submit">
-						<?php esc_html_e( 'Subscribe', 'shanelle' ); ?>
+						<?php esc_html_e( 'Suscribirme', 'shanelle' ); ?>
 					</button>
 				</div>
 				<p class="footer__newsletter-message text-caption" data-shanelle-footer-newsletter-message hidden></p>
@@ -518,7 +518,7 @@ final class Footer {
 			return;
 		}
 		?>
-		<ul class="footer__payments" aria-label="<?php esc_attr_e( 'Accepted payment methods', 'shanelle' ); ?>">
+		<ul class="footer__payments" aria-label="<?php esc_attr_e( 'Métodos de pago aceptados', 'shanelle' ); ?>">
 			<?php foreach ( $icons as $icon ) : ?>
 				<li class="footer__payment-item">
 					<span class="footer__payment-badge" aria-hidden="true"><?php echo esc_html( self::get_payment_label( (string) $icon ) ); ?></span>
@@ -589,7 +589,7 @@ final class Footer {
 				'logo_id'                 => self::get_theme_mod_int( self::MOD_LOGO, 0 ),
 				'brand_description'       => self::get_theme_mod_string(
 					self::MOD_BRAND_DESCRIPTION,
-					get_bloginfo( 'description', 'display' ) ?: __( 'Curated styles for every moment.', 'shanelle' )
+					get_bloginfo( 'description', 'display' ) ?: __( 'Estilos seleccionados para cada momento.', 'shanelle' )
 				),
 				'show_social'             => self::get_theme_mod_bool( self::MOD_SHOW_SOCIAL, true ),
 				'social_instagram'        => self::get_theme_mod_url( self::MOD_SOCIAL_INSTAGRAM ),
@@ -600,15 +600,15 @@ final class Footer {
 				'show_newsletter'         => self::get_theme_mod_bool( self::MOD_SHOW_NEWSLETTER, true ),
 				'newsletter_title'        => self::get_theme_mod_string(
 					self::MOD_NEWSLETTER_TITLE,
-					__( 'Join our list', 'shanelle' )
+					__( 'Únete a nuestra lista', 'shanelle' )
 				),
 				'newsletter_description'  => self::get_theme_mod_string(
 					self::MOD_NEWSLETTER_DESCRIPTION,
-					__( 'Be the first to know about new arrivals, exclusive offers, and style edits.', 'shanelle' )
+					__( 'Sé la primera en saber de novedades, ofertas exclusivas y ediciones de estilo.', 'shanelle' )
 				),
 				'copyright'               => self::get_theme_mod_string(
 					self::MOD_COPYRIGHT,
-					'© {year} {site_name}. ' . __( 'All rights reserved.', 'shanelle' )
+					'© {year} {site_name}. ' . __( 'Todos los derechos reservados.', 'shanelle' )
 				),
 				'show_payment_icons'      => self::get_theme_mod_bool( self::MOD_SHOW_PAYMENT_ICONS, true ),
 				'payment_icons'           => self::get_theme_mod_string(

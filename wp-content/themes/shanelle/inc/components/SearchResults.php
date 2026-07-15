@@ -83,11 +83,11 @@ final class SearchResults {
 		$settings = SearchOverlay::get_settings();
 		?>
 		<div class="search-results search-results--empty" data-shanelle-search-empty>
-			<p class="search-results__empty-title text-h3"><?php esc_html_e( 'No results found', 'shanelle' ); ?></p>
+			<p class="search-results__empty-title text-h3"><?php esc_html_e( 'No se encontraron resultados', 'shanelle' ); ?></p>
 			<p class="search-results__empty-message text-muted">
 				<?php
 				echo esc_html(
-					(string) ( $settings['empty_message'] ?? __( 'Try another keyword or browse our popular searches.', 'shanelle' ) )
+					(string) ( $settings['empty_message'] ?? __( 'Prueba con otra palabra o explora nuestras búsquedas populares.', 'shanelle' ) )
 				);
 				?>
 			</p>
@@ -95,7 +95,7 @@ final class SearchResults {
 				<a class="btn btn--outline search-results__view-all" href="<?php echo esc_url( SearchController::get_results_url( $query ) ); ?>">
 					<?php
 					/* translators: %s: search query */
-					printf( esc_html__( 'View all results for "%s"', 'shanelle' ), esc_html( $query ) );
+					printf( esc_html__( 'Ver todos los resultados de "%s"', 'shanelle' ), esc_html( $query ) );
 					?>
 				</a>
 			<?php endif; ?>
@@ -114,9 +114,9 @@ final class SearchResults {
 			return;
 		}
 		?>
-		<section class="search-results__section" aria-label="<?php esc_attr_e( 'Product suggestions', 'shanelle' ); ?>">
-			<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Products', 'shanelle' ); ?></h3>
-			<ul class="search-results__list" role="listbox" aria-label="<?php esc_attr_e( 'Product suggestions', 'shanelle' ); ?>">
+		<section class="search-results__section" aria-label="<?php esc_attr_e( 'Sugerencias de productos', 'shanelle' ); ?>">
+			<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Productos', 'shanelle' ); ?></h3>
+			<ul class="search-results__list" role="listbox" aria-label="<?php esc_attr_e( 'Sugerencias de productos', 'shanelle' ); ?>">
 				<?php
 				foreach ( $products as $product ) {
 					if ( $product instanceof \WC_Product ) {
@@ -166,7 +166,7 @@ final class SearchResults {
 					<span class="badge badge--sale search-results__badge"><?php echo esc_html( (string) $data['sale_badge'] ); ?></span>
 				<?php endif; ?>
 
-				<span class="search-results__quick text-caption"><?php esc_html_e( 'View', 'shanelle' ); ?></span>
+				<span class="search-results__quick text-caption"><?php esc_html_e( 'Ver', 'shanelle' ); ?></span>
 			</a>
 		</li>
 		<?php
@@ -183,9 +183,9 @@ final class SearchResults {
 			return;
 		}
 		?>
-		<section class="search-results__section" aria-label="<?php esc_attr_e( 'Category suggestions', 'shanelle' ); ?>">
-			<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Categories', 'shanelle' ); ?></h3>
-			<ul class="search-results__list search-results__list--terms" role="listbox" aria-label="<?php esc_attr_e( 'Category suggestions', 'shanelle' ); ?>">
+		<section class="search-results__section" aria-label="<?php esc_attr_e( 'Sugerencias de categorías', 'shanelle' ); ?>">
+			<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Categorías', 'shanelle' ); ?></h3>
+			<ul class="search-results__list search-results__list--terms" role="listbox" aria-label="<?php esc_attr_e( 'Sugerencias de categorías', 'shanelle' ); ?>">
 				<?php
 				foreach ( $categories as $term ) {
 					if ( $term instanceof \WP_Term ) {
@@ -209,9 +209,9 @@ final class SearchResults {
 			return;
 		}
 		?>
-		<section class="search-results__section" aria-label="<?php esc_attr_e( 'Collection suggestions', 'shanelle' ); ?>">
-			<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Collections', 'shanelle' ); ?></h3>
-			<ul class="search-results__list search-results__list--terms" role="listbox" aria-label="<?php esc_attr_e( 'Collection suggestions', 'shanelle' ); ?>">
+		<section class="search-results__section" aria-label="<?php esc_attr_e( 'Sugerencias de colecciones', 'shanelle' ); ?>">
+			<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Colecciones', 'shanelle' ); ?></h3>
+			<ul class="search-results__list search-results__list--terms" role="listbox" aria-label="<?php esc_attr_e( 'Sugerencias de colecciones', 'shanelle' ); ?>">
 				<?php
 				foreach ( $collections as $term ) {
 					if ( $term instanceof \WP_Term ) {
@@ -235,8 +235,8 @@ final class SearchResults {
 		}
 
 		$label = 'collection' === $type
-			? __( 'Collection', 'shanelle' )
-			: __( 'Category', 'shanelle' );
+			? __( 'Colección', 'shanelle' )
+			: __( 'Categoría', 'shanelle' );
 		?>
 		<li
 			class="search-results__item search-results__item--term search-results__item--<?php echo esc_attr( $type ); ?>"
@@ -247,7 +247,7 @@ final class SearchResults {
 			<a class="search-results__link search-results__link--term" href="<?php echo esc_url( $link ); ?>">
 				<span class="search-results__term-label text-caption text-muted"><?php echo esc_html( $label ); ?></span>
 				<span class="search-results__title text-label"><?php echo wp_kses_post( SearchController::highlight_query( $term->name, $query ) ); ?></span>
-				<span class="search-results__quick text-caption"><?php esc_html_e( 'Browse', 'shanelle' ); ?></span>
+				<span class="search-results__quick text-caption"><?php esc_html_e( 'Explorar', 'shanelle' ); ?></span>
 			</a>
 		</li>
 		<?php
@@ -263,8 +263,8 @@ final class SearchResults {
 			return;
 		}
 		?>
-		<section class="search-results__section search-results__section--popular" aria-label="<?php esc_attr_e( 'Popular searches', 'shanelle' ); ?>">
-			<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Popular searches', 'shanelle' ); ?></h3>
+		<section class="search-results__section search-results__section--popular" aria-label="<?php esc_attr_e( 'Búsquedas populares', 'shanelle' ); ?>">
+			<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Búsquedas populares', 'shanelle' ); ?></h3>
 			<ul class="search-results__chips" role="list">
 				<?php foreach ( $popular as $term ) : ?>
 					<li>
@@ -288,11 +288,11 @@ final class SearchResults {
 	 */
 	public static function render_recent_searches_shell(): void {
 		?>
-		<section class="search-results__section search-results__section--recent" data-shanelle-search-recent hidden aria-label="<?php esc_attr_e( 'Recent searches', 'shanelle' ); ?>">
+		<section class="search-results__section search-results__section--recent" data-shanelle-search-recent hidden aria-label="<?php esc_attr_e( 'Búsquedas recientes', 'shanelle' ); ?>">
 			<div class="search-results__section-head">
-				<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Recent searches', 'shanelle' ); ?></h3>
+				<h3 class="search-results__section-title text-label"><?php esc_html_e( 'Búsquedas recientes', 'shanelle' ); ?></h3>
 				<button type="button" class="search-results__clear-recent text-caption" data-shanelle-search-clear-recent hidden>
-					<?php esc_html_e( 'Clear', 'shanelle' ); ?>
+					<?php esc_html_e( 'Borrar', 'shanelle' ); ?>
 				</button>
 			</div>
 			<ul class="search-results__chips" data-shanelle-search-recent-list role="list"></ul>
@@ -314,7 +314,7 @@ final class SearchResults {
 			<a class="btn btn--outline btn--block search-results__view-all" href="<?php echo esc_url( SearchController::get_results_url( $query ) ); ?>">
 				<?php
 				/* translators: %s: search query */
-				printf( esc_html__( 'View all results for "%s"', 'shanelle' ), esc_html( $query ) );
+				printf( esc_html__( 'Ver todos los resultados de "%s"', 'shanelle' ), esc_html( $query ) );
 				?>
 			</a>
 		</div>

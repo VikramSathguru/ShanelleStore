@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 	data-shanelle-product-variations
 	data-product-id="<?php echo esc_attr( (string) ProductVariations::get_render_product_id() ); ?>"
 	role="group"
-	aria-label="<?php esc_attr_e( 'Product options', 'shanelle' ); ?>"
+	aria-label="<?php esc_attr_e( 'Opciones del producto', 'shanelle' ); ?>"
 >
 	<?php ProductVariations::render_attribute_groups(); ?>
 

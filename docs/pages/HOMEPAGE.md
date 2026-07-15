@@ -8,9 +8,14 @@ The homepage is composed by the `Homepage` page controller. It does not duplicat
 
 ## Composition order
 
-1. `HeroBanner`
-2. `CategoryNavigation`
-3. Homepage product sections (`ProductGrid` + `ProductCard`)
+Live markup in `components/homepage/homepage.php`:
+
+1. `HeroBanner` via `Homepage::render_hero()`
+2. Category icon grid (`Homepage::render_category_icons()`)
+3. Featured collection rails (`Homepage::render_featured_collections()`)
+4. For You product feed (`Homepage::render_for_you_grid()` → `ProductGrid` + `ProductCard`)
+
+Unused helpers still exist for alternate compositions (`render_hero_promo()`, `render_category_navigation()`, `render_product_sections()`) but are **not** called by the live template.
 
 ## Controller
 
@@ -24,9 +29,10 @@ Panel: **Appearance → Customize → Shanelle Homepage**
 
 | Section | Controls |
 |---------|----------|
-| Hero Banner | Managed by `HeroBanner` |
-| Category Navigation | Managed by `CategoryNavigation` |
-| Product Sections | Two configurable grids (enable, title, subtitle, sort, limit, collection filter, view-all link) |
+| Hero Banner | Managed by `HeroBanner` (image, copy, CTAs, overlay) |
+| Category Navigation | Managed by `CategoryNavigation` (component exists; not in live homepage composition) |
+| Product Sections | Two configurable grids (Customizer registered; not in live homepage composition) |
+| For You Grid | Title, limit, sort for the main homepage feed |
 
 ## Filters
 
@@ -51,14 +57,14 @@ shanelle_homepage();
 
 ## Requirements
 
-- WooCommerce active for product sections
+- WooCommerce active for category icons, featured rails, and For You grid
 - Published products for grids to populate
-- Top-level product categories for category navigation
-- Customizer content configured for hero and section headings
+- Top-level product categories with thumbnails for best category-icon presentation
+- Customizer hero image/copy configured for a branded first viewport (fallback gradient renders if media is empty)
 
 ## Extending
 
-Add a third product section via filter:
+Add a third product section via filter (used only if `render_product_sections()` is composed):
 
 ```php
 add_filter( 'shanelle_homepage_sections', function ( array $sections ) {

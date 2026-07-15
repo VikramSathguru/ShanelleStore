@@ -89,8 +89,8 @@ final class CategoryNavigation {
 			$wp_customize->add_panel(
 				'shanelle_homepage',
 				array(
-					'title'       => __( 'Shanelle Homepage', 'shanelle' ),
-					'description' => __( 'Configure homepage sections.', 'shanelle' ),
+					'title'       => __( 'Inicio Shanelle', 'shanelle' ),
+					'description' => __( 'Configura las secciones de la página de inicio.', 'shanelle' ),
 					'priority'    => 160,
 				)
 			);
@@ -99,15 +99,15 @@ final class CategoryNavigation {
 		$wp_customize->add_section(
 			'shanelle_category_navigation',
 			array(
-				'title'       => __( 'Category Navigation', 'shanelle' ),
-				'description' => __( 'Second homepage section. Displays top-level WooCommerce categories.', 'shanelle' ),
+				'title'       => __( 'Navegación de categorías', 'shanelle' ),
+				'description' => __( 'Segunda sección de la página de inicio. Muestra las categorías principales de WooCommerce.', 'shanelle' ),
 				'panel'       => 'shanelle_homepage',
 				'priority'    => 20,
 			)
 		);
 
-		self::register_text_control( $wp_customize, self::MOD_TITLE, __( 'Section title', 'shanelle' ) );
-		self::register_textarea_control( $wp_customize, self::MOD_SUBTITLE, __( 'Section subtitle', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_TITLE, __( 'Título de la sección', 'shanelle' ) );
+		self::register_textarea_control( $wp_customize, self::MOD_SUBTITLE, __( 'Subtítulo de la sección', 'shanelle' ) );
 
 		$wp_customize->add_setting(
 			self::MOD_MAX,
@@ -121,8 +121,8 @@ final class CategoryNavigation {
 		$wp_customize->add_control(
 			self::MOD_MAX,
 			array(
-				'label'       => __( 'Maximum categories', 'shanelle' ),
-				'description' => __( 'Limit the number of top-level categories shown.', 'shanelle' ),
+				'label'       => __( 'Máximo de categorías', 'shanelle' ),
+				'description' => __( 'Limita la cantidad de categorías principales mostradas.', 'shanelle' ),
 				'section'     => 'shanelle_category_navigation',
 				'type'        => 'number',
 				'input_attrs' => array(
@@ -136,21 +136,21 @@ final class CategoryNavigation {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_IMAGE,
-			__( 'Show category image', 'shanelle' ),
+			__( 'Mostrar imagen de categoría', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_COUNT,
-			__( 'Show product count', 'shanelle' ),
+			__( 'Mostrar cantidad de productos', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_ROUND_STYLE,
-			__( 'Round icon style', 'shanelle' ),
+			__( 'Estilo de ícono redondo', 'shanelle' ),
 			true
 		);
 
@@ -166,13 +166,13 @@ final class CategoryNavigation {
 		$wp_customize->add_control(
 			self::MOD_LAYOUT,
 			array(
-				'label'   => __( 'Layout', 'shanelle' ),
+				'label'   => __( 'Diseño', 'shanelle' ),
 				'section' => 'shanelle_category_navigation',
 				'type'    => 'select',
 				'choices' => array(
-					'responsive' => __( 'Grid on desktop, horizontal scroll on mobile', 'shanelle' ),
-					'grid'       => __( 'Grid at all screen sizes', 'shanelle' ),
-					'scroll'     => __( 'Horizontal scroll at all screen sizes', 'shanelle' ),
+					'responsive' => __( 'Cuadrícula en escritorio, desplazamiento horizontal en móvil', 'shanelle' ),
+					'grid'       => __( 'Cuadrícula en todos los tamaños de pantalla', 'shanelle' ),
+					'scroll'     => __( 'Desplazamiento horizontal en todos los tamaños de pantalla', 'shanelle' ),
 				),
 			)
 		);
@@ -219,10 +219,10 @@ final class CategoryNavigation {
 			array(
 				'layout' => (string) self::get_settings()['layout'],
 				'i18n'   => array(
-					'navLabel'      => __( 'Browse product categories', 'shanelle' ),
-					'productCount'  => __( '%d products', 'shanelle' ),
-					'scrollPrev'    => __( 'Scroll categories backward', 'shanelle' ),
-					'scrollNext'    => __( 'Scroll categories forward', 'shanelle' ),
+					'navLabel'      => __( 'Explorar categorías de productos', 'shanelle' ),
+					'productCount'  => __( '%d productos', 'shanelle' ),
+					'scrollPrev'    => __( 'Desplazar categorías hacia atrás', 'shanelle' ),
+					'scrollNext'    => __( 'Desplazar categorías hacia adelante', 'shanelle' ),
 				),
 			)
 		);
@@ -327,7 +327,7 @@ final class CategoryNavigation {
 							echo esc_html(
 								sprintf(
 									/* translators: %d: number of products */
-									_n( '%d product', '%d products', $count, 'shanelle' ),
+									_n( '%d producto', '%d productos', $count, 'shanelle' ),
 									$count
 								)
 							);

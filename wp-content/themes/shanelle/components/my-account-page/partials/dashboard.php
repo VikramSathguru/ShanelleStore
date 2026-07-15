@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php
 			printf(
 				/* translators: %s: user display name */
-				esc_html__( 'Hello %s, manage your orders, addresses, and account settings from here.', 'shanelle' ),
+				esc_html__( 'Hola %s, administra tus pedidos, direcciones y configuración de cuenta desde aquí.', 'shanelle' ),
 				esc_html( $user->display_name )
 			);
 			?>
@@ -35,9 +35,9 @@ defined( 'ABSPATH' ) || exit;
 
 	<div class="my-account-page__subsection">
 		<div class="my-account-page__subsection-header">
-			<h2 class="my-account-page__subsection-title text-h3"><?php esc_html_e( 'Recent orders', 'shanelle' ); ?></h2>
+			<h2 class="my-account-page__subsection-title text-h3"><?php esc_html_e( 'Pedidos recientes', 'shanelle' ); ?></h2>
 			<a class="my-account-page__subsection-link text-label" href="<?php echo esc_url( $orders_url ); ?>">
-				<?php esc_html_e( 'View all', 'shanelle' ); ?>
+				<?php esc_html_e( 'Ver todos', 'shanelle' ); ?>
 			</a>
 		</div>
 
@@ -54,10 +54,10 @@ defined( 'ABSPATH' ) || exit;
 				<?php
 				MyAccountPage::render_empty_state(
 					array(
-						'title'    => __( 'No orders yet', 'shanelle' ),
-						'message'  => __( 'When you place an order, it will appear here.', 'shanelle' ),
+						'title'    => __( 'Aún no hay pedidos', 'shanelle' ),
+						'message'  => __( 'Cuando realices un pedido, aparecerá aquí.', 'shanelle' ),
 						'cta_url'  => wc_get_page_permalink( 'shop' ) ?: home_url( '/' ),
-						'cta_text' => __( 'Start shopping', 'shanelle' ),
+						'cta_text' => __( 'Empezar a comprar', 'shanelle' ),
 					)
 				);
 				?>

@@ -108,11 +108,11 @@ final class ProductSummary {
 			'shanelleProductSummary',
 			array(
 				'i18n' => array(
-					'inStock'       => __( 'In stock', 'shanelle' ),
-					'outOfStock'    => __( 'Out of stock', 'shanelle' ),
-					'onBackorder'   => __( 'Available on backorder', 'shanelle' ),
-					'lowStock'      => __( 'Low stock', 'shanelle' ),
-					'priceUpdated'  => __( 'Price updated', 'shanelle' ),
+					'inStock'       => __( 'En stock', 'shanelle' ),
+					'outOfStock'    => __( 'Agotado', 'shanelle' ),
+					'onBackorder'   => __( 'Disponible bajo pedido', 'shanelle' ),
+					'lowStock'      => __( 'Poco stock', 'shanelle' ),
+					'priceUpdated'  => __( 'Precio actualizado', 'shanelle' ),
 				),
 			)
 		);
@@ -141,15 +141,18 @@ final class ProductSummary {
 	}
 
 	/**
-	 * Render brand placeholder.
+	 * Render brand when a real value exists.
 	 */
 	public static function render_brand(): void {
+		$brand = self::get_brand_label();
+
+		if ( '' === $brand ) {
+			return;
+		}
 		?>
 		<p class="product-summary__brand text-label text-muted" data-shanelle-summary-brand>
-			<span class="product-summary__brand-label"><?php esc_html_e( 'Brand', 'shanelle' ); ?></span>
-			<span class="product-summary__brand-value" aria-disabled="true">
-				<?php esc_html_e( 'Coming soon', 'shanelle' ); ?>
-			</span>
+			<span class="product-summary__brand-label"><?php esc_html_e( 'Marca', 'shanelle' ); ?></span>
+			<span class="product-summary__brand-value"><?php echo esc_html( $brand ); ?></span>
 		</p>
 		<?php
 	}
@@ -190,7 +193,7 @@ final class ProductSummary {
 
 			<?php if ( $has_rating ) : ?>
 				<div class="product-summary__meta-item product-summary__meta-item--rating">
-					<dt class="sr-only"><?php esc_html_e( 'Customer rating', 'shanelle' ); ?></dt>
+					<dt class="sr-only"><?php esc_html_e( 'Valoración de clientes', 'shanelle' ); ?></dt>
 					<dd class="product-summary__rating">
 						<?php echo wp_kses_post( $rating['html'] ); ?>
 						<a class="product-summary__review-link text-caption" href="#reviews">
@@ -234,7 +237,7 @@ final class ProductSummary {
 			data-price-json="<?php echo esc_attr( wp_json_encode( self::get_price_json() ) ?: '{}' ); ?>"
 		>
 			<p class="product-summary__price-current text-price">
-				<span class="sr-only"><?php esc_html_e( 'Current price', 'shanelle' ); ?></span>
+				<span class="sr-only"><?php esc_html_e( 'Precio actual', 'shanelle' ); ?></span>
 				<span class="product-summary__price-value" data-shanelle-summary-price-current>
 					<?php echo wp_kses_post( $data['current_html'] ); ?>
 				</span>
@@ -242,7 +245,7 @@ final class ProductSummary {
 
 			<?php if ( $is_variable || $show_regular ) : ?>
 				<p class="product-summary__price-regular<?php echo $show_regular ? '' : ' sr-only'; ?>">
-					<span class="sr-only"><?php esc_html_e( 'Original price', 'shanelle' ); ?></span>
+					<span class="sr-only"><?php esc_html_e( 'Precio original', 'shanelle' ); ?></span>
 					<span class="product-summary__price-value product-summary__price-value--regular" data-shanelle-summary-price-regular>
 						<?php echo wp_kses_post( $data['regular_html'] ); ?>
 					</span>
@@ -300,21 +303,97 @@ final class ProductSummary {
 	}
 
 	/**
-	 * Render product highlights placeholder list.
+	 * Render product highlights when real items exist.
 	 */
 	public static function render_highlights(): void {
+		$highlights = self::get_highlights();
+
+		if ( empty( $highlights ) ) {
+			return;
+		}
 		?>
 		<section class="product-summary__highlights" aria-labelledby="<?php echo esc_attr( self::get_highlights_id() ); ?>" data-shanelle-summary-highlights>
 			<h2 id="<?php echo esc_attr( self::get_highlights_id() ); ?>" class="product-summary__highlights-title text-label">
-				<?php esc_html_e( 'Highlights', 'shanelle' ); ?>
+				<?php esc_html_e( 'Destacados', 'shanelle' ); ?>
 			</h2>
-			<ul class="product-summary__highlights-list" aria-disabled="true">
-				<li class="product-summary__highlights-item product-summary__highlights-item--placeholder">
-					<?php esc_html_e( 'Product highlights coming soon', 'shanelle' ); ?>
-				</li>
+			<ul class="product-summary__highlights-list">
+				<?php foreach ( $highlights as $highlight ) : ?>
+					<li class="product-summary__highlights-item">
+						<?php echo esc_html( $highlight ); ?>
+					</li>
+				<?php endforeach; ?>
 			</ul>
 		</section>
 		<?php
+	}
+
+	/**
+	 * Resolve brand label from product attributes/taxonomies.
+	 */
+	public static function get_brand_label(): string {
+		$product = self::get_product();
+		$brand   = '';
+
+		foreach ( array( 'pa_brand', 'brand', 'pa_marca' ) as $attribute ) {
+			$value = $product->get_attribute( $attribute );
+
+			if ( is_string( $value ) && '' !== trim( $value ) ) {
+				$brand = trim( $value );
+				break;
+			}
+		}
+
+		if ( '' === $brand && taxonomy_exists( 'product_brand' ) ) {
+			$terms = get_the_terms( $product->get_id(), 'product_brand' );
+
+			if ( is_array( $terms ) && ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+				$names = array_map(
+					static function ( $term ): string {
+						return $term instanceof \WP_Term ? $term->name : '';
+					},
+					$terms
+				);
+				$names = array_values( array_filter( $names ) );
+
+				if ( ! empty( $names ) ) {
+					$brand = implode( ', ', $names );
+				}
+			}
+		}
+
+		$brand = apply_filters( 'shanelle_product_summary_brand', $brand, $product );
+
+		return is_string( $brand ) ? trim( $brand ) : '';
+	}
+
+	/**
+	 * Resolve highlight bullets for the summary.
+	 *
+	 * @return array<int, string>
+	 */
+	public static function get_highlights(): array {
+		$product    = self::get_product();
+		$highlights = apply_filters( 'shanelle_product_summary_highlights', array(), $product );
+
+		if ( ! is_array( $highlights ) ) {
+			return array();
+		}
+
+		$cleaned = array();
+
+		foreach ( $highlights as $highlight ) {
+			if ( ! is_string( $highlight ) ) {
+				continue;
+			}
+
+			$highlight = trim( wp_strip_all_tags( $highlight ) );
+
+			if ( '' !== $highlight ) {
+				$cleaned[] = $highlight;
+			}
+		}
+
+		return array_values( array_unique( $cleaned ) );
 	}
 
 	/**
@@ -427,7 +506,7 @@ final class ProductSummary {
 			'html'        => is_string( $html ) ? $html : '',
 			'review_text' => sprintf(
 				/* translators: %d: number of reviews */
-				_n( '%d review', '%d reviews', $count, 'shanelle' ),
+				_n( '%d reseña', '%d reseñas', $count, 'shanelle' ),
 				$count
 			),
 		);
@@ -449,7 +528,7 @@ final class ProductSummary {
 			return array(
 				'show'   => true,
 				'status' => 'outofstock',
-				'label'  => '' !== $label ? $label : __( 'Out of stock', 'shanelle' ),
+				'label'  => '' !== $label ? $label : __( 'Agotado', 'shanelle' ),
 			);
 		}
 
@@ -457,7 +536,7 @@ final class ProductSummary {
 			return array(
 				'show'   => true,
 				'status' => 'onbackorder',
-				'label'  => '' !== $label ? $label : __( 'Available on backorder', 'shanelle' ),
+				'label'  => '' !== $label ? $label : __( 'Disponible bajo pedido', 'shanelle' ),
 			);
 		}
 
@@ -469,7 +548,7 @@ final class ProductSummary {
 				return array(
 					'show'   => true,
 					'status' => 'lowstock',
-					'label'  => '' !== $label ? $label : __( 'Low stock', 'shanelle' ),
+					'label'  => '' !== $label ? $label : __( 'Poco stock', 'shanelle' ),
 				);
 			}
 		}
@@ -477,7 +556,7 @@ final class ProductSummary {
 		return array(
 			'show'   => true,
 			'status' => 'instock',
-			'label'  => '' !== $label ? $label : __( 'In stock', 'shanelle' ),
+			'label'  => '' !== $label ? $label : __( 'En stock', 'shanelle' ),
 		);
 	}
 }

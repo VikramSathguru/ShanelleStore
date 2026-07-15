@@ -105,8 +105,8 @@ final class CheckoutPage {
 		$wp_customize->add_section(
 			'shanelle_checkout_page',
 			array(
-				'title'       => __( 'Checkout Page', 'shanelle' ),
-				'description' => __( 'Configure checkout page presentation.', 'shanelle' ),
+				'title'       => __( 'Página de pago', 'shanelle' ),
+				'description' => __( 'Configura la presentación de la página de pago.', 'shanelle' ),
 				'priority'    => 171,
 			)
 		);
@@ -114,21 +114,21 @@ final class CheckoutPage {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_THUMBNAILS,
-			__( 'Show product thumbnails in order summary', 'shanelle' ),
+			__( 'Mostrar miniaturas de productos en el resumen del pedido', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_TRUST_MESSAGE,
-			__( 'Show secure checkout message', 'shanelle' ),
+			__( 'Mostrar mensaje de pago seguro', 'shanelle' ),
 			true
 		);
 
 		$wp_customize->add_setting(
 			self::MOD_EDIT_CART_LABEL,
 			array(
-				'default'           => __( 'Edit bag', 'shanelle' ),
+				'default'           => __( 'Editar bolsa', 'shanelle' ),
 				'sanitize_callback' => 'sanitize_text_field',
 				'transport'         => 'refresh',
 			)
@@ -137,7 +137,7 @@ final class CheckoutPage {
 		$wp_customize->add_control(
 			self::MOD_EDIT_CART_LABEL,
 			array(
-				'label'   => __( 'Edit bag link label', 'shanelle' ),
+				'label'   => __( 'Etiqueta del enlace editar bolsa', 'shanelle' ),
 				'section' => 'shanelle_checkout_page',
 				'type'    => 'text',
 			)
@@ -179,15 +179,15 @@ final class CheckoutPage {
 				'cartUrl'      => wc_get_cart_url(),
 				'initialState' => self::build_page_state(),
 				'i18n'         => array(
-					'pageTitle'       => __( 'Checkout', 'shanelle' ),
-					'orderSummary'    => __( 'Order summary', 'shanelle' ),
-					'billingDetails'  => __( 'Billing details', 'shanelle' ),
-					'shippingDetails' => __( 'Shipping details', 'shanelle' ),
-					'payment'         => __( 'Payment', 'shanelle' ),
-					'secureCheckout'  => __( 'Secure checkout', 'shanelle' ),
-					'updated'         => __( 'Order summary updated', 'shanelle' ),
-					'validationError' => __( 'Please correct the errors below before placing your order.', 'shanelle' ),
-					'shippingMethods' => __( 'Shipping method', 'shanelle' ),
+					'pageTitle'       => __( 'Pagar', 'shanelle' ),
+					'orderSummary'    => __( 'Resumen del pedido', 'shanelle' ),
+					'billingDetails'  => __( 'Datos de facturación', 'shanelle' ),
+					'shippingDetails' => __( 'Datos de envío', 'shanelle' ),
+					'payment'         => __( 'Pago', 'shanelle' ),
+					'secureCheckout'  => __( 'Pago seguro', 'shanelle' ),
+					'updated'         => __( 'Resumen del pedido actualizado', 'shanelle' ),
+					'validationError' => __( 'Corrige los errores a continuación antes de realizar tu pedido.', 'shanelle' ),
+					'shippingMethods' => __( 'Método de envío', 'shanelle' ),
 				),
 			)
 		);
@@ -366,8 +366,8 @@ final class CheckoutPage {
 			return;
 		}
 		?>
-		<section class="checkout-page__shipping" data-shanelle-checkout-shipping aria-label="<?php esc_attr_e( 'Shipping method', 'shanelle' ); ?>">
-			<h3 class="checkout-page__shipping-title text-label"><?php esc_html_e( 'Shipping method', 'shanelle' ); ?></h3>
+		<section class="checkout-page__shipping" data-shanelle-checkout-shipping aria-label="<?php esc_attr_e( 'Método de envío', 'shanelle' ); ?>">
+			<h3 class="checkout-page__shipping-title text-label"><?php esc_html_e( 'Método de envío', 'shanelle' ); ?></h3>
 			<?php
 			foreach ( $packages as $index => $package ) {
 				$product_names = array();
@@ -450,22 +450,22 @@ final class CheckoutPage {
 		}
 		?>
 		<div class="checkout-page__trust">
-			<ul class="checkout-page__trust-list" aria-label="<?php esc_attr_e( 'Shopping guarantees', 'shanelle' ); ?>">
+			<ul class="checkout-page__trust-list" aria-label="<?php esc_attr_e( 'Garantías de compra', 'shanelle' ); ?>">
 				<li class="checkout-page__trust-item">
 					<?php self::render_icon( 'lock' ); ?>
-					<span><?php esc_html_e( 'Secure checkout', 'shanelle' ); ?></span>
+					<span><?php esc_html_e( 'Pago seguro', 'shanelle' ); ?></span>
 				</li>
 				<li class="checkout-page__trust-item">
 					<?php self::render_icon( 'returns' ); ?>
-					<span><?php esc_html_e( 'Easy returns', 'shanelle' ); ?></span>
+					<span><?php esc_html_e( 'Devoluciones fáciles', 'shanelle' ); ?></span>
 				</li>
 				<li class="checkout-page__trust-item">
 					<?php self::render_icon( 'quality' ); ?>
-					<span><?php esc_html_e( 'Quality guaranteed', 'shanelle' ); ?></span>
+					<span><?php esc_html_e( 'Calidad garantizada', 'shanelle' ); ?></span>
 				</li>
 			</ul>
 			<p class="checkout-page__trust-message text-caption text-muted">
-				<?php esc_html_e( 'Your payment information is processed securely. We do not store credit card details.', 'shanelle' ); ?>
+				<?php esc_html_e( 'Tu información de pago se procesa de forma segura. No almacenamos los datos de tarjetas de crédito.', 'shanelle' ); ?>
 			</p>
 		</div>
 		<?php
@@ -548,7 +548,7 @@ final class CheckoutPage {
 			? self::$state['settings']
 			: self::get_settings();
 
-		return (string) ( $settings['edit_cart_label'] ?? __( 'Edit bag', 'shanelle' ) );
+		return (string) ( $settings['edit_cart_label'] ?? __( 'Editar bolsa', 'shanelle' ) );
 	}
 
 	/**
@@ -645,7 +645,7 @@ final class CheckoutPage {
 				'trust_message'   => self::get_theme_mod_bool( self::MOD_TRUST_MESSAGE, true ),
 				'edit_cart_label' => self::get_theme_mod_string(
 					self::MOD_EDIT_CART_LABEL,
-					__( 'Edit bag', 'shanelle' )
+					__( 'Editar bolsa', 'shanelle' )
 				),
 			)
 		);

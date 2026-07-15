@@ -1,11 +1,21 @@
 /**
- * Shanelle Product Gallery Component
+ * Shanelle Product Gallery Component — SHEIN-style vertical thumbs
  */
 
 .product-gallery {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-3);
+}
+
+.product-gallery__layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-3);
+}
+
+.product-gallery__panel {
+	min-width: 0;
 }
 
 .product-gallery__stage {
@@ -16,31 +26,82 @@
 	position: relative;
 	margin: 0;
 	overflow: hidden;
-	border-radius: var(--radius-lg);
+	border-radius: var(--radius-md);
 	aspect-ratio: 3 / 4;
 	background: var(--color-surface-sunken);
 }
 
+.product-gallery__image-stack {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
 .product-gallery__image {
+	position: absolute;
+	inset: 0;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	transition: opacity var(--duration-base) var(--ease-out);
+	opacity: 0;
+	transform: scale(1.03);
+	transition:
+		opacity var(--duration-slow) var(--ease-out),
+		transform var(--duration-slow) var(--ease-out);
+}
+
+.product-gallery__image.is-active,
+.product-gallery__image.is-entering {
+	opacity: 1;
+	transform: scale(1);
+}
+
+.product-gallery__image.is-leaving {
+	opacity: 0;
+	transform: scale(0.98);
 }
 
 .product-gallery__zoom-lens {
 	position: absolute;
-	inset: 0;
+	z-index: var(--z-raised);
+	border: 2px solid rgb(255 255 255 / 90%);
+	border-radius: var(--radius-full);
 	pointer-events: none;
+	box-shadow: var(--shadow-md);
 	opacity: 0;
-	background: radial-gradient(circle at center, rgb(255 255 255 / 10%), transparent 60%);
-	transition: opacity var(--duration-base) var(--ease-out);
+	background: rgb(255 255 255 / 12%);
+	transition: opacity var(--duration-fast) var(--ease-out);
 }
 
-@media (hover: hover) and (pointer: fine) {
-	.product-gallery__main:hover .product-gallery__zoom-lens {
-		opacity: 1;
-	}
+.product-gallery.is-zoom-active .product-gallery__zoom-lens {
+	opacity: 1;
+}
+
+.product-gallery__zoom-lens[hidden] {
+	display: none;
+}
+
+.product-gallery__zoom-pane {
+	position: absolute;
+	inset: 0;
+	z-index: calc(var(--z-raised) - 1);
+	background-color: var(--color-surface-sunken);
+	background-repeat: no-repeat;
+	pointer-events: none;
+}
+
+.product-gallery.is-zoom-active .product-gallery__main {
+	cursor: crosshair;
+}
+
+.product-gallery.is-zoom-active .product-gallery__image-stack {
+	opacity: 0;
+}
+
+.product-gallery__action.is-active {
+	background: var(--color-brand-100);
+	color: var(--color-brand-700);
+	border-color: var(--color-brand-300);
 }
 
 .product-gallery__nav {
@@ -93,6 +154,7 @@
 
 .product-gallery__thumbs {
 	display: flex;
+	flex-direction: row;
 	gap: var(--space-2);
 	margin: 0;
 	padding: 0;
@@ -103,28 +165,40 @@
 	display: block;
 	padding: 0;
 	border: 2px solid transparent;
-	border-radius: var(--radius-md);
+	border-radius: var(--radius-sm);
 	overflow: hidden;
 	background: transparent;
 	cursor: pointer;
-	transition: var(--transition-colors);
+	transition:
+		border-color var(--duration-base) var(--ease-in-out),
+		transform var(--duration-fast) var(--ease-out),
+		box-shadow var(--duration-base) var(--ease-in-out);
 }
 
 .product-gallery__thumb img {
 	display: block;
-	width: 4.5rem;
+	width: 4rem;
 	height: auto;
 	aspect-ratio: 3 / 4;
 	object-fit: cover;
+	transition: transform var(--duration-base) var(--ease-out);
 }
 
 .product-gallery__thumb:hover,
 .product-gallery__thumb:focus-visible {
 	border-color: var(--color-brand-300);
+	transform: translateY(-1px);
+	box-shadow: var(--shadow-sm);
+}
+
+.product-gallery__thumb:hover img,
+.product-gallery__thumb:focus-visible img {
+	transform: scale(1.04);
 }
 
 .product-gallery__thumb.is-active {
-	border-color: var(--color-brand-primary);
+	border-color: var(--color-brand-600);
+	box-shadow: var(--shadow-brand);
 }
 
 .product-gallery__modal {
@@ -191,9 +265,38 @@
 	transition: none;
 }
 
+@media (min-width: 48rem) {
+	.product-gallery__layout {
+		grid-template-columns: 4.75rem minmax(0, 1fr);
+		gap: var(--space-3);
+		align-items: start;
+	}
+
+	.product-gallery__thumbs-wrap {
+		overflow: visible;
+	}
+
+	.product-gallery__thumbs {
+		flex-direction: column;
+		max-height: clamp(20rem, 52vh, 36rem);
+		overflow-y: auto;
+		scrollbar-width: none;
+	}
+
+	.product-gallery__thumbs::-webkit-scrollbar {
+		display: none;
+	}
+
+	.product-gallery__thumb img {
+		width: 100%;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.product-gallery__image,
-	.product-gallery__zoom-lens {
+	.product-gallery__zoom-lens,
+	.product-gallery__thumb,
+	.product-gallery__thumb img {
 		transition: none;
 	}
 }

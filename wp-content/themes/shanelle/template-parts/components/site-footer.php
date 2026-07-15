@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 
 		<?php if ( has_nav_menu( 'footer' ) ) : ?>
-			<nav class="site-footer__nav" aria-label="<?php esc_attr_e( 'Footer', 'shanelle' ); ?>">
+			<nav class="site-footer__nav" aria-label="<?php esc_attr_e( 'Pie de página', 'shanelle' ); ?>">
 				<?php
 				wp_nav_menu( array(
 					'theme_location' => 'footer',

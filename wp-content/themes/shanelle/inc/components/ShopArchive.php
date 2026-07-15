@@ -80,11 +80,11 @@ final class ShopArchive {
 			'shanelleShopArchive',
 			array(
 				'i18n' => array(
-					'filtersOpen'  => __( 'Open filters', 'shanelle' ),
-					'filtersClose' => __( 'Close filters', 'shanelle' ),
-					'filtersTitle' => __( 'Filters', 'shanelle' ),
-					'applyFilters' => __( 'Apply filters', 'shanelle' ),
-					'loading'      => __( 'Updating products…', 'shanelle' ),
+					'filtersOpen'  => __( 'Abrir filtros', 'shanelle' ),
+					'filtersClose' => __( 'Cerrar filtros', 'shanelle' ),
+					'filtersTitle' => __( 'Filtros', 'shanelle' ),
+					'applyFilters' => __( 'Aplicar filtros', 'shanelle' ),
+					'loading'      => __( 'Actualizando productos…', 'shanelle' ),
 				),
 			)
 		);
@@ -111,7 +111,7 @@ final class ShopArchive {
 
 		woocommerce_breadcrumb(
 			array(
-				'wrap_before' => '<nav class="shop-archive__breadcrumbs" aria-label="' . esc_attr__( 'Breadcrumb', 'shanelle' ) . '"><ol class="shop-archive__breadcrumbs-list">',
+				'wrap_before' => '<nav class="shop-archive__breadcrumbs" aria-label="' . esc_attr__( 'Ruta de navegación', 'shanelle' ) . '"><ol class="shop-archive__breadcrumbs-list">',
 				'wrap_after'  => '</ol></nav>',
 				'before'      => '<li class="shop-archive__breadcrumbs-item">',
 				'after'       => '</li>',
@@ -140,7 +140,7 @@ final class ShopArchive {
 				echo esc_html(
 					sprintf(
 						/* translators: %d: number of products */
-						_n( '%d product', '%d products', $count, 'shanelle' ),
+						_n( '%d producto', '%d productos', $count, 'shanelle' ),
 						$count
 					)
 				);
@@ -163,13 +163,31 @@ final class ShopArchive {
 				aria-expanded="false"
 				aria-controls="shop-archive-filters"
 			>
-				<?php esc_html_e( 'Filters', 'shanelle' ); ?>
+				<?php esc_html_e( 'Filtros', 'shanelle' ); ?>
 			</button>
 
 			<div class="shop-archive__ordering">
+				<label class="shop-archive__ordering-label" for="shop-archive-orderby">
+					<?php esc_html_e( 'Ordenar por', 'shanelle' ); ?>
+				</label>
 				<?php self::render_ordering(); ?>
 			</div>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Render desktop filter sidebar.
+	 */
+	public static function render_sidebar(): void {
+		if ( ! shanelle_is_woocommerce_active() ) {
+			return;
+		}
+
+		?>
+		<aside class="shop-archive__sidebar" aria-label="<?php esc_attr_e( 'Filtros de productos', 'shanelle' ); ?>">
+			<?php CatalogFilters::render( array( 'form_id' => 'catalog-filters-sidebar' ) ); ?>
+		</aside>
 		<?php
 	}
 
@@ -181,7 +199,37 @@ final class ShopArchive {
 			return;
 		}
 
+		ob_start();
 		woocommerce_catalog_ordering();
+		$html = (string) ob_get_clean();
+
+		if ( '' === $html ) {
+			return;
+		}
+
+		if ( ! str_contains( $html, 'id=' ) ) {
+			$html = preg_replace( '/<select\b/', '<select id="shop-archive-orderby"', $html, 1 ) ?? $html;
+		}
+
+		echo wp_kses(
+			$html,
+			array(
+				'form'   => array(
+					'class'  => true,
+					'method' => true,
+				),
+				'select' => array(
+					'id'       => true,
+					'name'     => true,
+					'class'    => true,
+					'aria-label' => true,
+				),
+				'option' => array(
+					'value'    => true,
+					'selected' => true,
+				),
+			)
+		);
 	}
 
 	/**
@@ -211,6 +259,12 @@ final class ShopArchive {
 			array(
 				'pagination_mode' => 'pagination',
 				'grid_id'         => 'shop-archive-grid',
+				'card_args'       => array(
+					'variant'          => 'catalog',
+					'show_rating'      => false,
+					'show_attributes'  => false,
+					'show_actions'     => false,
+				),
 			)
 		);
 
@@ -233,17 +287,17 @@ final class ShopArchive {
 				class="shop-archive__filters-panel"
 				role="dialog"
 				aria-modal="true"
-				aria-label="<?php esc_attr_e( 'Product filters', 'shanelle' ); ?>"
+				aria-label="<?php esc_attr_e( 'Filtros de productos', 'shanelle' ); ?>"
 				data-shanelle-filters-panel
 				tabindex="-1"
 			>
 				<div class="shop-archive__filters-header">
-					<h2 class="shop-archive__filters-title text-h5"><?php esc_html_e( 'Filters', 'shanelle' ); ?></h2>
+					<h2 class="shop-archive__filters-title text-h5"><?php esc_html_e( 'Filtros', 'shanelle' ); ?></h2>
 					<button
 						type="button"
 						class="shop-archive__filters-close btn btn--icon"
 						data-shanelle-filters-close
-						aria-label="<?php esc_attr_e( 'Close filters', 'shanelle' ); ?>"
+						aria-label="<?php esc_attr_e( 'Cerrar filtros', 'shanelle' ); ?>"
 					>
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -255,7 +309,7 @@ final class ShopArchive {
 
 				<div class="shop-archive__filters-footer">
 					<button type="button" class="btn btn--primary shop-archive__filters-apply" data-shanelle-filters-apply>
-						<?php esc_html_e( 'Apply filters', 'shanelle' ); ?>
+						<?php esc_html_e( 'Aplicar filtros', 'shanelle' ); ?>
 					</button>
 				</div>
 			</div>
@@ -277,13 +331,20 @@ final class ShopArchive {
 		 */
 		do_action( 'shanelle_shop_archive_filters' );
 
-		if ( ! has_action( 'shanelle_shop_archive_filters' ) ) {
-			?>
-			<p class="shop-archive__filters-empty text-body-sm text-muted">
-				<?php esc_html_e( 'Assign filter widgets to the Shop Sidebar area or connect layered navigation here.', 'shanelle' ); ?>
-			</p>
-			<?php
+		if ( has_action( 'shanelle_shop_archive_filters' ) ) {
+			return;
 		}
+
+		if ( shanelle_is_woocommerce_active() ) {
+			CatalogFilters::render( array( 'form_id' => 'catalog-filters-mobile' ) );
+			return;
+		}
+
+		?>
+		<p class="shop-archive__filters-empty text-body-sm text-muted">
+			<?php esc_html_e( 'Asigna widgets de filtros al área Barra lateral de la tienda o conecta la navegación por capas aquí.', 'shanelle' ); ?>
+		</p>
+		<?php
 	}
 
 	/**
@@ -301,7 +362,7 @@ final class ShopArchive {
 	public static function get_archive_title(): string {
 		if ( is_search() ) {
 			/* translators: %s: search query */
-			return sprintf( esc_html__( 'Search results for "%s"', 'shanelle' ), get_search_query() );
+			return sprintf( esc_html__( 'Resultados de búsqueda para "%s"', 'shanelle' ), get_search_query() );
 		}
 
 		if ( is_product_category() ) {

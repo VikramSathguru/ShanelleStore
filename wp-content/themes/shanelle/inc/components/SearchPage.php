@@ -72,8 +72,8 @@ final class SearchPage {
 		$wp_customize->add_section(
 			'shanelle_search_page',
 			array(
-				'title'       => __( 'Search Page', 'shanelle' ),
-				'description' => __( 'Configure product search results presentation.', 'shanelle' ),
+				'title'       => __( 'Página de búsqueda', 'shanelle' ),
+				'description' => __( 'Configura la presentación de los resultados de búsqueda de productos.', 'shanelle' ),
 				'priority'    => 173,
 			)
 		);
@@ -81,7 +81,7 @@ final class SearchPage {
 		$wp_customize->add_setting(
 			self::MOD_PLACEHOLDER,
 			array(
-				'default'           => __( 'Search styles, brands, or categories', 'shanelle' ),
+				'default'           => __( 'Buscar estilos, marcas o categorías', 'shanelle' ),
 				'sanitize_callback' => 'sanitize_text_field',
 				'transport'         => 'refresh',
 			)
@@ -90,7 +90,7 @@ final class SearchPage {
 		$wp_customize->add_control(
 			self::MOD_PLACEHOLDER,
 			array(
-				'label'   => __( 'Search input placeholder', 'shanelle' ),
+				'label'   => __( 'Texto del campo de búsqueda', 'shanelle' ),
 				'section' => 'shanelle_search_page',
 				'type'    => 'text',
 			)
@@ -99,14 +99,14 @@ final class SearchPage {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_BREADCRUMBS,
-			__( 'Show breadcrumbs on search results', 'shanelle' ),
+			__( 'Mostrar migas de pan en los resultados de búsqueda', 'shanelle' ),
 			false
 		);
 
 		$wp_customize->add_setting(
 			self::MOD_EMPTY_MESSAGE,
 			array(
-				'default'           => __( 'Try a different keyword or browse our latest arrivals.', 'shanelle' ),
+				'default'           => __( 'Prueba con otra palabra o explora nuestras novedades.', 'shanelle' ),
 				'sanitize_callback' => 'sanitize_text_field',
 				'transport'         => 'refresh',
 			)
@@ -115,7 +115,7 @@ final class SearchPage {
 		$wp_customize->add_control(
 			self::MOD_EMPTY_MESSAGE,
 			array(
-				'label'   => __( 'Empty results helper message', 'shanelle' ),
+				'label'   => __( 'Mensaje de ayuda sin resultados', 'shanelle' ),
 				'section' => 'shanelle_search_page',
 				'type'    => 'text',
 			)
@@ -156,10 +156,10 @@ final class SearchPage {
 			array(
 				'initialState' => self::build_page_state(),
 				'i18n'         => array(
-					'pageTitle'    => __( 'Search', 'shanelle' ),
-					'searchLabel'  => __( 'Search products', 'shanelle' ),
-					'searchSubmit' => __( 'Search', 'shanelle' ),
-					'clearSearch'  => __( 'Clear search', 'shanelle' ),
+					'pageTitle'    => __( 'Buscar', 'shanelle' ),
+					'searchLabel'  => __( 'Buscar productos', 'shanelle' ),
+					'searchSubmit' => __( 'Buscar', 'shanelle' ),
+					'clearSearch'  => __( 'Borrar búsqueda', 'shanelle' ),
 				),
 			)
 		);
@@ -200,7 +200,7 @@ final class SearchPage {
 			data-shanelle-search-form
 		>
 			<label class="screen-reader-text" for="<?php echo esc_attr( self::get_search_input_id() ); ?>">
-				<?php esc_html_e( 'Search products', 'shanelle' ); ?>
+				<?php esc_html_e( 'Buscar productos', 'shanelle' ); ?>
 			</label>
 
 			<div class="search-page__form-field">
@@ -216,7 +216,7 @@ final class SearchPage {
 				/>
 				<input type="hidden" name="post_type" value="product" />
 				<button type="submit" class="btn btn--primary search-page__submit">
-					<?php esc_html_e( 'Search', 'shanelle' ); ?>
+					<?php esc_html_e( 'Buscar', 'shanelle' ); ?>
 				</button>
 			</div>
 		</form>
@@ -281,7 +281,7 @@ final class SearchPage {
 			? self::$state['settings']
 			: self::get_settings();
 
-		return (string) ( $settings['placeholder'] ?? __( 'Search styles, brands, or categories', 'shanelle' ) );
+		return (string) ( $settings['placeholder'] ?? __( 'Buscar estilos, marcas o categorías', 'shanelle' ) );
 	}
 
 	/**
@@ -338,12 +338,12 @@ final class SearchPage {
 			array(
 				'placeholder'      => self::get_theme_mod_string(
 					self::MOD_PLACEHOLDER,
-					__( 'Search styles, brands, or categories', 'shanelle' )
+					__( 'Buscar estilos, marcas o categorías', 'shanelle' )
 				),
 				'show_breadcrumbs' => self::get_theme_mod_bool( self::MOD_SHOW_BREADCRUMBS, false ),
 				'empty_message'    => self::get_theme_mod_string(
 					self::MOD_EMPTY_MESSAGE,
-					__( 'Try a different keyword or browse our latest arrivals.', 'shanelle' )
+					__( 'Prueba con otra palabra o explora nuestras novedades.', 'shanelle' )
 				),
 			)
 		);

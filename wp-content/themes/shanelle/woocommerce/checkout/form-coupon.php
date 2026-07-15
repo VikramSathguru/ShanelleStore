@@ -29,14 +29,14 @@ if ( ! wc_coupons_enabled() ) {
 <form class="checkout_coupon woocommerce-form-coupon checkout-page__coupon-form" method="post" style="display:none" id="woocommerce-checkout-form-coupon">
 	<p class="checkout-page__coupon-field form-row">
 		<label class="checkout-page__coupon-label text-label" for="coupon_code">
-			<?php esc_html_e( 'Coupon code', 'shanelle' ); ?>
+			<?php esc_html_e( 'Código de cupón', 'shanelle' ); ?>
 		</label>
 		<span class="checkout-page__coupon-row">
 			<input
 				type="text"
 				name="coupon_code"
 				class="checkout-page__coupon-input input-text"
-				placeholder="<?php esc_attr_e( 'Enter coupon code', 'shanelle' ); ?>"
+				placeholder="<?php esc_attr_e( 'Ingresa el código de cupón', 'shanelle' ); ?>"
 				id="coupon_code"
 				value=""
 				autocomplete="off"

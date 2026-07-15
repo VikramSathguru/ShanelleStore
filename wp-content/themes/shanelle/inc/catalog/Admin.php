@@ -80,39 +80,39 @@ final class Admin {
 	private static function get_field_definitions(): array {
 		return array(
 			Helpers::META_TYPE  => array(
-				'label'             => __( 'Collection Type', 'shanelle' ),
+				'label'             => __( 'Tipo de colección', 'shanelle' ),
 				'type'              => 'string',
 				'sanitize_callback' => array( Helpers::class, 'sanitize_collection_type' ),
 				'render_callback'   => array( self::class, 'render_type_field' ),
-				'description'       => __( 'Defines whether this collection is seasonal, featured, or campaign-based.', 'shanelle' ),
+				'description'       => __( 'Define si esta colección es de temporada, destacada o de campaña.', 'shanelle' ),
 			),
 			Helpers::META_START => array(
-				'label'             => __( 'Start Date', 'shanelle' ),
+				'label'             => __( 'Fecha de inicio', 'shanelle' ),
 				'type'              => 'string',
 				'sanitize_callback' => array( Helpers::class, 'sanitize_date' ),
 				'render_callback'   => array( self::class, 'render_start_date_field' ),
-				'description'       => __( 'Optional go-live date in Y-m-d format.', 'shanelle' ),
+				'description'       => __( 'Fecha opcional de publicación en formato Y-m-d.', 'shanelle' ),
 			),
 			Helpers::META_END   => array(
-				'label'             => __( 'End Date', 'shanelle' ),
+				'label'             => __( 'Fecha de fin', 'shanelle' ),
 				'type'              => 'string',
 				'sanitize_callback' => array( Helpers::class, 'sanitize_date' ),
 				'render_callback'   => array( self::class, 'render_end_date_field' ),
-				'description'       => __( 'Optional end date in Y-m-d format.', 'shanelle' ),
+				'description'       => __( 'Fecha de fin opcional en formato Y-m-d.', 'shanelle' ),
 			),
 			Helpers::META_HERO  => array(
-				'label'             => __( 'Hero Image', 'shanelle' ),
+				'label'             => __( 'Imagen principal', 'shanelle' ),
 				'type'              => 'integer',
 				'sanitize_callback' => array( Helpers::class, 'sanitize_hero_image_id' ),
 				'render_callback'   => array( self::class, 'render_hero_image_field' ),
-				'description'       => __( 'Optional hero image attachment used for merchandising.', 'shanelle' ),
+				'description'       => __( 'Imagen principal opcional usada para merchandising.', 'shanelle' ),
 			),
 			Helpers::META_ORDER => array(
-				'label'             => __( 'Display Order', 'shanelle' ),
+				'label'             => __( 'Orden de visualización', 'shanelle' ),
 				'type'              => 'integer',
 				'sanitize_callback' => array( Helpers::class, 'sanitize_display_order' ),
 				'render_callback'   => array( self::class, 'render_display_order_field' ),
-				'description'       => __( 'Lower numbers appear first in collection lists.', 'shanelle' ),
+				'description'       => __( 'Los números más bajos aparecen primero en las listas de colecciones.', 'shanelle' ),
 			),
 		);
 	}
@@ -358,8 +358,8 @@ final class Admin {
 		echo '</div>';
 
 		echo '<p class="shanelle-hero-image-field__actions">';
-		echo '<button type="button" class="button" data-shanelle-hero-select>' . esc_html__( 'Select Image', 'shanelle' ) . '</button> ';
-		echo '<button type="button" class="button" data-shanelle-hero-remove>' . esc_html__( 'Remove Image', 'shanelle' ) . '</button>';
+		echo '<button type="button" class="button" data-shanelle-hero-select>' . esc_html__( 'Seleccionar imagen', 'shanelle' ) . '</button> ';
+		echo '<button type="button" class="button" data-shanelle-hero-remove>' . esc_html__( 'Quitar imagen', 'shanelle' ) . '</button>';
 		echo '</p>';
 		echo '</div>';
 	}
@@ -417,9 +417,9 @@ final class Admin {
 	 * @return array<string, string>
 	 */
 	public static function register_columns( array $columns ): array {
-		$columns['collection_type']  = __( 'Type', 'shanelle' );
-		$columns['collection_dates'] = __( 'Active Dates', 'shanelle' );
-		$columns['collection_order'] = __( 'Order', 'shanelle' );
+		$columns['collection_type']  = __( 'Tipo', 'shanelle' );
+		$columns['collection_dates'] = __( 'Fechas activas', 'shanelle' );
+		$columns['collection_order'] = __( 'Orden', 'shanelle' );
 
 		return $columns;
 	}

@@ -97,8 +97,8 @@ function bindMobileNavigation() {
 		return;
 	}
 
-	const openLabel = i18n.navToggle || 'Account menu';
-	const closeLabel = i18n.navToggleClose || 'Close account menu';
+	const openLabel = i18n.navToggle || 'Menú de cuenta';
+	const closeLabel = i18n.navToggleClose || 'Cerrar menú de cuenta';
 
 	toggle.addEventListener( 'click', () => {
 		const isOpen = panel.classList.toggle( 'is-open' );

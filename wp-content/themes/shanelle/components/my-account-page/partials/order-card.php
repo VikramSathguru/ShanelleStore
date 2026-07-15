@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 				<?php
 				printf(
 					/* translators: %s: order number */
-					esc_html__( 'Order #%s', 'shanelle' ),
+					esc_html__( 'Pedido #%s', 'shanelle' ),
 					esc_html( $order['number'] )
 				);
 				?>

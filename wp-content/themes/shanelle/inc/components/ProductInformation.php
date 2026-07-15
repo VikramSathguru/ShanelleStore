@@ -86,8 +86,8 @@ final class ProductInformation {
 			'shanelleProductInformation',
 			array(
 				'i18n' => array(
-					'expandSection'   => __( 'Expand section', 'shanelle' ),
-					'collapseSection' => __( 'Collapse section', 'shanelle' ),
+					'expandSection'   => __( 'Expandir sección', 'shanelle' ),
+					'collapseSection' => __( 'Contraer sección', 'shanelle' ),
 				),
 			)
 		);
@@ -228,25 +228,25 @@ final class ProductInformation {
 			self::build_specifications_section( $product ),
 			self::build_filtered_section(
 				'size-guide',
-				__( 'Size Guide', 'shanelle' ),
+				__( 'Guía de tallas', 'shanelle' ),
 				'shanelle_product_information_size_guide',
 				$product
 			),
 			self::build_filtered_section(
 				'care-instructions',
-				__( 'Care Instructions', 'shanelle' ),
+				__( 'Instrucciones de cuidado', 'shanelle' ),
 				'shanelle_product_information_care_instructions',
 				$product
 			),
 			self::build_filtered_section(
 				'shipping',
-				__( 'Shipping', 'shanelle' ),
+				__( 'Envío', 'shanelle' ),
 				'shanelle_product_information_shipping',
 				$product
 			),
 			self::build_filtered_section(
 				'returns',
-				__( 'Returns', 'shanelle' ),
+				__( 'Devoluciones', 'shanelle' ),
 				'shanelle_product_information_returns',
 				$product
 			),
@@ -285,7 +285,7 @@ final class ProductInformation {
 
 		return array(
 			'id'          => 'description',
-			'title'       => __( 'Description', 'shanelle' ),
+			'title'       => __( 'Descripción', 'shanelle' ),
 			'content'     => $content,
 			'has_content' => true,
 		);
@@ -318,7 +318,7 @@ final class ProductInformation {
 
 		return array(
 			'id'          => 'specifications',
-			'title'       => __( 'Specifications', 'shanelle' ),
+			'title'       => __( 'Especificaciones', 'shanelle' ),
 			'content'     => $content,
 			'has_content' => true,
 		);
@@ -397,14 +397,14 @@ final class ProductInformation {
 
 		if ( $product->has_weight() ) {
 			$rows[] = array(
-				'label' => __( 'Weight', 'shanelle' ),
+				'label' => __( 'Peso', 'shanelle' ),
 				'value' => esc_html( wc_format_weight( $product->get_weight() ) ),
 			);
 		}
 
 		if ( $product->has_dimensions() ) {
 			$rows[] = array(
-				'label' => __( 'Dimensions', 'shanelle' ),
+				'label' => __( 'Dimensiones', 'shanelle' ),
 				'value' => esc_html( wc_format_dimensions( $product->get_dimensions( false ) ) ),
 			);
 		}

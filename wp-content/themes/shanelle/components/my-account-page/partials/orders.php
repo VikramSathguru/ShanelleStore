@@ -34,7 +34,7 @@ do_action( 'woocommerce_before_account_orders', $has_orders );
 		<?php do_action( 'woocommerce_before_account_orders_pagination' ); ?>
 
 		<?php if ( 1 < $max_num_pages ) : ?>
-			<nav class="my-account-page__pagination woocommerce-pagination woocommerce-pagination--without-numbers woocommerce-Pagination" aria-label="<?php esc_attr_e( 'Orders pagination', 'shanelle' ); ?>">
+			<nav class="my-account-page__pagination woocommerce-pagination woocommerce-pagination--without-numbers woocommerce-Pagination" aria-label="<?php esc_attr_e( 'Paginación de pedidos', 'shanelle' ); ?>">
 				<?php if ( 1 !== $current_page ) : ?>
 					<a class="btn btn--outline btn--sm woocommerce-button woocommerce-button--previous woocommerce-Button woocommerce-Button--previous button<?php echo esc_attr( $wp_button_class ); ?>" href="<?php echo esc_url( wc_get_endpoint_url( 'orders', $current_page - 1 ) ); ?>">
 						<?php esc_html_e( 'Previous', 'woocommerce' ); ?>
@@ -52,8 +52,8 @@ do_action( 'woocommerce_before_account_orders', $has_orders );
 		<?php
 		MyAccountPage::render_empty_state(
 			array(
-				'title'    => __( 'No orders yet', 'shanelle' ),
-				'message'  => __( 'You have not placed any orders yet. Explore our latest styles and find something you love.', 'shanelle' ),
+				'title'    => __( 'Aún no hay pedidos', 'shanelle' ),
+				'message'  => __( 'Todavía no has realizado ningún pedido. Explora nuestros últimos estilos y encuentra algo que te guste.', 'shanelle' ),
 				'cta_url'  => wc_get_page_permalink( 'shop' ) ?: home_url( '/' ),
 				'cta_text' => __( 'Browse products', 'woocommerce' ),
 			)

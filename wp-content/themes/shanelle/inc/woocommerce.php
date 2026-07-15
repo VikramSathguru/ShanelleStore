@@ -73,6 +73,8 @@ function shanelle_register_woocommerce_hooks(): void {
 
 	add_action( 'woocommerce_before_shop_loop_item', 'shanelle_product_card_start', 5 );
 	add_filter( 'woocommerce_add_to_cart_fragments', 'shanelle_cart_count_fragment' );
+	add_filter( 'woocommerce_catalog_orderby', 'shanelle_catalog_orderby_labels' );
+	add_filter( 'option_woocommerce_enable_myaccount_registration', 'shanelle_enable_myaccount_registration' );
 }
 add_action( 'woocommerce_init', 'shanelle_register_woocommerce_hooks' );
 
@@ -123,6 +125,18 @@ function shanelle_product_card_start(): void {
 }
 
 /**
+ * Ensure customer registration is available on My Account.
+ *
+ * @param mixed $value Stored option value.
+ * @return string
+ */
+function shanelle_enable_myaccount_registration( $value ): string {
+	unset( $value );
+
+	return 'yes';
+}
+
+/**
  * Update cart count fragment for AJAX add-to-cart.
  *
  * @param array<string, mixed> $fragments Cart fragments.
@@ -135,3 +149,133 @@ function shanelle_cart_count_fragment( array $fragments ): array {
 
 	return $fragments;
 }
+
+/**
+ * Customize catalog sort labels for shop archive UX.
+ *
+ * @param array<string, string> $options Orderby options.
+ * @return array<string, string>
+ */
+function shanelle_catalog_orderby_labels( array $options ): array {
+	if ( isset( $options['menu_order'] ) ) {
+		$options['menu_order'] = __( 'Recomendados', 'shanelle' );
+	}
+
+	if ( isset( $options['popularity'] ) ) {
+		$options['popularity'] = __( 'Más populares', 'shanelle' );
+	}
+
+	if ( isset( $options['date'] ) ) {
+		$options['date'] = __( 'Novedades', 'shanelle' );
+	}
+
+	return $options;
+}
+
+/**
+ * Default shipping information for product detail accordion.
+ *
+ * @param string      $content Default content.
+ * @param WC_Product  $product Product object.
+ * @return string
+ */
+function shanelle_default_product_shipping_information( string $content, WC_Product $product ): string {
+	unset( $product );
+
+	if ( '' !== trim( $content ) ) {
+		return $content;
+	}
+
+	ob_start();
+	?>
+	<p><?php esc_html_e( 'Enviamos a todo Nicaragua con cuidado. Los pedidos se empacan en 1–2 días hábiles.', 'shanelle' ); ?></p>
+		<ul>
+		<li><?php esc_html_e( 'Entrega estándar: 3–5 días hábiles', 'shanelle' ); ?></li>
+		<li><?php esc_html_e( 'Entrega express disponible al pagar', 'shanelle' ); ?></li>
+		<li><?php esc_html_e( 'Envío gratis en pedidos calificados', 'shanelle' ); ?></li>
+	</ul>
+	<?php
+	return (string) ob_get_clean();
+}
+add_filter( 'shanelle_product_information_shipping', 'shanelle_default_product_shipping_information', 10, 2 );
+
+/**
+ * Default returns information for product detail accordion.
+ *
+ * @param string      $content Default content.
+ * @param WC_Product  $product Product object.
+ * @return string
+ */
+function shanelle_default_product_returns_information( string $content, WC_Product $product ): string {
+	unset( $product );
+
+	if ( '' !== trim( $content ) ) {
+		return $content;
+	}
+
+	ob_start();
+	?>
+	<p><?php esc_html_e( 'Queremos que ames cada prenda. Si algo no es lo ideal, puedes devolver artículos sin usar dentro de 30 días.', 'shanelle' ); ?></p>
+	<ul>
+		<li><?php esc_html_e( 'Los artículos deben estar sin usar y con etiquetas', 'shanelle' ); ?></li>
+		<li><?php esc_html_e( 'Reembolsos procesados en 5–7 días hábiles', 'shanelle' ); ?></li>
+		<li><?php esc_html_e( 'Cambios fáciles de talla o color cuando estén disponibles', 'shanelle' ); ?></li>
+	</ul>
+	<?php
+	return (string) ob_get_clean();
+}
+add_filter( 'shanelle_product_information_returns', 'shanelle_default_product_returns_information', 10, 2 );
+
+/**
+ * Default size guide copy for product detail accordion.
+ *
+ * @param string     $content Default content.
+ * @param WC_Product $product Product object.
+ * @return string
+ */
+function shanelle_default_product_size_guide( string $content, WC_Product $product ): string {
+	unset( $product );
+
+	if ( '' !== trim( $content ) ) {
+		return $content;
+	}
+
+	ob_start();
+	?>
+	<p><?php esc_html_e( 'Usa esta guía como referencia. Las medidas pueden variar ligeramente según el diseño y el material.', 'shanelle' ); ?></p>
+	<ul>
+		<li><?php esc_html_e( 'Compara con una prenda similar que ya te quede bien', 'shanelle' ); ?></li>
+		<li><?php esc_html_e( 'Si estás entre dos tallas, elige la mayor para un ajuste más cómodo', 'shanelle' ); ?></li>
+		<li><?php esc_html_e( 'Revisa la descripción del producto para notas de ajuste (ajustado, regular, oversized)', 'shanelle' ); ?></li>
+	</ul>
+	<?php
+	return (string) ob_get_clean();
+}
+add_filter( 'shanelle_product_information_size_guide', 'shanelle_default_product_size_guide', 10, 2 );
+
+/**
+ * Default care instructions for product detail accordion.
+ *
+ * @param string     $content Default content.
+ * @param WC_Product $product Product object.
+ * @return string
+ */
+function shanelle_default_product_care_instructions( string $content, WC_Product $product ): string {
+	unset( $product );
+
+	if ( '' !== trim( $content ) ) {
+		return $content;
+	}
+
+	ob_start();
+	?>
+	<p><?php esc_html_e( 'Cuida tus prendas para que duren más tiempo hermosas.', 'shanelle' ); ?></p>
+	<ul>
+		<li><?php esc_html_e( 'Lavar a mano o en ciclo delicado con agua fría', 'shanelle' ); ?></li>
+		<li><?php esc_html_e( 'No usar blanqueador', 'shanelle' ); ?></li>
+		<li><?php esc_html_e( 'Secar a la sombra; planchar a temperatura baja si es necesario', 'shanelle' ); ?></li>
+	</ul>
+	<?php
+	return (string) ob_get_clean();
+}
+add_filter( 'shanelle_product_information_care_instructions', 'shanelle_default_product_care_instructions', 10, 2 );

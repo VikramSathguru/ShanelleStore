@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 $heading_id = $args['id'] ?? wp_unique_id( 'section-' );
 $title      = $args['title'] ?? '';
 $link       = $args['link'] ?? '';
-$label      = $args['label'] ?? __( 'View all', 'shanelle' );
+$label      = $args['label'] ?? __( 'Ver todo', 'shanelle' );
 
 if ( ! $title ) {
 	return;

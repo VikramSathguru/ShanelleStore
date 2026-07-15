@@ -56,9 +56,9 @@ final class Helpers {
 	 */
 	public static function get_collection_types(): array {
 		return array(
-			self::TYPE_SEASONAL  => __( 'Seasonal Collection', 'shanelle' ),
-			self::TYPE_FEATURED  => __( 'Featured Collection', 'shanelle' ),
-			self::TYPE_CAMPAIGN  => __( 'Campaign Collection', 'shanelle' ),
+			self::TYPE_SEASONAL  => __( 'Colección de temporada', 'shanelle' ),
+			self::TYPE_FEATURED  => __( 'Colección destacada', 'shanelle' ),
+			self::TYPE_CAMPAIGN  => __( 'Colección de campaña', 'shanelle' ),
 		);
 	}
 

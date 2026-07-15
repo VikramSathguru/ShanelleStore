@@ -12,15 +12,17 @@ use Shanelle\Components\ProductCard;
 defined( 'ABSPATH' ) || exit;
 
 $card_title_id = 'product-card-title-' . wp_unique_id();
+$is_catalog    = ProductCard::is_catalog_variant();
 ?>
 <article
-	class="product-card card card--product<?php echo ProductCard::get_render_in_stock() ? '' : ' is-sold-out'; ?>"
+	class="product-card card card--product<?php echo ProductCard::get_render_in_stock() ? '' : ' is-sold-out'; ?><?php echo $is_catalog ? ' product-card--catalog' : ''; ?>"
 	data-shanelle-product-card
 	data-product-id="<?php echo esc_attr( (string) ProductCard::get_render_product_id() ); ?>"
 	aria-labelledby="<?php echo esc_attr( $card_title_id ); ?>"
 >
 	<div class="product-card__media card__media">
 		<?php ProductCard::render_badges(); ?>
+		<?php ProductCard::render_sale_overlay(); ?>
 		<?php ProductCard::render_image(); ?>
 		<?php ProductCard::render_actions(); ?>
 	</div>
@@ -34,8 +36,12 @@ $card_title_id = 'product-card-title-' . wp_unique_id();
 			</a>
 		</h3>
 
-		<?php ProductCard::render_rating(); ?>
-		<?php ProductCard::render_price(); ?>
+		<?php if ( $is_catalog ) : ?>
+			<?php ProductCard::render_footer(); ?>
+		<?php else : ?>
+			<?php ProductCard::render_rating(); ?>
+			<?php ProductCard::render_price(); ?>
+		<?php endif; ?>
 	</div>
 
 	<div class="product-card__live sr-only" aria-live="polite" aria-atomic="true" data-shanelle-card-live></div>

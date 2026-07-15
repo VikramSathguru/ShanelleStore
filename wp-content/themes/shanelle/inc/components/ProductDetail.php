@@ -105,8 +105,8 @@ final class ProductDetail {
 			'shanelleProductDetail',
 			array(
 				'i18n' => array(
-					'expandSection'   => __( 'Expand section', 'shanelle' ),
-					'collapseSection' => __( 'Collapse section', 'shanelle' ),
+					'expandSection'   => __( 'Expandir sección', 'shanelle' ),
+					'collapseSection' => __( 'Contraer sección', 'shanelle' ),
 				),
 			)
 		);
@@ -154,7 +154,7 @@ final class ProductDetail {
 			return;
 		}
 		?>
-		<nav class="product-detail__breadcrumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'shanelle' ); ?>">
+		<nav class="product-detail__breadcrumbs" aria-label="<?php esc_attr_e( 'Ruta de navegación', 'shanelle' ); ?>">
 			<?php
 			woocommerce_breadcrumb(
 				array(
@@ -206,6 +206,7 @@ final class ProductDetail {
 		}
 
 		ProductPurchase::render( self::get_product() );
+		shanelle_product_information( self::get_product() );
 	}
 
 	/**
@@ -236,7 +237,7 @@ final class ProductDetail {
 			aria-labelledby="<?php echo esc_attr( self::get_section_heading_id( 'information' ) ); ?>"
 		>
 			<h2 id="<?php echo esc_attr( self::get_section_heading_id( 'information' ) ); ?>" class="product-detail__section-title">
-				<?php esc_html_e( 'Product Information', 'shanelle' ); ?>
+				<?php esc_html_e( 'Información del producto', 'shanelle' ); ?>
 			</h2>
 
 			<div class="product-detail__accordion" data-shanelle-detail-accordion="information">
@@ -281,27 +282,173 @@ final class ProductDetail {
 	}
 
 	/**
-	 * Render reviews placeholder section.
+	 * Render customer reviews section.
 	 */
 	public static function render_reviews_section(): void {
+		$product    = self::get_product();
+		$summary    = self::get_review_summary( $product );
+		$reviews    = self::get_reviews( $product, 6 );
+		$tags       = self::get_review_filter_tags();
+		$fit_rows   = self::get_fit_breakdown();
+		$can_review = self::can_show_review_form( $product );
+		$has_more   = (int) ( $summary['count'] ?? 0 ) > count( $reviews );
+
+		require self::COMPONENT_DIR . '/partials/reviews-section.php';
+	}
+
+	/**
+	 * Whether the themed review form should render.
+	 */
+	public static function can_show_review_form( \WC_Product $product ): bool {
+		if ( 'yes' !== get_option( 'woocommerce_enable_reviews', 'yes' ) ) {
+			return false;
+		}
+
+		return comments_open( $product->get_id() );
+	}
+
+	/**
+	 * Render WooCommerce product review comment form with theme chrome.
+	 */
+	public static function render_review_form( \WC_Product $product ): void {
+		if ( ! self::can_show_review_form( $product ) ) {
+			return;
+		}
+
+		$commenter = wp_get_current_commenter();
+		$required  = get_option( 'require_name_email', 1 ) ? ' aria-required="true" required' : '';
+
+		$comment_form = array(
+			'title_reply'          => __( 'Escribir una reseña', 'shanelle' ),
+			'title_reply_to'       => __( 'Responder a %s', 'shanelle' ),
+			'title_reply_before'   => '<h3 id="reply-title" class="product-reviews__form-title comment-reply-title">',
+			'title_reply_after'    => '</h3>',
+			'comment_notes_before' => '',
+			'comment_notes_after'  => '',
+			'label_submit'         => __( 'Enviar reseña', 'shanelle' ),
+			'class_submit'         => 'btn btn--primary product-reviews__submit',
+			'submit_button'        => '<button name="%1$s" type="submit" id="%2$s" class="%3$s" value="%4$s">%4$s</button>',
+			'logged_in_as'         => '',
+			'comment_field'        => '',
+		);
+
+		$name_email_required = (bool) get_option( 'require_name_email', 1 );
+		$fields              = array(
+			'author' => sprintf(
+				'<p class="comment-form-author product-reviews__field"><label for="author">%1$s%2$s</label><input id="author" name="author" type="text" value="%3$s" size="30" autocomplete="name"%4$s /></p>',
+				esc_html__( 'Nombre', 'shanelle' ),
+				$name_email_required ? ' <span class="required" aria-hidden="true">*</span>' : '',
+				esc_attr( $commenter['comment_author'] ),
+				$name_email_required ? ' required aria-required="true"' : ''
+			),
+			'email'  => sprintf(
+				'<p class="comment-form-email product-reviews__field"><label for="email">%1$s%2$s</label><input id="email" name="email" type="email" value="%3$s" size="30" autocomplete="email"%4$s /></p>',
+				esc_html__( 'Correo electrónico', 'shanelle' ),
+				$name_email_required ? ' <span class="required" aria-hidden="true">*</span>' : '',
+				esc_attr( $commenter['comment_author_email'] ),
+				$name_email_required ? ' required aria-required="true"' : ''
+			),
+		);
+
+		$comment_form['fields'] = $fields;
+
+		if ( wc_review_ratings_enabled() ) {
+			$comment_form['comment_field'] = '<div class="comment-form-rating product-reviews__rating-field"><label for="rating" id="comment-form-rating-label">' . esc_html__( 'Tu calificación', 'shanelle' ) . ( wc_review_ratings_required() ? '&nbsp;<span class="required" aria-hidden="true">*</span>' : '' ) . '</label><select name="rating" id="rating"' . ( wc_review_ratings_required() ? ' required' : '' ) . ' aria-labelledby="comment-form-rating-label">
+				<option value="">' . esc_html__( 'Calificación…', 'shanelle' ) . '</option>
+				<option value="5">' . esc_html__( 'Perfecto', 'shanelle' ) . '</option>
+				<option value="4">' . esc_html__( 'Bueno', 'shanelle' ) . '</option>
+				<option value="3">' . esc_html__( 'Promedio', 'shanelle' ) . '</option>
+				<option value="2">' . esc_html__( 'No está mal', 'shanelle' ) . '</option>
+				<option value="1">' . esc_html__( 'Muy pobre', 'shanelle' ) . '</option>
+			</select></div>';
+		}
+
+		$comment_form['comment_field'] .= sprintf(
+			'<p class="comment-form-comment product-reviews__field"><label for="comment">%1$s&nbsp;<span class="required" aria-hidden="true">*</span></label><textarea id="comment" name="comment" cols="45" rows="6" required aria-required="true"></textarea></p>',
+			esc_html__( 'Tu reseña', 'shanelle' )
+		);
+
+		unset( $required );
+
+		/**
+		 * Filter product review comment form args (WooCommerce-compatible).
+		 *
+		 * @param array<string, mixed> $comment_form Comment form args.
+		 */
+		$comment_form = apply_filters( 'woocommerce_product_review_comment_form_args', $comment_form );
 		?>
-		<section
-			class="product-detail__section product-detail__section--reviews"
-			id="<?php echo esc_attr( self::get_section_id( 'reviews' ) ); ?>"
-			data-shanelle-detail-section="reviews"
-			data-shanelle-detail-hydrate
-			aria-labelledby="<?php echo esc_attr( self::get_section_heading_id( 'reviews' ) ); ?>"
-		>
-			<h2 id="<?php echo esc_attr( self::get_section_heading_id( 'reviews' ) ); ?>" class="product-detail__section-title">
-				<?php esc_html_e( 'Reviews', 'shanelle' ); ?>
-			</h2>
-			<div class="product-detail__placeholder-card" data-shanelle-detail-reviews>
-				<p class="product-detail__placeholder text-caption text-muted">
-					<?php esc_html_e( 'Customer reviews coming soon.', 'shanelle' ); ?>
-				</p>
+		<div class="product-reviews__form-wrap" id="review_form_wrapper">
+			<div id="review_form" class="product-reviews__form">
+				<?php comment_form( $comment_form, $product->get_id() ); ?>
 			</div>
-		</section>
+		</div>
 		<?php
+	}
+
+	/**
+	 * Return approved product reviews.
+	 *
+	 * @return array<int, \WP_Comment>
+	 */
+	public static function get_reviews( \WC_Product $product, int $limit = 6 ): array {
+		$comments = get_comments(
+			array(
+				'post_id' => $product->get_id(),
+				'status'  => 'approve',
+				'type'    => 'review',
+				'number'  => max( 1, $limit ),
+				'orderby' => 'comment_date_gmt',
+				'order'   => 'DESC',
+			)
+		);
+
+		return is_array( $comments ) ? $comments : array();
+	}
+
+	/**
+	 * Return review summary data.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public static function get_review_summary( \WC_Product $product ): array {
+		$average = (float) $product->get_average_rating();
+		$count   = (int) $product->get_review_count();
+
+		return array(
+			'average'      => $average,
+			'count'        => $count,
+			'display'      => $count > 0 ? number_format_i18n( $average, 2 ) : '0.00',
+			'stars'        => $count > 0 ? wc_get_rating_html( $average, $count ) : '',
+			'has_reviews'  => $count > 0,
+		);
+	}
+
+	/**
+	 * Return mapped review filter tags when real meta is available.
+	 *
+	 * Defaults to empty so unused placeholder chips are never shown.
+	 * Populate via `shanelle_product_review_filter_tags` when review meta exists.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	public static function get_review_filter_tags(): array {
+		$tags = apply_filters( 'shanelle_product_review_filter_tags', array() );
+
+		return is_array( $tags ) ? array_values( $tags ) : array();
+	}
+
+	/**
+	 * Return fit breakdown rows for the reviews summary when real meta is available.
+	 *
+	 * Defaults to empty so stub percentages are never shown as customer data.
+	 * Populate via `shanelle_product_review_fit_breakdown` when fit meta exists.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	public static function get_fit_breakdown(): array {
+		$rows = apply_filters( 'shanelle_product_review_fit_breakdown', array() );
+
+		return is_array( $rows ) ? array_values( $rows ) : array();
 	}
 
 	/**
@@ -318,11 +465,11 @@ final class ProductDetail {
 			aria-labelledby="<?php echo esc_attr( self::get_section_heading_id( 'related' ) ); ?>"
 		>
 			<h2 id="<?php echo esc_attr( self::get_section_heading_id( 'related' ) ); ?>" class="product-detail__section-title">
-				<?php esc_html_e( 'Related Products', 'shanelle' ); ?>
+				<?php esc_html_e( 'Productos relacionados', 'shanelle' ); ?>
 			</h2>
 			<div class="product-detail__placeholder-grid" data-shanelle-detail-related>
 				<p class="product-detail__placeholder text-caption text-muted">
-					<?php esc_html_e( 'Related products coming soon.', 'shanelle' ); ?>
+					<?php esc_html_e( 'Productos relacionados próximamente.', 'shanelle' ); ?>
 				</p>
 			</div>
 		</section>
@@ -343,11 +490,11 @@ final class ProductDetail {
 			aria-labelledby="<?php echo esc_attr( self::get_section_heading_id( 'recently-viewed' ) ); ?>"
 		>
 			<h2 id="<?php echo esc_attr( self::get_section_heading_id( 'recently-viewed' ) ); ?>" class="product-detail__section-title">
-				<?php esc_html_e( 'Recently Viewed', 'shanelle' ); ?>
+				<?php esc_html_e( 'Vistos recientemente', 'shanelle' ); ?>
 			</h2>
 			<div class="product-detail__placeholder-grid" data-shanelle-detail-recently-viewed>
 				<p class="product-detail__placeholder text-caption text-muted">
-					<?php esc_html_e( 'Recently viewed products coming soon.', 'shanelle' ); ?>
+					<?php esc_html_e( 'Productos vistos recientemente próximamente.', 'shanelle' ); ?>
 				</p>
 			</div>
 		</section>
@@ -477,21 +624,21 @@ final class ProductDetail {
 		return array(
 			array(
 				'id'          => 'description',
-				'title'       => __( 'Description', 'shanelle' ),
+				'title'       => __( 'Descripción', 'shanelle' ),
 				'content'     => $description,
-				'placeholder' => __( 'Full product description coming soon.', 'shanelle' ),
+				'placeholder' => __( 'La descripción completa del producto estará disponible pronto.', 'shanelle' ),
 			),
 			array(
 				'id'          => 'details',
-				'title'       => __( 'Details', 'shanelle' ),
+				'title'       => __( 'Detalles', 'shanelle' ),
 				'content'     => '',
-				'placeholder' => __( 'Product details coming soon.', 'shanelle' ),
+				'placeholder' => __( 'Los detalles del producto estarán disponibles pronto.', 'shanelle' ),
 			),
 			array(
 				'id'          => 'shipping-returns',
-				'title'       => __( 'Shipping & Returns', 'shanelle' ),
+				'title'       => __( 'Envío y devoluciones', 'shanelle' ),
 				'content'     => '',
-				'placeholder' => __( 'Shipping and returns information coming soon.', 'shanelle' ),
+				'placeholder' => __( 'La información de envío y devoluciones estará disponible pronto.', 'shanelle' ),
 			),
 		);
 	}

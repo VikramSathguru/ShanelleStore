@@ -67,8 +67,8 @@ final class SearchOverlay {
 		$wp_customize->add_section(
 			'shanelle_search_overlay',
 			array(
-				'title'       => __( 'Search Overlay', 'shanelle' ),
-				'description' => __( 'Configure live search overlay behavior and suggestions.', 'shanelle' ),
+				'title'       => __( 'Overlay de búsqueda', 'shanelle' ),
+				'description' => __( 'Configura el comportamiento del overlay de búsqueda en vivo y las sugerencias.', 'shanelle' ),
 				'priority'    => 172,
 			)
 		);
@@ -76,28 +76,28 @@ final class SearchOverlay {
 		self::register_text_control(
 			$wp_customize,
 			self::MOD_PLACEHOLDER,
-			__( 'Search input placeholder', 'shanelle' ),
-			__( 'Search dresses, tops, collections…', 'shanelle' )
+			__( 'Texto del campo de búsqueda', 'shanelle' ),
+			__( 'Buscar vestidos, tops, colecciones…', 'shanelle' )
 		);
 
 		self::register_textarea_control(
 			$wp_customize,
 			self::MOD_POPULAR,
-			__( 'Popular searches', 'shanelle' ),
+			__( 'Búsquedas populares', 'shanelle' ),
 			"dresses\nnew arrivals\ntops\nsale"
 		);
 
 		self::register_text_control(
 			$wp_customize,
 			self::MOD_EMPTY_MESSAGE,
-			__( 'No results helper message', 'shanelle' ),
-			__( 'Try another keyword or browse our popular searches.', 'shanelle' )
+			__( 'Mensaje de ayuda sin resultados', 'shanelle' ),
+			__( 'Prueba con otra palabra o explora nuestras búsquedas populares.', 'shanelle' )
 		);
 
 		self::register_number_control(
 			$wp_customize,
 			self::MOD_MIN_QUERY,
-			__( 'Minimum characters before live search', 'shanelle' ),
+			__( 'Caracteres mínimos antes de la búsqueda en vivo', 'shanelle' ),
 			2,
 			1,
 			5
@@ -106,7 +106,7 @@ final class SearchOverlay {
 		self::register_number_control(
 			$wp_customize,
 			self::MOD_DEBOUNCE,
-			__( 'Debounce delay (ms)', 'shanelle' ),
+			__( 'Retraso de debounce (ms)', 'shanelle' ),
 			300,
 			150,
 			1000
@@ -115,7 +115,7 @@ final class SearchOverlay {
 		self::register_number_control(
 			$wp_customize,
 			self::MOD_PRODUCT_LIMIT,
-			__( 'Maximum product suggestions', 'shanelle' ),
+			__( 'Máximo de sugerencias de productos', 'shanelle' ),
 			6,
 			3,
 			12
@@ -124,7 +124,7 @@ final class SearchOverlay {
 		self::register_number_control(
 			$wp_customize,
 			self::MOD_TERM_LIMIT,
-			__( 'Maximum category/collection suggestions', 'shanelle' ),
+			__( 'Máximo de sugerencias de categorías/colecciones', 'shanelle' ),
 			4,
 			2,
 			8
@@ -204,7 +204,7 @@ final class SearchOverlay {
 			? self::$state['settings']
 			: self::get_settings();
 
-		return (string) ( $settings['placeholder'] ?? __( 'Search dresses, tops, collections…', 'shanelle' ) );
+		return (string) ( $settings['placeholder'] ?? __( 'Buscar vestidos, tops, colecciones…', 'shanelle' ) );
 	}
 
 	/**
@@ -248,7 +248,7 @@ final class SearchOverlay {
 			array(
 				'placeholder'       => self::get_theme_mod_string(
 					self::MOD_PLACEHOLDER,
-					__( 'Search dresses, tops, collections…', 'shanelle' )
+					__( 'Buscar vestidos, tops, colecciones…', 'shanelle' )
 				),
 				'popular_searches'  => self::get_theme_mod_string(
 					self::MOD_POPULAR,
@@ -256,7 +256,7 @@ final class SearchOverlay {
 				),
 				'empty_message'     => self::get_theme_mod_string(
 					self::MOD_EMPTY_MESSAGE,
-					__( 'Try another keyword or browse our popular searches.', 'shanelle' )
+					__( 'Prueba con otra palabra o explora nuestras búsquedas populares.', 'shanelle' )
 				),
 				'min_query_length'  => self::get_theme_mod_int( self::MOD_MIN_QUERY, 2 ),
 				'debounce_ms'       => self::get_theme_mod_int( self::MOD_DEBOUNCE, 300 ),
@@ -331,16 +331,16 @@ final class SearchOverlay {
 				'restNonce'    => wp_create_nonce( 'wp_rest' ),
 				'initialState' => self::build_overlay_state(),
 				'i18n'         => array(
-					'title'           => __( 'Search', 'shanelle' ),
-					'close'           => __( 'Close search', 'shanelle' ),
-					'submit'          => __( 'Search', 'shanelle' ),
-					'clear'           => __( 'Clear search', 'shanelle' ),
-					'loading'         => __( 'Searching…', 'shanelle' ),
-					'resultsUpdated'  => __( 'Search suggestions updated', 'shanelle' ),
-					'noResults'       => __( 'No results found', 'shanelle' ),
-					'recentSearches'  => __( 'Recent searches', 'shanelle' ),
-					'clearRecent'     => __( 'Clear recent searches', 'shanelle' ),
-					'popularSearches' => __( 'Popular searches', 'shanelle' ),
+					'title'           => __( 'Buscar', 'shanelle' ),
+					'close'           => __( 'Cerrar búsqueda', 'shanelle' ),
+					'submit'          => __( 'Buscar', 'shanelle' ),
+					'clear'           => __( 'Borrar búsqueda', 'shanelle' ),
+					'loading'         => __( 'Buscando…', 'shanelle' ),
+					'resultsUpdated'  => __( 'Sugerencias de búsqueda actualizadas', 'shanelle' ),
+					'noResults'       => __( 'No se encontraron resultados', 'shanelle' ),
+					'recentSearches'  => __( 'Búsquedas recientes', 'shanelle' ),
+					'clearRecent'     => __( 'Borrar búsquedas recientes', 'shanelle' ),
+					'popularSearches' => __( 'Búsquedas populares', 'shanelle' ),
 				),
 			)
 		);
@@ -396,7 +396,7 @@ final class SearchOverlay {
 			$mod_name,
 			array(
 				'label'       => $label,
-				'description' => __( 'One search term per line or comma-separated.', 'shanelle' ),
+				'description' => __( 'Un término de búsqueda por línea o separados por comas.', 'shanelle' ),
 				'section'     => 'shanelle_search_overlay',
 				'type'        => 'textarea',
 			)

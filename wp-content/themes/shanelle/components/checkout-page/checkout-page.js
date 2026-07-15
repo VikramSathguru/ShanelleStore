@@ -105,7 +105,7 @@ function bindCheckoutUpdates() {
 	}
 
 	jQuery( document.body ).on( 'updated_checkout', () => {
-		announce( i18n.updated || 'Order summary updated' );
+		announce( i18n.updated || 'Resumen del pedido actualizado' );
 
 		document.body.dispatchEvent(
 			new CustomEvent( 'shanelle:checkout-page:updated', {
@@ -119,7 +119,7 @@ function bindCheckoutUpdates() {
 	} );
 
 	jQuery( document.body ).on( 'checkout_error', () => {
-		announce( i18n.validationError || 'Please correct the errors below before placing your order.' );
+		announce( i18n.validationError || 'Corrige los errores abajo antes de realizar tu pedido.' );
 		focusFirstCheckoutError();
 	} );
 }

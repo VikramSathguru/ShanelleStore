@@ -22,7 +22,7 @@ final class ProductRelated {
 
 	private const COMPONENT_URI = SHANELLE_URI . '/components/product-related';
 
-	private const DEFAULT_LIMIT = 8;
+	private const DEFAULT_LIMIT = 16;
 
 	private const DEFAULT_CANDIDATE_POOL = 120;
 
@@ -143,27 +143,84 @@ final class ProductRelated {
 	}
 
 	/**
-	 * Render the related products grid via ProductGrid.
+	 * Render the related products grid via mapped product cards.
 	 */
 	public static function render_grid(): void {
-		$query = new \WP_Query(
-			array(
-				'post_type'      => 'product',
-				'post_status'    => 'publish',
-				'post__in'       => self::$recommended_ids,
-				'orderby'        => 'post__in',
-				'posts_per_page' => count( self::$recommended_ids ),
-				'no_found_rows'  => true,
-			)
-		);
+		$products = self::get_recommended_products();
 
-		ProductGrid::render(
-			$query,
-			array(
-				'grid_id'         => 'related-' . self::get_product()->get_id(),
-				'pagination_mode' => 'none',
-				'card_args'       => (array) self::$args['card_args'],
-			)
+		if ( empty( $products ) ) {
+			return;
+		}
+
+		$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/' );
+		$shop_url = is_string( $shop_url ) ? $shop_url : home_url( '/' );
+		?>
+		<ul class="product-related__items" role="list">
+			<?php foreach ( $products as $index => $product ) : ?>
+				<?php
+				if ( ! $product instanceof \WC_Product ) {
+					continue;
+				}
+				?>
+				<li
+					class="product-related__item"
+					data-related-index="<?php echo esc_attr( (string) $index ); ?>"
+				>
+					<?php
+					ProductCard::render(
+						$product,
+						array_merge(
+							(array) self::$args['card_args'],
+							array(
+								'show_rating'     => true,
+								'show_attributes' => false,
+								'show_actions'    => true,
+							)
+						)
+					);
+					?>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+
+		<div class="product-related__view-more-wrap">
+			<a class="product-related__view-more btn btn--outline" href="<?php echo esc_url( $shop_url ); ?>">
+				<?php esc_html_e( 'Ver más', 'shanelle' ); ?>
+				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+			</a>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Return resolved recommendation products.
+	 *
+	 * @return array<int, \WC_Product>
+	 */
+	public static function get_recommended_products(): array {
+		$products = array();
+
+		foreach ( self::$recommended_ids as $product_id ) {
+			$product = wc_get_product( $product_id );
+
+			if ( $product instanceof \WC_Product ) {
+				$products[] = $product;
+			}
+		}
+
+		return $products;
+	}
+
+	/**
+	 * Return section title copy.
+	 */
+	public static function get_section_title(): string {
+		/**
+		 * Filter customers also viewed section title.
+		 */
+		return (string) apply_filters(
+			'shanelle_customers_also_viewed_title',
+			__( 'Los clientes también vieron', 'shanelle' )
 		);
 	}
 

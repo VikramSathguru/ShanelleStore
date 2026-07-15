@@ -30,14 +30,14 @@ do_action( 'woocommerce_before_account_payment_methods', $has_methods );
 								<?php
 								printf(
 									/* translators: %s: expiry date */
-									esc_html__( 'Expires %s', 'shanelle' ),
+									esc_html__( 'Vence el %s', 'shanelle' ),
 									esc_html( $method['expires'] )
 								);
 								?>
 							</p>
 						<?php endif; ?>
 						<?php if ( ! empty( $method['is_default'] ) ) : ?>
-							<span class="my-account-page__payment-card-badge text-label"><?php esc_html_e( 'Default', 'shanelle' ); ?></span>
+							<span class="my-account-page__payment-card-badge text-label"><?php esc_html_e( 'Predeterminado', 'shanelle' ); ?></span>
 						<?php endif; ?>
 					</div>
 					<?php if ( ! empty( $method['actions'] ) ) : ?>
@@ -56,8 +56,8 @@ do_action( 'woocommerce_before_account_payment_methods', $has_methods );
 		<?php
 		MyAccountPage::render_empty_state(
 			array(
-				'title'    => __( 'No saved payment methods', 'shanelle' ),
-				'message'  => __( 'Save a payment method at checkout for faster future purchases.', 'shanelle' ),
+				'title'    => __( 'No hay métodos de pago guardados', 'shanelle' ),
+				'message'  => __( 'Guarda un método de pago al pagar para compras más rápidas en el futuro.', 'shanelle' ),
 				'cta_url'  => $show_add_link ? $add_url : ( wc_get_page_permalink( 'shop' ) ?: home_url( '/' ) ),
 				'cta_text' => $show_add_link ? __( 'Add payment method', 'woocommerce' ) : __( 'Browse products', 'woocommerce' ),
 			)

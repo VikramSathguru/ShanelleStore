@@ -23,11 +23,10 @@ global $product;
 		>
 			<?php ProductDetail::render_breadcrumbs(); ?>
 			<?php ProductDetail::render_hero(); ?>
+
 			<div class="product-detail__below">
-				<?php shanelle_product_information( $product ); ?>
 				<?php ProductDetail::render_reviews_section(); ?>
 				<?php shanelle_product_related( $product ); ?>
-				<?php ProductDetail::render_recently_viewed_section(); ?>
 			</div>
 		</article>
 	</div>

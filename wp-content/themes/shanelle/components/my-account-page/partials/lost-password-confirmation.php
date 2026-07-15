@@ -17,5 +17,5 @@ wc_print_notice( esc_html__( 'Password reset email has been sent.', 'woocommerce
 <?php do_action( 'woocommerce_after_lost_password_confirmation_message' ); ?>
 
 <p class="my-account-page__back-link text-label">
-	<a href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php esc_html_e( 'Back to sign in', 'shanelle' ); ?></a>
+	<a href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php esc_html_e( 'Volver a iniciar sesión', 'shanelle' ); ?></a>
 </p>

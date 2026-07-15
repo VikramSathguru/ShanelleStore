@@ -76,8 +76,8 @@ final class CollectionPage {
 		$wp_customize->add_section(
 			'shanelle_collection_page',
 			array(
-				'title'       => __( 'Collection Archives', 'shanelle' ),
-				'description' => __( 'Configure individual collection archive pages.', 'shanelle' ),
+				'title'       => __( 'Archivos de colección', 'shanelle' ),
+				'description' => __( 'Configura las páginas de archivo de cada colección.', 'shanelle' ),
 				'priority'    => 175,
 			)
 		);
@@ -85,21 +85,21 @@ final class CollectionPage {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_CHILDREN,
-			__( 'Show child collection navigation', 'shanelle' ),
+			__( 'Mostrar navegación de colecciones hijas', 'shanelle' ),
 			true
 		);
 
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHOW_BREADCRUMBS,
-			__( 'Show breadcrumbs on collection archives', 'shanelle' ),
+			__( 'Mostrar ruta de navegación en archivos de colección', 'shanelle' ),
 			true
 		);
 
 		$wp_customize->add_setting(
 			self::MOD_EMPTY_MESSAGE,
 			array(
-				'default'           => __( 'This collection is empty right now. Explore other edits below.', 'shanelle' ),
+				'default'           => __( 'Esta colección está vacía por ahora. Explora otras ediciones abajo.', 'shanelle' ),
 				'sanitize_callback' => 'sanitize_text_field',
 				'transport'         => 'refresh',
 			)
@@ -108,7 +108,7 @@ final class CollectionPage {
 		$wp_customize->add_control(
 			self::MOD_EMPTY_MESSAGE,
 			array(
-				'label'   => __( 'Empty collection message', 'shanelle' ),
+				'label'   => __( 'Mensaje de colección vacía', 'shanelle' ),
 				'section' => 'shanelle_collection_page',
 				'type'    => 'text',
 			)
@@ -149,7 +149,7 @@ final class CollectionPage {
 			array(
 				'initialState' => self::build_page_state(),
 				'i18n'         => array(
-					'pageTitle' => __( 'Collection', 'shanelle' ),
+					'pageTitle' => __( 'Colección', 'shanelle' ),
 				),
 			)
 		);
@@ -250,7 +250,7 @@ final class CollectionPage {
 
 		$current_id = (int) ( self::$state['collection']['id'] ?? 0 );
 		?>
-		<nav class="collection-page__related" aria-label="<?php esc_attr_e( 'Related collections', 'shanelle' ); ?>">
+		<nav class="collection-page__related" aria-label="<?php esc_attr_e( 'Colecciones relacionadas', 'shanelle' ); ?>">
 			<ul class="collection-page__related-list" role="list">
 				<?php foreach ( $items as $item ) : ?>
 					<?php
@@ -286,7 +286,7 @@ final class CollectionPage {
 			echo esc_html(
 				sprintf(
 					/* translators: %d: number of products */
-					_n( '%d product', '%d products', $count, 'shanelle' ),
+					_n( '%d producto', '%d productos', $count, 'shanelle' ),
 					$count
 				)
 			);
@@ -449,7 +449,7 @@ final class CollectionPage {
 				'show_breadcrumbs' => self::get_theme_mod_bool( self::MOD_SHOW_BREADCRUMBS, true ),
 				'empty_message'    => self::get_theme_mod_string(
 					self::MOD_EMPTY_MESSAGE,
-					__( 'This collection is empty right now. Explore other edits below.', 'shanelle' )
+					__( 'Esta colección está vacía por ahora. Explora otras ediciones abajo.', 'shanelle' )
 				),
 			)
 		);

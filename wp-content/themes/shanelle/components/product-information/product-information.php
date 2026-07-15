@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 	aria-labelledby="<?php echo esc_attr( ProductInformation::get_heading_id() ); ?>"
 >
 	<h2 id="<?php echo esc_attr( ProductInformation::get_heading_id() ); ?>" class="product-information__title product-detail__section-title">
-		<?php esc_html_e( 'Product Information', 'shanelle' ); ?>
+		<?php esc_html_e( 'Información del producto', 'shanelle' ); ?>
 	</h2>
 
 	<div class="product-information__accordion" data-shanelle-information-accordion>

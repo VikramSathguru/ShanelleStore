@@ -302,7 +302,7 @@ async function fetchSuggestions( query ) {
 	requestController = new AbortController();
 	isLoading = true;
 	showSkeleton();
-	announce( i18n.loading || 'Searching…' );
+	announce( i18n.loading || 'Buscando…' );
 
 	const params = new URLSearchParams( {
 		action: config.action || 'shanelle_search_suggest',
@@ -320,20 +320,20 @@ async function fetchSuggestions( query ) {
 		} );
 
 		if ( ! response.ok ) {
-			throw new Error( 'Search request failed.' );
+			throw new Error( 'Error en la búsqueda.' );
 		}
 
 		const payload = await response.json();
 
 		if ( ! payload?.success || ! payload?.data ) {
-			throw new Error( 'Invalid search response.' );
+			throw new Error( 'Respuesta de búsqueda no válida.' );
 		}
 
 		renderResultsHtml( payload.data.html || '', payload.data.status || 'results' );
 		announce(
 			payload.data.status === 'empty'
-				? ( i18n.noResults || 'No results found' )
-				: ( i18n.resultsUpdated || 'Search suggestions updated' )
+				? ( i18n.noResults || 'No se encontraron resultados' )
+				: ( i18n.resultsUpdated || 'Sugerencias de búsqueda actualizadas' )
 		);
 	} catch ( error ) {
 		if ( error instanceof DOMException && error.name === 'AbortError' ) {
@@ -341,7 +341,7 @@ async function fetchSuggestions( query ) {
 		}
 
 		renderResultsHtml(
-			`<div class="search-results search-results--empty"><p class="search-results__empty-message text-muted">${ i18n.noResults || 'No results found' }</p></div>`,
+			`<div class="search-results search-results--empty"><p class="search-results__empty-message text-muted">${ i18n.noResults || 'No se encontraron resultados' }</p></div>`,
 			'empty'
 		);
 	} finally {
@@ -632,7 +632,7 @@ function handleDocumentClick( event ) {
 		event.preventDefault();
 		setRecentSearches( [] );
 		renderRecentSearches();
-		announce( i18n.clearRecent || 'Clear recent searches' );
+		announce( i18n.clearRecent || 'Borrar búsquedas recientes' );
 	}
 }
 

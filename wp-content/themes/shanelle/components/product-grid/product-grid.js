@@ -96,13 +96,13 @@ async function fetchPage( grid, page ) {
 	} );
 
 	if ( ! response.ok ) {
-		throw new Error( 'Grid request failed' );
+		throw new Error( 'Error al cargar la cuadrícula' );
 	}
 
 	const payload = await response.json();
 
 	if ( ! payload.success ) {
-		throw new Error( payload.data?.message || 'Grid request failed' );
+		throw new Error( payload.data?.message || 'Error al cargar la cuadrícula' );
 	}
 
 	return payload.data;
@@ -124,7 +124,7 @@ async function loadNextPage( grid ) {
 	grid.dataset.gridLoading = 'true';
 	setLoading( grid, true );
 	setError( grid, false );
-	announce( grid, i18n.loading || 'Loading products…' );
+	announce( grid, i18n.loading || 'Cargando productos…' );
 
 	try {
 		const data = await fetchPage( grid, nextPage );
@@ -155,7 +155,7 @@ async function loadNextPage( grid ) {
 		announce( grid, '' );
 	} catch ( error ) {
 		setError( grid, true );
-		announce( grid, i18n.error || 'Unable to load products.' );
+		announce( grid, i18n.error || 'No se pudieron cargar los productos.' );
 	} finally {
 		grid.dataset.gridLoading = 'false';
 		setLoading( grid, false );

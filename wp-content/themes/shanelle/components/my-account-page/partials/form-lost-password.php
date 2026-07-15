@@ -33,7 +33,7 @@ do_action( 'woocommerce_before_lost_password_form' );
 </form>
 
 <p class="my-account-page__back-link text-label">
-	<a href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php esc_html_e( 'Back to sign in', 'shanelle' ); ?></a>
+	<a href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>"><?php esc_html_e( 'Volver a iniciar sesión', 'shanelle' ); ?></a>
 </p>
 
 <?php

@@ -38,8 +38,8 @@ function setMenuExpanded( menu, expanded ) {
 		toggle.setAttribute(
 			'aria-label',
 			expanded
-				? ( i18n.menuCollapse || 'Collapse menu' )
-				: ( i18n.menuExpand || 'Expand menu' )
+				? ( i18n.menuCollapse || 'Contraer menú' )
+				: ( i18n.menuExpand || 'Expandir menú' )
 		);
 	}
 
@@ -88,14 +88,14 @@ function handleNewsletterSubmit( form ) {
 	message.classList.remove( 'is-success', 'is-error' );
 
 	if ( ! isValid ) {
-		message.textContent = i18n.newsletterInvalid || 'Please enter a valid email address.';
+		message.textContent = i18n.newsletterInvalid || 'Ingresa un correo electrónico válido.';
 		message.classList.add( 'is-error' );
 		announce( message.textContent );
 		input.focus();
 		return;
 	}
 
-	message.textContent = i18n.newsletterSuccess || 'Thanks for subscribing. We will be in touch soon.';
+	message.textContent = i18n.newsletterSuccess || 'Gracias por suscribirte. Pronto estaremos en contacto.';
 	message.classList.add( 'is-success' );
 	announce( message.textContent );
 	form.classList.add( 'is-submitted' );

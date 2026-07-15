@@ -37,7 +37,7 @@ function setTriggerState( trigger, expanded ) {
 	trigger.setAttribute( 'aria-expanded', expanded ? 'true' : 'false' );
 	trigger.setAttribute(
 		'aria-label',
-		`${ getTriggerLabel( trigger ) } — ${ expanded ? i18n.collapseSection || 'Collapse section' : i18n.expandSection || 'Expand section' }`
+		`${ getTriggerLabel( trigger ) } — ${ expanded ? i18n.collapseSection || 'Contraer sección' : i18n.expandSection || 'Expandir sección' }`
 	);
 }
 

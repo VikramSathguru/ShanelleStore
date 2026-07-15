@@ -99,12 +99,13 @@ final class ProductGallery {
 			'shanelleProductGallery',
 			array(
 				'i18n' => array(
-					'previous'    => __( 'Previous image', 'shanelle' ),
-					'next'        => __( 'Next image', 'shanelle' ),
-					'zoomSoon'    => __( 'Zoom (coming soon)', 'shanelle' ),
-					'fullscreen'  => __( 'View fullscreen', 'shanelle' ),
-					'close'       => __( 'Close gallery', 'shanelle' ),
-					'imageOf'     => __( 'Image %1$d of %2$d', 'shanelle' ),
+					'previous'    => __( 'Imagen anterior', 'shanelle' ),
+					'next'        => __( 'Imagen siguiente', 'shanelle' ),
+					'zoomOn'      => __( 'Activar zoom', 'shanelle' ),
+					'zoomOff'     => __( 'Desactivar zoom', 'shanelle' ),
+					'fullscreen'  => __( 'Ver en pantalla completa', 'shanelle' ),
+					'close'       => __( 'Cerrar galería', 'shanelle' ),
+					'imageOf'     => __( 'Imagen %1$d de %2$d', 'shanelle' ),
 				),
 			)
 		);
@@ -144,29 +145,33 @@ final class ProductGallery {
 			<?php self::render_navigation(); ?>
 
 			<figure class="product-gallery__main">
-				<?php if ( $item ) : ?>
-					<img
-						class="product-gallery__image"
-						data-shanelle-gallery-main
-						src="<?php echo esc_url( (string) $item['src'] ); ?>"
-						<?php if ( ! empty( $item['srcset'] ) ) : ?>
-							srcset="<?php echo esc_attr( (string) $item['srcset'] ); ?>"
-						<?php endif; ?>
-						<?php if ( ! empty( $item['sizes'] ) ) : ?>
-							sizes="<?php echo esc_attr( (string) $item['sizes'] ); ?>"
-						<?php endif; ?>
-						width="<?php echo esc_attr( (string) $item['width'] ); ?>"
-						height="<?php echo esc_attr( (string) $item['height'] ); ?>"
-						alt="<?php echo esc_attr( (string) $item['alt'] ); ?>"
-						decoding="async"
-						fetchpriority="high"
-						data-index="<?php echo esc_attr( (string) $index ); ?>"
-					>
-				<?php else : ?>
-					<?php echo wc_placeholder_img( self::MAIN_SIZE, array( 'class' => 'product-gallery__image product-gallery__image--placeholder' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<?php endif; ?>
+				<div class="product-gallery__image-stack" data-shanelle-gallery-stack>
+					<?php if ( $item ) : ?>
+						<img
+							class="product-gallery__image is-active"
+							data-shanelle-gallery-main
+							src="<?php echo esc_url( (string) $item['src'] ); ?>"
+							<?php if ( ! empty( $item['srcset'] ) ) : ?>
+								srcset="<?php echo esc_attr( (string) $item['srcset'] ); ?>"
+							<?php endif; ?>
+							<?php if ( ! empty( $item['sizes'] ) ) : ?>
+								sizes="<?php echo esc_attr( (string) $item['sizes'] ); ?>"
+							<?php endif; ?>
+							width="<?php echo esc_attr( (string) $item['width'] ); ?>"
+							height="<?php echo esc_attr( (string) $item['height'] ); ?>"
+							alt="<?php echo esc_attr( (string) $item['alt'] ); ?>"
+							decoding="async"
+							fetchpriority="high"
+							data-index="<?php echo esc_attr( (string) $index ); ?>"
+							data-full-src="<?php echo esc_url( (string) $item['full_src'] ); ?>"
+						>
+					<?php else : ?>
+						<?php echo wc_placeholder_img( self::MAIN_SIZE, array( 'class' => 'product-gallery__image product-gallery__image--placeholder is-active' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php endif; ?>
+				</div>
 
 				<div class="product-gallery__zoom-lens" data-shanelle-gallery-zoom aria-hidden="true"></div>
+				<div class="product-gallery__zoom-pane" data-shanelle-gallery-zoom-pane hidden aria-hidden="true"></div>
 			</figure>
 
 			<?php self::render_actions(); ?>
@@ -180,12 +185,12 @@ final class ProductGallery {
 	public static function render_thumbnails(): void {
 		$items = self::$items;
 
-		if ( count( $items ) <= 1 ) {
+		if ( empty( $items ) ) {
 			return;
 		}
 		?>
 		<div class="product-gallery__thumbs-wrap" data-shanelle-gallery-thumbs-wrap>
-			<ul class="product-gallery__thumbs" role="tablist" aria-label="<?php esc_attr_e( 'Product images', 'shanelle' ); ?>" data-shanelle-gallery-thumbs>
+			<ul class="product-gallery__thumbs" role="tablist" aria-label="<?php esc_attr_e( 'Imágenes del producto', 'shanelle' ); ?>" data-shanelle-gallery-thumbs>
 				<?php foreach ( $items as $index => $item ) : ?>
 					<li class="product-gallery__thumb-item" role="presentation">
 						<button
@@ -227,7 +232,7 @@ final class ProductGallery {
 				type="button"
 				class="product-gallery__nav-btn product-gallery__nav-btn--prev btn btn--icon"
 				data-shanelle-gallery-prev
-				aria-label="<?php esc_attr_e( 'Previous image', 'shanelle' ); ?>"
+				aria-label="<?php esc_attr_e( 'Imagen anterior', 'shanelle' ); ?>"
 				<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			>
 				<?php self::render_icon( 'prev' ); ?>
@@ -236,7 +241,7 @@ final class ProductGallery {
 				type="button"
 				class="product-gallery__nav-btn product-gallery__nav-btn--next btn btn--icon"
 				data-shanelle-gallery-next
-				aria-label="<?php esc_attr_e( 'Next image', 'shanelle' ); ?>"
+				aria-label="<?php esc_attr_e( 'Imagen siguiente', 'shanelle' ); ?>"
 				<?php echo $disabled; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			>
 				<?php self::render_icon( 'next' ); ?>
@@ -255,9 +260,9 @@ final class ProductGallery {
 				type="button"
 				class="product-gallery__action btn btn--icon"
 				data-shanelle-gallery-zoom-toggle
-				aria-disabled="true"
-				disabled
-				aria-label="<?php esc_attr_e( 'Zoom (coming soon)', 'shanelle' ); ?>"
+				aria-pressed="false"
+				aria-label="<?php esc_attr_e( 'Activar zoom', 'shanelle' ); ?>"
+				<?php echo empty( self::$items ) ? 'disabled' : ''; ?>
 			>
 				<?php self::render_icon( 'zoom' ); ?>
 			</button>
@@ -265,7 +270,7 @@ final class ProductGallery {
 				type="button"
 				class="product-gallery__action btn btn--icon"
 				data-shanelle-gallery-fullscreen
-				aria-label="<?php esc_attr_e( 'View fullscreen', 'shanelle' ); ?>"
+				aria-label="<?php esc_attr_e( 'Ver en pantalla completa', 'shanelle' ); ?>"
 				<?php echo empty( self::$items ) ? 'disabled' : ''; ?>
 			>
 				<?php self::render_icon( 'fullscreen' ); ?>
@@ -285,7 +290,7 @@ final class ProductGallery {
 				class="product-gallery__modal-dialog"
 				role="dialog"
 				aria-modal="true"
-				aria-label="<?php esc_attr_e( 'Product image fullscreen view', 'shanelle' ); ?>"
+				aria-label="<?php esc_attr_e( 'Vista en pantalla completa de la imagen del producto', 'shanelle' ); ?>"
 				data-shanelle-gallery-modal-panel
 				tabindex="-1"
 			>
@@ -293,7 +298,7 @@ final class ProductGallery {
 					type="button"
 					class="product-gallery__modal-close btn btn--icon"
 					data-shanelle-gallery-modal-close
-					aria-label="<?php esc_attr_e( 'Close gallery', 'shanelle' ); ?>"
+					aria-label="<?php esc_attr_e( 'Cerrar galería', 'shanelle' ); ?>"
 				>
 					<?php self::render_icon( 'close' ); ?>
 				</button>
@@ -301,10 +306,10 @@ final class ProductGallery {
 					<img class="product-gallery__modal-image" data-shanelle-gallery-modal-image alt="">
 				</figure>
 				<div class="product-gallery__modal-nav">
-					<button type="button" class="btn btn--icon" data-shanelle-gallery-modal-prev aria-label="<?php esc_attr_e( 'Previous image', 'shanelle' ); ?>">
+					<button type="button" class="btn btn--icon" data-shanelle-gallery-modal-prev aria-label="<?php esc_attr_e( 'Imagen anterior', 'shanelle' ); ?>">
 						<?php self::render_icon( 'prev' ); ?>
 					</button>
-					<button type="button" class="btn btn--icon" data-shanelle-gallery-modal-next aria-label="<?php esc_attr_e( 'Next image', 'shanelle' ); ?>">
+					<button type="button" class="btn btn--icon" data-shanelle-gallery-modal-next aria-label="<?php esc_attr_e( 'Imagen siguiente', 'shanelle' ); ?>">
 						<?php self::render_icon( 'next' ); ?>
 					</button>
 				</div>

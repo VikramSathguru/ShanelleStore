@@ -21,8 +21,8 @@ if ( shanelle_is_woocommerce_active() ) {
 			shanelle_component(
 				'empty-state',
 				array(
-					'title'   => __( 'Search unavailable', 'shanelle' ),
-					'message' => __( 'WooCommerce is required for product search.', 'shanelle' ),
+					'title'   => __( 'Búsqueda no disponible', 'shanelle' ),
+					'message' => __( 'Se requiere WooCommerce para la búsqueda de productos.', 'shanelle' ),
 				)
 			);
 			?>

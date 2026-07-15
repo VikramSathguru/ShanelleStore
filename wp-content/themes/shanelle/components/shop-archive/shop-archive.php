@@ -15,12 +15,19 @@ defined( 'ABSPATH' ) || exit;
 	<div class="container shop-archive__container">
 		<?php ShopArchive::render_breadcrumbs(); ?>
 		<?php ShopArchive::render_notices(); ?>
-		<?php ShopArchive::render_header(); ?>
-		<?php ShopArchive::render_toolbar(); ?>
-		<?php ShopArchive::render_loading_placeholder(); ?>
 
-		<div class="shop-archive__grid" data-shanelle-archive-grid>
-			<?php ShopArchive::render_grid(); ?>
+		<div class="shop-archive__layout">
+			<?php ShopArchive::render_sidebar(); ?>
+
+			<div class="shop-archive__main">
+				<?php ShopArchive::render_header(); ?>
+				<?php ShopArchive::render_toolbar(); ?>
+				<?php ShopArchive::render_loading_placeholder(); ?>
+
+				<div class="shop-archive__grid" data-shanelle-archive-grid>
+					<?php ShopArchive::render_grid(); ?>
+				</div>
+			</div>
 		</div>
 	</div>
 

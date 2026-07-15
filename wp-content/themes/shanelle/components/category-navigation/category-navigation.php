@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 	aria-labelledby="<?php echo esc_attr( CategoryNavigation::get_aria_labelledby() ); ?>"
 >
 	<span class="screen-reader-text" id="<?php echo esc_attr( CategoryNavigation::get_root_id() ); ?>-label">
-		<?php esc_html_e( 'Browse product categories', 'shanelle' ); ?>
+		<?php esc_html_e( 'Explorar categorías de productos', 'shanelle' ); ?>
 	</span>
 
 	<div class="container category-navigation__inner">

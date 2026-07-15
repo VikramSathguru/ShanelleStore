@@ -75,14 +75,12 @@ final class ProductCard {
 			array(
 				'ajaxUrl' => \WC_AJAX::get_endpoint( '%%endpoint%%' ),
 				'i18n'    => array(
-					'addToCart'      => __( 'Add to bag', 'shanelle' ),
-					'selectOptions'  => __( 'Select options', 'shanelle' ),
-					'adding'         => __( 'Adding…', 'shanelle' ),
-					'added'          => __( 'Added to bag', 'shanelle' ),
-					'error'          => __( 'Could not add to bag. Try again.', 'shanelle' ),
-					'wishlistSoon'   => __( 'Wishlist (coming soon)', 'shanelle' ),
-					'quickViewSoon'  => __( 'Quick view (coming soon)', 'shanelle' ),
-					'soldOut'        => __( 'Sold out', 'shanelle' ),
+					'addToCart'     => __( 'Agregar a la bolsa', 'shanelle' ),
+					'selectOptions' => __( 'Elegir opciones', 'shanelle' ),
+					'adding'        => __( 'Agregando…', 'shanelle' ),
+					'added'         => __( 'Agregado a la bolsa', 'shanelle' ),
+					'error'         => __( 'No se pudo agregar a la bolsa. Intenta de nuevo.', 'shanelle' ),
+					'soldOut'       => __( 'Agotado', 'shanelle' ),
 				),
 			)
 		);
@@ -105,9 +103,129 @@ final class ProductCard {
 	}
 
 	/**
+	 * Render product footer with price, sold count, and cart CTA.
+	 */
+	public static function render_footer(): void {
+		if ( 'catalog' !== self::$args['variant'] ) {
+			return;
+		}
+
+		$product = self::get_product();
+		?>
+		<div class="product-card__footer">
+			<div class="product-card__meta">
+				<?php self::render_price(); ?>
+				<?php self::render_sold_count(); ?>
+			</div>
+			<?php self::render_catalog_cart_cta( $product ); ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render sold count for catalog cards.
+	 */
+	public static function render_sold_count(): void {
+		if ( 'catalog' !== self::$args['variant'] ) {
+			return;
+		}
+
+		$product = self::get_product();
+		$sold    = (int) $product->get_total_sales();
+
+		if ( $sold <= 0 ) {
+			return;
+		}
+		?>
+		<p class="product-card__sold text-caption">
+			<?php
+			echo esc_html(
+				sprintf(
+					/* translators: %d: number of items sold */
+					_n( '%d vendido', '%d vendidos', $sold, 'shanelle' ),
+					$sold
+				)
+			);
+			?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Render catalog sale badge overlay on image.
+	 */
+	public static function render_sale_overlay(): void {
+		if ( 'catalog' !== self::$args['variant'] ) {
+			return;
+		}
+
+		$product = self::get_product();
+
+		if ( ! $product->is_on_sale() || ! $product->is_in_stock() ) {
+			return;
+		}
+
+		$label = ProductPrice::get_sale_badge_label( $product );
+
+		if ( '' === $label ) {
+			return;
+		}
+		?>
+		<span class="product-card__sale-tag"><?php echo esc_html( $label ); ?></span>
+		<?php
+	}
+
+	/**
+	 * Render circular cart CTA for catalog cards.
+	 *
+	 * @param \WC_Product $product Product instance.
+	 */
+	private static function render_catalog_cart_cta( \WC_Product $product ): void {
+		if ( ! $product->is_purchasable() || ! $product->is_in_stock() ) {
+			return;
+		}
+
+		if ( $product->is_type( 'simple' ) && $product->supports( 'ajax_add_to_cart' ) ) {
+			?>
+			<button
+				type="button"
+				class="product-card__cart-cta btn btn--icon"
+				data-shanelle-quick-add
+				data-product-id="<?php echo esc_attr( (string) $product->get_id() ); ?>"
+				aria-label="<?php echo esc_attr( sprintf(
+					/* translators: %s: product name */
+					__( 'Agregar %s a la bolsa', 'shanelle' ),
+					$product->get_name()
+				) ); ?>"
+			>
+				<?php self::render_icon( 'bag' ); ?>
+			</button>
+			<?php
+			return;
+		}
+
+		?>
+		<a
+			class="product-card__cart-cta btn btn--icon product-card__cart-cta--options"
+			href="<?php echo esc_url( $product->get_permalink() ); ?>"
+			aria-label="<?php echo esc_attr( sprintf(
+				/* translators: %s: product name */
+				__( 'Elegir opciones de %s', 'shanelle' ),
+				$product->get_name()
+			) ); ?>"
+		>
+			<?php self::render_icon( 'bag' ); ?>
+		</a>
+		<?php
+	}
+
+	/**
 	 * Render product badge group.
 	 */
 	public static function render_badges(): void {
+		if ( 'catalog' === self::$args['variant'] ) {
+			return;
+		}
 		$product = self::get_product();
 		$badges  = self::get_badges( $product );
 
@@ -197,8 +315,14 @@ final class ProductCard {
 		if ( ! $product->get_price_html() ) {
 			return;
 		}
+
+		$classes = ProductPrice::get_compact_classes( $product );
+
+		if ( 'catalog' === self::$args['variant'] ) {
+			$classes[] = 'product-card__price--catalog';
+		}
 		?>
-		<div class="<?php echo esc_attr( implode( ' ', ProductPrice::get_compact_classes( $product ) ) ); ?>">
+		<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 			<?php echo wp_kses_post( $product->get_price_html() ); ?>
 		</div>
 		<?php
@@ -214,28 +338,8 @@ final class ProductCard {
 
 		$product = self::get_product();
 		?>
-		<div class="product-card__actions" role="group" aria-label="<?php esc_attr_e( 'Product actions', 'shanelle' ); ?>">
+		<div class="product-card__actions" role="group" aria-label="<?php esc_attr_e( 'Acciones del producto', 'shanelle' ); ?>">
 			<?php self::render_quick_add_button( $product ); ?>
-
-			<button
-				type="button"
-				class="product-card__action btn btn--icon product-card__wishlist"
-				disabled
-				aria-disabled="true"
-				aria-label="<?php esc_attr_e( 'Wishlist (coming soon)', 'shanelle' ); ?>"
-			>
-				<?php self::render_icon( 'heart' ); ?>
-			</button>
-
-			<button
-				type="button"
-				class="product-card__action btn btn--icon product-card__quick-view"
-				disabled
-				aria-disabled="true"
-				aria-label="<?php esc_attr_e( 'Quick view (coming soon)', 'shanelle' ); ?>"
-			>
-				<?php self::render_icon( 'eye' ); ?>
-			</button>
 		</div>
 		<?php
 	}
@@ -262,7 +366,7 @@ final class ProductCard {
 		?>
 		<div class="product-card__rating" aria-label="<?php echo esc_attr( sprintf(
 			/* translators: %s: average rating */
-			__( 'Rated %s out of 5', 'shanelle' ),
+			__( 'Calificado con %s de 5', 'shanelle' ),
 			$product->get_average_rating()
 		) ); ?>">
 			<?php echo wp_kses_post( $rating_html ); ?>
@@ -317,6 +421,13 @@ final class ProductCard {
 	}
 
 	/**
+	 * Return whether the catalog card variant is active.
+	 */
+	public static function is_catalog_variant(): bool {
+		return 'catalog' === ( self::$args['variant'] ?? 'default' );
+	}
+
+	/**
 	 * Return parsed render arguments.
 	 *
 	 * @param array<string, mixed> $args Input arguments.
@@ -333,6 +444,7 @@ final class ProductCard {
 				'show_rating'    => true,
 				'show_attributes'=> true,
 				'show_actions'   => true,
+				'variant'        => 'default',
 				'new_days'       => (int) apply_filters( 'shanelle_product_card_new_days', 30 ),
 			)
 		);
@@ -359,7 +471,7 @@ final class ProductCard {
 
 		if ( ! $product->is_in_stock() ) {
 			$badges[] = array(
-				'label' => __( 'Sold Out', 'shanelle' ),
+				'label' => __( 'Agotado', 'shanelle' ),
 				'class' => 'badge--sold-out',
 			);
 			return $badges;
@@ -367,7 +479,7 @@ final class ProductCard {
 
 		if ( self::is_new_product( $product ) ) {
 			$badges[] = array(
-				'label' => __( 'New', 'shanelle' ),
+				'label' => __( 'Nuevo', 'shanelle' ),
 				'class' => 'badge--new',
 			);
 		}
@@ -477,7 +589,7 @@ final class ProductCard {
 				data-product-id="<?php echo esc_attr( (string) $product->get_id() ); ?>"
 				aria-label="<?php echo esc_attr( sprintf(
 					/* translators: %s: product name */
-					__( 'Add %s to bag', 'shanelle' ),
+					__( 'Agregar %s a la bolsa', 'shanelle' ),
 					$product->get_name()
 				) ); ?>"
 			>
@@ -493,7 +605,7 @@ final class ProductCard {
 			href="<?php echo esc_url( $product->get_permalink() ); ?>"
 			aria-label="<?php echo esc_attr( sprintf(
 				/* translators: %s: product name */
-				__( 'Select options for %s', 'shanelle' ),
+				__( 'Elegir opciones de %s', 'shanelle' ),
 				$product->get_name()
 			) ); ?>"
 		>

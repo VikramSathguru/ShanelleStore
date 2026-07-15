@@ -13,7 +13,7 @@ use Shanelle\Components\MyAccountPage;
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<nav class="my-account-page__quick-actions" aria-label="<?php esc_attr_e( 'Quick actions', 'shanelle' ); ?>">
+<nav class="my-account-page__quick-actions" aria-label="<?php esc_attr_e( 'Acciones rápidas', 'shanelle' ); ?>">
 	<ul class="my-account-page__quick-actions-list">
 		<?php foreach ( $actions as $action ) : ?>
 			<li class="my-account-page__quick-actions-item">

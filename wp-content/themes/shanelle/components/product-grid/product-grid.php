@@ -21,9 +21,9 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 
 	<div class="product-grid__error" data-shanelle-grid-error hidden role="alert">
-		<p class="product-grid__error-text text-body-sm"><?php esc_html_e( 'Unable to load products. Please try again.', 'shanelle' ); ?></p>
+		<p class="product-grid__error-text text-body-sm"><?php esc_html_e( 'No se pudieron cargar los productos. Intenta de nuevo.', 'shanelle' ); ?></p>
 		<button type="button" class="btn btn--outline product-grid__error-retry" data-shanelle-grid-retry>
-			<?php esc_html_e( 'Retry', 'shanelle' ); ?>
+			<?php esc_html_e( 'Reintentar', 'shanelle' ); ?>
 		</button>
 	</div>
 

@@ -122,18 +122,18 @@ final class ProductVariations {
 			'shanelleProductVariations',
 			array(
 				'i18n' => array(
-					'chooseOption'    => __( 'Choose an option', 'shanelle' ),
-					'clearSelections' => __( 'Clear selections', 'shanelle' ),
-					'selected'        => __( 'Selected', 'shanelle' ),
-					'unavailable'     => __( 'Unavailable', 'shanelle' ),
-					'inStock'         => __( 'In stock', 'shanelle' ),
-					'outOfStock'      => __( 'Out of stock', 'shanelle' ),
-					'onBackorder'     => __( 'Available on backorder', 'shanelle' ),
-					'lowStock'        => __( 'Low stock', 'shanelle' ),
-					'variationReady'  => __( 'Variation selected', 'shanelle' ),
-					'variationReset'  => __( 'Variation cleared', 'shanelle' ),
-					'optionSelected'  => __( '%1$s selected: %2$s', 'shanelle' ),
-					'gallerySoon'     => __( 'Gallery sync (coming soon)', 'shanelle' ),
+					'chooseOption'    => __( 'Elige una opción', 'shanelle' ),
+					'clearSelections' => __( 'Limpiar selección', 'shanelle' ),
+					'selected'        => __( 'Seleccionado', 'shanelle' ),
+					'unavailable'     => __( 'No disponible', 'shanelle' ),
+					'inStock'         => __( 'En stock', 'shanelle' ),
+					'outOfStock'      => __( 'Agotado', 'shanelle' ),
+					'onBackorder'     => __( 'Disponible bajo pedido', 'shanelle' ),
+					'lowStock'        => __( 'Poco stock', 'shanelle' ),
+					'variationReady'  => __( 'Variación seleccionada', 'shanelle' ),
+					'variationReset'  => __( 'Variación eliminada', 'shanelle' ),
+					'optionSelected'  => __( '%1$s seleccionado: %2$s', 'shanelle' ),
+					'gallerySoon'     => __( 'Sincronización de galería (próximamente)', 'shanelle' ),
 				),
 			)
 		);
@@ -309,7 +309,7 @@ final class ProductVariations {
 			hidden
 		>
 			<p class="product-variations__gallery-sync-note text-caption text-muted">
-				<?php esc_html_e( 'Gallery sync (coming soon)', 'shanelle' ); ?>
+				<?php esc_html_e( 'Sincronización de galería (próximamente)', 'shanelle' ); ?>
 			</p>
 		</div>
 		<?php
@@ -324,9 +324,9 @@ final class ProductVariations {
 			type="button"
 			class="product-variations__reset btn btn--ghost btn--sm"
 			data-shanelle-variation-reset
-			aria-label="<?php esc_attr_e( 'Clear selections', 'shanelle' ); ?>"
+			aria-label="<?php esc_attr_e( 'Limpiar selección', 'shanelle' ); ?>"
 		>
-			<?php esc_html_e( 'Clear selections', 'shanelle' ); ?>
+			<?php esc_html_e( 'Limpiar selección', 'shanelle' ); ?>
 		</button>
 		<?php
 	}
@@ -356,7 +356,7 @@ final class ProductVariations {
 						'required'         => true,
 						'show_option_none' => sprintf(
 							/* translators: %s: attribute label */
-							__( 'Choose %s', 'shanelle' ),
+							__( 'Elige %s', 'shanelle' ),
 							wc_attribute_label( $attribute, $product )
 						),
 						'id'               => self::get_select_id( $attribute ),
@@ -633,14 +633,14 @@ final class ProductVariations {
 		if ( ! $variation->is_in_stock() ) {
 			return array(
 				'status' => 'outofstock',
-				'label'  => __( 'Out of stock', 'shanelle' ),
+				'label'  => __( 'Agotado', 'shanelle' ),
 			);
 		}
 
 		if ( $variation->is_on_backorder() ) {
 			return array(
 				'status' => 'onbackorder',
-				'label'  => __( 'Available on backorder', 'shanelle' ),
+				'label'  => __( 'Disponible bajo pedido', 'shanelle' ),
 			);
 		}
 
@@ -651,14 +651,14 @@ final class ProductVariations {
 			if ( $quantity > 0 && $quantity <= $threshold ) {
 				return array(
 					'status' => 'lowstock',
-					'label'  => __( 'Low stock', 'shanelle' ),
+					'label'  => __( 'Poco stock', 'shanelle' ),
 				);
 			}
 		}
 
 		return array(
 			'status' => 'instock',
-			'label'  => __( 'In stock', 'shanelle' ),
+			'label'  => __( 'En stock', 'shanelle' ),
 		);
 	}
 

@@ -205,7 +205,7 @@ function clearSelections( root ) {
 	syncSelectedState( root );
 	syncDisabledState( root );
 	resetAvailability( root );
-	announce( root, i18n.variationReset || 'Variation cleared' );
+	announce( root, i18n.variationReset || 'Variación eliminada' );
 }
 
 /**
@@ -238,7 +238,7 @@ function applyAvailability( root, variation ) {
 	}
 
 	const status = String( variation.shanelle_stock_status || 'instock' );
-	const text = String( variation.shanelle_stock_label || variation.availability_html || i18n.inStock || 'In stock' );
+	const text = String( variation.shanelle_stock_label || variation.availability_html || i18n.inStock || 'En stock' );
 
 	availability.hidden = false;
 	availability.className = `product-variations__availability product-variations__availability--${ status }`;
@@ -343,7 +343,7 @@ function handleFoundVariation( root, variation ) {
 	applyAvailability( root, variation );
 	syncSummaryStock( document.querySelector( '[data-shanelle-summary-stock]' ), variation );
 	dispatchVariationEvents( root, variation );
-	announce( root, i18n.variationReady || 'Variation selected' );
+	announce( root, i18n.variationReady || 'Variación seleccionada' );
 }
 
 /**
@@ -354,7 +354,7 @@ function handleResetData( root ) {
 	syncDisabledState( root );
 	resetAvailability( root );
 	dispatchVariationEvents( root, null );
-	announce( root, i18n.variationReset || 'Variation cleared' );
+	announce( root, i18n.variationReset || 'Variación eliminada' );
 }
 
 /**

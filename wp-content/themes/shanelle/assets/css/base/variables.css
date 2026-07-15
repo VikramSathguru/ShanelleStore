@@ -64,11 +64,19 @@
 	--color-danger-bg: var(--color-danger-50);
 	--color-danger-text: var(--color-danger-700);
 
+	/* Sale — soft brand rose (not marketplace red) */
+	--color-sale: var(--color-brand-600);
+	--color-sale-strong: var(--color-brand-700);
+	--color-sale-muted: var(--color-brand-700);
+	--color-sale-border: rgb(212 98 138 / 45%);
+	--color-sale-bg: var(--color-brand-50);
+
 	/* -------------------------------------------------------------------------
 	   Surface — Backgrounds & borders
 	   ------------------------------------------------------------------------- */
 	--color-background: var(--color-neutral-0);
 	--color-background-subtle: var(--color-neutral-50);
+	--color-landing: var(--color-brand-50);
 	--color-surface: var(--color-neutral-0);
 	--color-surface-raised: var(--color-neutral-0);
 	--color-surface-sunken: var(--color-neutral-100);
@@ -94,8 +102,9 @@
 	/* -------------------------------------------------------------------------
 	   Typography — Families
 	   ------------------------------------------------------------------------- */
-	--font-family-base: 'Inter', system-ui, -apple-system, 'Segoe UI', roboto, helvetica, arial, sans-serif;
-	--font-family-heading: 'Inter', system-ui, -apple-system, 'Segoe UI', roboto, helvetica, arial, sans-serif;
+	--font-family-base: 'DM Sans', system-ui, -apple-system, 'Segoe UI', roboto, helvetica, arial, sans-serif;
+	--font-family-heading: 'Cormorant Garamond', 'Times New Roman', georgia, serif;
+	--font-family-display: 'Cormorant Garamond', 'Times New Roman', georgia, serif;
 	--font-family-mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
 
 	/* -------------------------------------------------------------------------
@@ -259,6 +268,16 @@
 	--badge-height: 1.375rem;
 	--card-radius: var(--radius-lg);
 	--modal-radius: var(--radius-xl);
+
+	/* Header — waterfall blush: uniform width, fades into landing background */
+	--header-bg: linear-gradient(
+		180deg,
+		var(--color-brand-200) 0%,
+		var(--color-brand-100) 32%,
+		var(--color-brand-50) 68%,
+		var(--color-landing) 100%
+	);
+	--header-border: rgb(232 122 158 / 10%);
 }
 
 @media (min-width: 48rem) {

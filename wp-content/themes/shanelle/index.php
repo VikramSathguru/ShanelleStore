@@ -26,8 +26,8 @@ get_header();
 			<?php endwhile; ?>
 		<?php else : ?>
 			<?php shanelle_component( 'empty-state', array(
-				'title'   => __( 'Nothing found', 'shanelle' ),
-				'message' => __( 'Try searching or browse our latest styles.', 'shanelle' ),
+				'title'   => __( 'No se encontró nada', 'shanelle' ),
+				'message' => __( 'Intenta buscar o explora nuestros estilos más recientes.', 'shanelle' ),
 			) ); ?>
 		<?php endif; ?>
 	</div>

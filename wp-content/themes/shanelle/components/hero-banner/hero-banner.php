@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 	aria-labelledby="<?php echo esc_attr( HeroBanner::get_aria_labelledby() ); ?>"
 >
 	<span class="screen-reader-text" id="<?php echo esc_attr( HeroBanner::get_root_id() ); ?>-label">
-		<?php esc_html_e( 'Homepage hero banner', 'shanelle' ); ?>
+		<?php esc_html_e( 'Banner principal de inicio', 'shanelle' ); ?>
 	</span>
 
 	<div class="hero-banner__viewport" data-shanelle-hero-viewport>
@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
 			class="hero-banner__slides"
 			data-shanelle-hero-slides
 			role="group"
-			aria-roledescription="<?php esc_attr_e( 'carousel', 'shanelle' ); ?>"
+			aria-roledescription="<?php esc_attr_e( 'carrusel', 'shanelle' ); ?>"
 		>
 			<?php HeroBanner::render_slides(); ?>
 		</div>

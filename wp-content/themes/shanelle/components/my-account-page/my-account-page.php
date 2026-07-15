@@ -34,7 +34,7 @@ $welcome_line = MyAccountPage::get_welcome_line();
 
 		<?php if ( MyAccountPage::show_shop_link() ) : ?>
 			<a class="my-account-page__shop-link text-label" href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ?: home_url( '/' ) ); ?>">
-				<?php esc_html_e( 'Continue shopping', 'shanelle' ); ?>
+				<?php esc_html_e( 'Continuar comprando', 'shanelle' ); ?>
 			</a>
 		<?php endif; ?>
 	</header>
@@ -42,7 +42,7 @@ $welcome_line = MyAccountPage::get_welcome_line();
 	<?php MyAccountPage::render_notices(); ?>
 
 	<div class="my-account-page__layout">
-		<aside class="my-account-page__nav" aria-label="<?php esc_attr_e( 'Account navigation', 'shanelle' ); ?>">
+		<aside class="my-account-page__nav" aria-label="<?php esc_attr_e( 'Navegación de la cuenta', 'shanelle' ); ?>">
 			<?php MyAccountPage::render_navigation(); ?>
 		</aside>
 

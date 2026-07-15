@@ -37,14 +37,14 @@ defined( 'ABSPATH' ) || exit;
 	>
 		<header class="mini-cart__header">
 			<h2 class="mini-cart__title" id="<?php echo esc_attr( MiniCart::get_title_id() ); ?>">
-				<span class="mini-cart__title-text"><?php esc_html_e( 'Your bag', 'shanelle' ); ?></span>
+				<span class="mini-cart__title-text"><?php esc_html_e( 'Tu bolsa', 'shanelle' ); ?></span>
 				<?php MiniCart::render_title_count(); ?>
 			</h2>
 			<button
 				type="button"
 				class="mini-cart__close btn btn--ghost btn--icon"
 				data-shanelle-mini-cart-close
-				aria-label="<?php esc_attr_e( 'Close bag', 'shanelle' ); ?>"
+				aria-label="<?php esc_attr_e( 'Cerrar bolsa', 'shanelle' ); ?>"
 			>
 				<?php MiniCart::render_icon( 'close' ); ?>
 			</button>

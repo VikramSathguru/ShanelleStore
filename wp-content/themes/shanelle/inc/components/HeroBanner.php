@@ -86,8 +86,8 @@ final class HeroBanner {
 		$wp_customize->add_panel(
 			'shanelle_homepage',
 			array(
-				'title'       => __( 'Shanelle Homepage', 'shanelle' ),
-				'description' => __( 'Configure homepage sections.', 'shanelle' ),
+				'title'       => __( 'Inicio Shanelle', 'shanelle' ),
+				'description' => __( 'Configura las secciones de la página de inicio.', 'shanelle' ),
 				'priority'    => 160,
 			)
 		);
@@ -95,8 +95,8 @@ final class HeroBanner {
 		$wp_customize->add_section(
 			'shanelle_hero_banner',
 			array(
-				'title'       => __( 'Hero Banner', 'shanelle' ),
-				'description' => __( 'First homepage section. Leave fields empty to hide optional content.', 'shanelle' ),
+				'title'       => __( 'Banner principal', 'shanelle' ),
+				'description' => __( 'Primera sección de la página de inicio. Deja los campos vacíos para ocultar contenido opcional.', 'shanelle' ),
 				'panel'       => 'shanelle_homepage',
 				'priority'    => 10,
 			)
@@ -105,23 +105,23 @@ final class HeroBanner {
 		self::register_image_control(
 			$wp_customize,
 			self::MOD_DESKTOP_IMAGE,
-			__( 'Desktop image', 'shanelle' ),
-			__( 'Recommended size: 1440 x 720 px.', 'shanelle' )
+			__( 'Imagen de escritorio', 'shanelle' ),
+			__( 'Tamaño recomendado: 1440 x 720 px.', 'shanelle' )
 		);
 
 		self::register_image_control(
 			$wp_customize,
 			self::MOD_MOBILE_IMAGE,
-			__( 'Mobile image', 'shanelle' ),
-			__( 'Recommended size: 768 x 960 px. Falls back to desktop image when empty.', 'shanelle' )
+			__( 'Imagen móvil', 'shanelle' ),
+			__( 'Tamaño recomendado: 768 x 960 px. Si está vacío, se usa la imagen de escritorio.', 'shanelle' )
 		);
 
-		self::register_text_control( $wp_customize, self::MOD_HEADLINE, __( 'Headline', 'shanelle' ) );
-		self::register_textarea_control( $wp_customize, self::MOD_SUBHEADLINE, __( 'Subheadline', 'shanelle' ) );
-		self::register_text_control( $wp_customize, self::MOD_PRIMARY_TEXT, __( 'Primary button text', 'shanelle' ) );
-		self::register_url_control( $wp_customize, self::MOD_PRIMARY_URL, __( 'Primary button URL', 'shanelle' ) );
-		self::register_text_control( $wp_customize, self::MOD_SECONDARY_TEXT, __( 'Secondary button text', 'shanelle' ) );
-		self::register_url_control( $wp_customize, self::MOD_SECONDARY_URL, __( 'Secondary button URL', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_HEADLINE, __( 'Titular', 'shanelle' ) );
+		self::register_textarea_control( $wp_customize, self::MOD_SUBHEADLINE, __( 'Subtítulo', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_PRIMARY_TEXT, __( 'Texto del botón principal', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_PRIMARY_URL, __( 'URL del botón principal', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_SECONDARY_TEXT, __( 'Texto del botón secundario', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_SECONDARY_URL, __( 'URL del botón secundario', 'shanelle' ) );
 
 		$wp_customize->add_setting(
 			self::MOD_OVERLAY_OPACITY,
@@ -135,8 +135,8 @@ final class HeroBanner {
 		$wp_customize->add_control(
 			self::MOD_OVERLAY_OPACITY,
 			array(
-				'label'       => __( 'Overlay opacity (%)', 'shanelle' ),
-				'description' => __( '0 hides the overlay. 100 fully covers the image.', 'shanelle' ),
+				'label'       => __( 'Opacidad del overlay (%)', 'shanelle' ),
+				'description' => __( '0 oculta el overlay. 100 cubre por completo la imagen.', 'shanelle' ),
 				'section'     => 'shanelle_hero_banner',
 				'type'        => 'number',
 				'input_attrs' => array(
@@ -161,7 +161,7 @@ final class HeroBanner {
 				$wp_customize,
 				self::MOD_OVERLAY_COLOR,
 				array(
-					'label'   => __( 'Overlay color', 'shanelle' ),
+					'label'   => __( 'Color del overlay', 'shanelle' ),
 					'section' => 'shanelle_hero_banner',
 				)
 			)
@@ -209,8 +209,8 @@ final class HeroBanner {
 			array(
 				'slideCount' => count( self::build_slides() ),
 				'i18n'       => array(
-					'carouselLabel' => __( 'Homepage hero carousel', 'shanelle' ),
-					'slideLabel'    => __( 'Slide %1$d of %2$d', 'shanelle' ),
+					'carouselLabel' => __( 'Carrusel del banner principal', 'shanelle' ),
+					'slideLabel'    => __( 'Diapositiva %1$d de %2$d', 'shanelle' ),
 				),
 			)
 		);

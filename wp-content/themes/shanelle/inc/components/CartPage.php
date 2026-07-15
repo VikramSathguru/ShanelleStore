@@ -100,8 +100,8 @@ final class CartPage {
 		$wp_customize->add_section(
 			'shanelle_cart_page',
 			array(
-				'title'       => __( 'Cart Page', 'shanelle' ),
-				'description' => __( 'Configure cart page product recommendations.', 'shanelle' ),
+				'title'       => __( 'Página de bolsa', 'shanelle' ),
+				'description' => __( 'Configura las recomendaciones de productos de la página de bolsa.', 'shanelle' ),
 				'priority'    => 170,
 			)
 		);
@@ -118,7 +118,7 @@ final class CartPage {
 		$wp_customize->add_control(
 			self::MOD_CROSS_SELLS_ENABLED,
 			array(
-				'label'   => __( 'Show cross-sell products', 'shanelle' ),
+				'label'   => __( 'Mostrar productos relacionados', 'shanelle' ),
 				'section' => 'shanelle_cart_page',
 				'type'    => 'checkbox',
 			)
@@ -127,7 +127,7 @@ final class CartPage {
 		$wp_customize->add_setting(
 			self::MOD_CROSS_SELLS_TITLE,
 			array(
-				'default'           => __( 'You may also like', 'shanelle' ),
+				'default'           => __( 'También te puede gustar', 'shanelle' ),
 				'sanitize_callback' => 'sanitize_text_field',
 				'transport'         => 'refresh',
 			)
@@ -136,7 +136,7 @@ final class CartPage {
 		$wp_customize->add_control(
 			self::MOD_CROSS_SELLS_TITLE,
 			array(
-				'label'   => __( 'Cross-sells section title', 'shanelle' ),
+				'label'   => __( 'Título de la sección de relacionados', 'shanelle' ),
 				'section' => 'shanelle_cart_page',
 				'type'    => 'text',
 			)
@@ -154,7 +154,7 @@ final class CartPage {
 		$wp_customize->add_control(
 			self::MOD_CROSS_SELLS_LIMIT,
 			array(
-				'label'       => __( 'Cross-sells product limit', 'shanelle' ),
+				'label'       => __( 'Límite de productos relacionados', 'shanelle' ),
 				'section'     => 'shanelle_cart_page',
 				'type'        => 'number',
 				'input_attrs' => array(
@@ -168,7 +168,7 @@ final class CartPage {
 		self::register_checkbox_control(
 			$wp_customize,
 			self::MOD_SHIPPING_ESTIMATOR,
-			__( 'Show shipping estimator', 'shanelle' ),
+			__( 'Mostrar estimador de envío', 'shanelle' ),
 			true
 		);
 	}
@@ -211,33 +211,33 @@ final class CartPage {
 				'shopUrl'       => wc_get_page_permalink( 'shop' ) ?: home_url( '/' ),
 				'initialState'  => self::build_page_state(),
 				'i18n'          => array(
-					'pageTitle'      => __( 'Your bag', 'shanelle' ),
-					'emptyTitle'     => __( 'Your bag is empty', 'shanelle' ),
-					'emptyMessage'   => __( 'Add something you love — we will keep it here while you browse.', 'shanelle' ),
-					'continueShopping' => __( 'Continue shopping', 'shanelle' ),
-					'product'        => __( 'Product', 'shanelle' ),
-					'price'          => __( 'Price', 'shanelle' ),
-					'quantity'       => __( 'Quantity', 'shanelle' ),
+					'pageTitle'      => __( 'Tu bolsa', 'shanelle' ),
+					'emptyTitle'     => __( 'Tu bolsa está vacía', 'shanelle' ),
+					'emptyMessage'   => __( 'Agrega algo que te guste; lo guardaremos aquí mientras navegas.', 'shanelle' ),
+					'continueShopping' => __( 'Continuar comprando', 'shanelle' ),
+					'product'        => __( 'Producto', 'shanelle' ),
+					'price'          => __( 'Precio', 'shanelle' ),
+					'quantity'       => __( 'Cantidad', 'shanelle' ),
 					'subtotal'       => __( 'Subtotal', 'shanelle' ),
-					'remove'         => __( 'Remove item', 'shanelle' ),
-					'decrease'       => __( 'Decrease quantity', 'shanelle' ),
-					'increase'       => __( 'Increase quantity', 'shanelle' ),
-					'updateCart'     => __( 'Update bag', 'shanelle' ),
-					'applyCoupon'    => __( 'Apply coupon', 'shanelle' ),
-					'couponLabel'    => __( 'Coupon code', 'shanelle' ),
-					'couponPlaceholder' => __( 'Enter coupon code', 'shanelle' ),
-					'orderSummary'   => __( 'Order summary', 'shanelle' ),
+					'remove'         => __( 'Eliminar artículo', 'shanelle' ),
+					'decrease'       => __( 'Disminuir cantidad', 'shanelle' ),
+					'increase'       => __( 'Aumentar cantidad', 'shanelle' ),
+					'updateCart'     => __( 'Actualizar bolsa', 'shanelle' ),
+					'applyCoupon'    => __( 'Aplicar cupón', 'shanelle' ),
+					'couponLabel'    => __( 'Código de cupón', 'shanelle' ),
+					'couponPlaceholder' => __( 'Ingresa el código de cupón', 'shanelle' ),
+					'orderSummary'   => __( 'Resumen del pedido', 'shanelle' ),
 					'total'          => __( 'Total', 'shanelle' ),
-					'checkout'       => __( 'Proceed to checkout', 'shanelle' ),
-					'shipping'       => __( 'Shipping', 'shanelle' ),
-					'shippingEstimate' => __( 'Estimate shipping', 'shanelle' ),
-					'shippingToggle' => __( 'Estimate shipping', 'shanelle' ),
-					'shippingToggleClose' => __( 'Close shipping estimator', 'shanelle' ),
-					'shippingPending' => __( 'Estimate below', 'shanelle' ),
-					'updated'        => __( 'Bag updated', 'shanelle' ),
-					'removed'        => __( 'Item removed from bag', 'shanelle' ),
-					'error'          => __( 'Could not update your bag. Try again.', 'shanelle' ),
-					'loading'        => __( 'Updating bag…', 'shanelle' ),
+					'checkout'       => __( 'Ir a pagar', 'shanelle' ),
+					'shipping'       => __( 'Envío', 'shanelle' ),
+					'shippingEstimate' => __( 'Calcular envío', 'shanelle' ),
+					'shippingToggle' => __( 'Calcular envío', 'shanelle' ),
+					'shippingToggleClose' => __( 'Cerrar estimador de envío', 'shanelle' ),
+					'shippingPending' => __( 'Calcula abajo', 'shanelle' ),
+					'updated'        => __( 'Bolsa actualizada', 'shanelle' ),
+					'removed'        => __( 'Artículo eliminado de la bolsa', 'shanelle' ),
+					'error'          => __( 'No se pudo actualizar tu bolsa. Inténtalo de nuevo.', 'shanelle' ),
+					'loading'        => __( 'Actualizando bolsa…', 'shanelle' ),
 				),
 			)
 		);
@@ -290,12 +290,12 @@ final class CartPage {
 			<div class="cart-page__empty-icon" aria-hidden="true">
 				<?php self::render_icon( 'bag' ); ?>
 			</div>
-			<h2 class="cart-page__empty-title text-h2"><?php esc_html_e( 'Your bag is empty', 'shanelle' ); ?></h2>
+			<h2 class="cart-page__empty-title text-h2"><?php esc_html_e( 'Tu bolsa está vacía', 'shanelle' ); ?></h2>
 			<p class="cart-page__empty-message text-body text-muted">
-				<?php esc_html_e( 'Add something you love — we will keep it here while you browse.', 'shanelle' ); ?>
+				<?php esc_html_e( 'Agrega algo que te guste; lo guardaremos aquí mientras navegas.', 'shanelle' ); ?>
 			</p>
 			<a class="btn btn--primary cart-page__empty-action" href="<?php echo esc_url( $shop_url ); ?>">
-				<?php esc_html_e( 'Continue shopping', 'shanelle' ); ?>
+				<?php esc_html_e( 'Continuar comprando', 'shanelle' ); ?>
 			</a>
 		</div>
 		<?php
@@ -340,14 +340,14 @@ final class CartPage {
 	public static function render_items_table(): void {
 		$items = self::$state['items'] ?? array();
 		?>
-		<div class="cart-page__items" role="table" aria-label="<?php esc_attr_e( 'Cart items', 'shanelle' ); ?>">
+		<div class="cart-page__items" role="table" aria-label="<?php esc_attr_e( 'Artículos de la bolsa', 'shanelle' ); ?>">
 			<div class="cart-page__items-head" role="row">
-				<span class="cart-page__col cart-page__col--product" role="columnheader"><?php esc_html_e( 'Product', 'shanelle' ); ?></span>
-				<span class="cart-page__col cart-page__col--price" role="columnheader"><?php esc_html_e( 'Price', 'shanelle' ); ?></span>
-				<span class="cart-page__col cart-page__col--quantity" role="columnheader"><?php esc_html_e( 'Quantity', 'shanelle' ); ?></span>
+				<span class="cart-page__col cart-page__col--product" role="columnheader"><?php esc_html_e( 'Producto', 'shanelle' ); ?></span>
+				<span class="cart-page__col cart-page__col--price" role="columnheader"><?php esc_html_e( 'Precio', 'shanelle' ); ?></span>
+				<span class="cart-page__col cart-page__col--quantity" role="columnheader"><?php esc_html_e( 'Cantidad', 'shanelle' ); ?></span>
 				<span class="cart-page__col cart-page__col--subtotal" role="columnheader"><?php esc_html_e( 'Subtotal', 'shanelle' ); ?></span>
 				<span class="cart-page__col cart-page__col--remove" role="columnheader">
-					<span class="screen-reader-text"><?php esc_html_e( 'Remove item', 'shanelle' ); ?></span>
+					<span class="screen-reader-text"><?php esc_html_e( 'Eliminar artículo', 'shanelle' ); ?></span>
 				</span>
 			</div>
 
@@ -407,18 +407,18 @@ final class CartPage {
 				</div>
 			</div>
 
-			<div class="cart-page__col cart-page__col--price text-price-sm" role="cell" data-title="<?php esc_attr_e( 'Price', 'shanelle' ); ?>">
+			<div class="cart-page__col cart-page__col--price text-price-sm" role="cell" data-title="<?php esc_attr_e( 'Precio', 'shanelle' ); ?>">
 				<?php echo wp_kses_post( $price_html ); ?>
 			</div>
 
-			<div class="cart-page__col cart-page__col--quantity" role="cell" data-title="<?php esc_attr_e( 'Quantity', 'shanelle' ); ?>">
+			<div class="cart-page__col cart-page__col--quantity" role="cell" data-title="<?php esc_attr_e( 'Cantidad', 'shanelle' ); ?>">
 				<div class="cart-page__stepper" data-shanelle-cart-page-stepper>
 					<button
 						type="button"
 						class="cart-page__stepper-btn btn btn--icon btn--sm"
 						data-shanelle-cart-page-decrement
 						data-cart-item-key="<?php echo esc_attr( $key ); ?>"
-						aria-label="<?php esc_attr_e( 'Decrease quantity', 'shanelle' ); ?>"
+						aria-label="<?php esc_attr_e( 'Disminuir cantidad', 'shanelle' ); ?>"
 						aria-controls="<?php echo esc_attr( $input_id ); ?>"
 					>
 						<?php self::render_icon( 'minus' ); ?>
@@ -438,14 +438,14 @@ final class CartPage {
 						pattern="[0-9]*"
 						data-shanelle-cart-page-quantity
 						data-cart-item-key="<?php echo esc_attr( $key ); ?>"
-						aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name */ __( 'Quantity for %s', 'shanelle' ), $title ) ); ?>"
+						aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name */ __( 'Cantidad de %s', 'shanelle' ), $title ) ); ?>"
 					>
 					<button
 						type="button"
 						class="cart-page__stepper-btn btn btn--icon btn--sm"
 						data-shanelle-cart-page-increment
 						data-cart-item-key="<?php echo esc_attr( $key ); ?>"
-						aria-label="<?php esc_attr_e( 'Increase quantity', 'shanelle' ); ?>"
+						aria-label="<?php esc_attr_e( 'Aumentar cantidad', 'shanelle' ); ?>"
 						aria-controls="<?php echo esc_attr( $input_id ); ?>"
 					>
 						<?php self::render_icon( 'plus' ); ?>
@@ -463,7 +463,7 @@ final class CartPage {
 					href="<?php echo esc_url( $remove_url ); ?>"
 					data-shanelle-cart-page-remove
 					data-cart-item-key="<?php echo esc_attr( $key ); ?>"
-					aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name */ __( 'Remove %s from bag', 'shanelle' ), $title ) ); ?>"
+					aria-label="<?php echo esc_attr( sprintf( /* translators: %s: product name */ __( 'Eliminar %s de la bolsa', 'shanelle' ), $title ) ); ?>"
 				>
 					<?php self::render_icon( 'close' ); ?>
 				</a>
@@ -482,7 +482,7 @@ final class CartPage {
 		?>
 		<div class="cart-page__coupon">
 			<label class="cart-page__coupon-label text-label" for="<?php echo esc_attr( self::get_coupon_input_id() ); ?>">
-				<?php esc_html_e( 'Coupon code', 'shanelle' ); ?>
+				<?php esc_html_e( 'Código de cupón', 'shanelle' ); ?>
 			</label>
 			<div class="cart-page__coupon-row">
 				<input
@@ -491,11 +491,11 @@ final class CartPage {
 					id="<?php echo esc_attr( self::get_coupon_input_id() ); ?>"
 					name="coupon_code"
 					value=""
-					placeholder="<?php esc_attr_e( 'Enter coupon code', 'shanelle' ); ?>"
+					placeholder="<?php esc_attr_e( 'Ingresa el código de cupón', 'shanelle' ); ?>"
 					autocomplete="off"
 				>
 				<button type="submit" class="btn btn--outline cart-page__coupon-submit" name="apply_coupon" value="1">
-					<?php esc_html_e( 'Apply coupon', 'shanelle' ); ?>
+					<?php esc_html_e( 'Aplicar cupón', 'shanelle' ); ?>
 				</button>
 			</div>
 		</div>
@@ -509,7 +509,7 @@ final class CartPage {
 		?>
 		<div class="cart-page__form-actions">
 			<button type="submit" class="btn btn--secondary cart-page__update" name="update_cart" value="1">
-				<?php esc_html_e( 'Update bag', 'shanelle' ); ?>
+				<?php esc_html_e( 'Actualizar bolsa', 'shanelle' ); ?>
 			</button>
 			<?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce' ); ?>
 		</div>
@@ -524,7 +524,7 @@ final class CartPage {
 		?>
 		<div class="cart-page__summary-card">
 			<h2 id="<?php echo esc_attr( self::get_summary_heading_id() ); ?>" class="cart-page__summary-title text-h3">
-				<?php esc_html_e( 'Order summary', 'shanelle' ); ?>
+				<?php esc_html_e( 'Resumen del pedido', 'shanelle' ); ?>
 			</h2>
 
 			<?php self::render_shipping_estimator(); ?>
@@ -535,10 +535,10 @@ final class CartPage {
 
 			<div class="cart-page__summary-actions">
 				<a class="btn btn--primary btn--block btn--lg cart-page__checkout" href="<?php echo esc_url( wc_get_checkout_url() ); ?>">
-					<?php esc_html_e( 'Proceed to checkout', 'shanelle' ); ?>
+					<?php esc_html_e( 'Ir a pagar', 'shanelle' ); ?>
 				</a>
 				<a class="btn btn--outline btn--block cart-page__continue" href="<?php echo esc_url( (string) ( self::$state['urls']['shop'] ?? home_url( '/' ) ) ); ?>">
-					<?php esc_html_e( 'Continue shopping', 'shanelle' ); ?>
+					<?php esc_html_e( 'Continuar comprando', 'shanelle' ); ?>
 				</a>
 			</div>
 		</div>
@@ -562,7 +562,7 @@ final class CartPage {
 			woocommerce_shipping_calculator(
 				apply_filters(
 					'shanelle_cart_page_shipping_calculator_button_text',
-					__( 'Estimate shipping', 'shanelle' )
+					__( 'Calcular envío', 'shanelle' )
 				)
 			);
 			?>
@@ -887,10 +887,10 @@ final class CartPage {
 
 		$rows[] = array(
 			'class'      => 'shipping',
-			'label'      => esc_html__( 'Shipping', 'shanelle' ),
+			'label'      => esc_html__( 'Envío', 'shanelle' ),
 			'value_html' => WC()->customer->has_calculated_shipping()
-				? esc_html__( 'Calculated at checkout', 'shanelle' )
-				: esc_html__( 'Estimate below', 'shanelle' ),
+				? esc_html__( 'Se calcula al pagar', 'shanelle' )
+				: esc_html__( 'Calcula abajo', 'shanelle' ),
 		);
 
 		return $rows;
@@ -975,7 +975,7 @@ final class CartPage {
 				'cross_sells_enabled' => self::get_theme_mod_bool( self::MOD_CROSS_SELLS_ENABLED, true ),
 				'cross_sells_title'   => self::get_theme_mod_string(
 					self::MOD_CROSS_SELLS_TITLE,
-					__( 'You may also like', 'shanelle' )
+					__( 'También te puede gustar', 'shanelle' )
 				),
 				'cross_sells_limit'   => self::sanitize_cross_sells_limit(
 					get_theme_mod( self::MOD_CROSS_SELLS_LIMIT, 4 )

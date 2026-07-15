@@ -93,7 +93,7 @@ function updateFromVariation( summary, variation ) {
 	};
 
 	applyPriceState( summary, price );
-	announce( summary, i18n.priceUpdated || 'Price updated' );
+	announce( summary, i18n.priceUpdated || 'Precio actualizado' );
 
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:product-summary:price-change', {

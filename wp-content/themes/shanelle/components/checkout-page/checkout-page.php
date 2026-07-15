@@ -25,7 +25,7 @@ if ( ! $checkout instanceof WC_Checkout ) {
 >
 	<header class="checkout-page__header">
 		<h1 id="<?php echo esc_attr( CheckoutPage::get_heading_id() ); ?>" class="checkout-page__title text-h1">
-			<?php esc_html_e( 'Checkout', 'shanelle' ); ?>
+			<?php esc_html_e( 'Pagar', 'shanelle' ); ?>
 		</h1>
 	</header>
 
@@ -40,7 +40,7 @@ if ( ! $checkout instanceof WC_Checkout ) {
 			class="checkout-page__form checkout woocommerce-checkout"
 			action="<?php echo esc_url( wc_get_checkout_url() ); ?>"
 			enctype="multipart/form-data"
-			aria-label="<?php esc_attr_e( 'Checkout', 'shanelle' ); ?>"
+			aria-label="<?php esc_attr_e( 'Pagar', 'shanelle' ); ?>"
 		>
 			<div class="checkout-page__main">
 				<?php CheckoutPage::render_customer_details(); ?>
@@ -49,7 +49,7 @@ if ( ! $checkout instanceof WC_Checkout ) {
 			<aside class="checkout-page__summary" aria-labelledby="<?php echo esc_attr( CheckoutPage::get_summary_heading_id() ); ?>">
 				<div class="checkout-page__summary-header">
 					<h2 id="<?php echo esc_attr( CheckoutPage::get_summary_heading_id() ); ?>" class="checkout-page__summary-title text-h3">
-						<?php esc_html_e( 'Order summary', 'shanelle' ); ?>
+						<?php esc_html_e( 'Resumen del pedido', 'shanelle' ); ?>
 					</h2>
 					<a class="checkout-page__edit-cart text-label" href="<?php echo esc_url( wc_get_cart_url() ); ?>">
 						<?php echo esc_html( CheckoutPage::get_edit_cart_label() ); ?>

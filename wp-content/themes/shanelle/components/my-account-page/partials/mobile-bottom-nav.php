@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 <nav
 	class="my-account-page__bottom-nav"
-	aria-label="<?php esc_attr_e( 'Account quick navigation', 'shanelle' ); ?>"
+	aria-label="<?php esc_attr_e( 'Navegación rápida de cuenta', 'shanelle' ); ?>"
 	data-shanelle-account-bottom-nav
 	style="--bottom-nav-count: <?php echo esc_attr( (string) count( $items ) ); ?>;"
 >

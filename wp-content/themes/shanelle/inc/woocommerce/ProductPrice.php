@@ -95,7 +95,7 @@ final class ProductPrice {
 			return $data['badge_label'];
 		}
 
-		return __( 'Sale', 'shanelle' );
+		return __( 'Oferta', 'shanelle' );
 	}
 
 	/**
@@ -137,7 +137,7 @@ final class ProductPrice {
 			'current_html'    => $is_range
 				? sprintf(
 					/* translators: %s: minimum price */
-					__( 'From %s', 'shanelle' ),
+					__( 'Desde %s', 'shanelle' ),
 					wc_price( $display_current )
 				)
 				: wc_price( $display_current ),
@@ -152,7 +152,7 @@ final class ProductPrice {
 			$data['regular_html'] = $is_range
 				? sprintf(
 					/* translators: %s: minimum regular price */
-					__( 'From %s', 'shanelle' ),
+					__( 'Desde %s', 'shanelle' ),
 					wc_price( $display_regular )
 				)
 				: wc_price( $display_regular );
@@ -186,7 +186,7 @@ final class ProductPrice {
 
 		return sprintf(
 			/* translators: %s: formatted savings amount */
-			__( 'Save %s', 'shanelle' ),
+			__( 'Ahorra %s', 'shanelle' ),
 			wc_price( $amount )
 		);
 	}
@@ -196,7 +196,7 @@ final class ProductPrice {
 	 */
 	private static function format_percent_badge( int $percent ): string {
 		if ( $percent <= 0 ) {
-			return __( 'Sale', 'shanelle' );
+			return __( 'Oferta', 'shanelle' );
 		}
 
 		/* translators: %d: discount percentage */

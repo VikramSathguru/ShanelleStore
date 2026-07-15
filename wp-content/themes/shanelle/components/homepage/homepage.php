@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 	data-homepage-sections="<?php echo esc_attr( Homepage::get_sections_json() ); ?>"
 >
 	<?php Homepage::render_hero(); ?>
-	<?php Homepage::render_category_navigation(); ?>
-	<?php Homepage::render_product_sections(); ?>
+	<?php Homepage::render_category_icons(); ?>
+	<?php Homepage::render_featured_collections(); ?>
+	<?php Homepage::render_for_you_grid(); ?>
 </div>

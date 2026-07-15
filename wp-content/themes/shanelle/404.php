@@ -14,10 +14,10 @@ get_header();
 	<div class="container">
 		<?php
 		shanelle_component( 'empty-state', array(
-			'title'   => __( 'Page not found', 'shanelle' ),
-			'message' => __( 'The page you are looking for does not exist or has moved.', 'shanelle' ),
+			'title'   => __( 'Página no encontrada', 'shanelle' ),
+			'message' => __( 'La página que buscas no existe o fue movida.', 'shanelle' ),
 			'cta_url' => home_url( '/' ),
-			'cta_text' => __( 'Back to home', 'shanelle' ),
+			'cta_text' => __( 'Volver al inicio', 'shanelle' ),
 		) );
 		?>
 	</div>

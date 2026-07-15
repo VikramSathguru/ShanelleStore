@@ -30,12 +30,12 @@ do_action( 'woocommerce_before_account_downloads', $has_downloads );
 						<p class="my-account-page__download-card-file text-body-sm text-muted"><?php echo esc_html( $download['file'] ); ?></p>
 						<dl class="my-account-page__download-card-meta">
 							<div class="my-account-page__download-card-meta-item">
-								<dt class="text-label"><?php esc_html_e( 'Expires', 'shanelle' ); ?></dt>
+								<dt class="text-label"><?php esc_html_e( 'Vence', 'shanelle' ); ?></dt>
 								<dd class="text-body-sm"><?php echo esc_html( $download['access_expires'] ); ?></dd>
 							</div>
 							<?php if ( '' !== (string) $download['downloads_remaining'] ) : ?>
 								<div class="my-account-page__download-card-meta-item">
-									<dt class="text-label"><?php esc_html_e( 'Downloads remaining', 'shanelle' ); ?></dt>
+									<dt class="text-label"><?php esc_html_e( 'Descargas restantes', 'shanelle' ); ?></dt>
 									<dd class="text-body-sm"><?php echo esc_html( (string) $download['downloads_remaining'] ); ?></dd>
 								</div>
 							<?php endif; ?>
@@ -51,8 +51,8 @@ do_action( 'woocommerce_before_account_downloads', $has_downloads );
 		<?php
 		MyAccountPage::render_empty_state(
 			array(
-				'title'    => __( 'No downloads available', 'shanelle' ),
-				'message'  => __( 'Purchased downloadable products will appear here.', 'shanelle' ),
+				'title'    => __( 'No hay descargas disponibles', 'shanelle' ),
+				'message'  => __( 'Los productos descargables que compres aparecerán aquí.', 'shanelle' ),
 				'cta_url'  => wc_get_page_permalink( 'shop' ) ?: home_url( '/' ),
 				'cta_text' => __( 'Browse products', 'woocommerce' ),
 			)

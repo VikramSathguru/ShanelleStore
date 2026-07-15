@@ -87,7 +87,7 @@ async function quickAddToCart( button ) {
 		}
 
 		applyWooFragments( data.fragments );
-		announce( card, i18n.added || 'Added to bag' );
+		announce( card, i18n.added || 'Agregado a la bolsa' );
 
 		document.body.dispatchEvent(
 			new CustomEvent( 'shanelle:added_to_cart', {
@@ -96,7 +96,7 @@ async function quickAddToCart( button ) {
 			} )
 		);
 	} catch ( error ) {
-		announce( card, i18n.error || 'Could not add to bag' );
+		announce( card, i18n.error || 'No se pudo agregar a la bolsa' );
 	} finally {
 		button.classList.remove( 'is-loading' );
 		button.disabled = false;

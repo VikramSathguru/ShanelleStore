@@ -33,7 +33,7 @@
 }
 
 .badge--sale {
-	background-color: var(--color-brand-primary);
+	background-color: var(--color-sale);
 	color: var(--color-text-inverse);
 }
 

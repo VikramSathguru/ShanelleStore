@@ -1,38 +1,83 @@
 /**
- * Shanelle Related Products Component
+ * Shanelle Related Products — Customers Also Viewed
  */
 
 .product-related {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-5);
 	min-width: 0;
 }
 
 .product-related__title {
 	margin: 0;
+	text-align: center;
+	font-size: var(--font-size-lg);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: var(--letter-spacing-wide);
+	text-transform: uppercase;
 }
 
 .product-related__grid {
 	min-width: 0;
 }
 
-.product-related .product-grid {
-	gap: var(--space-5);
+.product-related__items {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
-.product-related .product-grid__items {
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+.product-related__item {
+	min-width: 0;
+}
+
+.product-related .product-card__title {
+	font-size: var(--font-size-xs);
+}
+
+.product-related .product-card__price .amount,
+.product-related .product-card__price ins .amount {
+	color: var(--color-sale);
+	font-weight: var(--font-weight-semibold);
+}
+
+.product-related__view-more-wrap {
+	display: flex;
+	justify-content: center;
+	margin-top: var(--space-4);
+}
+
+.product-related__view-more {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	min-width: min(100%, 24rem);
+	height: var(--button-height-md);
+	border-color: var(--color-neutral-900);
+	background-color: var(--color-neutral-900);
+	color: var(--color-text-inverse);
+}
+
+.product-related__view-more:hover {
+	background-color: var(--color-neutral-800);
+	border-color: var(--color-neutral-800);
+	color: var(--color-text-inverse);
 }
 
 @media (min-width: 48rem) {
-	.product-related .product-grid__items {
+	.product-related__items {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-4);
 	}
 }
 
 @media (min-width: 64rem) {
-	.product-related .product-grid__items {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+	.product-related__items {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
 	}
 }

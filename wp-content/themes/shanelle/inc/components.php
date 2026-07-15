@@ -196,6 +196,13 @@ function shanelle_search_results( array $args = array() ): void {
 }
 
 /**
+ * Render the header category navbar.
+ */
+function shanelle_category_navbar(): void {
+	\Shanelle\Components\CategoryNavbar::render();
+}
+
+/**
  * Render the site footer composition.
  */
 function shanelle_footer(): void {

@@ -90,11 +90,11 @@ final class ProductGrid {
 				'nonce'    => wp_create_nonce( self::AJAX_ACTION ),
 				'restNonce'=> wp_create_nonce( 'wp_rest' ),
 				'i18n'     => array(
-					'loadMore'   => __( 'Load more', 'shanelle' ),
-					'loading'    => __( 'Loading products…', 'shanelle' ),
-					'empty'      => __( 'No products found.', 'shanelle' ),
-					'error'      => __( 'Unable to load products. Please try again.', 'shanelle' ),
-					'pagination' => __( 'Product pagination', 'shanelle' ),
+					'loadMore'   => __( 'Cargar más', 'shanelle' ),
+					'loading'    => __( 'Cargando productos…', 'shanelle' ),
+					'empty'      => __( 'No se encontraron productos.', 'shanelle' ),
+					'error'      => __( 'No se pudieron cargar los productos. Intenta de nuevo.', 'shanelle' ),
+					'pagination' => __( 'Paginación de productos', 'shanelle' ),
 				),
 			)
 		);
@@ -195,8 +195,8 @@ final class ProductGrid {
 				'current'   => max( 1, (int) self::$query->get( 'paged' ) ),
 				'total'     => (int) self::$query->max_num_pages,
 				'type'      => 'list',
-				'prev_text' => __( 'Previous', 'shanelle' ),
-				'next_text' => __( 'Next', 'shanelle' ),
+				'prev_text' => __( 'Anterior', 'shanelle' ),
+				'next_text' => __( 'Siguiente', 'shanelle' ),
 			)
 		);
 
@@ -204,7 +204,7 @@ final class ProductGrid {
 			return;
 		}
 		?>
-		<nav class="product-grid__pagination" aria-label="<?php esc_attr_e( 'Product pagination', 'shanelle' ); ?>">
+		<nav class="product-grid__pagination" aria-label="<?php esc_attr_e( 'Paginación de productos', 'shanelle' ); ?>">
 			<?php echo wp_kses_post( $links ); ?>
 		</nav>
 		<?php
@@ -262,10 +262,10 @@ final class ProductGrid {
 		?>
 		<div class="product-grid product-grid--empty" data-shanelle-product-grid data-grid-state="empty">
 			<div class="product-grid__empty">
-				<h2 class="product-grid__empty-title text-h4"><?php esc_html_e( 'No products found', 'shanelle' ); ?></h2>
+				<h2 class="product-grid__empty-title text-h4"><?php esc_html_e( 'No se encontraron productos', 'shanelle' ); ?></h2>
 				<p class="product-grid__empty-text text-body-sm text-muted"><?php echo esc_html( $message ); ?></p>
 				<a class="btn btn--primary product-grid__empty-action" href="<?php echo esc_url( shanelle_is_woocommerce_active() ? wc_get_page_permalink( 'shop' ) : home_url( '/' ) ); ?>">
-					<?php esc_html_e( 'Browse all products', 'shanelle' ); ?>
+					<?php esc_html_e( 'Ver todos los productos', 'shanelle' ); ?>
 				</a>
 			</div>
 		</div>
@@ -352,7 +352,7 @@ final class ProductGrid {
 		$query_vars = json_decode( (string) $query_json, true );
 
 		if ( ! is_array( $query_vars ) ) {
-			return new \WP_Error( 'invalid_query', __( 'Invalid product query.', 'shanelle' ), array( 'status' => 400 ) );
+			return new \WP_Error( 'invalid_query', __( 'Consulta de productos no válida.', 'shanelle' ), array( 'status' => 400 ) );
 		}
 
 		$_POST['query_vars'] = wp_json_encode( self::sanitize_query_vars( $query_vars ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
@@ -379,7 +379,7 @@ final class ProductGrid {
 		$query_vars = json_decode( (string) $query_raw, true );
 
 		if ( ! is_array( $query_vars ) ) {
-			return new \WP_Error( 'invalid_query', __( 'Invalid product query.', 'shanelle' ) );
+			return new \WP_Error( 'invalid_query', __( 'Consulta de productos no válida.', 'shanelle' ) );
 		}
 
 		$query_vars         = self::sanitize_query_vars( $query_vars );
@@ -449,8 +449,8 @@ final class ProductGrid {
 			'grid_id'            => 'grid-' . wp_unique_id(),
 			'pagination_mode'    => 'pagination',
 			'infinite_scroll'    => false,
-			'load_more_label'    => __( 'Load more', 'shanelle' ),
-			'empty_message'      => __( 'Try adjusting your filters or browse our full collection.', 'shanelle' ),
+			'load_more_label'    => __( 'Cargar más', 'shanelle' ),
+			'empty_message'      => __( 'Prueba ajustando los filtros o explora toda la colección.', 'shanelle' ),
 			'card_args'          => array(),
 			'pagination_base'    => '',
 			'pagination_format'  => '',

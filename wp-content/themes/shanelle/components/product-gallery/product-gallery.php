@@ -17,19 +17,22 @@ defined( 'ABSPATH' ) || exit;
 	data-gallery-items="<?php echo esc_attr( ProductGallery::get_gallery_json() ); ?>"
 	data-gallery-count="<?php echo esc_attr( (string) ProductGallery::get_image_count() ); ?>"
 	role="region"
-	aria-label="<?php esc_attr_e( 'Product gallery', 'shanelle' ); ?>"
+	aria-label="<?php esc_attr_e( 'Galería del producto', 'shanelle' ); ?>"
 >
-	<div
-		id="<?php echo esc_attr( ProductGallery::get_panel_id() ); ?>"
-		class="product-gallery__panel"
-		role="tabpanel"
-		tabindex="0"
-		data-shanelle-gallery-panel
-	>
-		<?php ProductGallery::render_main_image(); ?>
+	<div class="product-gallery__layout">
+		<?php ProductGallery::render_thumbnails(); ?>
+
+		<div
+			id="<?php echo esc_attr( ProductGallery::get_panel_id() ); ?>"
+			class="product-gallery__panel"
+			role="tabpanel"
+			tabindex="0"
+			data-shanelle-gallery-panel
+		>
+			<?php ProductGallery::render_main_image(); ?>
+		</div>
 	</div>
 
-	<?php ProductGallery::render_thumbnails(); ?>
 	<?php ProductGallery::render_modal(); ?>
 
 	<p class="product-gallery__status sr-only" aria-live="polite" aria-atomic="true" data-shanelle-gallery-status></p>
