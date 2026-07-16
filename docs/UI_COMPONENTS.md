@@ -175,10 +175,10 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Shop / category archive composer |
+| Purpose | Shop / category / shared PLP chrome |
 | Location | `inc/components/ShopArchive.php`, `components/shop-archive/` |
 | Dependencies | CatalogFilters, ProductGrid |
-| Used by | `woocommerce/archive-product.php` |
+| Used by | `woocommerce/archive-product.php`, CollectionPage, SearchPage |
 | Reusable | Page |
 | Needs improvement | — |
 
@@ -186,12 +186,12 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Sidebar/filter UI + product query mutation |
+| Purpose | Sidebar/sheet filter UI + product query mutation + active chips |
 | Location | `inc/components/CatalogFilters.php`, `components/catalog-filters/` |
-| Dependencies | Attribute taxonomies, `woocommerce_product_query` |
-| Used by | ShopArchive (via `shanelle_shop_archive_filters`) |
+| Dependencies | Attribute taxonomies, `woocommerce_product_query`, search `pre_get_posts` |
+| Used by | ShopArchive (desktop + mobile; sole PLP filter source) |
 | Reusable | Yes |
-| Needs improvement | Hardcoded `pa_*` taxonomy list |
+| Needs improvement | — |
 
 ### CollectionCard
 
@@ -280,32 +280,32 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 |-------|--------|
 | Purpose | Homepage composer |
 | Location | `inc/components/Homepage.php`, `components/homepage/` + partials |
-| Dependencies | Catalog collections, ProductGrid, Customizer |
+| Dependencies | HeroBanner, Catalog collections, ProductGrid, Customizer |
 | Used by | `front-page.php` |
 | Reusable | Page |
-| Needs improvement | Template vs older docs drift; hero methods exist but current `homepage.php` renders category icons / featured collections / For You |
+| Needs improvement | Soften remaining P2 polish (load-more styling, “Ver todo” text) |
 
 ### HeroBanner
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Homepage hero carousel / LCP preload |
+| Purpose | Full-bleed homepage hero / LCP preload |
 | Location | `inc/components/HeroBanner.php`, `components/hero-banner/` |
 | Dependencies | Customizer |
-| Used by | Available via `shanelle_hero_banner()` / Homepage helpers; **not currently called from active `homepage.php` markup** |
+| Used by | Live homepage via `Homepage::render_hero()` → `shanelle_hero_banner()` |
 | Reusable | Yes |
-| Needs improvement | Align wiring with homepage template |
+| Needs improvement | — |
 
 ### CategoryNavigation
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Homepage category navigation block |
+| Purpose | Optional richer category block (not on live homepage) |
 | Location | `inc/components/CategoryNavigation.php`, `components/category-navigation/` |
 | Dependencies | product_cat, Customizer |
-| Used by | Homepage Customizer/API; confirm presence in live homepage template |
+| Used by | Manual `shanelle_category_navigation()` only; live homepage uses category icon grid |
 | Reusable | Yes |
-| Needs improvement | Same as HeroBanner — composition drift |
+| Needs improvement | Customizer section labeled inactive to avoid merchant confusion |
 
 ### CategoryNavbar
 
@@ -326,9 +326,9 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Site footer composition |
+| Purpose | Site footer composition (brand, menus, contact, optional newsletter) |
 | Location | `inc/components/Footer.php`, `components/footer/` |
-| Dependencies | Menus, Customizer |
+| Dependencies | Menus, Customizer (contact, social, payments, scroll-to-top; newsletter off by default) |
 | Used by | `footer.php` |
 | Reusable | Yes |
 | Needs improvement | — |
@@ -338,11 +338,22 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Field | Detail |
 |-------|--------|
 | Purpose | Global header chrome |
-| Location | `template-parts/components/site-header.php` + `assets/css/components/site-header.css` |
-| Dependencies | SearchOverlay strings, cart count, CategoryNavbar |
+| Location | `template-parts/components/site-header.php` + `assets/css/components/site-header.css` + `inc/components/SiteHeader.php` |
+| Dependencies | SiteHeader Customizer, SearchOverlay, cart count, CategoryNavbar |
 | Used by | `header.php` |
 | Reusable | Yes |
-| Needs improvement | Not migrated into `components/` package; wishlist/language placeholders |
+| Needs improvement | Markup not yet migrated into `components/header/` package |
+
+### SiteHeader
+
+| Field | Detail |
+|-------|--------|
+| Purpose | Header Customizer (promo strip, contact URL) + presentation helpers |
+| Location | `inc/components/SiteHeader.php` |
+| Dependencies | Theme Customizer, WP pages for contact fallback |
+| Used by | `site-header.php` |
+| Reusable | Yes |
+| Needs improvement | — |
 
 ---
 

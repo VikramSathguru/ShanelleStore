@@ -143,21 +143,6 @@
 	color: var(--color-warning-text);
 }
 
-.product-variations__gallery-sync {
-	padding: var(--space-3);
-	border: 1px dashed var(--color-border);
-	border-radius: var(--radius-md);
-	background: var(--color-background-subtle);
-}
-
-.product-variations__gallery-sync[hidden] {
-	display: none;
-}
-
-.product-variations__gallery-sync-note {
-	margin: 0;
-}
-
 .product-variations__reset {
 	align-self: flex-start;
 }

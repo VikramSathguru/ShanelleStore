@@ -13,26 +13,45 @@ const i18n = config.i18n ?? {};
 function initScrollControl( root ) {
 	const list = root.querySelector( '[data-category-navbar-list]' );
 	const nextButton = root.querySelector( '[data-category-navbar-next]' );
+	const prevButton = root.querySelector( '[data-category-navbar-prev]' );
 
-	if ( ! ( list instanceof HTMLElement ) || ! ( nextButton instanceof HTMLButtonElement ) ) {
+	if ( ! ( list instanceof HTMLElement ) ) {
 		return;
 	}
 
 	const updateScrollControl = () => {
 		const canScroll = list.scrollWidth > list.clientWidth + 1;
+		const atStart = list.scrollLeft <= 1;
 		const atEnd = list.scrollLeft + list.clientWidth >= list.scrollWidth - 1;
 
-		nextButton.hidden = ! canScroll || atEnd;
+		if ( nextButton instanceof HTMLButtonElement ) {
+			nextButton.hidden = ! canScroll || atEnd;
+		}
+
+		if ( prevButton instanceof HTMLButtonElement ) {
+			prevButton.hidden = ! canScroll || atStart;
+		}
 	};
 
-	nextButton.addEventListener( 'click', () => {
+	/**
+	 * @param {number} direction
+	 */
+	const scrollByDirection = ( direction ) => {
 		const offset = Math.max( list.clientWidth * 0.75, 160 );
 		const behavior = window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches ? 'auto' : 'smooth';
 
 		list.scrollBy( {
-			left: offset,
+			left: offset * direction,
 			behavior,
 		} );
+	};
+
+	nextButton?.addEventListener( 'click', () => {
+		scrollByDirection( 1 );
+	} );
+
+	prevButton?.addEventListener( 'click', () => {
+		scrollByDirection( -1 );
 	} );
 
 	list.addEventListener( 'scroll', updateScrollControl, { passive: true } );

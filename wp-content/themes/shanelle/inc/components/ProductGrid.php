@@ -491,6 +491,7 @@ final class ProductGrid {
 			'price',
 			'price-desc',
 			'rand',
+			'relevance',
 		);
 
 		$clean = array(
@@ -503,12 +504,13 @@ final class ProductGrid {
 		);
 
 		if ( ! empty( $query_vars['s'] ) ) {
-			$clean['s'] = sanitize_text_field( (string) $query_vars['s'] );
+			$clean['s']       = sanitize_text_field( (string) $query_vars['s'] );
+			$clean['orderby'] = 'relevance';
 		}
 
 		if ( ! empty( $query_vars['orderby'] ) ) {
-			$orderby = sanitize_key( (string) $query_vars['orderby'] );
-			$clean['orderby'] = in_array( $orderby, $allowed_orderby, true ) ? $orderby : 'date';
+			$orderby          = sanitize_key( (string) $query_vars['orderby'] );
+			$clean['orderby'] = in_array( $orderby, $allowed_orderby, true ) ? $orderby : ( ! empty( $clean['s'] ) ? 'relevance' : 'date' );
 		}
 
 		if ( ! empty( $query_vars['order'] ) ) {
@@ -597,19 +599,27 @@ final class ProductGrid {
 	 * @return array<int, mixed>
 	 */
 	private static function sanitize_tax_query( array $tax_query ): array {
-		$clean = array();
+		$clean    = array();
+		$relation = isset( $tax_query['relation'] ) ? strtoupper( (string) $tax_query['relation'] ) : '';
 
-		foreach ( $tax_query as $clause ) {
-			if ( ! is_array( $clause ) || empty( $clause['taxonomy'] ) ) {
+		foreach ( $tax_query as $key => $clause ) {
+			if ( 'relation' === $key || ! is_array( $clause ) || empty( $clause['taxonomy'] ) ) {
 				continue;
 			}
 
 			$clean[] = array(
-				'taxonomy' => sanitize_key( (string) $clause['taxonomy'] ),
-				'field'    => isset( $clause['field'] ) ? sanitize_key( (string) $clause['field'] ) : 'slug',
-				'terms'    => array_map( 'sanitize_title', (array) ( $clause['terms'] ?? array() ) ),
-				'operator' => isset( $clause['operator'] ) ? sanitize_text_field( (string) $clause['operator'] ) : 'IN',
+				'taxonomy'         => sanitize_key( (string) $clause['taxonomy'] ),
+				'field'            => isset( $clause['field'] ) ? sanitize_key( (string) $clause['field'] ) : 'slug',
+				'terms'            => array_map( 'sanitize_title', (array) ( $clause['terms'] ?? array() ) ),
+				'operator'         => isset( $clause['operator'] ) ? sanitize_text_field( (string) $clause['operator'] ) : 'IN',
+				'include_children' => ! isset( $clause['include_children'] ) || (bool) $clause['include_children'],
 			);
+		}
+
+		if ( count( $clean ) > 1 && in_array( $relation, array( 'AND', 'OR' ), true ) ) {
+			$clean['relation'] = $relation;
+		} elseif ( count( $clean ) > 1 ) {
+			$clean['relation'] = 'AND';
 		}
 
 		return $clean;
@@ -622,19 +632,28 @@ final class ProductGrid {
 	 * @return array<int, mixed>
 	 */
 	private static function sanitize_meta_query( array $meta_query ): array {
-		$clean = array();
+		$clean    = array();
+		$relation = isset( $meta_query['relation'] ) ? strtoupper( (string) $meta_query['relation'] ) : '';
 
-		foreach ( $meta_query as $clause ) {
-			if ( ! is_array( $clause ) || empty( $clause['key'] ) ) {
+		foreach ( $meta_query as $key => $clause ) {
+			if ( 'relation' === $key || ! is_array( $clause ) || empty( $clause['key'] ) ) {
 				continue;
 			}
 
 			$clean[] = array(
 				'key'     => sanitize_key( (string) $clause['key'] ),
-				'value'   => sanitize_text_field( (string) ( $clause['value'] ?? '' ) ),
+				'value'   => is_numeric( $clause['value'] ?? '' )
+					? $clause['value']
+					: sanitize_text_field( (string) ( $clause['value'] ?? '' ) ),
 				'compare' => isset( $clause['compare'] ) ? sanitize_text_field( (string) $clause['compare'] ) : '=',
 				'type'    => isset( $clause['type'] ) ? sanitize_text_field( (string) $clause['type'] ) : 'CHAR',
 			);
+		}
+
+		if ( count( $clean ) > 1 && in_array( $relation, array( 'AND', 'OR' ), true ) ) {
+			$clean['relation'] = $relation;
+		} elseif ( count( $clean ) > 1 ) {
+			$clean['relation'] = 'AND';
 		}
 
 		return $clean;

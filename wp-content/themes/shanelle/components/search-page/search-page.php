@@ -34,6 +34,7 @@ defined( 'ABSPATH' ) || exit;
 			<div class="shop-archive__main search-page__main">
 				<?php ShopArchive::render_header(); ?>
 				<?php ShopArchive::render_toolbar(); ?>
+				<?php ShopArchive::render_active_filters(); ?>
 				<?php ShopArchive::render_loading_placeholder(); ?>
 
 				<div class="search-page__grid shop-archive__grid" data-shanelle-archive-grid>

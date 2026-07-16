@@ -11,6 +11,7 @@ const i18n = config.i18n ?? {};
 let root = null;
 
 const DESKTOP_QUERY = window.matchMedia( '(min-width: 48rem)' );
+const SCROLL_TOP_THRESHOLD = 320;
 
 /**
  * @param {string} message
@@ -81,13 +82,20 @@ function handleNewsletterSubmit( form ) {
 		return;
 	}
 
-	const email = input.value.trim();
-	const isValid = input.checkValidity();
-
 	message.hidden = false;
 	message.classList.remove( 'is-success', 'is-error' );
 
-	if ( ! isValid ) {
+	if ( form.dataset.newsletterEnabled !== 'true' ) {
+		message.textContent = i18n.newsletterSoon || 'El boletín estará disponible pronto.';
+		message.classList.add( 'is-error' );
+		announce( message.textContent );
+		return;
+	}
+
+	const email = input.value.trim();
+	const isValid = input.checkValidity();
+
+	if ( ! isValid || '' === email ) {
 		message.textContent = i18n.newsletterInvalid || 'Ingresa un correo electrónico válido.';
 		message.classList.add( 'is-error' );
 		announce( message.textContent );
@@ -103,12 +111,57 @@ function handleNewsletterSubmit( form ) {
 }
 
 /**
+ * @returns {HTMLButtonElement|null}
+ */
+function getScrollTopButton() {
+	const button = root?.querySelector( '[data-shanelle-footer-scroll-top]' );
+
+	return button instanceof HTMLButtonElement ? button : null;
+}
+
+/**
+ * Sync scroll-to-top visibility with page scroll position.
+ */
+function syncScrollTopVisibility() {
+	const button = getScrollTopButton();
+
+	if ( ! button ) {
+		return;
+	}
+
+	const isVisible = window.scrollY > SCROLL_TOP_THRESHOLD;
+
+	button.hidden = false;
+	button.classList.toggle( 'is-visible', isVisible );
+	button.setAttribute( 'aria-hidden', isVisible ? 'false' : 'true' );
+	button.tabIndex = isVisible ? 0 : -1;
+}
+
+/**
+ * Smooth-scroll to the top of the page.
+ */
+function scrollToTop() {
+	window.scrollTo( {
+		top: 0,
+		behavior: 'smooth',
+	} );
+}
+
+/**
  * @param {Event} event
  */
 function handleDocumentClick( event ) {
 	const target = event.target;
 
 	if ( ! ( target instanceof Element ) || ! root ) {
+		return;
+	}
+
+	const scrollTop = target.closest( '[data-shanelle-footer-scroll-top]' );
+
+	if ( scrollTop instanceof HTMLButtonElement ) {
+		event.preventDefault();
+		scrollToTop();
 		return;
 	}
 
@@ -146,7 +199,10 @@ function initFooter( element = null ) {
 	}
 
 	syncMenuPanels();
+	syncScrollTopVisibility();
+
 	DESKTOP_QUERY.addEventListener( 'change', syncMenuPanels );
+	window.addEventListener( 'scroll', syncScrollTopVisibility, { passive: true } );
 	document.addEventListener( 'click', handleDocumentClick );
 
 	document.body.dispatchEvent(
@@ -157,6 +213,7 @@ function initFooter( element = null ) {
 				state: config.initialState ?? {},
 				api: {
 					announce,
+					scrollToTop,
 				},
 			},
 		} )
@@ -172,4 +229,5 @@ document.querySelectorAll( '[data-shanelle-footer]' ).forEach( ( element ) => {
 export {
 	initFooter,
 	announce,
+	scrollToTop,
 };

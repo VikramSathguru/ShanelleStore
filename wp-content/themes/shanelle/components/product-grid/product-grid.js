@@ -121,10 +121,17 @@ async function loadNextPage( grid ) {
 
 	const nextPage = current + 1;
 
+	const loadMore = grid.querySelector( '[data-shanelle-load-more]' );
+
 	grid.dataset.gridLoading = 'true';
 	setLoading( grid, true );
 	setError( grid, false );
 	announce( grid, i18n.loading || 'Cargando productos…' );
+
+	if ( loadMore instanceof HTMLButtonElement ) {
+		loadMore.disabled = true;
+		loadMore.setAttribute( 'aria-busy', 'true' );
+	}
 
 	try {
 		const data = await fetchPage( grid, nextPage );
@@ -137,7 +144,6 @@ async function loadNextPage( grid ) {
 		grid.dataset.gridPage = String( data.page );
 		grid.dataset.gridMaxPages = String( data.max_pages );
 
-		const loadMore = grid.querySelector( '[data-shanelle-load-more]' );
 		const sentinel = grid.querySelector( '[data-shanelle-infinite-sentinel]' );
 
 		if ( ! data.has_more ) {
@@ -159,6 +165,11 @@ async function loadNextPage( grid ) {
 	} finally {
 		grid.dataset.gridLoading = 'false';
 		setLoading( grid, false );
+
+		if ( loadMore instanceof HTMLButtonElement ) {
+			loadMore.disabled = false;
+			loadMore.removeAttribute( 'aria-busy' );
+		}
 	}
 }
 

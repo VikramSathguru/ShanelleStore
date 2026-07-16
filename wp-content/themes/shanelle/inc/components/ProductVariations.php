@@ -133,7 +133,6 @@ final class ProductVariations {
 					'variationReady'  => __( 'Variación seleccionada', 'shanelle' ),
 					'variationReset'  => __( 'Variación eliminada', 'shanelle' ),
 					'optionSelected'  => __( '%1$s seleccionado: %2$s', 'shanelle' ),
-					'gallerySoon'     => __( 'Sincronización de galería (próximamente)', 'shanelle' ),
 				),
 			)
 		);
@@ -298,21 +297,10 @@ final class ProductVariations {
 	}
 
 	/**
-	 * Render gallery synchronization placeholder.
+	 * @deprecated Gallery sync UI removed until variation image sync ships.
 	 */
 	public static function render_gallery_sync_placeholder(): void {
-		?>
-		<div
-			class="product-variations__gallery-sync"
-			data-shanelle-variation-gallery-sync
-			aria-hidden="true"
-			hidden
-		>
-			<p class="product-variations__gallery-sync-note text-caption text-muted">
-				<?php esc_html_e( 'Sincronización de galería (próximamente)', 'shanelle' ); ?>
-			</p>
-		</div>
-		<?php
+		// Intentionally empty — placeholder markup removed for Design Completion.
 	}
 
 	/**

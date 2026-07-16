@@ -19,8 +19,9 @@ defined( 'ABSPATH' ) || exit;
 	data-shanelle-shop-archive
 	data-collection-state="<?php echo esc_attr( CollectionPage::get_state_json() ); ?>"
 >
+	<?php CollectionPage::render_hero(); ?>
+
 	<div class="container collection-page__container shop-archive__container">
-		<?php CollectionPage::render_hero(); ?>
 		<?php CollectionPage::render_related_collections(); ?>
 		<?php ShopArchive::render_notices(); ?>
 
@@ -34,6 +35,7 @@ defined( 'ABSPATH' ) || exit;
 			<div class="shop-archive__main collection-page__main">
 				<?php CollectionPage::render_product_count(); ?>
 				<?php ShopArchive::render_toolbar(); ?>
+				<?php ShopArchive::render_active_filters(); ?>
 				<?php ShopArchive::render_loading_placeholder(); ?>
 
 				<div class="collection-page__grid shop-archive__grid" data-shanelle-archive-grid>

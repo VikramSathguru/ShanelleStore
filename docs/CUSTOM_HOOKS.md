@@ -9,9 +9,9 @@ WooCommerce core hooks that the theme adds/removes are summarized at the end; fu
 
 | Hook | Defined / fired | Used by | Purpose |
 |------|-----------------|---------|---------|
-| `shanelle_shop_archive_filters` | Fired in `ShopArchive` | `CatalogFilters::render_hook` (priority 5) | Inject filter UI into shop archive layout |
+| `shanelle_shop_archive_filters_after` | Fired in `ShopArchive::render_filters_content()` after CatalogFilters | Optional extensions | Append UI below CatalogFilters (must not replace filters) |
 
-No other `do_action( 'shanelle_*' )` call sites were found beyond the shop archive filters hook.
+CatalogFilters is rendered directly by `ShopArchive` (desktop sidebar + mobile sheet). Widget sidebars are not used for PLP filters.
 
 Client-side analogues are CustomEvents — see [EVENTS.md](./EVENTS.md).
 
@@ -32,6 +32,7 @@ Client-side analogues are CustomEvents — see [EVENTS.md](./EVENTS.md).
 | Filter | Defined in | Purpose |
 |--------|------------|---------|
 | `shanelle_catalog_filter_groups` | `CatalogFilters.php` | Filter group definitions |
+| `shanelle_catalog_filter_attribute_map` | `CatalogFilters.php` | Role → attribute taxonomy map |
 | `shanelle_catalog_filter_visible_options` | `CatalogFilters.php` | Visible option count before “show more” |
 | `shanelle_catalog_collections` | `catalog/Queries.php` | Collection list results |
 | `shanelle_catalog_collection_groups` | `catalog/Queries.php` | Grouped collections |

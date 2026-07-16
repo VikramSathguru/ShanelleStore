@@ -266,6 +266,11 @@
 	outline: none;
 }
 
+.mini-cart__item-quantity:focus-within .mini-cart__quantity-input {
+	box-shadow: var(--shadow-focus);
+	border-radius: var(--radius-sm);
+}
+
 .mini-cart__empty {
 	display: flex;
 	flex-direction: column;

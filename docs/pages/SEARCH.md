@@ -119,6 +119,9 @@ shanelle_search_page();
 
 - [ ] `/?s=dress&post_type=product` renders SearchPage grid
 - [ ] Search remains product-only (no posts/pages)
+- [ ] CatalogFilters (size/color/price) change the result set while preserving `s` and relevance unless sort is chosen
+- [ ] Active chips remove individual filters; clear all resets filters only
+- [ ] Load more appends the next page of filtered results
 
 ### PWA / REST
 

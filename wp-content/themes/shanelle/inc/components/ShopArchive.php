@@ -154,8 +154,9 @@ final class ShopArchive {
 	 * Render catalog toolbar with filter trigger and ordering.
 	 */
 	public static function render_toolbar(): void {
+		$active_count = count( CatalogFilters::get_active_chips() );
 		?>
-		<div class="shop-archive__toolbar">
+		<div class="shop-archive__toolbar" data-shanelle-archive-toolbar>
 			<button
 				type="button"
 				class="btn btn--outline shop-archive__filter-toggle"
@@ -164,6 +165,20 @@ final class ShopArchive {
 				aria-controls="shop-archive-filters"
 			>
 				<?php esc_html_e( 'Filtros', 'shanelle' ); ?>
+				<?php if ( $active_count > 0 ) : ?>
+					<span class="shop-archive__filter-count" aria-hidden="true"><?php echo esc_html( (string) $active_count ); ?></span>
+					<span class="screen-reader-text">
+						<?php
+						echo esc_html(
+							sprintf(
+								/* translators: %d: active filter count */
+								_n( '%d filtro activo', '%d filtros activos', $active_count, 'shanelle' ),
+								$active_count
+							)
+						);
+						?>
+					</span>
+				<?php endif; ?>
 			</button>
 
 			<div class="shop-archive__ordering">
@@ -177,7 +192,14 @@ final class ShopArchive {
 	}
 
 	/**
-	 * Render desktop filter sidebar.
+	 * Render active filter chips under the toolbar.
+	 */
+	public static function render_active_filters(): void {
+		CatalogFilters::render_active_chips();
+	}
+
+	/**
+	 * Render desktop filter sidebar (CatalogFilters is the only source of truth).
 	 */
 	public static function render_sidebar(): void {
 		if ( ! shanelle_is_woocommerce_active() ) {
@@ -186,7 +208,14 @@ final class ShopArchive {
 
 		?>
 		<aside class="shop-archive__sidebar" aria-label="<?php esc_attr_e( 'Filtros de productos', 'shanelle' ); ?>">
-			<?php CatalogFilters::render( array( 'form_id' => 'catalog-filters-sidebar' ) ); ?>
+			<?php
+			CatalogFilters::render(
+				array(
+					'form_id'     => 'catalog-filters-sidebar',
+					'submit_mode' => 'instant',
+				)
+			);
+			?>
 		</aside>
 		<?php
 	}
@@ -257,13 +286,14 @@ final class ShopArchive {
 		$grid_args = apply_filters(
 			'shanelle_shop_archive_grid_args',
 			array(
-				'pagination_mode' => 'pagination',
+				'pagination_mode' => 'load_more',
+				'load_more_label' => __( 'Ver más', 'shanelle' ),
 				'grid_id'         => 'shop-archive-grid',
 				'card_args'       => array(
-					'variant'          => 'catalog',
-					'show_rating'      => false,
-					'show_attributes'  => false,
-					'show_actions'     => false,
+					'variant'         => 'catalog',
+					'show_rating'     => false,
+					'show_attributes' => false,
+					'show_actions'    => false,
 				),
 			)
 		);
@@ -318,33 +348,32 @@ final class ShopArchive {
 	}
 
 	/**
-	 * Render filter widgets and extensible hook content.
+	 * Render CatalogFilters in the mobile sheet (sole filter source of truth).
+	 *
+	 * The `shanelle_shop_archive_filters` action remains for light UI extensions
+	 * after CatalogFilters. Widget sidebars are no longer used for PLP filters.
 	 */
 	public static function render_filters_content(): void {
-		if ( is_active_sidebar( 'shop-sidebar' ) ) {
-			dynamic_sidebar( 'shop-sidebar' );
+		if ( ! shanelle_is_woocommerce_active() ) {
+			?>
+			<p class="shop-archive__filters-empty text-body-sm text-muted">
+				<?php esc_html_e( 'Activa WooCommerce para usar los filtros del catálogo.', 'shanelle' ); ?>
+			</p>
+			<?php
 			return;
 		}
+
+		CatalogFilters::render(
+			array(
+				'form_id'     => 'catalog-filters-mobile',
+				'submit_mode' => 'apply',
+			)
+		);
 
 		/**
-		 * Render custom shop archive filters when no widgets are assigned.
+		 * Optional UI extensions below CatalogFilters (must not replace it).
 		 */
-		do_action( 'shanelle_shop_archive_filters' );
-
-		if ( has_action( 'shanelle_shop_archive_filters' ) ) {
-			return;
-		}
-
-		if ( shanelle_is_woocommerce_active() ) {
-			CatalogFilters::render( array( 'form_id' => 'catalog-filters-mobile' ) );
-			return;
-		}
-
-		?>
-		<p class="shop-archive__filters-empty text-body-sm text-muted">
-			<?php esc_html_e( 'Asigna widgets de filtros al área Barra lateral de la tienda o conecta la navegación por capas aquí.', 'shanelle' ); ?>
-		</p>
-		<?php
+		do_action( 'shanelle_shop_archive_filters_after' );
 	}
 
 	/**
@@ -422,6 +451,7 @@ final class ShopArchive {
 			return true;
 		}
 
-		return is_search() && 'product' === get_query_var( 'post_type' );
+		// SearchPage forces product results when WooCommerce is active.
+		return is_search();
 	}
 }

@@ -694,6 +694,7 @@ function initSearchOverlay( element = null ) {
 
 	document.addEventListener( 'click', handleDocumentClick );
 	document.addEventListener( 'keydown', handleGlobalKeydown );
+	document.addEventListener( 'focusin', handleHeaderSearchFocus );
 
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:search-overlay:ready', {
@@ -711,6 +712,24 @@ function initSearchOverlay( element = null ) {
 			},
 		} )
 	);
+}
+
+/**
+ * Open the overlay when the desktop header search field is focused.
+ *
+ * @param {FocusEvent} event
+ */
+function handleHeaderSearchFocus( event ) {
+	const target = event.target;
+
+	if ( ! ( target instanceof HTMLInputElement ) || ! target.matches( '[data-shanelle-header-search]' ) ) {
+		return;
+	}
+
+	const seed = target.value.trim();
+
+	openSearchOverlay( { query: seed } );
+	target.blur();
 }
 
 document.querySelectorAll( '[data-shanelle-search-overlay]' ).forEach( ( element ) => {

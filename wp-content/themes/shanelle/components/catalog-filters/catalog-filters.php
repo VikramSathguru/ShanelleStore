@@ -11,10 +11,11 @@ use Shanelle\Components\CatalogFilters;
 
 defined( 'ABSPATH' ) || exit;
 
-$groups       = CatalogFilters::get_filter_groups();
-$form_id      = CatalogFilters::get_form_id();
+$groups        = CatalogFilters::get_filter_groups();
+$form_id       = CatalogFilters::get_form_id();
+$submit_mode   = CatalogFilters::get_submit_mode();
 $visible_limit = CatalogFilters::get_visible_option_limit();
-$price_range  = CatalogFilters::get_selected_price_range();
+$price_range   = CatalogFilters::get_selected_price_range();
 ?>
 <form
 	id="<?php echo esc_attr( $form_id ); ?>"
@@ -22,6 +23,7 @@ $price_range  = CatalogFilters::get_selected_price_range();
 	method="get"
 	action=""
 	data-shanelle-catalog-filters
+	data-submit-mode="<?php echo esc_attr( $submit_mode ); ?>"
 >
 	<div class="catalog-filters__header">
 		<h2 class="catalog-filters__title text-h5"><?php esc_html_e( 'Filtro', 'shanelle' ); ?></h2>

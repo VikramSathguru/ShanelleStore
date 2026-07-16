@@ -31,9 +31,13 @@ CollectionPage (term archive)
 ├── Optional breadcrumbs (ShopArchive)
 ├── Product count
 ├── Catalog toolbar + ordering (ShopArchive)
-├── Product grid (ShopArchive → ProductGrid)
-└── Filter panel (ShopArchive)
+├── Active filter chips (CatalogFilters)
+├── Product grid load more (ShopArchive → ProductGrid)
+└── Filter panel — CatalogFilters apply mode (ShopArchive)
 ```
+
+See also [SHOP.md](./SHOP.md) for shared PLP filter/query behavior.
+
 
 ## Catalog query layer
 

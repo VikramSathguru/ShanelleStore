@@ -63,6 +63,8 @@
 	--color-danger: var(--color-danger-500);
 	--color-danger-bg: var(--color-danger-50);
 	--color-danger-text: var(--color-danger-700);
+	--color-error: var(--color-danger-700);
+	--color-error-bg: var(--color-danger-50);
 
 	/* Sale — soft brand rose (not marketplace red) */
 	--color-sale: var(--color-brand-600);

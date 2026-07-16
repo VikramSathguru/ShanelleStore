@@ -110,6 +110,10 @@
 	outline: none;
 }
 
+.product-purchase__quantity-input:focus-visible {
+	outline: none;
+}
+
 .product-purchase__stepper:focus-within {
 	border-color: var(--color-brand-400);
 	box-shadow: var(--shadow-focus);

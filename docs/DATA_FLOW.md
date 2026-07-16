@@ -69,9 +69,9 @@ sequenceDiagram
 ## Product listing flow
 
 1. Main query or composer-built `WP_Query` args.  
-2. Optional `CatalogFilters::apply_to_product_query` mutates tax/meta/price query.  
+2. `CatalogFilters` merges tax/meta clauses with a valid top-level `relation` — via `woocommerce_product_query` on shop/tax archives and `pre_get_posts` on product search.  
 3. `ProductGrid::render()` loops posts → `wc_get_product` → `ProductCard::render()`.  
-4. Optional load-more via `admin-ajax.php?action=shanelle_load_product_grid` or REST `shanelle/v1/product-grid`.
+4. PLP load-more via `admin-ajax.php?action=shanelle_load_product_grid` (also REST `shanelle/v1/product-grid` for PWA).
 
 ---
 

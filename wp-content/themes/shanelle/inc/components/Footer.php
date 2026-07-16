@@ -40,6 +40,16 @@ final class Footer {
 
 	private const MOD_SOCIAL_YOUTUBE = 'shanelle_footer_social_youtube';
 
+	private const MOD_SHOW_CONTACT = 'shanelle_footer_show_contact';
+
+	private const MOD_CONTACT_TITLE = 'shanelle_footer_contact_title';
+
+	private const MOD_CONTACT_PHONE = 'shanelle_footer_contact_phone';
+
+	private const MOD_CONTACT_EMAIL = 'shanelle_footer_contact_email';
+
+	private const MOD_CONTACT_ADDRESS = 'shanelle_footer_contact_address';
+
 	private const MOD_SHOW_NEWSLETTER = 'shanelle_footer_show_newsletter';
 
 	private const MOD_NEWSLETTER_TITLE = 'shanelle_footer_newsletter_title';
@@ -52,17 +62,7 @@ final class Footer {
 
 	private const MOD_PAYMENT_ICONS = 'shanelle_footer_payment_icons';
 
-	/**
-	 * Footer menu locations keyed by slug.
-	 *
-	 * @var array<string, string>
-	 */
-	private const MENU_LOCATIONS = array(
-		'footer_shop'             => 'Shop',
-		'footer_customer_service' => 'Customer Service',
-		'footer_legal'            => 'Legal',
-		'footer_about'            => 'About',
-	);
+	private const MOD_SHOW_SCROLL_TOP = 'shanelle_footer_show_scroll_top';
 
 	/**
 	 * Active footer state for the render cycle.
@@ -86,12 +86,26 @@ final class Footer {
 	public static function register_menus(): void {
 		$labels = array();
 
-		foreach ( self::MENU_LOCATIONS as $slug => $label ) {
+		foreach ( self::get_menu_locations() as $slug => $label ) {
 			/* translators: %s: footer menu column title */
 			$labels[ $slug ] = sprintf( __( 'Pie de página: %s', 'shanelle' ), $label );
 		}
 
 		register_nav_menus( $labels );
+	}
+
+	/**
+	 * Return footer menu locations with translated column titles.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function get_menu_locations(): array {
+		return array(
+			'footer_shop'             => __( 'Enlaces útiles', 'shanelle' ),
+			'footer_customer_service' => __( 'Atención al cliente', 'shanelle' ),
+			'footer_legal'            => __( 'Políticas', 'shanelle' ),
+			'footer_about'            => __( 'Nosotros', 'shanelle' ),
+		);
 	}
 
 	/**
@@ -104,7 +118,7 @@ final class Footer {
 			'shanelle_footer',
 			array(
 				'title'       => __( 'Pie de página', 'shanelle' ),
-				'description' => __( 'Configura la marca del pie de página, menús, texto del boletín e íconos de pago.', 'shanelle' ),
+				'description' => __( 'Configura la marca, contacto, menús, boletín opcional e íconos de pago del pie de página.', 'shanelle' ),
 				'priority'    => 120,
 			)
 		);
@@ -158,6 +172,52 @@ final class Footer {
 
 		self::register_checkbox_control(
 			$wp_customize,
+			self::MOD_SHOW_CONTACT,
+			__( 'Mostrar datos de contacto', 'shanelle' ),
+			true
+		);
+
+		self::register_text_control(
+			$wp_customize,
+			self::MOD_CONTACT_TITLE,
+			__( 'Título de contacto', 'shanelle' ),
+			__( 'Datos de contacto', 'shanelle' )
+		);
+
+		self::register_text_control(
+			$wp_customize,
+			self::MOD_CONTACT_PHONE,
+			__( 'Teléfono', 'shanelle' ),
+			''
+		);
+
+		self::register_text_control(
+			$wp_customize,
+			self::MOD_CONTACT_EMAIL,
+			__( 'Correo electrónico', 'shanelle' ),
+			''
+		);
+
+		$wp_customize->add_setting(
+			self::MOD_CONTACT_ADDRESS,
+			array(
+				'default'           => '',
+				'sanitize_callback' => array( self::class, 'sanitize_textarea' ),
+				'transport'         => 'refresh',
+			)
+		);
+
+		$wp_customize->add_control(
+			self::MOD_CONTACT_ADDRESS,
+			array(
+				'label'   => __( 'Dirección', 'shanelle' ),
+				'section' => 'shanelle_footer',
+				'type'    => 'textarea',
+			)
+		);
+
+		self::register_checkbox_control(
+			$wp_customize,
 			self::MOD_SHOW_SOCIAL,
 			__( 'Mostrar redes sociales', 'shanelle' ),
 			true
@@ -173,7 +233,7 @@ final class Footer {
 			$wp_customize,
 			self::MOD_SHOW_NEWSLETTER,
 			__( 'Mostrar bloque de boletín', 'shanelle' ),
-			true
+			false
 		);
 
 		self::register_text_control(
@@ -234,6 +294,13 @@ final class Footer {
 				'type'        => 'text',
 			)
 		);
+
+		self::register_checkbox_control(
+			$wp_customize,
+			self::MOD_SHOW_SCROLL_TOP,
+			__( 'Mostrar botón subir', 'shanelle' ),
+			true
+		);
 	}
 
 	/**
@@ -272,8 +339,10 @@ final class Footer {
 				'i18n'         => array(
 					'newsletterSuccess' => __( 'Gracias por suscribirte. Pronto estaremos en contacto.', 'shanelle' ),
 					'newsletterInvalid' => __( 'Ingresa un correo electrónico válido.', 'shanelle' ),
+					'newsletterSoon'    => __( 'El boletín estará disponible pronto.', 'shanelle' ),
 					'menuExpand'        => __( 'Expandir menú', 'shanelle' ),
 					'menuCollapse'      => __( 'Contraer menú', 'shanelle' ),
+					'scrollTop'         => __( 'Volver arriba', 'shanelle' ),
 				),
 			)
 		);
@@ -378,7 +447,108 @@ final class Footer {
 	}
 
 	/**
-	 * Render newsletter block (visual only).
+	 * Render contact details column (Customizer-driven).
+	 */
+	public static function render_contact_details(): void {
+		if ( empty( self::$state['settings']['show_contact'] ) ) {
+			return;
+		}
+
+		$title   = (string) ( self::$state['settings']['contact_title'] ?? '' );
+		$phone   = (string) ( self::$state['settings']['contact_phone'] ?? '' );
+		$email   = (string) ( self::$state['settings']['contact_email'] ?? '' );
+		$address = (string) ( self::$state['settings']['contact_address'] ?? '' );
+		$items   = array();
+
+		if ( '' !== $phone ) {
+			$items[] = array(
+				'type'  => 'phone',
+				'label' => $phone,
+				'href'  => self::build_tel_href( $phone ),
+			);
+		}
+
+		if ( '' !== $email ) {
+			$items[] = array(
+				'type'  => 'email',
+				'label' => $email,
+				'href'  => is_email( $email ) ? 'mailto:' . sanitize_email( $email ) : '',
+			);
+		}
+
+		if ( '' !== $address ) {
+			$items[] = array(
+				'type'  => 'location',
+				'label' => $address,
+				'href'  => '',
+			);
+		}
+
+		$has_social = ! empty( self::$state['settings']['show_social'] )
+			&& ! empty( self::$state['social'] )
+			&& is_array( self::$state['social'] );
+
+		if ( empty( $items ) && ! $has_social && '' === $title ) {
+			return;
+		}
+		?>
+		<section class="footer__contact" aria-labelledby="<?php echo esc_attr( self::get_contact_title_id() ); ?>">
+			<?php if ( '' !== $title ) : ?>
+				<h2 id="<?php echo esc_attr( self::get_contact_title_id() ); ?>" class="footer__contact-title text-label">
+					<?php echo esc_html( $title ); ?>
+				</h2>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $items ) ) : ?>
+				<ul class="footer__contact-list">
+					<?php foreach ( $items as $item ) : ?>
+						<li class="footer__contact-item">
+							<span class="footer__contact-icon" aria-hidden="true">
+								<?php self::render_icon( (string) $item['type'] ); ?>
+							</span>
+							<?php if ( '' !== (string) $item['href'] ) : ?>
+								<a class="footer__contact-link" href="<?php echo esc_url( (string) $item['href'] ); ?>">
+									<?php echo esc_html( (string) $item['label'] ); ?>
+								</a>
+							<?php else : ?>
+								<span class="footer__contact-text"><?php echo nl2br( esc_html( (string) $item['label'] ), false ); ?></span>
+							<?php endif; ?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+
+			<?php self::render_social_links(); ?>
+		</section>
+		<?php
+	}
+
+	/**
+	 * Render scroll-to-top control when enabled.
+	 */
+	public static function render_scroll_top(): void {
+		if ( empty( self::$state['settings']['show_scroll_top'] ) ) {
+			return;
+		}
+		?>
+		<button
+			type="button"
+			class="footer__scroll-top"
+			data-shanelle-footer-scroll-top
+			aria-label="<?php esc_attr_e( 'Volver arriba', 'shanelle' ); ?>"
+			hidden
+		>
+			<span class="footer__scroll-top-icon" aria-hidden="true">
+				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+					<path d="M6 14l6-6 6 6" />
+				</svg>
+			</span>
+		</button>
+		<?php
+	}
+
+	/**
+	 * Render newsletter signup notice (subscription plugin not wired yet).
 	 */
 	public static function render_newsletter(): void {
 		if ( empty( self::$state['settings']['show_newsletter'] ) ) {
@@ -399,7 +569,12 @@ final class Footer {
 				<p class="footer__newsletter-description text-muted"><?php echo esc_html( $description ); ?></p>
 			<?php endif; ?>
 
-			<form class="footer__newsletter-form" data-shanelle-footer-newsletter novalidate>
+			<form
+				class="footer__newsletter-form is-disabled"
+				data-shanelle-footer-newsletter
+				data-newsletter-enabled="false"
+				novalidate
+			>
 				<label class="footer__newsletter-label text-label" for="<?php echo esc_attr( self::get_newsletter_input_id() ); ?>">
 					<?php esc_html_e( 'Correo electrónico', 'shanelle' ); ?>
 				</label>
@@ -412,12 +587,16 @@ final class Footer {
 						placeholder="<?php esc_attr_e( 'tu@ejemplo.com', 'shanelle' ); ?>"
 						autocomplete="email"
 						inputmode="email"
-						required
+						disabled
+						aria-disabled="true"
 					/>
-					<button type="submit" class="btn btn--primary footer__newsletter-submit">
-						<?php esc_html_e( 'Suscribirme', 'shanelle' ); ?>
+					<button type="submit" class="btn btn--primary footer__newsletter-submit" disabled aria-disabled="true">
+						<?php esc_html_e( 'Próximamente', 'shanelle' ); ?>
 					</button>
 				</div>
+				<p class="footer__newsletter-note text-caption text-muted">
+					<?php esc_html_e( 'El boletín estará disponible pronto. Mientras tanto, síguenos en redes.', 'shanelle' ); ?>
+				</p>
 				<p class="footer__newsletter-message text-caption" data-shanelle-footer-newsletter-message hidden></p>
 			</form>
 		</section>
@@ -428,9 +607,10 @@ final class Footer {
 	 * Render footer menu columns.
 	 */
 	public static function render_menus(): void {
-		$has_menu = false;
+		$locations = self::get_menu_locations();
+		$has_menu  = false;
 
-		foreach ( self::MENU_LOCATIONS as $location => $title ) {
+		foreach ( array_keys( $locations ) as $location ) {
 			if ( has_nav_menu( $location ) ) {
 				$has_menu = true;
 				break;
@@ -443,7 +623,7 @@ final class Footer {
 		?>
 		<div class="footer__menus">
 			<?php
-			foreach ( self::MENU_LOCATIONS as $location => $title ) {
+			foreach ( $locations as $location => $title ) {
 				self::render_menu_column( $location, $title );
 			}
 			?>
@@ -521,7 +701,9 @@ final class Footer {
 		<ul class="footer__payments" aria-label="<?php esc_attr_e( 'Métodos de pago aceptados', 'shanelle' ); ?>">
 			<?php foreach ( $icons as $icon ) : ?>
 				<li class="footer__payment-item">
-					<span class="footer__payment-badge" aria-hidden="true"><?php echo esc_html( self::get_payment_label( (string) $icon ) ); ?></span>
+					<span class="footer__payment-badge footer__payment-badge--<?php echo esc_attr( (string) $icon ); ?>" aria-hidden="true">
+						<?php echo self::get_payment_mark_svg( (string) $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</span>
 					<span class="screen-reader-text"><?php echo esc_html( self::get_payment_label( (string) $icon ) ); ?></span>
 				</li>
 			<?php endforeach; ?>
@@ -534,6 +716,13 @@ final class Footer {
 	 */
 	public static function get_root_id(): string {
 		return self::ROOT_ID;
+	}
+
+	/**
+	 * Return contact title ID.
+	 */
+	public static function get_contact_title_id(): string {
+		return self::ROOT_ID . '-contact-title';
 	}
 
 	/**
@@ -568,10 +757,10 @@ final class Footer {
 		return apply_filters(
 			'shanelle_footer_state',
 			array(
-				'settings'      => $settings,
-				'social'        => self::get_social_links( $settings ),
-				'payment_icons' => self::parse_payment_icons( (string) ( $settings['payment_icons'] ?? '' ) ),
-				'menu_locations'=> array_keys( self::MENU_LOCATIONS ),
+				'settings'       => $settings,
+				'social'         => self::get_social_links( $settings ),
+				'payment_icons'  => self::parse_payment_icons( (string) ( $settings['payment_icons'] ?? '' ) ),
+				'menu_locations' => array_keys( self::get_menu_locations() ),
 			)
 		);
 	}
@@ -585,36 +774,45 @@ final class Footer {
 		return apply_filters(
 			'shanelle_footer_settings',
 			array(
-				'show_logo'               => self::get_theme_mod_bool( self::MOD_SHOW_LOGO, true ),
-				'logo_id'                 => self::get_theme_mod_int( self::MOD_LOGO, 0 ),
-				'brand_description'       => self::get_theme_mod_string(
+				'show_logo'              => self::get_theme_mod_bool( self::MOD_SHOW_LOGO, true ),
+				'logo_id'                => self::get_theme_mod_int( self::MOD_LOGO, 0 ),
+				'brand_description'      => self::get_theme_mod_string(
 					self::MOD_BRAND_DESCRIPTION,
 					get_bloginfo( 'description', 'display' ) ?: __( 'Estilos seleccionados para cada momento.', 'shanelle' )
 				),
-				'show_social'             => self::get_theme_mod_bool( self::MOD_SHOW_SOCIAL, true ),
-				'social_instagram'        => self::get_theme_mod_url( self::MOD_SOCIAL_INSTAGRAM ),
-				'social_tiktok'           => self::get_theme_mod_url( self::MOD_SOCIAL_TIKTOK ),
-				'social_pinterest'        => self::get_theme_mod_url( self::MOD_SOCIAL_PINTEREST ),
-				'social_facebook'         => self::get_theme_mod_url( self::MOD_SOCIAL_FACEBOOK ),
-				'social_youtube'          => self::get_theme_mod_url( self::MOD_SOCIAL_YOUTUBE ),
-				'show_newsletter'         => self::get_theme_mod_bool( self::MOD_SHOW_NEWSLETTER, true ),
-				'newsletter_title'        => self::get_theme_mod_string(
+				'show_contact'           => self::get_theme_mod_bool( self::MOD_SHOW_CONTACT, true ),
+				'contact_title'          => self::get_theme_mod_string(
+					self::MOD_CONTACT_TITLE,
+					__( 'Datos de contacto', 'shanelle' )
+				),
+				'contact_phone'          => self::get_theme_mod_string( self::MOD_CONTACT_PHONE ),
+				'contact_email'          => self::get_theme_mod_string( self::MOD_CONTACT_EMAIL ),
+				'contact_address'        => self::get_theme_mod_string( self::MOD_CONTACT_ADDRESS ),
+				'show_social'            => self::get_theme_mod_bool( self::MOD_SHOW_SOCIAL, true ),
+				'social_instagram'       => self::get_theme_mod_url( self::MOD_SOCIAL_INSTAGRAM ),
+				'social_tiktok'          => self::get_theme_mod_url( self::MOD_SOCIAL_TIKTOK ),
+				'social_pinterest'       => self::get_theme_mod_url( self::MOD_SOCIAL_PINTEREST ),
+				'social_facebook'        => self::get_theme_mod_url( self::MOD_SOCIAL_FACEBOOK ),
+				'social_youtube'         => self::get_theme_mod_url( self::MOD_SOCIAL_YOUTUBE ),
+				'show_newsletter'        => self::get_theme_mod_bool( self::MOD_SHOW_NEWSLETTER, false ),
+				'newsletter_title'       => self::get_theme_mod_string(
 					self::MOD_NEWSLETTER_TITLE,
 					__( 'Únete a nuestra lista', 'shanelle' )
 				),
-				'newsletter_description'  => self::get_theme_mod_string(
+				'newsletter_description' => self::get_theme_mod_string(
 					self::MOD_NEWSLETTER_DESCRIPTION,
 					__( 'Sé la primera en saber de novedades, ofertas exclusivas y ediciones de estilo.', 'shanelle' )
 				),
-				'copyright'               => self::get_theme_mod_string(
+				'copyright'              => self::get_theme_mod_string(
 					self::MOD_COPYRIGHT,
 					'© {year} {site_name}. ' . __( 'Todos los derechos reservados.', 'shanelle' )
 				),
-				'show_payment_icons'      => self::get_theme_mod_bool( self::MOD_SHOW_PAYMENT_ICONS, true ),
-				'payment_icons'           => self::get_theme_mod_string(
+				'show_payment_icons'     => self::get_theme_mod_bool( self::MOD_SHOW_PAYMENT_ICONS, true ),
+				'payment_icons'          => self::get_theme_mod_string(
 					self::MOD_PAYMENT_ICONS,
 					'visa,mastercard,amex,paypal,apple_pay'
 				),
+				'show_scroll_top'        => self::get_theme_mod_bool( self::MOD_SHOW_SCROLL_TOP, true ),
 			)
 		);
 	}
@@ -654,6 +852,9 @@ final class Footer {
 			'pinterest' => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 16.5 11 10l3-1-1 6 2 .5"/></svg>',
 			'facebook'  => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H6v4h3v8h4v-8h3l1-4h-4V9c0-.6.4-1 1-1z"/></svg>',
 			'youtube'   => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="m11 10 4 2-4 2z"/></svg>',
+			'phone'     => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2 2A15.5 15.5 0 0 1 4.5 5.5a2 2 0 0 1 2-2z"/></svg>',
+			'email'     => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>',
+			'location'  => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
 		);
 
 		if ( ! isset( $icons[ $icon ] ) ) {
@@ -685,13 +886,31 @@ final class Footer {
 		$labels = array(
 			'visa'        => 'Visa',
 			'mastercard'  => 'Mastercard',
-			'amex'        => 'American Express',
+			'amex'         => 'American Express',
 			'paypal'      => 'PayPal',
 			'apple_pay'   => 'Apple Pay',
 			'google_pay'  => 'Google Pay',
 		);
 
 		return $labels[ $slug ] ?? str_replace( '_', ' ', ucwords( $slug, '_' ) );
+	}
+
+	/**
+	 * Return muted SVG payment mark markup.
+	 */
+	private static function get_payment_mark_svg( string $slug ): string {
+		$common = 'xmlns="http://www.w3.org/2000/svg" width="40" height="24" viewBox="0 0 40 24" role="img" focusable="false"';
+
+		$marks = array(
+			'visa'       => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="8" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">VISA</text></svg>',
+			'mastercard' => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><circle cx="16" cy="12" r="6" fill="currentColor" opacity="0.35"/><circle cx="24" cy="12" r="6" fill="currentColor" opacity="0.55"/></svg>',
+			'amex'       => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="7" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">AMEX</text></svg>',
+			'paypal'     => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="7" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">PayPal</text></svg>',
+			'apple_pay'  => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="6.5" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">Apple Pay</text></svg>',
+			'google_pay' => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="6.5" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">G Pay</text></svg>',
+		);
+
+		return $marks[ $slug ] ?? '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/></svg>';
 	}
 
 	/**
@@ -736,6 +955,19 @@ final class Footer {
 				return '' !== $url;
 			}
 		);
+	}
+
+	/**
+	 * Build a tel: href from a display phone string.
+	 */
+	private static function build_tel_href( string $phone ): string {
+		$digits = preg_replace( '/[^\d+]/', '', $phone );
+
+		if ( ! is_string( $digits ) || '' === $digits ) {
+			return '';
+		}
+
+		return 'tel:' . $digits;
 	}
 
 	/**

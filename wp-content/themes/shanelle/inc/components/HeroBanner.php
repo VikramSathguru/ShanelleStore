@@ -471,13 +471,29 @@ final class HeroBanner {
 			$mobile = self::get_image_data( (int) $settings['desktop_image_id'], self::MOBILE_SIZE );
 		}
 
+		$has_media   = $desktop['id'] > 0 || $mobile['id'] > 0;
+		$headline    = (string) $settings['headline'];
+		$subheadline = (string) $settings['subheadline'];
+
+		// Presentation fallback when the merchant has not configured hero media/copy yet.
+		if ( ! $has_media && '' === $headline ) {
+			$headline = (string) get_bloginfo( 'name', 'display' );
+		}
+
+		if ( ! $has_media && '' === $subheadline ) {
+			$description = (string) get_bloginfo( 'description', 'display' );
+			$subheadline = '' !== $description
+				? $description
+				: __( 'Estilos seleccionados para cada momento.', 'shanelle' );
+		}
+
 		$slide = array(
 			'index'         => 0,
-			'headline'      => (string) $settings['headline'],
-			'subheadline'   => (string) $settings['subheadline'],
+			'headline'      => $headline,
+			'subheadline'   => $subheadline,
 			'desktop'       => $desktop,
 			'mobile'        => $mobile,
-			'has_media'     => $desktop['id'] > 0 || $mobile['id'] > 0,
+			'has_media'     => $has_media,
 			'overlay_style' => self::get_overlay_style(
 				(string) $settings['overlay_color'],
 				(int) $settings['overlay_opacity']

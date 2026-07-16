@@ -211,24 +211,26 @@ final class CollectionPage {
 				<?php else : ?>
 					<div class="collection-page__hero-placeholder" aria-hidden="true"></div>
 				<?php endif; ?>
-			</div>
 
-			<div class="collection-page__hero-copy">
-				<?php if ( '' !== $type_label ) : ?>
-					<p class="collection-page__hero-type text-caption text-muted">
-						<?php echo esc_html( $type_label ); ?>
-					</p>
-				<?php endif; ?>
+				<div class="collection-page__hero-copy">
+					<div class="container collection-page__hero-copy-inner">
+						<?php if ( '' !== $type_label ) : ?>
+							<p class="collection-page__hero-type text-caption">
+								<?php echo esc_html( $type_label ); ?>
+							</p>
+						<?php endif; ?>
 
-				<h1 id="<?php echo esc_attr( self::get_heading_id() ); ?>" class="collection-page__hero-title text-h1">
-					<?php echo esc_html( $name ); ?>
-				</h1>
+						<h1 id="<?php echo esc_attr( self::get_heading_id() ); ?>" class="collection-page__hero-title text-h1">
+							<?php echo esc_html( $name ); ?>
+						</h1>
 
-				<?php if ( '' !== wp_strip_all_tags( $description ) ) : ?>
-					<div class="collection-page__hero-description text-body text-muted">
-						<?php echo wp_kses_post( $description ); ?>
+						<?php if ( '' !== wp_strip_all_tags( $description ) ) : ?>
+							<div class="collection-page__hero-description text-body">
+								<?php echo wp_kses_post( $description ); ?>
+							</div>
+						<?php endif; ?>
 					</div>
-				<?php endif; ?>
+				</div>
 			</div>
 		</section>
 		<?php

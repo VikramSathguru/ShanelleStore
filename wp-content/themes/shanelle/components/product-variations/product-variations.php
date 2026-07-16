@@ -22,7 +22,6 @@ defined( 'ABSPATH' ) || exit;
 	<?php ProductVariations::render_attribute_groups(); ?>
 
 	<?php ProductVariations::render_availability(); ?>
-	<?php ProductVariations::render_gallery_sync_placeholder(); ?>
 	<?php ProductVariations::render_reset(); ?>
 
 	<div class="product-variations__native sr-only" aria-hidden="true" data-shanelle-variation-native>

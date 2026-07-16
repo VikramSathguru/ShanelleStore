@@ -39,10 +39,12 @@ flowchart LR
 |-------|----------------|
 | Template | `woocommerce/archive-product.php` |
 | Composer | `ShopArchive` |
-| Grid | `ProductGrid` + `ProductCard` |
-| Filters | `CatalogFilters` on action `shanelle_shop_archive_filters` |
+| Grid | `ProductGrid` + `ProductCard` (`load_more`) |
+| Filters | `CatalogFilters` (desktop sidebar + mobile sheet; sole source of truth) |
 | Loop config | `loop_shop_per_page` → 24, `loop_shop_columns` → 4 |
 | Defaults removed | Standard WC loop title/thumb/price/cart hooks removed globally; archive composer also removes sidebar wrapper hooks |
+
+Docs: [pages/SHOP.md](./pages/SHOP.md).
 
 ---
 
@@ -133,24 +135,19 @@ Theme does **not** replace order creation:
 
 ## Product attributes
 
-`CatalogFilters` expects these global attribute taxonomies (when registered in WC):
+`CatalogFilters` resolves fashion attribute **roles** to registered WC taxonomies (preferred `pa_*` slugs + aliases such as `talla` → size). Override via `shanelle_catalog_filter_attribute_map`.
 
-| Taxonomy | Filter UI |
-|----------|-----------|
-| `product_cat` | Category radio |
-| `pa_size` | Checkbox |
-| `pa_color` | Color (optional term meta `shanelle_color_hex`) |
-| `pa_material` | Checkbox |
-| `pa_detail` | Checkbox |
-| `pa_style` | Checkbox |
-| `pa_type` | Checkbox |
-| `pa_length` | Checkbox |
-| `pa_feature` | Checkbox |
-| Price | Range (query params, not attribute) |
+| Role / group | Filter UI | Typical taxonomy |
+|--------------|-----------|------------------|
+| Category | Radio (`product_cat`; scoped on category archives) | `product_cat` |
+| Size | Checkbox | `pa_size` / `pa_talla` |
+| Color | Color swatches (optional term meta `shanelle_color_hex`) | `pa_color` |
+| Material / detail / style / type / length / feature | Checkbox | Matching `pa_*` when registered |
+| Price | Min/max range | `_price` meta |
 
 `ProductRelated` scoring can use (filterable defaults): `pa_season`, `pa_occasion`, `pa_color-family`.
 
-If an attribute taxonomy is missing in the store, that filter group simply has no terms — theme does not auto-register attributes.
+Missing attribute taxonomies omit that group — the theme does not auto-register attributes.
 
 ---
 

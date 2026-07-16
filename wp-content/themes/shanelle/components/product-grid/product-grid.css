@@ -137,12 +137,6 @@
 	}
 }
 
-@media (min-width: 90rem) {
-	.product-grid__items {
-		grid-template-columns: repeat(6, minmax(0, 1fr));
-	}
-}
-
 @media (prefers-reduced-motion: reduce) {
 	.product-grid.is-loading .product-grid__items {
 		opacity: 1;

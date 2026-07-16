@@ -22,11 +22,11 @@ defined( 'ABSPATH' ) || exit;
 			<div class="footer__brand">
 				<?php Footer::render_logo(); ?>
 				<?php Footer::render_brand_description(); ?>
-				<?php Footer::render_social_links(); ?>
 			</div>
 
-			<?php Footer::render_newsletter(); ?>
 			<?php Footer::render_menus(); ?>
+			<?php Footer::render_contact_details(); ?>
+			<?php Footer::render_newsletter(); ?>
 		</div>
 	</div>
 
@@ -36,6 +36,8 @@ defined( 'ABSPATH' ) || exit;
 			<?php Footer::render_payment_icons(); ?>
 		</div>
 	</div>
+
+	<?php Footer::render_scroll_top(); ?>
 
 	<p class="screen-reader-text" data-shanelle-footer-status role="status" aria-live="polite" aria-atomic="true"></p>
 </footer>

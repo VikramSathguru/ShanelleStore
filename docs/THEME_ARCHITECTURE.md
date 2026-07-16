@@ -71,14 +71,16 @@ Helper: `shanelle_component( $slug )` → `get_template_part( 'template-parts/co
 - Rendered from `header.php` via `shanelle_component( 'site-header' )`.  
 - Markup: `template-parts/components/site-header.php`.  
 - Styles: `assets/css/components/site-header.css` (pulled through `main.css`).  
+- Customizer / helpers: `inc/components/SiteHeader.php` (promo trust strip copy/toggle, contact URL).  
 - Behavior: `assets/js/main.js` → `modules/mobile-drawer.js` (drawer hydration via `[data-header]`).  
-- Integrates: promo trust strip, search trigger (overlay), cart count, account link, category navbar via `shanelle_category_navbar()`.  
-- Mobile drawer: focus trap + `aria-modal`, nested menu styles, fallback links when no menus assigned; customer-service link lives in the drawer.  
+- Search: desktop header field focuses `SearchOverlay`; mobile uses search icon + drawer CTA (`data-shanelle-search-open`).  
+- Integrates: promo trust strip, cart count badge, account link, category navbar via `CategoryNavbar::render()`.  
+- Mobile drawer: focus trap + `aria-modal`, nested menu styles, fallback links when no menus assigned; customer-service CTA uses Customizer/WP contact page URL.  
 - Storefront copy is Latin American Spanish only (no language switcher in chrome).
 
-**Not implemented yet:** server-side wishlist (PDP favourites remain localStorage-only).
+**Not implemented yet:** server-side wishlist (PDP favourites remain localStorage-only); full migrate of markup into `components/header/` package.
 
-Note: `components/header/` directory exists but is empty.
+Note: `components/header/` directory exists but is empty (architecture cleanup deferred).
 
 ---
 
@@ -86,7 +88,9 @@ Note: `components/header/` directory exists but is empty.
 
 - `footer.php` calls `shanelle_footer()` → `Footer::render()`.  
 - Files: `inc/components/Footer.php`, `components/footer/{footer.php,footer.css,footer.js}`.  
-- Registers footer menus; Customizer-driven content (payment icon labels, etc.).
+- Layout: brand column, WP menu columns (`footer_shop`, `footer_customer_service`, `footer_legal`, `footer_about`), contact column, optional newsletter, copyright/payment bar.  
+- Customizer-driven: logo, brand description, contact (title/phone/email/address), social URLs, copyright, payment icon slugs, scroll-to-top toggle.  
+- Newsletter block is optional and **off by default** until a list plugin is wired.
 
 ---
 
@@ -96,7 +100,7 @@ Note: `components/header/` directory exists but is empty.
 |-----------|----------|
 | WP menus | `primary`, `mobile`, `footer`, `categories` (`inc/setup.php`) |
 | Header category navbar | `CategoryNavbar` |
-| Homepage category icons / navigation | `Homepage` partials + `CategoryNavigation` component (Customizer; may not all be in active homepage template) |
+| Homepage category icons | `Homepage::render_category_icons()` (live). `CategoryNavigation` exists but is inactive on the front page |
 | Mobile drawer | Header + `mobile-drawer.js` |
 | My Account mobile bottom nav | `MyAccountPage` partial |
 
@@ -201,7 +205,7 @@ High reuse:
 - `ProductCard`, `ProductGrid`  
 - `ProductPrice` helper  
 - `MiniCart` state used by Cart + Checkout  
-- `CatalogFilters` on shop / collection / search grids  
+- `CatalogFilters` on shop / collection / search grids (chips + load more via `ProductGrid`)  
 - Design-system buttons/forms via global CSS  
 
 See [UI_COMPONENTS.md](./UI_COMPONENTS.md) for the complete matrix.

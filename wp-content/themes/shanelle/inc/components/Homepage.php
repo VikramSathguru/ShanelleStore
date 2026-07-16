@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Shanelle\Components;
 
 use Shanelle\Catalog\Helpers as CatalogHelpers;
+use Shanelle\Catalog\Queries as CatalogQueries;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -30,7 +31,9 @@ final class Homepage {
 
 	private const FEATURED_COLLECTION_COUNT = 3;
 
-	private const FOR_YOU_DEFAULT_LIMIT = 50;
+	private const FEATURED_PRODUCTS_PER_RAIL = 4;
+
+	private const FOR_YOU_DEFAULT_LIMIT = 12;
 
 	private const MOD_FOR_YOU_TITLE = 'shanelle_homepage_for_you_title';
 
@@ -73,16 +76,14 @@ final class Homepage {
 		$wp_customize->add_section(
 			'shanelle_homepage_products',
 			array(
-				'title'       => __( 'Secciones de productos', 'shanelle' ),
-				'description' => __( 'Configura las cuadrículas de productos de inicio. El banner principal y la navegación de categorías se gestionan en sus propias secciones.', 'shanelle' ),
+				'title'       => __( 'Secciones de productos (inactivas)', 'shanelle' ),
+				'description' => __( 'Estas cuadrículas opcionales no forman parte del diseño de inicio actual (Hero → iconos → colecciones → Para ti). Se mantienen solo para extensión futura vía filtros.', 'shanelle' ),
 				'panel'       => 'shanelle_homepage',
-				'priority'    => 30,
+				'priority'    => 90,
 			)
 		);
 
-		for ( $index = 1; $index <= self::SECTION_COUNT; $index++ ) {
-			self::register_product_section_controls( $wp_customize, $index );
-		}
+		// Controls intentionally not registered — keeps Customizer aligned with live homepage.php.
 
 		$wp_customize->add_section(
 			'shanelle_homepage_for_you',
@@ -119,9 +120,9 @@ final class Homepage {
 				'section'     => 'shanelle_homepage_for_you',
 				'type'        => 'number',
 				'input_attrs' => array(
-					'min'  => 10,
-					'max'  => 100,
-					'step' => 5,
+					'min'  => 8,
+					'max'  => 48,
+					'step' => 4,
 				),
 			)
 		);
@@ -161,6 +162,7 @@ final class Homepage {
 			SHANELLE_VERSION
 		);
 
+		// Lightweight section API for PWA / future scroll helpers (front page only).
 		wp_enqueue_script(
 			'shanelle-homepage',
 			self::COMPONENT_URI . '/homepage.js',
@@ -178,7 +180,12 @@ final class Homepage {
 			'shanelle-homepage',
 			'shanelleHomepage',
 			array(
-				'sections' => self::build_sections(),
+				'sections' => array(
+					array( 'key' => 'hero' ),
+					array( 'key' => 'category-icons' ),
+					array( 'key' => 'featured-collections' ),
+					array( 'key' => 'for-you' ),
+				),
 				'i18n'     => array(
 					'pageLabel' => __( 'Inicio', 'shanelle' ),
 				),
@@ -206,7 +213,47 @@ final class Homepage {
 	}
 
 	/**
+	 * Render a lightweight empty band when the catalog has no published products.
+	 */
+	public static function render_catalog_empty_state(): void {
+		if ( ! shanelle_is_woocommerce_active() ) {
+			return;
+		}
+
+		$counts    = wp_count_posts( 'product' );
+		$published = is_object( $counts ) ? (int) ( $counts->publish ?? 0 ) : 0;
+
+		if ( $published > 0 ) {
+			return;
+		}
+
+		$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/' );
+		?>
+		<section class="homepage__empty" data-shanelle-homepage-empty aria-label="<?php esc_attr_e( 'Catálogo vacío', 'shanelle' ); ?>">
+			<div class="container">
+				<?php
+				shanelle_component(
+					'empty-state',
+					array(
+						'title'    => __( 'Pronto llegarán nuevos estilos', 'shanelle' ),
+						'message'  => __( 'Estamos preparando el catálogo. Vuelve pronto o visita la tienda cuando publiquemos productos.', 'shanelle' ),
+						'cta_url'  => is_string( $shop_url ) ? $shop_url : home_url( '/' ),
+						'cta_text' => __( 'Ir a la tienda', 'shanelle' ),
+					)
+				);
+				?>
+			</div>
+		</section>
+		<?php
+	}
+
+	/**
 	 * Render the hero promo grid with side tiles and center carousel.
+	 *
+	 * Unused by the live homepage. Shanelle keeps a full-bleed HeroBanner.
+	 * Retained for filter-based experiments via `shanelle_homepage_promo_tiles`.
+	 *
+	 * @deprecated 1.0.0 Live composition uses {@see render_hero()} instead.
 	 */
 	public static function render_hero_promo(): void {
 		require self::COMPONENT_DIR . '/partials/hero-promo.php';
@@ -299,7 +346,7 @@ final class Homepage {
 			),
 			array(
 				'index' => 1,
-				'label' => __( 'Menos de $25', 'shanelle' ),
+				'label' => __( 'Hasta C$1,000', 'shanelle' ),
 				'url'   => $shop_url,
 			),
 			array(
@@ -319,6 +366,9 @@ final class Homepage {
 	/**
 	 * Return category icon items for the homepage grid.
 	 *
+	 * Fetches top-level product categories without requiring term meta,
+	 * then sorts by WooCommerce `order` meta when present.
+	 *
 	 * @return array<int, array<string, mixed>>
 	 */
 	public static function get_category_icon_items(): array {
@@ -327,9 +377,8 @@ final class Homepage {
 				'taxonomy'   => 'product_cat',
 				'parent'     => 0,
 				'hide_empty' => true,
-				'number'     => self::CATEGORY_ICON_COUNT,
-				'meta_key'   => 'order',
-				'orderby'    => 'meta_value_num',
+				'number'     => 0,
+				'orderby'    => 'name',
 				'order'      => 'ASC',
 			)
 		);
@@ -338,13 +387,33 @@ final class Homepage {
 			return array();
 		}
 
+		$terms = array_values(
+			array_filter(
+				$terms,
+				static function ( $term ): bool {
+					return $term instanceof \WP_Term;
+				}
+			)
+		);
+
+		usort(
+			$terms,
+			static function ( \WP_Term $a, \WP_Term $b ): int {
+				$order_a = (int) get_term_meta( $a->term_id, 'order', true );
+				$order_b = (int) get_term_meta( $b->term_id, 'order', true );
+
+				if ( $order_a !== $order_b ) {
+					return $order_a <=> $order_b;
+				}
+
+				return strcasecmp( $a->name, $b->name );
+			}
+		);
+
+		$terms = array_slice( $terms, 0, self::CATEGORY_ICON_COUNT );
 		$items = array();
 
 		foreach ( $terms as $index => $term ) {
-			if ( ! $term instanceof \WP_Term ) {
-				continue;
-			}
-
 			$link = get_term_link( $term );
 
 			if ( is_wp_error( $link ) ) {
@@ -384,29 +453,139 @@ final class Homepage {
 	/**
 	 * Return featured homepage collection columns.
 	 *
+	 * Prefers real `product_collection` terms; falls back to honest shop sort rails.
+	 *
 	 * @return array<int, array<string, mixed>>
 	 */
 	public static function get_featured_collections(): array {
+		$collections = self::build_featured_collections_from_taxonomy();
+
+		if ( empty( $collections ) ) {
+			$collections = self::build_featured_collections_fallbacks();
+		}
+
+		return apply_filters( 'shanelle_homepage_featured_collections', $collections );
+	}
+
+	/**
+	 * Build rails from active product_collection terms.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	private static function build_featured_collections_from_taxonomy(): array {
+		if ( ! taxonomy_exists( CatalogHelpers::TAXONOMY ) || ! class_exists( CatalogQueries::class ) ) {
+			return array();
+		}
+
+		$cards = CatalogQueries::get_collections(
+			array(
+				'hide_empty'  => true,
+				'active_only' => true,
+				'leaf_only'   => true,
+			)
+		);
+
+		if ( empty( $cards ) ) {
+			return array();
+		}
+
+		usort(
+			$cards,
+			static function ( array $a, array $b ): int {
+				$type_rank = static function ( array $card ): int {
+					$type = (string) ( $card['type'] ?? '' );
+
+					if ( CatalogHelpers::TYPE_FEATURED === $type ) {
+						return 0;
+					}
+
+					if ( CatalogHelpers::TYPE_CAMPAIGN === $type ) {
+						return 1;
+					}
+
+					return 2;
+				};
+
+				$rank = $type_rank( $a ) <=> $type_rank( $b );
+
+				if ( 0 !== $rank ) {
+					return $rank;
+				}
+
+				$order = ( (int) ( $a['display_order'] ?? 0 ) ) <=> ( (int) ( $b['display_order'] ?? 0 ) );
+
+				if ( 0 !== $order ) {
+					return $order;
+				}
+
+				return strcasecmp( (string) ( $a['name'] ?? '' ), (string) ( $b['name'] ?? '' ) );
+			}
+		);
+
+		$collections = array();
+		$index       = 0;
+
+		foreach ( $cards as $card ) {
+			if ( $index >= self::FEATURED_COLLECTION_COUNT ) {
+				break;
+			}
+
+			$term_id = (int) ( $card['id'] ?? 0 );
+			$url     = (string) ( $card['url'] ?? '' );
+			$title   = (string) ( $card['name'] ?? '' );
+
+			if ( $term_id <= 0 || '' === $url || '' === $title ) {
+				continue;
+			}
+
+			$products = self::query_collection_products( 'date', self::FEATURED_PRODUCTS_PER_RAIL, $index, $term_id );
+
+			if ( empty( $products ) ) {
+				continue;
+			}
+
+			$collections[] = array(
+				'index'         => $index,
+				'title'         => $title,
+				'url'           => $url,
+				'orderby'       => 'date',
+				'collection_id' => $term_id,
+				'source'        => 'taxonomy',
+				'products'      => $products,
+			);
+
+			++$index;
+		}
+
+		return $collections;
+	}
+
+	/**
+	 * Honest sort-based fallback rails when no collections exist.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	private static function build_featured_collections_fallbacks(): array {
 		$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/' );
 		$shop_url = is_string( $shop_url ) ? $shop_url : home_url( '/' );
 
 		$defaults = array(
 			array(
 				'index'   => 0,
-				'title'   => __( 'Casual chic', 'shanelle' ),
-				'url'     => $shop_url,
+				'title'   => __( 'Novedades', 'shanelle' ),
+				'url'     => add_query_arg( 'orderby', 'date', $shop_url ),
 				'orderby' => 'date',
 			),
 			array(
 				'index'   => 1,
-				'title'   => __( 'Tendencias top', 'shanelle' ),
-				'url'     => $shop_url,
+				'title'   => __( 'Populares', 'shanelle' ),
+				'url'     => add_query_arg( 'orderby', 'popularity', $shop_url ),
 				'orderby' => 'popularity',
 			),
 			array(
 				'index'   => 2,
-				'title'   => __( 'Estilo floral', 'shanelle' ),
-				'url'     => $shop_url,
+				'title'   => __( 'Mejor valorados', 'shanelle' ),
+				'url'     => add_query_arg( 'orderby', 'rating', $shop_url ),
 				'orderby' => 'rating',
 			),
 		);
@@ -416,7 +595,7 @@ final class Homepage {
 		foreach ( $defaults as $config ) {
 			$products = self::query_collection_products(
 				(string) ( $config['orderby'] ?? 'date' ),
-				2,
+				self::FEATURED_PRODUCTS_PER_RAIL,
 				(int) ( $config['index'] ?? 0 )
 			);
 
@@ -427,12 +606,13 @@ final class Homepage {
 			$collections[] = array_merge(
 				$config,
 				array(
+					'source'   => 'fallback',
 					'products' => $products,
 				)
 			);
 		}
 
-		return apply_filters( 'shanelle_homepage_featured_collections', $collections );
+		return $collections;
 	}
 
 	/**
@@ -467,7 +647,7 @@ final class Homepage {
 		$query_vars = array(
 			'post_type'      => 'product',
 			'post_status'    => 'publish',
-			'posts_per_page' => max( 10, (int) ( $config['limit'] ?? self::FOR_YOU_DEFAULT_LIMIT ) ),
+			'posts_per_page' => max( 8, (int) ( $config['limit'] ?? self::FOR_YOU_DEFAULT_LIMIT ) ),
 			'paged'          => 1,
 			'orderby'        => sanitize_key( (string) ( $config['orderby'] ?? 'popularity' ) ),
 			'order'          => 'DESC',
@@ -481,21 +661,31 @@ final class Homepage {
 	 *
 	 * @return array<int, \WC_Product>
 	 */
-	private static function query_collection_products( string $orderby, int $limit, int $seed ): array {
-		$query_vars = ProductGrid::sanitize_query_vars(
-			array(
-				'post_type'      => 'product',
-				'post_status'    => 'publish',
-				'posts_per_page' => max( 1, $limit ),
-				'paged'          => 1,
-				'orderby'        => $orderby,
-				'order'          => 'DESC',
-				'offset'         => $seed * $limit,
-			)
+	private static function query_collection_products( string $orderby, int $limit, int $seed, int $term_id = 0 ): array {
+		$query_vars = array(
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => max( 1, $limit ),
+			'paged'          => 1,
+			'orderby'        => $orderby,
+			'order'          => 'DESC',
 		);
 
-		$query = new \WP_Query( $query_vars );
-		$items = array();
+		if ( $term_id > 0 ) {
+			$query_vars['tax_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
+				array(
+					'taxonomy' => CatalogHelpers::TAXONOMY,
+					'field'    => 'term_id',
+					'terms'    => array( $term_id ),
+				),
+			);
+		} else {
+			$query_vars['offset'] = $seed * $limit;
+		}
+
+		$query_vars = ProductGrid::sanitize_query_vars( $query_vars );
+		$query      = new \WP_Query( $query_vars );
+		$items      = array();
 
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
@@ -536,12 +726,12 @@ final class Homepage {
 	public static function sanitize_for_you_limit( mixed $value ): int {
 		$limit = absint( $value );
 
-		if ( $limit < 10 ) {
-			return 10;
+		if ( $limit < 8 ) {
+			return 8;
 		}
 
-		if ( $limit > 100 ) {
-			return 100;
+		if ( $limit > 48 ) {
+			return 48;
 		}
 
 		return $limit;
@@ -555,7 +745,11 @@ final class Homepage {
 	}
 
 	/**
-	 * Render the category navigation section.
+	 * Render the CategoryNavigation component.
+	 *
+	 * Unused by the live homepage (category icon grid is the active surface).
+	 *
+	 * @deprecated 1.0.0 Live composition uses {@see render_category_icons()} instead.
 	 */
 	public static function render_category_navigation(): void {
 		shanelle_category_navigation();

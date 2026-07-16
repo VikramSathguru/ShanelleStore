@@ -12,8 +12,8 @@ Update this file as milestones complete.
 | Custom theme bootstrap | `functions.php`, `inc/*` |
 | Design tokens + shared UI CSS | `assets/css/` |
 | Component architecture | `inc/components` + `components/` |
-| Homepage composer (current markup) | Category icons, featured collections, For You grid |
-| Shop archive + catalog filters | `ShopArchive`, `CatalogFilters` |
+| Homepage composer (current markup) | Full-bleed HeroBanner, category icons, featured rails (4/product), For You (default 12) |
+| Shop archive + catalog filters | `ShopArchive`, `CatalogFilters` (query merge, search filters, chips, load more) |
 | Collections taxonomy + admin + pages | `inc/catalog/*`, collections templates |
 | PDP composers | Gallery, summary, variations, purchase, information, reviews, related |
 | Mini cart | Footer drawer + fragments |
@@ -28,6 +28,8 @@ Update this file as milestones complete.
 | Spanish-only theme UI | Customer-facing `shanelle` strings use LATAM Spanish source copy |
 | Wave C catalog polish | Sale color tokens, archive title scale, shared empty-state CSS |
 | Wave D PDP polish | Sticky mobile ATC, honest shipping estimates, info defaults, review form |
+| Wave E homepage/footer honesty | Real collections rails, Customizer sync, newsletter disabled until list plugin, SVG payment marks |
+| Wave F consistency polish | Full-bleed collection hero, unified grid density, navbar prev, empty catalog band, focus/error tokens |
 | Internal docs (events, pages, components) | `docs/` supplementary files |
 | ES module script tag guard | `inc/assets.php` |
 
@@ -49,7 +51,7 @@ Update this file as milestones complete.
 | Area | Notes |
 |------|-------|
 | Visual polish of fashion UI | Active development on FlyEnv |
-| Homepage composition alignment | Hero is live; Category Navigation / product-section Customizer still unused by template |
+| Homepage composition alignment | Live composition documented; inactive Customizer product sections labeled; featured rails taxonomy-aware |
 | Favourites / wishlist UX | PDP localStorage only; header wishlist removed |
 | Documentation set | This audit documentation supersedes older high-level sketches |
 

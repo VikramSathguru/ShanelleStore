@@ -10,12 +10,15 @@ declare(strict_types=1);
 defined( 'ABSPATH' ) || exit;
 
 use Shanelle\Components\SearchOverlay;
+use Shanelle\Components\SiteHeader;
 
 $shop_url           = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/' );
 $account_url        = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : wp_login_url();
 $cart_url           = function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/cart/' );
 $account_href       = is_string( $account_url ) ? $account_url : wp_login_url();
-$contact_url        = home_url( '/contact/' );
+$contact_url        = SiteHeader::get_contact_url();
+$show_promo         = SiteHeader::show_promo();
+$promo_items        = $show_promo ? SiteHeader::get_promo_items() : array();
 
 if ( shanelle_is_woocommerce_active() && ! is_user_logged_in() ) {
 	$account_href = trailingslashit( $account_href ) . '#customer_login';
@@ -29,27 +32,32 @@ $logo_fallback_uri  = SHANELLE_URI . '/assets/images/logo.png';
 $has_drawer_menu    = has_nav_menu( 'mobile' ) || has_nav_menu( 'primary' ) || has_nav_menu( 'categories' );
 ?>
 <header class="site-header" data-header>
-	<div class="site-header__promo">
-		<div class="container site-header__promo-inner">
-			<p class="site-header__promo-item">
-				<svg class="site-header__promo-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
-				<span>
-					<strong><?php esc_html_e( 'Envío gratis', 'shanelle' ); ?></strong>
-					<?php esc_html_e( 'en pedidos calificados', 'shanelle' ); ?>
-				</span>
-			</p>
-
-			<span class="site-header__promo-divider" aria-hidden="true"></span>
-
-			<p class="site-header__promo-item">
-				<svg class="site-header__promo-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-				<span>
-					<strong><?php esc_html_e( 'Devoluciones fáciles', 'shanelle' ); ?></strong>
-					<?php esc_html_e( 'aplican T&C', 'shanelle' ); ?>
-				</span>
-			</p>
+	<?php if ( ! empty( $promo_items ) ) : ?>
+		<div class="site-header__promo">
+			<div class="container site-header__promo-inner">
+				<?php foreach ( $promo_items as $index => $item ) : ?>
+					<?php if ( $index > 0 ) : ?>
+						<span class="site-header__promo-divider" aria-hidden="true"></span>
+					<?php endif; ?>
+					<p class="site-header__promo-item<?php echo 0 === $index ? ' site-header__promo-item--primary' : ' site-header__promo-item--secondary'; ?>">
+						<?php if ( 0 === $index ) : ?>
+							<svg class="site-header__promo-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+						<?php else : ?>
+							<svg class="site-header__promo-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+						<?php endif; ?>
+						<span>
+							<?php if ( '' !== $item['emphasis'] ) : ?>
+								<strong><?php echo esc_html( $item['emphasis'] ); ?></strong>
+							<?php endif; ?>
+							<?php if ( '' !== $item['text'] ) : ?>
+								<?php echo esc_html( ' ' . $item['text'] ); ?>
+							<?php endif; ?>
+						</span>
+					</p>
+				<?php endforeach; ?>
+			</div>
 		</div>
-	</div>
+	<?php endif; ?>
 
 	<div class="site-header__main">
 		<div class="container site-header__main-inner">
@@ -118,6 +126,7 @@ $has_drawer_menu    = has_nav_menu( 'mobile' ) || has_nav_menu( 'primary' ) || h
 						autocapitalize="off"
 						spellcheck="false"
 						enterkeyhint="search"
+						data-shanelle-header-search
 					/>
 
 					<?php if ( shanelle_is_woocommerce_active() ) : ?>
@@ -221,15 +230,19 @@ $has_drawer_menu    = has_nav_menu( 'mobile' ) || has_nav_menu( 'primary' ) || h
 							<li><a href="<?php echo esc_url( is_string( $shop_url ) ? $shop_url : home_url( '/' ) ); ?>"><?php esc_html_e( 'Tienda', 'shanelle' ); ?></a></li>
 						<?php endif; ?>
 						<li><a href="<?php echo esc_url( $account_href ); ?>"><?php esc_html_e( 'Mi cuenta', 'shanelle' ); ?></a></li>
-						<li><a href="<?php echo esc_url( $contact_url ); ?>"><?php esc_html_e( 'Contacto', 'shanelle' ); ?></a></li>
+						<?php if ( '' !== $contact_url ) : ?>
+							<li><a href="<?php echo esc_url( $contact_url ); ?>"><?php esc_html_e( 'Contacto', 'shanelle' ); ?></a></li>
+						<?php endif; ?>
 					</ul>
 				</nav>
 			<?php endif; ?>
 
 			<div class="site-header__drawer-actions">
-				<a class="btn btn--outline btn--block" href="<?php echo esc_url( $contact_url ); ?>">
-					<?php esc_html_e( 'Atención al cliente', 'shanelle' ); ?>
-				</a>
+				<?php if ( '' !== $contact_url ) : ?>
+					<a class="btn btn--outline btn--block" href="<?php echo esc_url( $contact_url ); ?>">
+						<?php esc_html_e( 'Atención al cliente', 'shanelle' ); ?>
+					</a>
+				<?php endif; ?>
 
 				<button type="button" class="btn btn--outline btn--block" data-shanelle-search-open>
 					<?php esc_html_e( 'Buscar', 'shanelle' ); ?>

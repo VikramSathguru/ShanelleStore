@@ -99,8 +99,8 @@ final class CategoryNavigation {
 		$wp_customize->add_section(
 			'shanelle_category_navigation',
 			array(
-				'title'       => __( 'Navegación de categorías', 'shanelle' ),
-				'description' => __( 'Segunda sección de la página de inicio. Muestra las categorías principales de WooCommerce.', 'shanelle' ),
+				'title'       => __( 'Navegación de categorías (inactiva)', 'shanelle' ),
+				'description' => __( 'No forma parte de la página de inicio actual. El descubrimiento de categorías en inicio usa la cuadrícula de íconos (categorías de WooCommerce con miniatura). Esta sección queda disponible solo si se compone manualmente vía shanelle_category_navigation().', 'shanelle' ),
 				'panel'       => 'shanelle_homepage',
 				'priority'    => 20,
 			)

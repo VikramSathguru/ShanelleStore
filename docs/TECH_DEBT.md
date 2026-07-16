@@ -11,7 +11,7 @@ Known maintainability issues discovered during the codebase audit.
 |------|--------|
 | Header locations | Live header in `template-parts/` + CSS in `assets/css/components/`; empty `components/header/` |
 | Product card paths | Component system vs older `template-parts/components/product-card.php` |
-| Docs drift | `docs/pages/HOMEPAGE.md` describes Hero + CategoryNavigation composition; current `components/homepage/homepage.php` renders category icons, featured collections, For You |
+| Docs drift | Homepage docs aligned to live composition (HeroBanner + icons + rails + For You); watch for future drift |
 | Duplicate checkout doc | `docs/pages/CHECKOUT.md` and `wp-content/docs/pages/CHECKOUT.md` |
 | Legacy ARCHITECTURE.md | High-level tree only; superseded by `PROJECT_ARCHITECTURE.md` |
 
@@ -36,11 +36,11 @@ Known maintainability issues discovered during the codebase audit.
 |------|----------|
 | Product card wishlist / quick view | Disabled controls removed from card actions (quick-add only) |
 | Header wishlist / language | Removed from header (Spanish-only storefront; no language switcher) |
-| Variation gallery sync | Hidden placeholder markup may still exist in variations component |
+| Variation gallery sync | Placeholder UI removed from PDP until sync exists |
 | ProductDetail placeholder methods | Related/recently-viewed placeholders still in class while live page uses `ProductRelated` |
 | Favourites | localStorage only; not synced to account |
 | Shipping/delivery on PDP | Estimated copy from weekday math / filters — not live WC rates |
-| Homepage Customizer drift | Product Sections / Category Navigation Customizer still registered but not in live `homepage.php` composition |
+| Homepage Customizer drift | Inactive product-section Customizer labeled; live rails use collections or honest fallbacks |
 
 ---
 
@@ -48,7 +48,7 @@ Known maintainability issues discovered during the codebase audit.
 
 | Value | Location | Risk |
 |-------|----------|------|
-| `pa_*` attribute taxonomy list | `CatalogFilters` | Breaks if store uses different slugs |
+| Attribute role aliases still opinionated | `CatalogFilters::ATTRIBUTE_ROLE_CANDIDATES` | Unusual attribute names need `shanelle_catalog_filter_attribute_map` |
 | Related default taxonomies | `pa_season`, `pa_occasion`, `pa_color-family` | May not exist in catalog |
 | Shop per page 24 / columns 4 | `woocommerce.php` | Global opinion |
 | Google Fonts URL | `assets.php` | Vendor lock / privacy |

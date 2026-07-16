@@ -21,4 +21,5 @@ defined( 'ABSPATH' ) || exit;
 	<?php Homepage::render_category_icons(); ?>
 	<?php Homepage::render_featured_collections(); ?>
 	<?php Homepage::render_for_you_grid(); ?>
+	<?php Homepage::render_catalog_empty_state(); ?>
 </div>

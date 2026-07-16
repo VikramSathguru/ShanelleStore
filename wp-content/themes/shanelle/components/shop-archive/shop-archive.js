@@ -163,8 +163,26 @@ function initOrdering( archive ) {
 		const form = orderSelect.closest( 'form' );
 
 		if ( form instanceof HTMLFormElement ) {
+			setFilteringState( archive, true );
 			form.submit();
 		}
+	} );
+}
+
+/**
+ * Show loading chrome on catalog filter form submit (full-page reload).
+ *
+ * @param {HTMLElement} archive
+ */
+function initFilterSubmitLoading( archive ) {
+	archive.querySelectorAll( 'form' ).forEach( ( form ) => {
+		if ( ! ( form instanceof HTMLFormElement ) ) {
+			return;
+		}
+
+		form.addEventListener( 'submit', () => {
+			setFilteringState( archive, true );
+		} );
 	} );
 }
 
@@ -174,6 +192,7 @@ function initOrdering( archive ) {
 function initArchive( archive ) {
 	initFilters( archive );
 	initOrdering( archive );
+	initFilterSubmitLoading( archive );
 
 	document.body.addEventListener( 'shanelle:shop-archive:filter-start', () => {
 		setFilteringState( archive, true );

@@ -41,9 +41,17 @@ function toggleViewMore( button ) {
 }
 
 /**
+ * Desktop sidebar submits instantly; mobile sheet waits for Apply.
+ *
  * @param {HTMLFormElement} form
  */
 function initAutoSubmit( form ) {
+	const mode = form.dataset.submitMode || 'instant';
+
+	if ( mode === 'apply' ) {
+		return;
+	}
+
 	const submit = () => {
 		if ( typeof form.requestSubmit === 'function' ) {
 			form.requestSubmit();
@@ -78,6 +86,12 @@ function initCatalogFilters( root ) {
 	if ( ! ( form instanceof HTMLFormElement ) ) {
 		return;
 	}
+
+	if ( form.dataset.filtersHydrated === 'true' ) {
+		return;
+	}
+
+	form.dataset.filtersHydrated = 'true';
 
 	root.querySelectorAll( '[data-shanelle-filter-trigger]' ).forEach( ( trigger ) => {
 		if ( ! ( trigger instanceof HTMLButtonElement ) ) {

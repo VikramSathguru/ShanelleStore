@@ -129,8 +129,8 @@
 .search-results__highlight {
 	padding: 0;
 	border-radius: var(--radius-sm);
-	background-color: rgb(255 214 102 / 35%);
-	color: inherit;
+	background-color: var(--color-brand-100);
+	color: var(--color-brand-800);
 	font-weight: var(--font-weight-semibold);
 }
 
