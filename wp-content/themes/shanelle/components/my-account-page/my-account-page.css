@@ -1,0 +1,644 @@
+/**
+ * Shanelle My Account Page Layout
+ *
+ * Page-specific layout and scoped WooCommerce account styling only.
+ */
+
+.my-account-page {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+	width: 100%;
+	padding-bottom: calc(var(--space-20) + env(safe-area-inset-bottom, 0px));
+}
+
+.my-account-page__section,
+.my-account-page__subsection {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.my-account-page__section-lead,
+.my-account-page__subsection-header {
+	margin: 0;
+}
+
+.my-account-page__subsection-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+}
+
+.my-account-page__subsection-title,
+.my-account-page__section-intro {
+	margin: 0;
+}
+
+.my-account-page__subsection-link {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.my-account-page__subsection-link:hover {
+	color: var(--color-text-link-hover);
+}
+
+.my-account-page__quick-actions-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__quick-actions-item {
+	margin: 0;
+}
+
+.my-account-page__order-list,
+.my-account-page__address-grid,
+.my-account-page__download-list,
+.my-account-page__payment-list {
+	display: grid;
+	gap: var(--space-4);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__order-card,
+.my-account-page__address-card,
+.my-account-page__download-card,
+.my-account-page__payment-card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background-subtle);
+}
+
+.my-account-page__order-card-header,
+.my-account-page__address-card-header,
+.my-account-page__payment-card-body {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--space-4);
+}
+
+.my-account-page__order-card-meta {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.my-account-page__order-card-number,
+.my-account-page__address-card-edit {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.my-account-page__order-card-number:hover,
+.my-account-page__address-card-edit:hover {
+	color: var(--color-text-link-hover);
+}
+
+.my-account-page__order-card-actions,
+.my-account-page__payment-card-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+}
+
+.my-account-page__status-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: var(--space-1) var(--space-3);
+	border-radius: var(--radius-pill);
+	background-color: var(--color-neutral-100);
+	color: var(--color-text-muted);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-semibold);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.my-account-page__status-badge--status-completed,
+.my-account-page__status-badge--status-processing {
+	background-color: var(--color-success-bg);
+	color: var(--color-success-text);
+}
+
+.my-account-page__status-badge--status-on-hold,
+.my-account-page__status-badge--status-pending {
+	background-color: var(--color-warning-bg);
+	color: var(--color-warning-text);
+}
+
+.my-account-page__status-badge--status-cancelled,
+.my-account-page__status-badge--status-failed,
+.my-account-page__status-badge--status-refunded {
+	background-color: var(--color-danger-bg);
+	color: var(--color-danger-text);
+}
+
+.my-account-page__address-card-content {
+	margin: 0;
+	font-style: normal;
+	line-height: var(--line-height-relaxed);
+}
+
+.my-account-page__address-card--empty {
+	background-color: var(--color-surface);
+}
+
+.my-account-page__download-card {
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.my-account-page__download-card-meta {
+	display: grid;
+	gap: var(--space-2);
+	margin: var(--space-3) 0 0;
+}
+
+.my-account-page__download-card-meta-item {
+	display: grid;
+	gap: var(--space-1);
+}
+
+.my-account-page__download-card-meta-item dd {
+	margin: 0;
+}
+
+.my-account-page__payment-card--default {
+	border-color: var(--color-brand-200);
+	background-color: var(--color-brand-50);
+}
+
+.my-account-page__payment-card-badge {
+	display: inline-flex;
+	margin-top: var(--space-2);
+	color: var(--color-brand-700);
+}
+
+.my-account-page__empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-4);
+	padding: var(--space-8) var(--space-4);
+	border: 1px dashed var(--color-border);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-background-subtle);
+	text-align: left;
+}
+
+.my-account-page__empty-state-title,
+.my-account-page__empty-state-message {
+	margin: 0;
+}
+
+.my-account-page__skeleton {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.my-account-page__skeleton-card {
+	display: grid;
+	gap: var(--space-3);
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-surface);
+}
+
+.my-account-page__skeleton-line {
+	height: 0.875rem;
+}
+
+.my-account-page__skeleton-line--title {
+	width: 40%;
+	height: 1.125rem;
+}
+
+.my-account-page__skeleton-line--short {
+	width: 55%;
+}
+
+.my-account-page__loading-host:not([hidden]) + [hidden] {
+	display: none;
+}
+
+.my-account-page.is-ready .my-account-page__loading-host {
+	display: none;
+}
+
+.my-account-page.is-ready [data-shanelle-account-order-list],
+.my-account-page.is-ready [data-shanelle-account-download-list] {
+	display: grid;
+}
+
+.my-account-page__order-detail-header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin-bottom: var(--space-4);
+}
+
+.my-account-page__order-detail-summary {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-3);
+}
+
+.my-account-page__order-detail-title {
+	margin: 0;
+}
+
+.my-account-page__order-updates-list {
+	display: grid;
+	gap: var(--space-4);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__order-update {
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background-subtle);
+}
+
+.my-account-page__order-update-meta {
+	margin: 0 0 var(--space-2);
+}
+
+.my-account-page__pagination {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+	margin-top: var(--space-4);
+}
+
+.my-account-page__bottom-nav {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: var(--z-index-sticky, 20);
+	display: block;
+	padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
+	border-top: 1px solid var(--color-border-subtle);
+	background-color: var(--color-surface-overlay);
+	backdrop-filter: blur(12px);
+}
+
+.my-account-page__bottom-nav-list {
+	display: grid;
+	grid-template-columns: repeat(var(--bottom-nav-count, 5), minmax(0, 1fr));
+	gap: var(--space-1);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__bottom-nav-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--touch-target-min, 2.75rem);
+	padding: var(--space-1) var(--space-2);
+	border-radius: var(--radius-lg);
+	color: var(--color-text-muted);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	text-align: center;
+	text-decoration: none;
+	line-height: 1.2;
+}
+
+.my-account-page__bottom-nav-item.is-active .my-account-page__bottom-nav-link,
+.my-account-page__bottom-nav-link:hover {
+	background-color: var(--color-brand-50);
+	color: var(--color-brand-700);
+}
+
+.my-account-page__section-body :where(.woocommerce-EditAccountForm, .woocommerce-address-fields) {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.my-account-page__header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.my-account-page__header-copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.my-account-page__title {
+	margin: 0;
+}
+
+.my-account-page__welcome {
+	margin: 0;
+}
+
+.my-account-page__shop-link {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.my-account-page__shop-link:hover {
+	color: var(--color-text-link-hover);
+}
+
+.my-account-page__notices :where(.woocommerce-message, .woocommerce-info, .woocommerce-error) {
+	margin-bottom: var(--space-4);
+}
+
+.my-account-page__layout {
+	display: grid;
+	gap: var(--space-8);
+}
+
+.my-account-page__nav,
+.my-account-page__content {
+	min-width: 0;
+}
+
+.my-account-page__nav-toggle {
+	width: 100%;
+}
+
+.my-account-page__nav-panel {
+	display: none;
+}
+
+.my-account-page__nav-panel.is-open {
+	display: block;
+}
+
+.my-account-page__navigation {
+	padding: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+}
+
+.my-account-page__navigation-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__navigation-item {
+	margin: 0;
+}
+
+.my-account-page__navigation-link {
+	display: block;
+	padding: var(--space-3) var(--space-4);
+	border-radius: var(--radius-lg);
+	color: var(--color-text);
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.my-account-page__navigation-link:hover {
+	background-color: var(--color-background-subtle);
+	color: var(--color-text);
+}
+
+.my-account-page__navigation-item.is-active .my-account-page__navigation-link,
+.my-account-page__navigation-item.woocommerce-MyAccount-navigation-link--active .my-account-page__navigation-link {
+	background-color: var(--color-brand-50);
+	color: var(--color-brand-700);
+	font-weight: var(--font-weight-semibold);
+}
+
+.my-account-page__content-inner {
+	padding: var(--space-5);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+}
+
+.my-account-page__guest-card {
+	width: 100%;
+	max-width: 40rem;
+	padding: var(--space-5);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	box-shadow: var(--shadow-sm);
+}
+
+.my-account-page__guest-card:has(.my-account-page__auth-columns) {
+	max-width: min(100%, 56rem);
+}
+
+.my-account-page__auth-columns {
+	display: grid;
+	gap: var(--space-8);
+	scroll-margin-top: calc(var(--space-20) + 4rem);
+}
+
+.my-account-page__form-title {
+	margin: 0 0 var(--space-4);
+}
+
+.my-account-page__form :where(.form-row) {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	margin: 0 0 var(--space-4);
+}
+
+.my-account-page__form :where(input.input-text, select, textarea) {
+	width: 100%;
+	min-height: var(--input-height);
+	padding: var(--space-2) var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+}
+
+.my-account-page__form :where(input.input-text:focus, select:focus, textarea:focus) {
+	outline: none;
+	box-shadow: var(--shadow-focus);
+	border-color: var(--color-border-focus);
+}
+
+.my-account-page__form-actions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.my-account-page__back-link {
+	margin: var(--space-5) 0 0;
+}
+
+.my-account-page__back-link a {
+	color: var(--color-text-link);
+	text-decoration: none;
+}
+
+.my-account-page__back-link a:hover {
+	color: var(--color-text-link-hover);
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table, .woocommerce-table) {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table th, .woocommerce-orders-table td, .woocommerce-table th, .woocommerce-table td) {
+	padding: var(--space-3) var(--space-4);
+	border-bottom: 1px solid var(--color-border-subtle);
+	text-align: left;
+	vertical-align: top;
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table thead th) {
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text-muted);
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table__cell-order-actions .button, .woocommerce-button, .button) {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--button-height-sm);
+	padding: var(--space-1-5) var(--space-4);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-pill);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.my-account-page__content-inner :where(.woocommerce-orders-table__cell-order-actions .button:hover, .woocommerce-button:hover, .button:hover) {
+	border-color: var(--color-brand-primary);
+	color: var(--color-brand-primary);
+}
+
+.my-account-page__content-inner :where(.woocommerce-address-fields__field-wrapper, .woocommerce-EditAccountForm .woocommerce-form-row) {
+	display: grid;
+	gap: var(--space-4);
+}
+
+.my-account-page__content-inner :where(.woocommerce-Address-title) {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	margin-bottom: var(--space-4);
+}
+
+.my-account-page__content-inner :where(.woocommerce-Address address) {
+	margin: 0;
+	font-style: normal;
+	line-height: var(--line-height-relaxed);
+}
+
+.my-account-page__content-inner :where(.woocommerce-PaymentMethods) {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.my-account-page__content-inner :where(.woocommerce-PaymentMethod) {
+	padding: var(--space-3);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-lg);
+	background-color: var(--color-background-subtle);
+}
+
+.my-account-page__content-inner :where(.woocommerce-MyAccount-content > p:first-child) {
+	margin-top: 0;
+}
+
+@media (min-width: 48rem) {
+	.my-account-page {
+		padding-bottom: 0;
+	}
+
+	.my-account-page__header {
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
+
+	.my-account-page__nav-toggle {
+		display: none;
+	}
+
+	.my-account-page__nav-panel {
+		display: block;
+	}
+
+	.my-account-page__layout {
+		grid-template-columns: minmax(14rem, 16rem) minmax(0, 1fr);
+		align-items: start;
+	}
+
+	.my-account-page__navigation {
+		position: sticky;
+		top: calc(var(--space-8) + 4rem);
+	}
+
+	.my-account-page__auth-columns {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.my-account-page__content-inner :where(.woocommerce-address-fields__field-wrapper, .woocommerce-EditAccountForm) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.my-account-page__content-inner :where(.form-row-wide) {
+		grid-column: 1 / -1;
+	}
+
+	.my-account-page__address-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.my-account-page__bottom-nav {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.my-account-page__navigation {
+		position: static;
+	}
+}

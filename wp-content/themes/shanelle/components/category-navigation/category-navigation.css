@@ -1,0 +1,198 @@
+/**
+ * Shanelle Category Navigation Component
+ *
+ * BEM: .category-navigation, .category-navigation__card, .category-navigation__media
+ */
+
+.category-navigation {
+	padding-block: var(--space-8);
+}
+
+.category-navigation__inner {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+}
+
+.category-navigation__header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.category-navigation__title {
+	margin: 0;
+}
+
+.category-navigation__subtitle {
+	margin: 0;
+	max-width: 40rem;
+}
+
+.category-navigation__viewport {
+	position: relative;
+}
+
+.category-navigation__list {
+	display: flex;
+	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x mandatory;
+	scroll-padding-inline: var(--container-padding);
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+}
+
+.category-navigation__list::-webkit-scrollbar {
+	display: none;
+}
+
+.category-navigation__item {
+	flex: 0 0 auto;
+	width: clamp(7rem, 42vw, 9.5rem);
+	scroll-snap-align: start;
+}
+
+.category-navigation__card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-3);
+	height: 100%;
+	padding: var(--space-3);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	background-color: var(--color-surface);
+	color: inherit;
+	text-align: center;
+	text-decoration: none;
+	transition: var(--transition-all);
+}
+
+.category-navigation__card:hover {
+	border-color: var(--color-brand-200);
+	box-shadow: var(--shadow-sm);
+	transform: translateY(-1px);
+}
+
+.category-navigation__card:focus-visible {
+	outline: none;
+	box-shadow: var(--shadow-focus);
+}
+
+.category-navigation__media {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	aspect-ratio: 1;
+	overflow: hidden;
+	border-radius: var(--radius-lg);
+	background-color: var(--color-neutral-100);
+}
+
+.category-navigation__media--placeholder {
+	background:
+		linear-gradient(
+			135deg,
+			var(--color-brand-50) 0%,
+			var(--color-neutral-50) 55%,
+			var(--color-brand-100) 100%
+		);
+}
+
+.category-navigation__image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.category-navigation__placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
+.category-navigation__placeholder-mark {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+	border-radius: var(--radius-full);
+	background-color: rgb(255 255 255 / 72%);
+	color: var(--color-brand-700);
+	font-size: var(--font-size-xl);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--line-height-none);
+}
+
+.category-navigation__copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	width: 100%;
+	min-width: 0;
+}
+
+.category-navigation__name {
+	display: block;
+	color: var(--color-text);
+}
+
+.category-navigation__count {
+	display: block;
+}
+
+.category-navigation--round .category-navigation__media {
+	border-radius: var(--radius-full);
+}
+
+.category-navigation--round .category-navigation__card {
+	border-radius: var(--radius-2xl);
+}
+
+.category-navigation--layout-grid .category-navigation__list,
+.category-navigation--layout-responsive .category-navigation__list {
+	overflow-x: visible;
+	scroll-snap-type: none;
+}
+
+@media (min-width: 48rem) {
+	.category-navigation {
+		padding-block: var(--space-10);
+	}
+
+	.category-navigation--layout-responsive .category-navigation__list,
+	.category-navigation--layout-grid .category-navigation__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+		gap: var(--space-4);
+	}
+
+	.category-navigation--layout-responsive .category-navigation__item,
+	.category-navigation--layout-grid .category-navigation__item {
+		width: auto;
+	}
+
+	.category-navigation--layout-scroll .category-navigation__item {
+		width: clamp(8rem, 12vw, 10rem);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.category-navigation__card {
+		transition: none;
+	}
+
+	.category-navigation__card:hover {
+		transform: none;
+	}
+}

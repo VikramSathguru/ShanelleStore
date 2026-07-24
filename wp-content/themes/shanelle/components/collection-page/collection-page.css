@@ -1,0 +1,112 @@
+/**
+ * Shanelle Collection Archive Page Layout
+ *
+ * Page-specific hero and related navigation only.
+ */
+
+.collection-page {
+	padding-block: 0 var(--space-6);
+}
+
+.collection-page__container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+	padding-block-start: var(--space-5);
+}
+
+.collection-page__hero {
+	position: relative;
+	width: 100%;
+}
+
+.collection-page__hero-media {
+	position: relative;
+	overflow: hidden;
+	background-color: var(--color-neutral-100);
+}
+
+.collection-page__hero-image,
+.collection-page__hero-placeholder {
+	display: block;
+	width: 100%;
+	min-height: clamp(16rem, 52vw, 28rem);
+	aspect-ratio: 16 / 9;
+	object-fit: cover;
+}
+
+.collection-page__hero-placeholder {
+	background: linear-gradient(135deg, var(--color-brand-100), var(--color-neutral-100) 55%, var(--color-brand-50));
+}
+
+.collection-page__hero-copy {
+	position: absolute;
+	inset: auto 0 0 0;
+	padding-block: var(--space-10) var(--space-6);
+	background: linear-gradient(
+		180deg,
+		transparent 0%,
+		rgb(23 23 23 / 28%) 45%,
+		rgb(23 23 23 / 62%) 100%
+	);
+	color: var(--color-text-inverse);
+}
+
+.collection-page__hero-copy-inner {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	max-width: 40rem;
+}
+
+.collection-page__hero-title {
+	margin: 0;
+	color: var(--color-text-inverse);
+	text-wrap: balance;
+}
+
+.collection-page__hero-type,
+.collection-page__hero-description {
+	margin: 0;
+	color: rgb(255 255 255 / 88%);
+}
+
+.collection-page__hero-description :where(p) {
+	margin: 0;
+}
+
+.collection-page__count {
+	margin: 0;
+}
+
+.collection-page__related-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.collection-page__related-link {
+	display: inline-flex;
+	align-items: center;
+	padding: var(--space-2) var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-pill);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+	font-size: var(--font-size-sm);
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.collection-page__related-link:hover,
+.collection-page__related-link.is-active {
+	border-color: var(--color-brand-primary);
+	color: var(--color-brand-primary);
+}
+
+.collection-page__grid {
+	width: 100%;
+}

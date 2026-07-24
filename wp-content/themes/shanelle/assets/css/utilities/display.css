@@ -1,0 +1,58 @@
+/**
+ * Shanelle Design System — Display Utilities
+ */
+
+.block { display: block; }
+.inline-block { display: inline-block; }
+.inline { display: inline; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.grid { display: grid; }
+.hidden { display: none; }
+
+.visible { visibility: visible; }
+.invisible { visibility: hidden; }
+
+.opacity-0 { opacity: 0; }
+.opacity-50 { opacity: 0.5; }
+.opacity-100 { opacity: 1; }
+
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+@media (min-width: 48rem) {
+	.tablet\:block { display: block; }
+	.tablet\:flex { display: flex; }
+	.tablet\:grid { display: grid; }
+	.tablet\:hidden { display: none; }
+}
+
+@media (min-width: 64rem) {
+	.desktop\:block { display: block; }
+	.desktop\:flex { display: flex; }
+	.desktop\:grid { display: grid; }
+	.desktop\:hidden { display: none; }
+}
+
+@media (min-width: 80rem) {
+	.lg\:block { display: block; }
+	.lg\:flex { display: flex; }
+	.lg\:grid { display: grid; }
+	.lg\:hidden { display: none; }
+}
+
+@media (max-width: 47.9375rem) {
+	.mobile-only { display: revert; }
+}
+
+@media (min-width: 48rem) {
+	.mobile-only { display: none !important; }
+}
+
+@media (max-width: 63.9375rem) {
+	.desktop-only { display: none !important; }
+}
+
+@media (min-width: 64rem) {
+	.desktop-only { display: revert; }
+}

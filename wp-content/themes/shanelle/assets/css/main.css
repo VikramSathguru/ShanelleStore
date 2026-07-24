@@ -1,0 +1,29 @@
+/**
+ * Shanelle Design System
+ *
+ * Visual foundation entry point.
+ * Import order: tokens → reset → typography → animations → utilities → components
+ */
+
+/* Base */
+@import url('base/variables.css');
+@import url('base/reset.css');
+@import url('base/typography.css');
+@import url('base/animations.css');
+
+/* Utilities */
+@import url('utilities/layout.css');
+@import url('utilities/spacing.css');
+@import url('utilities/display.css');
+@import url('utilities/flex.css');
+@import url('utilities/grid.css');
+
+/* Components */
+@import url('components/buttons.css');
+@import url('components/forms.css');
+@import url('components/badges.css');
+@import url('components/chips.css');
+@import url('components/cards.css');
+@import url('components/modals.css');
+@import url('components/empty-state.css');
+@import url('components/site-header.css');

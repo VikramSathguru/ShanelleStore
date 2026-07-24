@@ -1,0 +1,15 @@
+/**
+ * Theme entry point.
+ *
+ * @package Shanelle
+ */
+
+import { initMobileDrawer } from './modules/mobile-drawer.js';
+import { initStickyHeaderOffset } from './modules/sticky-header-offset.js';
+
+const header = document.querySelector( '[data-header]' );
+
+if ( header ) {
+	initMobileDrawer( header );
+	initStickyHeaderOffset( header );
+}

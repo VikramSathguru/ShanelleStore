@@ -1,0 +1,286 @@
+/**
+ * Shanelle Homepage — fashion landing layout
+ *
+ * Live composition: full-bleed HeroBanner, category icons, featured rails, For You.
+ * Side-tile hero-promo layout is intentionally not composed (full-bleed brand hero).
+ */
+
+.front-page.site-main {
+	background-color: var(--color-landing);
+}
+
+.homepage {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	background-color: var(--color-landing);
+}
+
+/* -------------------------------------------------------------------------
+   Category icons
+   ------------------------------------------------------------------------- */
+.homepage__category-icons {
+	padding-block: var(--space-3) var(--space-5);
+	border-block-end: 1px solid rgb(232 122 158 / 10%);
+	background-color: var(--color-landing);
+}
+
+.homepage__category-icons-grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--space-3) var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.homepage__category-icon-link {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-2);
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.homepage__category-icon-media {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 3.75rem;
+	height: 3.75rem;
+	overflow: hidden;
+	border-radius: var(--radius-full);
+	background-color: rgb(255 255 255 / 72%);
+	box-shadow: 0 2px 8px rgb(232 122 158 / 12%);
+	transition:
+		transform var(--duration-base) var(--ease-out),
+		box-shadow var(--duration-base) var(--ease-out),
+		background-color var(--duration-base) var(--ease-in-out);
+}
+
+.homepage__category-icon-link:hover .homepage__category-icon-media,
+.homepage__category-icon-link:focus-visible .homepage__category-icon-media {
+	transform: translateY(-2px);
+	background: rgb(255 255 255 / 92%);
+	box-shadow: 0 6px 16px rgb(232 122 158 / 18%);
+}
+
+.homepage__category-icon-link:hover .homepage__category-icon-label,
+.homepage__category-icon-link:focus-visible .homepage__category-icon-label {
+	color: var(--color-brand-700);
+}
+
+.homepage__category-icon-label {
+	max-width: 100%;
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-regular);
+	line-height: var(--line-height-snug);
+	text-align: center;
+	transition: color var(--duration-base) var(--ease-in-out);
+}
+
+.homepage__category-icon-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.homepage__category-icon-placeholder {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	font-size: var(--font-size-lg);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-brand-700);
+	background: linear-gradient(135deg, var(--color-brand-100), var(--color-brand-50));
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.homepage__category-icon-media,
+	.homepage__category-icon-label {
+		transition: none;
+	}
+
+	.homepage__category-icon-link:hover .homepage__category-icon-media,
+	.homepage__category-icon-link:focus-visible .homepage__category-icon-media {
+		transform: none;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   Featured collections
+   ------------------------------------------------------------------------- */
+.homepage__featured-collections {
+	padding-block: var(--space-5);
+	background-color: var(--color-landing);
+}
+
+.homepage__featured-collections-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: var(--space-6);
+}
+
+.homepage__featured-collection {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	min-width: 0;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background-color: transparent;
+}
+
+.homepage__featured-collection-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-2);
+}
+
+.homepage__featured-collection-title {
+	margin: 0;
+	font-family: var(--font-family-display);
+	font-size: var(--font-size-lg);
+	font-weight: var(--font-weight-semibold);
+}
+
+.homepage__featured-collection-title a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.homepage__featured-collection-more {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.75rem;
+	min-height: 1.75rem;
+	color: var(--color-text-muted);
+	text-decoration: none;
+}
+
+.homepage__featured-collection-products {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-3);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.homepage__featured-collection-product {
+	min-width: 0;
+}
+
+.homepage__featured-collection .product-card__title {
+	font-size: var(--font-size-xs);
+}
+
+.homepage__featured-collection .product-card__price ins,
+.homepage__featured-collection .product-card__price .amount {
+	color: var(--color-sale);
+}
+
+/* -------------------------------------------------------------------------
+   For You product feed
+   ------------------------------------------------------------------------- */
+.homepage__for-you {
+	padding-block: var(--space-6) var(--space-10);
+	background-color: var(--color-landing);
+}
+
+.homepage__for-you-header {
+	margin-bottom: var(--space-5);
+	text-align: center;
+}
+
+.homepage__for-you-title {
+	margin: 0;
+	font-family: var(--font-family-display);
+	font-size: var(--font-size-xl);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: var(--letter-spacing-wide);
+	text-transform: uppercase;
+}
+
+.homepage__for-you-grid .product-grid__items {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--space-3);
+}
+
+.homepage__for-you-grid .product-card__title {
+	font-size: var(--font-size-xs);
+}
+
+.homepage__for-you-grid .product-card__price .amount,
+.homepage__for-you-grid .product-card__price ins .amount {
+	color: var(--color-sale);
+	font-weight: var(--font-weight-semibold);
+}
+
+.homepage__for-you-grid .product-grid__load-more-wrap {
+	margin-top: var(--space-6);
+}
+
+.homepage__for-you-grid .product-grid__load-more {
+	min-width: min(100%, 24rem);
+	height: var(--button-height-md);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-sm);
+	background-color: var(--color-neutral-100);
+	color: var(--color-text);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+}
+
+.homepage__for-you-grid .product-grid__load-more:hover {
+	background-color: var(--color-neutral-200);
+}
+
+.homepage__empty {
+	padding-block: var(--space-8) var(--space-12);
+	background-color: var(--color-landing);
+}
+
+/* -------------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------------- */
+@media (min-width: 48rem) {
+	.homepage__category-icons-grid {
+		grid-template-columns: repeat(8, minmax(0, 1fr));
+		gap: var(--space-4) var(--space-3);
+	}
+
+	.homepage__category-icon-media {
+		width: 4.5rem;
+		height: 4.5rem;
+	}
+
+	.homepage__featured-collections-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-5);
+	}
+
+	.homepage__for-you-grid .product-grid__items {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-4);
+	}
+}
+
+@media (min-width: 64rem) {
+	.homepage__for-you-grid .product-grid__items {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: var(--space-4);
+	}
+}
+
+@media (min-width: 80rem) {
+	.homepage__for-you-grid .product-grid__items {
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+	}
+}

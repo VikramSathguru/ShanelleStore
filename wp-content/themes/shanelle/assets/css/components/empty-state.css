@@ -1,0 +1,48 @@
+/**
+ * Shanelle Empty State — shared Design System empty / no-results block
+ */
+
+.empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-4);
+	max-width: 32rem;
+	margin-inline: auto;
+	padding: var(--space-12) var(--space-4);
+	text-align: center;
+}
+
+.empty-state__title {
+	margin: 0;
+	font-family: var(--font-family-heading);
+	font-size: var(--font-size-2xl);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--line-height-tight);
+	letter-spacing: var(--letter-spacing-tight);
+	color: var(--color-text);
+	text-wrap: balance;
+}
+
+.empty-state__message {
+	margin: 0;
+	max-width: 36ch;
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-muted);
+	text-wrap: pretty;
+}
+
+.empty-state__cta {
+	margin-top: var(--space-2);
+}
+
+@media (min-width: 48rem) {
+	.empty-state {
+		padding-block: var(--space-16);
+	}
+
+	.empty-state__title {
+		font-size: var(--font-size-3xl);
+	}
+}

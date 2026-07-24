@@ -1,0 +1,125 @@
+/**
+ * Shanelle Design System — Animations
+ *
+ * Keyframes and animation utility classes.
+ */
+
+@keyframes shanelle-fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes shanelle-fade-out {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+
+@keyframes shanelle-slide-up {
+	from {
+		opacity: 0;
+		transform: translateY(0.75rem);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes shanelle-slide-down {
+	from {
+		opacity: 0;
+		transform: translateY(-0.75rem);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes shanelle-scale-in {
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes shanelle-spin {
+	to { transform: rotate(360deg); }
+}
+
+@keyframes shanelle-pulse {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.5; }
+}
+
+@keyframes shanelle-shimmer {
+	0% { background-position: -200% 0; }
+	100% { background-position: 200% 0; }
+}
+
+/* Animation utilities */
+.animate-fade-in {
+	animation: shanelle-fade-in var(--duration-base) var(--ease-out) both;
+}
+
+.animate-slide-up {
+	animation: shanelle-slide-up var(--duration-slow) var(--ease-out) both;
+}
+
+.animate-scale-in {
+	animation: shanelle-scale-in var(--duration-base) var(--ease-out) both;
+}
+
+.animate-spin {
+	animation: shanelle-spin 0.8s var(--ease-linear) infinite;
+}
+
+.animate-pulse {
+	animation: shanelle-pulse 1.5s var(--ease-in-out) infinite;
+}
+
+/* Skeleton shimmer placeholder */
+.skeleton {
+	background: linear-gradient(
+		90deg,
+		var(--color-neutral-100) 25%,
+		var(--color-neutral-200) 50%,
+		var(--color-neutral-100) 75%
+	);
+	background-size: 200% 100%;
+	animation: shanelle-shimmer 1.4s var(--ease-in-out) infinite;
+	border-radius: var(--radius-sm);
+}
+
+/* Transition utilities */
+.transition-colors { transition: var(--transition-colors); }
+.transition-opacity { transition: var(--transition-opacity); }
+.transition-transform { transition: var(--transition-transform); }
+.transition-shadow { transition: var(--transition-shadow); }
+.transition-all { transition: var(--transition-all); }
+
+@media (prefers-reduced-motion: reduce) {
+	.animate-fade-in,
+	.animate-slide-up,
+	.animate-scale-in,
+	.animate-spin,
+	.animate-pulse,
+	.skeleton {
+		animation: none;
+	}
+
+	.transition-colors,
+	.transition-opacity,
+	.transition-transform,
+	.transition-shadow,
+	.transition-all {
+		transition: none;
+	}
+}
