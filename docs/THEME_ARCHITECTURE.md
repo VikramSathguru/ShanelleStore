@@ -16,6 +16,7 @@
 | `front-page.php` | Homepage shell → `shanelle_homepage()` |
 | `search.php`, `404.php`, `index.php` | Core templates |
 | `taxonomy-product_collection.php` | Collection taxonomy archive |
+| `page-templates/about.php` | About page template |
 | `page-templates/collections.php` | Collections index page template |
 | `assets/` | Global CSS/JS/images |
 | `components/` | Feature views + scoped CSS/JS |

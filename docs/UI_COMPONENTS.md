@@ -204,6 +204,17 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Reusable | Yes |
 | Needs improvement | — |
 
+### AboutPage
+
+| Field | Detail |
+|-------|--------|
+| Purpose | Storefront About page (marketing) |
+| Location | `inc/components/AboutPage.php`, `components/about-page/` |
+| Dependencies | Theme Customizer (title, hero, mission, features) |
+| Used by | `page-templates/about.php` |
+| Reusable | Page |
+| Needs improvement | — |
+
 ### CollectionsPage
 
 | Field | Detail |

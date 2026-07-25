@@ -1,0 +1,212 @@
+/**
+ * Shanelle About Page Layout
+ *
+ * Page-specific layout only. Uses design tokens; no hard-coded colors.
+ */
+
+.about-page {
+	display: flex;
+	flex-direction: column;
+}
+
+/* -------------------------------------------------------------------------
+   Title band
+   ------------------------------------------------------------------------- */
+.about-page__title-band {
+	background-color: var(--color-brand-50);
+	padding-block: var(--space-10);
+}
+
+.about-page__title {
+	margin: 0;
+	letter-spacing: var(--letter-spacing-wide);
+}
+
+/* -------------------------------------------------------------------------
+   Hero
+   ------------------------------------------------------------------------- */
+.about-page__hero {
+	padding-block: var(--space-10);
+	background-color: var(--color-brand-100);
+}
+
+.about-page__hero-inner {
+	display: grid;
+	gap: var(--space-8);
+	align-items: center;
+}
+
+.about-page__hero-media {
+	overflow: hidden;
+	border-radius: var(--radius-2xl);
+	box-shadow: var(--shadow-lg);
+}
+
+.about-page__picture,
+.about-page__image {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.about-page__hero-copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.about-page__eyebrow {
+	margin: 0;
+}
+
+.about-page__hero-headline {
+	margin: 0;
+	color: var(--color-brand-800);
+}
+
+.about-page__hero-subheadline {
+	margin: 0;
+	max-width: 44ch;
+}
+
+.about-page__hero-tagline {
+	margin: 0;
+	text-transform: uppercase;
+	letter-spacing: var(--letter-spacing-wide);
+}
+
+@media (min-width: 48rem) {
+	.about-page__hero-inner {
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-12);
+	}
+}
+
+/* -------------------------------------------------------------------------
+   Mission
+   ------------------------------------------------------------------------- */
+.about-page__mission {
+	background-color: var(--color-brand-900);
+	padding-block: var(--space-16);
+}
+
+.about-page__mission-inner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-6);
+	max-width: 60rem;
+}
+
+.about-page__mission-heading {
+	margin: 0;
+	max-width: 40ch;
+}
+
+.about-page__mission-body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.about-page__mission-body p {
+	margin: 0;
+	opacity: 0.92;
+}
+
+.about-page__mission-actions {
+	margin-top: var(--space-2);
+}
+
+/* -------------------------------------------------------------------------
+   Features
+   ------------------------------------------------------------------------- */
+.about-page__features {
+	padding-block: var(--space-16);
+	background-color: var(--color-brand-50);
+}
+
+.about-page__features-inner {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-10);
+}
+
+.about-page__features-header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	align-items: center;
+	max-width: 52rem;
+	margin-inline: auto;
+}
+
+.about-page__features-heading,
+.about-page__features-intro {
+	margin: 0;
+}
+
+.about-page__features-grid {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-8);
+}
+
+.about-page__feature {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: var(--space-3);
+}
+
+.about-page__feature-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 5.5rem;
+	height: 5.5rem;
+	border-radius: var(--radius-full);
+	background-color: var(--color-neutral-0);
+	border: 2px solid var(--color-brand-300);
+	box-shadow: var(--shadow-sm);
+	overflow: hidden;
+}
+
+.about-page__feature-icon .about-page__img {
+	width: 60%;
+	height: 60%;
+	object-fit: contain;
+}
+
+.about-page__feature-title {
+	margin: 0;
+	color: var(--color-brand-800);
+}
+
+.about-page__feature-text {
+	margin: 0;
+	max-width: 30ch;
+}
+
+@media (min-width: 40rem) {
+	.about-page__features-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 64rem) {
+	.about-page__features-grid {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.about-page__feature,
+	.about-page__hero-copy > * {
+		transition: var(--transition-transform), var(--transition-opacity);
+	}
+}

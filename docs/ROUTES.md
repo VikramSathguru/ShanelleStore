@@ -17,6 +17,7 @@ Exact slugs are configured in **WooCommerce → Settings → Advanced → Page s
 | Checkout | `/checkout/` | `woocommerce/checkout/form-checkout.php` |
 | My Account | `/my-account/` (+ endpoints) | `woocommerce/myaccount/*` |
 | Search results | `/?s=` or pretty search | `search.php` → SearchPage |
+| About | Page using template `page-templates/about.php` | AboutPage |
 | Collections index | Page using template `page-templates/collections.php` | CollectionsPage |
 | Collection archive | `/collection/{slug}/` | `product_collection` taxonomy templates |
 | Category | `/product-category/{slug}/` | Shop archive path |

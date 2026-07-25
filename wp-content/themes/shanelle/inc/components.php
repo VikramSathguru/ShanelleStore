@@ -224,6 +224,13 @@ function shanelle_collection_page(): void {
 }
 
 /**
+ * Render the About page composition.
+ */
+function shanelle_about_page(): void {
+	\Shanelle\Components\AboutPage::render();
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.
