@@ -19,10 +19,10 @@ defined( 'ABSPATH' ) || exit;
 >
 	<div class="footer__main">
 		<div class="container footer__inner">
-			<div class="footer__brand">
-				<?php Footer::render_logo(); ?>
-				<?php Footer::render_brand_description(); ?>
-			</div>
+			<?php \Shanelle\Components\FooterBrand::render(); ?>
+			<?php \Shanelle\Components\FooterLinks::render(); ?>
+			<?php \Shanelle\Components\FooterCustomerService::render(); ?>
+			<?php \Shanelle\Components\FooterPolicies::render(); ?>
 
 			<?php Footer::render_menus(); ?>
 			<?php Footer::render_contact_details(); ?>
@@ -37,6 +37,7 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 
+	<?php Footer::render_contact_fab(); ?>
 	<?php Footer::render_scroll_top(); ?>
 
 	<p class="screen-reader-text" data-shanelle-footer-status role="status" aria-live="polite" aria-atomic="true"></p>

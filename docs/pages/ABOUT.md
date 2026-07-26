@@ -7,21 +7,27 @@ Marketing "Sobre nosotros" page composed by **`AboutPage`**. Content is **100% T
 | File | Role |
 |------|------|
 | `page-templates/about.php` | WordPress page template → `AboutPage::render()` |
-| `components/about-page/about-page.php` | Page markup (title band, hero, mission, features) |
+| `components/about-page/about-page.php` | Page shell (section composition) |
+| `components/about-page/partials/hero.php` | Hero — full-bleed brand intro (H1) |
+| `components/about-page/partials/story.php` | Our Story — alternating image + copy |
+| `components/about-page/partials/mission-values.php` | Mission & Values |
+| `components/about-page/partials/why-choose.php` | Why Choose Shanelle |
+| `components/about-page/partials/cta.php` | Closing call to action |
 | `components/about-page/about-page.css` | Page layout (design tokens only) |
-| `components/about-page/about-page.js` | Hydration + `shanelle:about-page:ready` event |
+| `components/about-page/about-page.js` | Hydration, section reveal, `shanelle:about-page:ready` |
 
 ## Composition
 
 ```
 AboutPage
-├── Title band (page title)
-├── Hero (responsive image + eyebrow, headline, subheadline, tagline)
-├── Mission (contrast band: heading + paragraphs + CTA)
-└── Features grid (up to 4 slots: icon image + title + text)
+├── Hero (full-bleed media + eyebrow, H1, subheadline, tagline, optional CTA)
+├── Our Story (alternating image + body; media left/right on desktop)
+├── Mission & Values (contrast band + up to 3 value cards)
+├── Why Choose (up to 4 reason cards)
+└── Call to Action (closing band + button)
 ```
 
-Each section is optional. Empty fields or a disabled toggle omit that block; empty feature slots are skipped.
+Each section is optional. Empty fields or a disabled toggle omit that block; empty value/feature slots are skipped. When Hero is hidden, a screen-reader-only H1 keeps heading hierarchy intact.
 
 ## Controllers
 
@@ -29,29 +35,36 @@ Each section is optional. Empty fields or a disabled toggle omit that block; emp
 |------------|--------|
 | `inc/components/AboutPage.php` | `about-page.css`, `about-page.js` |
 
+## Responsive behavior
+
+| Breakpoint | Behavior |
+|------------|----------|
+| Mobile (`< 40rem`) | Single-column stacked sections |
+| Tablet (`≥ 40rem`) | Story stays stacked until `48rem`; values 2-col; why-choose 2-col |
+| Desktop (`≥ 48rem`) | Story becomes two-column alternating block; generous section padding |
+| Large (`≥ 64rem`) | Values 3-col; why-choose 4-col; max editorial spacing |
+
 ## Theme Customizer
 
 **Appearance → Customize → Página Sobre nosotros**
 
-| Setting | Purpose |
-|---------|---------|
-| Título de la página | Title band heading |
-| Mostrar sección hero | Toggle hero |
-| Imagen hero (escritorio / móvil) | Hero media (media library) |
-| Hero: antetítulo / titular / subtítulo / eslogan | Hero copy |
-| Mostrar sección de misión | Toggle mission |
-| Misión: encabezado / texto | Mission heading + body (one paragraph per line) |
-| Misión: texto del botón / URL | Mission CTA (URL empty → shop permalink) |
-| Mostrar sección de características | Toggle features |
-| Características: encabezado / texto introductorio | Features header |
-| Característica 1–4: ícono/imagen, título, descripción | Feature slots |
+| Setting group | Purpose |
+|---------------|---------|
+| Título de la página | H1 fallback when hero titular is empty |
+| Hero | Toggle, desktop/mobile images, antetítulo, titular (H1), subtítulo, eslogan, botón |
+| Nuestra historia | Toggle, antetítulo, encabezado, texto, images, media side (left/right) |
+| Misión y valores | Toggle, antetítulo, encabezado, texto, Valores 1–3 (ícono, título, descripción) |
+| Por qué elegirnos | Toggle, antetítulo, encabezado, intro, Motivos 1–4 |
+| Llamado a la acción | Toggle, antetítulo, encabezado, texto, botón + URL (URL empty → shop) |
+
+Legacy mission CTA fields remain as fallback when the dedicated CTA button fields are empty.
 
 ## Filters
 
 | Filter | Purpose |
 |--------|---------|
 | `shanelle_about_page_settings` | Adjust normalized Customizer settings |
-| `shanelle_about_page_state` | Adjust the full render state (hero/mission/features) |
+| `shanelle_about_page_state` | Adjust the full render state (hero/story/mission/why_choose/cta) |
 
 ## Events
 
@@ -69,10 +82,20 @@ shanelle_about_page();
 
 1. **Pages → Add New**, publish a page (e.g. slug `sobre-nosotros`).
 2. In **Page Attributes → Template**, choose **Sobre nosotros**.
-3. Open **Appearance → Customize → Página Sobre nosotros** and fill copy + media.
+3. Open **Appearance → Customize → Página Sobre nosotros** and fill copy + media for each section.
 4. Add the page to the primary and/or footer menus.
+5. Ensure Media Library images have meaningful **alt text**.
+
+## Accessibility
+
+- Semantic landmarks: one `<main>`, section `aria-labelledby` where headings exist.
+- Heading order: H1 (hero) → H2 (sections) → H3 (value/reason cards).
+- Images use attachment alt text via `wp_get_attachment_image` / picture markup.
+- Buttons use design-system `.btn` focus-visible ring (`--shadow-focus`).
+- Reveal animation respects `prefers-reduced-motion`.
 
 ## Notes
 
 - Presentation only; no WooCommerce dependency (CTA falls back to shop permalink when available, else home).
 - ACF is **not** used; content lives in `theme_mods`. Filters allow moving to ACF later without template changes.
+- State key `features` remains as an alias of `why_choose` for backward-compatible filters.

@@ -64,6 +64,12 @@ final class Footer {
 
 	private const MOD_SHOW_SCROLL_TOP = 'shanelle_footer_show_scroll_top';
 
+	private const MOD_SHOW_CONTACT_FAB = 'shanelle_footer_show_contact_fab';
+
+	private const MOD_CONTACT_FAB_URL = 'shanelle_footer_contact_fab_url';
+
+	private const MOD_CONTACT_FAB_LABEL = 'shanelle_footer_contact_fab_label';
+
 	/**
 	 * Active footer state for the render cycle.
 	 *
@@ -101,10 +107,7 @@ final class Footer {
 	 */
 	public static function get_menu_locations(): array {
 		return array(
-			'footer_shop'             => __( 'Enlaces útiles', 'shanelle' ),
-			'footer_customer_service' => __( 'Atención al cliente', 'shanelle' ),
-			'footer_legal'            => __( 'Políticas', 'shanelle' ),
-			'footer_about'            => __( 'Nosotros', 'shanelle' ),
+			'footer_about' => __( 'Nosotros', 'shanelle' ),
 		);
 	}
 
@@ -118,7 +121,7 @@ final class Footer {
 			'shanelle_footer',
 			array(
 				'title'       => __( 'Pie de página', 'shanelle' ),
-				'description' => __( 'Configura la marca, contacto, menús, boletín opcional e íconos de pago del pie de página.', 'shanelle' ),
+				'description' => __( 'Configura la marca, contacto, menús, botón flotante opcional e íconos de pago. Para las columnas de enlaces, asigna menús a «Footer Useful Links», «Footer Customer Service» y «Footer Policies».', 'shanelle' ),
 				'priority'    => 120,
 			)
 		);
@@ -155,7 +158,7 @@ final class Footer {
 		$wp_customize->add_setting(
 			self::MOD_BRAND_DESCRIPTION,
 			array(
-				'default'           => get_bloginfo( 'description', 'display' ) ?: __( 'Estilos seleccionados para cada momento.', 'shanelle' ),
+				'default'           => \Shanelle\Components\FooterBrand::DEFAULT_DESCRIPTION,
 				'sanitize_callback' => array( self::class, 'sanitize_textarea' ),
 				'transport'         => 'refresh',
 			)
@@ -301,6 +304,27 @@ final class Footer {
 			__( 'Mostrar botón subir', 'shanelle' ),
 			true
 		);
+
+		self::register_checkbox_control(
+			$wp_customize,
+			self::MOD_SHOW_CONTACT_FAB,
+			__( 'Mostrar botón flotante de contacto', 'shanelle' ),
+			false
+		);
+
+		self::register_url_control(
+			$wp_customize,
+			self::MOD_CONTACT_FAB_URL,
+			__( 'URL del botón flotante (WhatsApp, tel: o página de contacto)', 'shanelle' )
+		);
+
+		self::register_text_control(
+			$wp_customize,
+			self::MOD_CONTACT_FAB_LABEL,
+			__( 'Etiqueta accesible del botón flotante', 'shanelle' ),
+			__( 'Contactar por WhatsApp', 'shanelle' ),
+			__( 'Se usa como aria-label. El botón solo aparece si hay URL.', 'shanelle' )
+		);
 	}
 
 	/**
@@ -314,7 +338,13 @@ final class Footer {
 		wp_enqueue_style(
 			'shanelle-footer',
 			self::COMPONENT_URI . '/footer.css',
-			array( 'shanelle-main' ),
+			array(
+				'shanelle-main',
+				'shanelle-footer-brand',
+				'shanelle-footer-links',
+				'shanelle-footer-customer-service',
+				'shanelle-footer-policies',
+			),
 			SHANELLE_VERSION
 		);
 
@@ -365,89 +395,35 @@ final class Footer {
 
 	/**
 	 * Render footer logo markup.
+	 *
+	 * @deprecated Use {@see FooterBrand::render()} / {@see FooterBrand::render_logo()}.
 	 */
 	public static function render_logo(): void {
-		if ( empty( self::$state['settings']['show_logo'] ) ) {
-			return;
-		}
-
-		$home_url = home_url( '/' );
-		$logo_id  = (int) ( self::$state['settings']['logo_id'] ?? 0 );
-
-		if ( $logo_id <= 0 && has_custom_logo() ) {
-			$logo_id = (int) get_theme_mod( 'custom_logo' );
-		}
-		?>
-		<a class="footer__logo" href="<?php echo esc_url( $home_url ); ?>">
-			<?php
-			if ( $logo_id > 0 ) {
-				echo wp_get_attachment_image(
-					$logo_id,
-					'medium',
-					false,
-					array(
-						'class'    => 'footer__logo-image',
-						'loading'  => 'lazy',
-						'decoding' => 'async',
-						'alt'      => get_bloginfo( 'name' ),
-					)
-				);
-			} else {
-				echo esc_html( get_bloginfo( 'name' ) );
-			}
-			?>
-		</a>
-		<?php
+		FooterBrand::render_logo();
 	}
 
 	/**
 	 * Render brand description copy.
+	 *
+	 * @deprecated Use {@see FooterBrand::render()} / {@see FooterBrand::render_description()}.
 	 */
 	public static function render_brand_description(): void {
-		$description = (string) ( self::$state['settings']['brand_description'] ?? '' );
-
-		if ( '' === $description ) {
-			return;
-		}
-		?>
-		<p class="footer__description text-muted"><?php echo esc_html( $description ); ?></p>
-		<?php
+		FooterBrand::render_description();
 	}
 
 	/**
 	 * Render social profile links.
+	 *
+	 * @deprecated Social icons live in {@see FooterBrand::render_social()}.
 	 */
 	public static function render_social_links(): void {
-		if ( empty( self::$state['settings']['show_social'] ) ) {
-			return;
-		}
-
-		$links = is_array( self::$state['social'] ?? null ) ? self::$state['social'] : array();
-
-		if ( empty( $links ) ) {
-			return;
-		}
-		?>
-		<ul class="footer__social" aria-label="<?php esc_attr_e( 'Redes sociales', 'shanelle' ); ?>">
-			<?php foreach ( $links as $network => $url ) : ?>
-				<li>
-					<a
-						class="footer__social-link"
-						href="<?php echo esc_url( (string) $url ); ?>"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<span class="screen-reader-text"><?php echo esc_html( self::get_social_label( (string) $network ) ); ?></span>
-						<?php self::render_icon( (string) $network ); ?>
-					</a>
-				</li>
-			<?php endforeach; ?>
-		</ul>
-		<?php
+		FooterBrand::render_social();
 	}
 
 	/**
 	 * Render contact details column (Customizer-driven).
+	 *
+	 * Social icons live in {@see FooterBrand}; this column is contact details only.
 	 */
 	public static function render_contact_details(): void {
 		if ( empty( self::$state['settings']['show_contact'] ) ) {
@@ -484,15 +460,16 @@ final class Footer {
 			);
 		}
 
-		$has_social = ! empty( self::$state['settings']['show_social'] )
-			&& ! empty( self::$state['social'] )
-			&& is_array( self::$state['social'] );
-
-		if ( empty( $items ) && ! $has_social && '' === $title ) {
+		if ( empty( $items ) && '' === $title ) {
 			return;
 		}
+
+		$labelledby = '' !== $title ? self::get_contact_title_id() : '';
 		?>
-		<section class="footer__contact" aria-labelledby="<?php echo esc_attr( self::get_contact_title_id() ); ?>">
+		<section
+			class="footer__contact"
+			<?php echo '' !== $labelledby ? 'aria-labelledby="' . esc_attr( $labelledby ) . '"' : 'aria-label="' . esc_attr__( 'Contacto', 'shanelle' ) . '"'; ?>
+		>
 			<?php if ( '' !== $title ) : ?>
 				<h2 id="<?php echo esc_attr( self::get_contact_title_id() ); ?>" class="footer__contact-title text-label">
 					<?php echo esc_html( $title ); ?>
@@ -517,8 +494,6 @@ final class Footer {
 					<?php endforeach; ?>
 				</ul>
 			<?php endif; ?>
-
-			<?php self::render_social_links(); ?>
 		</section>
 		<?php
 	}
@@ -544,6 +519,39 @@ final class Footer {
 				</svg>
 			</span>
 		</button>
+		<?php
+	}
+
+	/**
+	 * Render optional floating contact / WhatsApp button (presentation only).
+	 */
+	public static function render_contact_fab(): void {
+		$fab = is_array( self::$state['contact_fab'] ?? null ) ? self::$state['contact_fab'] : array();
+
+		if ( empty( $fab['visible'] ) ) {
+			return;
+		}
+
+		$url   = (string) ( $fab['url'] ?? '' );
+		$label = (string) ( $fab['label'] ?? '' );
+
+		if ( '' === $url || '' === $label ) {
+			return;
+		}
+
+		$is_external = 0 === stripos( $url, 'http://' ) || 0 === stripos( $url, 'https://' );
+		?>
+		<a
+			class="footer__contact-fab"
+			href="<?php echo esc_url( $url ); ?>"
+			data-shanelle-footer-contact-fab
+			aria-label="<?php echo esc_attr( $label ); ?>"
+			<?php echo $is_external ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
+		>
+			<span class="footer__contact-fab-icon" aria-hidden="true">
+				<?php self::render_icon( 'chat' ); ?>
+			</span>
+		</a>
 		<?php
 	}
 
@@ -653,7 +661,7 @@ final class Footer {
 			</button>
 
 			<div class="footer__menu-panel" id="<?php echo esc_attr( $panel_id ); ?>" data-shanelle-footer-menu-panel hidden>
-				<h3 class="footer__menu-title text-label"><?php echo esc_html( $title ); ?></h3>
+				<h2 class="footer__menu-title text-label"><?php echo esc_html( $title ); ?></h2>
 				<?php
 				wp_nav_menu(
 					array(
@@ -754,6 +762,9 @@ final class Footer {
 	public static function build_footer_state(): array {
 		$settings = self::get_settings();
 
+		$fab_url   = (string) ( $settings['contact_fab_url'] ?? '' );
+		$fab_label = (string) ( $settings['contact_fab_label'] ?? '' );
+
 		return apply_filters(
 			'shanelle_footer_state',
 			array(
@@ -761,6 +772,11 @@ final class Footer {
 				'social'         => self::get_social_links( $settings ),
 				'payment_icons'  => self::parse_payment_icons( (string) ( $settings['payment_icons'] ?? '' ) ),
 				'menu_locations' => array_keys( self::get_menu_locations() ),
+				'contact_fab'    => array(
+					'url'     => $fab_url,
+					'label'   => $fab_label,
+					'visible' => ! empty( $settings['show_contact_fab'] ) && '' !== $fab_url && '' !== $fab_label,
+				),
 			)
 		);
 	}
@@ -778,7 +794,7 @@ final class Footer {
 				'logo_id'                => self::get_theme_mod_int( self::MOD_LOGO, 0 ),
 				'brand_description'      => self::get_theme_mod_string(
 					self::MOD_BRAND_DESCRIPTION,
-					get_bloginfo( 'description', 'display' ) ?: __( 'Estilos seleccionados para cada momento.', 'shanelle' )
+					\Shanelle\Components\FooterBrand::DEFAULT_DESCRIPTION
 				),
 				'show_contact'           => self::get_theme_mod_bool( self::MOD_SHOW_CONTACT, true ),
 				'contact_title'          => self::get_theme_mod_string(
@@ -813,6 +829,12 @@ final class Footer {
 					'visa,mastercard,amex,paypal,apple_pay'
 				),
 				'show_scroll_top'        => self::get_theme_mod_bool( self::MOD_SHOW_SCROLL_TOP, true ),
+				'show_contact_fab'       => self::get_theme_mod_bool( self::MOD_SHOW_CONTACT_FAB, false ),
+				'contact_fab_url'        => self::get_theme_mod_url( self::MOD_CONTACT_FAB_URL ),
+				'contact_fab_label'      => self::get_theme_mod_string(
+					self::MOD_CONTACT_FAB_LABEL,
+					__( 'Contactar por WhatsApp', 'shanelle' )
+				),
 			)
 		);
 	}
@@ -855,6 +877,7 @@ final class Footer {
 			'phone'     => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2 2A15.5 15.5 0 0 1 4.5 5.5a2 2 0 0 1 2-2z"/></svg>',
 			'email'     => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>',
 			'location'  => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+			'chat'      => '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M4 6.5A3.5 3.5 0 0 1 7.5 3h9A3.5 3.5 0 0 1 20 6.5v6A3.5 3.5 0 0 1 16.5 16H12l-4 4v-4H7.5A3.5 3.5 0 0 1 4 12.5v-6z"/></svg>',
 		);
 
 		if ( ! isset( $icons[ $icon ] ) ) {

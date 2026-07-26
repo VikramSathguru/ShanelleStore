@@ -231,6 +231,36 @@ function shanelle_about_page(): void {
 }
 
 /**
+ * Render the footer brand column.
+ *
+ * @param array<string, mixed> $args Optional brand overrides.
+ */
+function shanelle_footer_brand( array $args = array() ): void {
+	\Shanelle\Components\FooterBrand::render( $args );
+}
+
+/**
+ * Render the footer useful-links column.
+ */
+function shanelle_footer_links(): void {
+	\Shanelle\Components\FooterLinks::render();
+}
+
+/**
+ * Render the footer customer-service column.
+ */
+function shanelle_footer_customer_service(): void {
+	\Shanelle\Components\FooterCustomerService::render();
+}
+
+/**
+ * Render the footer policies column.
+ */
+function shanelle_footer_policies(): void {
+	\Shanelle\Components\FooterPolicies::render();
+}
+
+/**
  * Render a responsive image with lazy loading.
  *
  * @param int                  $attachment_id Attachment ID.

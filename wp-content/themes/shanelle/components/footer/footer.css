@@ -1,7 +1,9 @@
 /**
  * Shanelle Footer Layout
  *
- * Page-specific footer layout only.
+ * Premium multi-column footer. Design tokens only.
+ * Desktop: Brand | Useful Links | Customer Service | Policies | Newsletter
+ * Contact sits under Brand with tight vertical rhythm.
  */
 
 .footer {
@@ -13,45 +15,39 @@
 }
 
 .footer__main {
-	padding: var(--space-8) 0 var(--space-7);
+	padding: var(--space-12) 0 var(--space-10);
 }
 
 .footer__inner {
 	display: grid;
-	gap: var(--space-7);
+	grid-template-columns: minmax(0, 1fr);
+	align-items: start;
+	column-gap: var(--space-8);
+	row-gap: var(--space-8);
 }
 
-.footer__brand {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-4);
-	max-width: 22rem;
-}
-
-.footer__logo {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-3);
-	font-family: var(--font-family-display);
-	font-size: var(--font-size-xl);
-	font-weight: var(--font-weight-semibold);
+/* -------------------------------------------------------------------------
+   Shared column heading baseline (label-style across all columns)
+   ------------------------------------------------------------------------- */
+.footer-links__title,
+.footer__contact-title,
+.footer__menu-title,
+.footer__newsletter-title,
+.footer__newsletter-title.text-h3 {
+	margin: 0 0 var(--space-4);
 	color: var(--color-text);
-	text-decoration: none;
-}
-
-.footer__logo :where(.footer__logo-image, img) {
-	display: block;
-	max-height: 3rem;
-	width: auto;
-}
-
-.footer__description {
-	margin: 0;
+	font-family: var(--font-family-base);
 	font-size: var(--font-size-sm);
-	line-height: var(--line-height-relaxed);
-	color: var(--color-text-secondary);
+	font-weight: var(--font-weight-medium);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	line-height: var(--line-height-snug);
+	min-height: calc(var(--font-size-sm) * var(--line-height-snug));
 }
 
+/* -------------------------------------------------------------------------
+   Optional extra menus (e.g. Nosotros)
+   ------------------------------------------------------------------------- */
 .footer__menus {
 	display: grid;
 	gap: var(--space-3);
@@ -66,6 +62,7 @@
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
+	min-height: 2.75rem;
 	padding: var(--space-4) 0;
 	border: none;
 	background: transparent;
@@ -74,6 +71,11 @@
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
 	cursor: pointer;
+}
+
+.footer__menu-toggle:focus-visible {
+	outline: 2px solid var(--color-border-focus);
+	outline-offset: 2px;
 }
 
 .footer__menu-toggle::after {
@@ -97,15 +99,12 @@
 
 .footer__menu-title {
 	display: none;
-	margin: 0 0 var(--space-4);
-	text-transform: uppercase;
-	letter-spacing: 0.04em;
 }
 
 .footer__menu-list {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-2-5);
+	gap: var(--space-3-5);
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -115,6 +114,7 @@
 	color: var(--color-text-secondary);
 	text-decoration: none;
 	font-size: var(--font-size-sm);
+	transition: var(--transition-colors);
 }
 
 .footer__menu-list a:hover,
@@ -122,15 +122,13 @@
 	color: var(--color-text-link);
 }
 
+/* -------------------------------------------------------------------------
+   Contact
+   ------------------------------------------------------------------------- */
 .footer__contact {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
-}
-
-.footer__contact-title {
-	margin: 0;
-	color: var(--color-text);
+	gap: var(--space-3);
 }
 
 .footer__contact-list {
@@ -174,44 +172,22 @@
 	color: var(--color-text-link);
 }
 
-.footer__social {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-3);
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.footer__social-link {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 2rem;
-	height: 2rem;
-	color: var(--color-text);
-	text-decoration: none;
-	transition: var(--transition-colors);
-}
-
-.footer__social-link:hover,
-.footer__social-link:focus-visible {
-	color: var(--color-text-link);
-}
-
+/* -------------------------------------------------------------------------
+   Newsletter — ~350px card; heading aligned with sibling columns
+   ------------------------------------------------------------------------- */
 .footer__newsletter {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-3);
+	width: 100%;
+	max-width: 21.875rem; /* 350px */
 	padding: var(--space-5);
 	border: 1px solid var(--color-border-subtle);
 	border-radius: var(--radius-xl);
 	background-color: var(--color-surface);
 	box-shadow: var(--shadow-sm);
-}
-
-.footer__newsletter-title {
-	margin: 0;
+	justify-self: stretch;
+	box-sizing: border-box;
 }
 
 .footer__newsletter-description {
@@ -264,6 +240,9 @@
 	color: var(--color-text-muted);
 }
 
+/* -------------------------------------------------------------------------
+   Bottom bar
+   ------------------------------------------------------------------------- */
 .footer__bottom {
 	padding: var(--space-4) 0;
 	border-top: 1px solid var(--color-border-subtle);
@@ -274,13 +253,18 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	gap: var(--space-3);
 	text-align: center;
+	min-height: 3rem;
 }
 
 .footer__copyright {
 	margin: 0;
 	color: var(--color-text-secondary);
+	line-height: 1;
+	display: flex;
+	align-items: center;
 }
 
 .footer__copyright a {
@@ -291,6 +275,7 @@
 .footer__payments {
 	display: flex;
 	flex-wrap: wrap;
+	align-items: center;
 	justify-content: center;
 	gap: var(--space-2);
 	margin: 0;
@@ -300,6 +285,8 @@
 
 .footer__payment-item {
 	margin: 0;
+	display: flex;
+	align-items: center;
 }
 
 .footer__payment-badge {
@@ -319,32 +306,42 @@
 	display: block;
 }
 
-.footer__scroll-top {
+/* -------------------------------------------------------------------------
+   Floating controls (below MiniCart drawer --z-drawer)
+   ------------------------------------------------------------------------- */
+.footer__scroll-top,
+.footer__contact-fab {
 	position: fixed;
-	right: var(--space-4);
-	bottom: var(--space-4);
-	z-index: 40;
+	z-index: var(--z-fixed);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	width: 2.75rem;
 	height: 2.75rem;
 	padding: 0;
-	border: 1px solid var(--color-border-subtle);
 	border-radius: var(--radius-full);
-	background-color: var(--color-surface);
-	color: var(--color-text);
-	box-shadow: var(--shadow-sm);
+	box-shadow: var(--shadow-md);
 	cursor: pointer;
-	opacity: 0;
-	visibility: hidden;
-	transform: translateY(0.5rem);
+	text-decoration: none;
 	transition:
 		opacity var(--duration-fast) var(--ease-out),
 		visibility var(--duration-fast) var(--ease-out),
 		transform var(--duration-fast) var(--ease-out),
 		color var(--duration-fast) var(--ease-out),
-		border-color var(--duration-fast) var(--ease-out);
+		background-color var(--duration-fast) var(--ease-out),
+		border-color var(--duration-fast) var(--ease-out),
+		box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.footer__scroll-top {
+	right: var(--space-4);
+	bottom: var(--space-4);
+	border: 1px solid var(--color-border-subtle);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(0.5rem);
 }
 
 .footer__scroll-top.is-visible {
@@ -361,23 +358,86 @@
 .footer__scroll-top:focus-visible {
 	border-color: var(--color-border-focus);
 	color: var(--color-text-link);
+	box-shadow: var(--shadow-focus);
 }
 
-.footer__scroll-top-icon {
+.footer__scroll-top-icon,
+.footer__contact-fab-icon {
 	display: inline-flex;
 }
 
+.footer__contact-fab {
+	left: var(--space-4);
+	bottom: var(--space-4);
+	border: 1px solid rgb(232 122 158 / 35%);
+	background-color: var(--color-brand-600);
+	color: var(--color-text-inverse);
+}
+
+.footer__contact-fab:hover,
+.footer__contact-fab:focus-visible {
+	background-color: var(--color-brand-700);
+	box-shadow: var(--shadow-brand);
+	color: var(--color-text-inverse);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.footer__scroll-top,
+	.footer__contact-fab,
+	.footer__menu-list a {
+		transition: none;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   Tablet — two-row grid
+   Brand | Useful | Customer Service
+   Contact | Policies | Newsletter
+   ------------------------------------------------------------------------- */
 @media (min-width: 48rem) {
 	.footer__inner {
-		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.6fr) minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr);
+		grid-template-areas:
+			"brand useful service"
+			"contact policies newsletter";
+		column-gap: var(--space-6);
+		row-gap: var(--space-8);
 		align-items: start;
-		column-gap: var(--space-8);
-		row-gap: var(--space-6);
+	}
+
+	.footer-brand {
+		grid-area: brand;
+		max-width: none;
+	}
+
+	.footer__inner > [data-shanelle-footer-links] {
+		grid-area: useful;
+	}
+
+	.footer__inner > [data-shanelle-footer-customer-service] {
+		grid-area: service;
+	}
+
+	.footer__inner > [data-shanelle-footer-policies] {
+		grid-area: policies;
+	}
+
+	.footer__contact {
+		grid-area: contact;
+		margin-top: calc(var(--space-2) * -1);
+	}
+
+	.footer__newsletter {
+		grid-area: newsletter;
+		max-width: 22.5rem; /* 360px */
+		width: 100%;
+		justify-self: stretch;
+		/* Pull card up so inner heading aligns with sibling column titles */
+		margin-top: calc(var(--space-5) * -1);
 	}
 
 	.footer__menus {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--space-6);
+		display: contents;
 	}
 
 	.footer__menu {
@@ -401,12 +461,6 @@
 		display: block;
 	}
 
-	.footer__newsletter {
-		grid-column: 1 / -1;
-		max-width: 28rem;
-		justify-self: center;
-	}
-
 	.footer__newsletter-row {
 		flex-direction: row;
 		align-items: stretch;
@@ -418,32 +472,79 @@
 
 	.footer__bottom-inner {
 		flex-direction: row;
+		align-items: center;
 		justify-content: space-between;
 		text-align: left;
 	}
 
 	.footer__payments {
 		justify-content: flex-end;
+		align-items: center;
+	}
+
+	.footer__scroll-top,
+	.footer__contact-fab {
+		bottom: var(--space-6);
 	}
 
 	.footer__scroll-top {
 		right: var(--space-6);
-		bottom: var(--space-6);
+	}
+
+	.footer__contact-fab {
+		left: var(--space-6);
 	}
 }
 
+/* -------------------------------------------------------------------------
+   Desktop — single-row luxury grid
+   Brand (wider) | Useful | CS | Policies | Newsletter (wider)
+   Contact under Brand with reduced vertical gap
+   ------------------------------------------------------------------------- */
 @media (min-width: 64rem) {
 	.footer__inner {
-		grid-template-columns: minmax(14rem, 1.15fr) minmax(0, 1.8fr) minmax(12rem, 1fr);
-		column-gap: var(--space-10);
+		grid-template-columns:
+			minmax(12rem, 1.3fr)
+			minmax(0, 1fr)
+			minmax(0, 1fr)
+			minmax(0, 1fr)
+			minmax(14rem, 1.15fr);
+		grid-template-areas:
+			"brand useful service policies newsletter"
+			"contact useful service policies newsletter";
+		column-gap: var(--space-8);
+		row-gap: var(--space-3);
+		align-items: start;
 	}
 
-	.footer__menus {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: var(--space-5);
+	.footer-brand {
+		grid-area: brand;
+		padding-bottom: 0;
 	}
 
-	.footer__brand {
-		max-width: none;
+	.footer__inner > [data-shanelle-footer-links] {
+		grid-area: useful;
+	}
+
+	.footer__inner > [data-shanelle-footer-customer-service] {
+		grid-area: service;
+	}
+
+	.footer__inner > [data-shanelle-footer-policies] {
+		grid-area: policies;
+	}
+
+	.footer__newsletter {
+		grid-area: newsletter;
+		max-width: 22.5rem; /* 360px */
+		width: 100%;
+		justify-self: stretch;
+		margin-top: calc(var(--space-5) * -1);
+	}
+
+	.footer__contact {
+		grid-area: contact;
+		margin-top: 0;
+		align-self: start;
 	}
 }

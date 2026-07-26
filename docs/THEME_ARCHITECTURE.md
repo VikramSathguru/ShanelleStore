@@ -89,9 +89,15 @@ Note: `components/header/` directory exists but is empty (architecture cleanup d
 
 - `footer.php` calls `shanelle_footer()` → `Footer::render()`.  
 - Files: `inc/components/Footer.php`, `components/footer/{footer.php,footer.css,footer.js}`.  
-- Layout: brand column, WP menu columns (`footer_shop`, `footer_customer_service`, `footer_legal`, `footer_about`), contact column, optional newsletter, copyright/payment bar.  
-- Customizer-driven: logo, brand description, contact (title/phone/email/address), social URLs, copyright, payment icon slugs, scroll-to-top toggle.  
-- Newsletter block is optional and **off by default** until a list plugin is wired.
+- Layout: CSS Grid — Brand | Useful Links | Customer Service | Policies | Newsletter (desktop); Contact under Brand. See [components/Footer.md](./components/Footer.md).  
+- Brand column: `inc/components/FooterBrand.php` + `components/footer-brand/`.  
+- Useful Links column: `inc/components/FooterLinks.php` + `components/footer-links/` (`wp_nav_menu`, no hard-coded links).  
+- Customer Service column: `inc/components/FooterCustomerService.php` + `components/footer-customer-service/` (reuses FooterLinks visual system).  
+- Policies column: `inc/components/FooterPolicies.php` + `components/footer-policies/` (reuses FooterLinks visual system).  
+- Menu locations **`footer_useful_links`**, **`footer_customer_service`**, **`footer_policies`**. Legacy `footer_shop` / `footer_legal` still resolved by Useful Links / Policies if the new locations are empty.  
+- Customizer-driven: logo, brand description, contact (title/phone/email/address), social URLs (empty → `#` in brand column), copyright, payment icon slugs, scroll-to-top toggle, optional contact/WhatsApp FAB.  
+- Newsletter block is optional and **off by default** until a list plugin is wired.  
+- Floating controls use `--z-fixed` so MiniCart (`--z-drawer`) stays above them.
 
 ---
 
@@ -100,6 +106,7 @@ Note: `components/header/` directory exists but is empty (architecture cleanup d
 | Mechanism | Location |
 |-----------|----------|
 | WP menus | `primary`, `mobile`, `footer`, `categories` (`inc/setup.php`) |
+| Footer column menus | `footer_useful_links` (`FooterLinks`), `footer_customer_service` (`FooterCustomerService`), `footer_policies` (`FooterPolicies`), plus `footer_about` (`Footer`) |
 | Header category navbar | `CategoryNavbar` |
 | Homepage category icons | `Homepage::render_category_icons()` (live). `CategoryNavigation` exists but is inactive on the front page |
 | Mobile drawer | Header + `mobile-drawer.js` |

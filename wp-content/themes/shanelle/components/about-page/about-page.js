@@ -1,8 +1,8 @@
 /**
  * Shanelle About Page Script
  *
- * Lightweight hydration hook. Exposes page state and a ready event so future
- * enhancements (PWA, analytics) can attach without template changes.
+ * Hydration hook plus gentle section reveal. Exposes page state and a ready
+ * event so future enhancements (PWA, analytics) can attach without template changes.
  *
  * @package Shanelle
  */
@@ -26,6 +26,49 @@ function getAboutPageState() {
 }
 
 /**
+ * Reveal sections as they enter the viewport.
+ *
+ * @param {HTMLElement} pageRoot
+ */
+function initReveal( pageRoot ) {
+	const prefersReducedMotion = window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+	const targets = pageRoot.querySelectorAll( '[data-about-reveal]' );
+
+	if ( prefersReducedMotion || typeof IntersectionObserver === 'undefined' ) {
+		targets.forEach( ( element ) => {
+			element.classList.add( 'is-visible' );
+		} );
+		return;
+	}
+
+	const observer = new IntersectionObserver(
+		( entries ) => {
+			entries.forEach( ( entry ) => {
+				if ( ! entry.isIntersecting ) {
+					return;
+				}
+
+				entry.target.classList.add( 'is-visible' );
+				observer.unobserve( entry.target );
+			} );
+		},
+		{
+			rootMargin: '0px 0px -8% 0px',
+			threshold: 0.12,
+		}
+	);
+
+	targets.forEach( ( element, index ) => {
+		if ( index === 0 ) {
+			element.classList.add( 'is-visible' );
+			return;
+		}
+
+		observer.observe( element );
+	} );
+}
+
+/**
  * @param {HTMLElement|null} element
  */
 function initAboutPage( element = null ) {
@@ -36,6 +79,7 @@ function initAboutPage( element = null ) {
 	}
 
 	root.dataset.aboutHydrated = 'true';
+	initReveal( root );
 
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:about-page:ready', {

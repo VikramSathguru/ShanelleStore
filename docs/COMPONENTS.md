@@ -14,6 +14,7 @@ Page-level documentation lives in [`docs/pages/`](pages/).
 | My Account | [MY_ACCOUNT.md](pages/MY_ACCOUNT.md) |
 | Search | [SEARCH.md](pages/SEARCH.md) |
 | Collections | [COLLECTIONS.md](pages/COLLECTIONS.md) |
+| About | [ABOUT.md](pages/ABOUT.md) |
 
 ## Homepage sections
 
@@ -40,6 +41,16 @@ Page-level documentation lives in [`docs/pages/`](pages/).
 | ProductVariations | [ProductVariations.md](components/ProductVariations.md) |
 | ProductPurchase | [ProductPurchase.md](components/ProductPurchase.md) |
 | ProductInformation | [ProductInformation.md](components/ProductInformation.md) |
+
+## Layout shell
+
+| Component | Doc |
+|-----------|-----|
+| Footer | [Footer.md](components/Footer.md) |
+| FooterBrand | Part of [Footer.md](components/Footer.md) (brand column) |
+| FooterLinks | Part of [Footer.md](components/Footer.md) (useful links menu) |
+| FooterCustomerService | Part of [Footer.md](components/Footer.md) (customer service menu) |
+| FooterPolicies | Part of [Footer.md](components/Footer.md) (policies menu) |
 
 ## Related docs
 

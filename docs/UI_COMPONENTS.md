@@ -208,9 +208,9 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Storefront About page (marketing) |
-| Location | `inc/components/AboutPage.php`, `components/about-page/` |
-| Dependencies | Theme Customizer (title, hero, mission, features) |
+| Purpose | Storefront About page (brand story landing) |
+| Location | `inc/components/AboutPage.php`, `components/about-page/` (+ `partials/`) |
+| Dependencies | Theme Customizer (hero, story, mission/values, why-choose, CTA) |
 | Used by | `page-templates/about.php` |
 | Reusable | Page |
 | Needs improvement | — |
@@ -337,10 +337,55 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Site footer composition (brand, menus, contact, optional newsletter) |
+| Purpose | Site footer composition (assembles brand, menus, contact, optional newsletter, floating controls) |
 | Location | `inc/components/Footer.php`, `components/footer/` |
-| Dependencies | Menus, Customizer (contact, social, payments, scroll-to-top; newsletter off by default) |
+| Dependencies | FooterBrand, Menus, Customizer |
 | Used by | `footer.php` |
+| Reusable | Yes |
+| Docs | [components/Footer.md](./components/Footer.md) |
+| Needs improvement | — |
+
+### FooterBrand
+
+| Field | Detail |
+|-------|--------|
+| Purpose | First footer column — logo, brand description, social icons |
+| Location | `inc/components/FooterBrand.php`, `components/footer-brand/` |
+| Dependencies | Theme Customizer (via Footer settings), Footer icon SVGs |
+| Used by | `components/footer/footer.php` |
+| Reusable | Yes |
+| Needs improvement | — |
+
+### FooterLinks
+
+| Field | Detail |
+|-------|--------|
+| Purpose | Second footer column — Useful Links via `wp_nav_menu` |
+| Location | `inc/components/FooterLinks.php`, `components/footer-links/` |
+| Dependencies | Menu location `footer_useful_links` (legacy: `footer_shop`) |
+| Used by | `components/footer/footer.php` |
+| Reusable | Yes |
+| Needs improvement | — |
+
+### FooterCustomerService
+
+| Field | Detail |
+|-------|--------|
+| Purpose | Third footer column — Customer Service via `wp_nav_menu` |
+| Location | `inc/components/FooterCustomerService.php`, `components/footer-customer-service/` |
+| Dependencies | Menu location `footer_customer_service`; visual system from FooterLinks CSS |
+| Used by | `components/footer/footer.php` |
+| Reusable | Yes |
+| Needs improvement | — |
+
+### FooterPolicies
+
+| Field | Detail |
+|-------|--------|
+| Purpose | Policies / legal footer column via `wp_nav_menu` |
+| Location | `inc/components/FooterPolicies.php`, `components/footer-policies/` |
+| Dependencies | Menu location `footer_policies` (legacy: `footer_legal`); visual system from FooterLinks CSS |
+| Used by | `components/footer/footer.php` |
 | Reusable | Yes |
 | Needs improvement | — |
 

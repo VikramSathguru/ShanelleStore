@@ -18,8 +18,18 @@ defined( 'ABSPATH' ) || exit;
 	data-about-state="<?php echo esc_attr( AboutPage::get_state_json() ); ?>"
 	aria-labelledby="<?php echo esc_attr( AboutPage::get_heading_id() ); ?>"
 >
-	<?php AboutPage::render_title_band(); ?>
+	<?php
+	$hero = AboutPage::get_section( 'hero' );
+	if ( empty( $hero['visible'] ) ) :
+		?>
+		<h1 id="<?php echo esc_attr( AboutPage::get_heading_id() ); ?>" class="sr-only">
+			<?php echo esc_html( AboutPage::get_page_title() ); ?>
+		</h1>
+	<?php endif; ?>
+
 	<?php AboutPage::render_hero(); ?>
-	<?php AboutPage::render_mission(); ?>
-	<?php AboutPage::render_features(); ?>
+	<?php AboutPage::render_story(); ?>
+	<?php AboutPage::render_mission_values(); ?>
+	<?php AboutPage::render_why_choose(); ?>
+	<?php AboutPage::render_cta(); ?>
 </main>

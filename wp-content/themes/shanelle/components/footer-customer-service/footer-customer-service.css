@@ -1,0 +1,10 @@
+/**
+ * Shanelle Footer Customer Service Column
+ *
+ * Third footer column. Reuses FooterLinks visual system via shared
+ * `.footer-links` classes; this file is a thin component handle for enqueue.
+ */
+
+.footer-customer-service {
+	/* Visual styles inherited from .footer-links (FooterLinks CSS). */
+}

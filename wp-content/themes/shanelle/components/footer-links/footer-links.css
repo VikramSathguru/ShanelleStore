@@ -1,0 +1,77 @@
+/**
+ * Shanelle Footer Useful Links Column
+ *
+ * Second footer column: WP nav menu only (no hard-coded links).
+ * Spacing: 16px below title (--space-4), 12px between items (--space-3).
+ */
+
+.footer-links {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+}
+
+.footer-links__title {
+	/* Baseline + type shared via footer.css heading group */
+	margin: 0 0 var(--space-4);
+}
+
+.footer-links__nav {
+	width: 100%;
+}
+
+.footer-links__list {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-3-5); /* ~14px — slightly more air between items */
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.footer-links__list a {
+	color: var(--color-text-secondary);
+	text-decoration: none;
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-relaxed);
+	transition:
+		color var(--duration-base) var(--ease-in-out),
+		text-decoration-color var(--duration-base) var(--ease-in-out);
+	text-underline-offset: 0.2em;
+	text-decoration-thickness: 1px;
+	text-decoration-color: transparent;
+}
+
+.footer-links__list a:hover,
+.footer-links__list a:focus-visible {
+	color: var(--color-text-link);
+	text-decoration-line: underline;
+	text-decoration-color: var(--color-text-link);
+}
+
+.footer-links__list a:focus-visible {
+	outline: 2px solid var(--color-border-focus);
+	outline-offset: 3px;
+	border-radius: var(--radius-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.footer-links__list a {
+		transition: none;
+	}
+}
+
+/* Tablet + desktop: left-aligned vertical list */
+@media (min-width: 48rem) {
+	.footer-links {
+		align-items: flex-start;
+		text-align: left;
+	}
+
+	.footer-links__list {
+		align-items: flex-start;
+	}
+}

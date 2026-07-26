@@ -16,6 +16,8 @@ defined( 'ABSPATH' ) || exit;
  *
  * Content is Theme Customizer driven so merchants edit copy, media, and links
  * without touching template code. Assign the About template to a WordPress page.
+ *
+ * Sections: Hero, Our Story, Mission & Values, Why Choose, Call to Action.
  */
 final class AboutPage {
 
@@ -35,6 +37,8 @@ final class AboutPage {
 
 	private const ICON_SIZE = 'thumbnail';
 
+	private const VALUE_COUNT = 3;
+
 	private const FEATURE_COUNT = 4;
 
 	private const MOD_TITLE = 'shanelle_about_page_title';
@@ -53,7 +57,27 @@ final class AboutPage {
 
 	private const MOD_HERO_TAGLINE = 'shanelle_about_page_hero_tagline';
 
+	private const MOD_HERO_CTA_TEXT = 'shanelle_about_page_hero_cta_text';
+
+	private const MOD_HERO_CTA_URL = 'shanelle_about_page_hero_cta_url';
+
+	private const MOD_SHOW_STORY = 'shanelle_about_page_show_story';
+
+	private const MOD_STORY_EYEBROW = 'shanelle_about_page_story_eyebrow';
+
+	private const MOD_STORY_HEADING = 'shanelle_about_page_story_heading';
+
+	private const MOD_STORY_BODY = 'shanelle_about_page_story_body';
+
+	private const MOD_STORY_DESKTOP_IMAGE = 'shanelle_about_page_story_desktop_image';
+
+	private const MOD_STORY_MOBILE_IMAGE = 'shanelle_about_page_story_mobile_image';
+
+	private const MOD_STORY_MEDIA_SIDE = 'shanelle_about_page_story_media_side';
+
 	private const MOD_SHOW_MISSION = 'shanelle_about_page_show_mission';
+
+	private const MOD_MISSION_EYEBROW = 'shanelle_about_page_mission_eyebrow';
 
 	private const MOD_MISSION_HEADING = 'shanelle_about_page_mission_heading';
 
@@ -63,13 +87,29 @@ final class AboutPage {
 
 	private const MOD_MISSION_CTA_URL = 'shanelle_about_page_mission_cta_url';
 
+	private const MOD_VALUE_PREFIX = 'shanelle_about_page_value_';
+
 	private const MOD_SHOW_FEATURES = 'shanelle_about_page_show_features';
+
+	private const MOD_FEATURES_EYEBROW = 'shanelle_about_page_features_eyebrow';
 
 	private const MOD_FEATURES_HEADING = 'shanelle_about_page_features_heading';
 
 	private const MOD_FEATURES_INTRO = 'shanelle_about_page_features_intro';
 
 	private const MOD_FEATURE_PREFIX = 'shanelle_about_page_feature_';
+
+	private const MOD_SHOW_CTA = 'shanelle_about_page_show_cta';
+
+	private const MOD_CTA_EYEBROW = 'shanelle_about_page_cta_eyebrow';
+
+	private const MOD_CTA_HEADING = 'shanelle_about_page_cta_heading';
+
+	private const MOD_CTA_BODY = 'shanelle_about_page_cta_body';
+
+	private const MOD_CTA_TEXT = 'shanelle_about_page_cta_text';
+
+	private const MOD_CTA_URL = 'shanelle_about_page_cta_url';
 
 	/**
 	 * Active page state for the render cycle.
@@ -130,7 +170,7 @@ final class AboutPage {
 		self::register_text_control(
 			$wp_customize,
 			self::MOD_TITLE,
-			__( 'Título de la página', 'shanelle' ),
+			__( 'Título de la página (H1 de respaldo)', 'shanelle' ),
 			__( 'Sobre nosotros', 'shanelle' )
 		);
 
@@ -140,37 +180,89 @@ final class AboutPage {
 		self::register_image_control(
 			$wp_customize,
 			self::MOD_HERO_DESKTOP_IMAGE,
-			__( 'Imagen hero (escritorio)', 'shanelle' ),
-			__( 'Tamaño recomendado: 1440 x 720 px.', 'shanelle' )
+			__( 'Hero: imagen (escritorio)', 'shanelle' ),
+			__( 'Tamaño recomendado: 1600 x 900 px.', 'shanelle' )
 		);
 
 		self::register_image_control(
 			$wp_customize,
 			self::MOD_HERO_MOBILE_IMAGE,
-			__( 'Imagen hero (móvil)', 'shanelle' ),
+			__( 'Hero: imagen (móvil)', 'shanelle' ),
 			__( 'Tamaño recomendado: 768 x 960 px. Si está vacío, se usa la imagen de escritorio.', 'shanelle' )
 		);
 
 		self::register_text_control( $wp_customize, self::MOD_HERO_EYEBROW, __( 'Hero: antetítulo', 'shanelle' ) );
-		self::register_text_control( $wp_customize, self::MOD_HERO_HEADLINE, __( 'Hero: titular', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_HERO_HEADLINE, __( 'Hero: titular (H1)', 'shanelle' ) );
 		self::register_textarea_control( $wp_customize, self::MOD_HERO_SUBHEADLINE, __( 'Hero: subtítulo', 'shanelle' ) );
 		self::register_text_control( $wp_customize, self::MOD_HERO_TAGLINE, __( 'Hero: eslogan', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_HERO_CTA_TEXT, __( 'Hero: texto del botón', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_HERO_CTA_URL, __( 'Hero: URL del botón (vacío = tienda)', 'shanelle' ) );
 
-		// Mission.
-		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_MISSION, __( 'Mostrar sección de misión', 'shanelle' ), true );
+		// Our Story.
+		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_STORY, __( 'Mostrar sección Nuestra historia', 'shanelle' ), true );
+		self::register_text_control( $wp_customize, self::MOD_STORY_EYEBROW, __( 'Historia: antetítulo', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_STORY_HEADING, __( 'Historia: encabezado', 'shanelle' ) );
+		self::register_textarea_control( $wp_customize, self::MOD_STORY_BODY, __( 'Historia: texto', 'shanelle' ) );
+
+		self::register_image_control(
+			$wp_customize,
+			self::MOD_STORY_DESKTOP_IMAGE,
+			__( 'Historia: imagen (escritorio)', 'shanelle' ),
+			__( 'Tamaño recomendado: 1200 x 1500 px.', 'shanelle' )
+		);
+
+		self::register_image_control(
+			$wp_customize,
+			self::MOD_STORY_MOBILE_IMAGE,
+			__( 'Historia: imagen (móvil)', 'shanelle' ),
+			__( 'Si está vacío, se usa la imagen de escritorio.', 'shanelle' )
+		);
+
+		self::register_select_control(
+			$wp_customize,
+			self::MOD_STORY_MEDIA_SIDE,
+			__( 'Historia: posición de la imagen (escritorio)', 'shanelle' ),
+			array(
+				'left'  => __( 'Izquierda', 'shanelle' ),
+				'right' => __( 'Derecha', 'shanelle' ),
+			),
+			'left'
+		);
+
+		// Mission & Values.
+		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_MISSION, __( 'Mostrar sección Misión y valores', 'shanelle' ), true );
+		self::register_text_control( $wp_customize, self::MOD_MISSION_EYEBROW, __( 'Misión: antetítulo', 'shanelle' ) );
 		self::register_text_control( $wp_customize, self::MOD_MISSION_HEADING, __( 'Misión: encabezado', 'shanelle' ) );
 		self::register_textarea_control( $wp_customize, self::MOD_MISSION_BODY, __( 'Misión: texto', 'shanelle' ) );
-		self::register_text_control( $wp_customize, self::MOD_MISSION_CTA_TEXT, __( 'Misión: texto del botón', 'shanelle' ) );
-		self::register_url_control( $wp_customize, self::MOD_MISSION_CTA_URL, __( 'Misión: URL del botón (vacío = tienda)', 'shanelle' ) );
 
-		// Features.
-		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_FEATURES, __( 'Mostrar sección de características', 'shanelle' ), true );
-		self::register_text_control( $wp_customize, self::MOD_FEATURES_HEADING, __( 'Características: encabezado', 'shanelle' ) );
-		self::register_textarea_control( $wp_customize, self::MOD_FEATURES_INTRO, __( 'Características: texto introductorio', 'shanelle' ) );
+		for ( $index = 1; $index <= self::VALUE_COUNT; $index++ ) {
+			/* translators: %d: value slot number. */
+			$prefix = sprintf( __( 'Valor %d', 'shanelle' ), $index );
+
+			self::register_image_control(
+				$wp_customize,
+				self::value_mod( $index, 'image' ),
+				$prefix . ': ' . __( 'ícono/imagen', 'shanelle' ),
+				__( 'Imagen cuadrada recomendada (ej. 160 x 160 px).', 'shanelle' )
+			);
+
+			self::register_text_control( $wp_customize, self::value_mod( $index, 'title' ), $prefix . ': ' . __( 'título', 'shanelle' ) );
+			self::register_textarea_control( $wp_customize, self::value_mod( $index, 'text' ), $prefix . ': ' . __( 'descripción', 'shanelle' ) );
+		}
+
+		// Legacy mission CTA fields (fall back for closing CTA when new CTA fields are empty).
+		self::register_text_control( $wp_customize, self::MOD_MISSION_CTA_TEXT, __( 'Misión: texto del botón (legado)', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_MISSION_CTA_URL, __( 'Misión: URL del botón legado (vacío = tienda)', 'shanelle' ) );
+
+		// Why Choose.
+		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_FEATURES, __( 'Mostrar sección Por qué elegirnos', 'shanelle' ), true );
+		self::register_text_control( $wp_customize, self::MOD_FEATURES_EYEBROW, __( 'Por qué: antetítulo', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_FEATURES_HEADING, __( 'Por qué: encabezado', 'shanelle' ) );
+		self::register_textarea_control( $wp_customize, self::MOD_FEATURES_INTRO, __( 'Por qué: texto introductorio', 'shanelle' ) );
 
 		for ( $index = 1; $index <= self::FEATURE_COUNT; $index++ ) {
 			/* translators: %d: feature slot number. */
-			$prefix = sprintf( __( 'Característica %d', 'shanelle' ), $index );
+			$prefix = sprintf( __( 'Motivo %d', 'shanelle' ), $index );
 
 			self::register_image_control(
 				$wp_customize,
@@ -182,6 +274,14 @@ final class AboutPage {
 			self::register_text_control( $wp_customize, self::feature_mod( $index, 'title' ), $prefix . ': ' . __( 'título', 'shanelle' ) );
 			self::register_textarea_control( $wp_customize, self::feature_mod( $index, 'text' ), $prefix . ': ' . __( 'descripción', 'shanelle' ) );
 		}
+
+		// Call to Action.
+		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_CTA, __( 'Mostrar sección de llamado a la acción', 'shanelle' ), true );
+		self::register_text_control( $wp_customize, self::MOD_CTA_EYEBROW, __( 'CTA: antetítulo', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_CTA_HEADING, __( 'CTA: encabezado', 'shanelle' ) );
+		self::register_textarea_control( $wp_customize, self::MOD_CTA_BODY, __( 'CTA: texto', 'shanelle' ) );
+		self::register_text_control( $wp_customize, self::MOD_CTA_TEXT, __( 'CTA: texto del botón', 'shanelle' ) );
+		self::register_url_control( $wp_customize, self::MOD_CTA_URL, __( 'CTA: URL del botón (vacío = tienda)', 'shanelle' ) );
 	}
 
 	/**
@@ -236,159 +336,91 @@ final class AboutPage {
 	}
 
 	/**
-	 * Render the page title band.
-	 */
-	public static function render_title_band(): void {
-		$title = self::get_page_title();
-
-		if ( '' === $title ) {
-			return;
-		}
-		?>
-		<section class="about-page__title-band">
-			<div class="container">
-				<h1 id="<?php echo esc_attr( self::get_heading_id() ); ?>" class="about-page__title text-h2 text-center">
-					<?php echo esc_html( $title ); ?>
-				</h1>
-			</div>
-		</section>
-		<?php
-	}
-
-	/**
 	 * Render the hero section.
 	 */
 	public static function render_hero(): void {
-		$hero = is_array( self::$state['hero'] ?? null ) ? self::$state['hero'] : array();
+		$hero = self::get_section( 'hero' );
 
 		if ( empty( $hero['visible'] ) ) {
 			return;
 		}
 
-		$has_media = ! empty( $hero['has_media'] );
-		?>
-		<section class="about-page__hero<?php echo $has_media ? '' : ' about-page__hero--plain'; ?>">
-			<div class="container about-page__hero-inner">
-				<?php if ( $has_media ) : ?>
-					<div class="about-page__hero-media">
-						<?php self::render_picture( $hero['desktop'] ?? array(), $hero['mobile'] ?? array(), true ); ?>
-					</div>
-				<?php endif; ?>
-
-				<div class="about-page__hero-copy">
-					<?php if ( '' !== (string) ( $hero['eyebrow'] ?? '' ) ) : ?>
-						<p class="about-page__eyebrow text-overline text-brand"><?php echo esc_html( (string) $hero['eyebrow'] ); ?></p>
-					<?php endif; ?>
-
-					<?php if ( '' !== (string) ( $hero['headline'] ?? '' ) ) : ?>
-						<p class="about-page__hero-headline text-display"><?php echo esc_html( (string) $hero['headline'] ); ?></p>
-					<?php endif; ?>
-
-					<?php if ( '' !== (string) ( $hero['subheadline'] ?? '' ) ) : ?>
-						<p class="about-page__hero-subheadline text-body text-secondary"><?php echo esc_html( (string) $hero['subheadline'] ); ?></p>
-					<?php endif; ?>
-
-					<?php if ( '' !== (string) ( $hero['tagline'] ?? '' ) ) : ?>
-						<p class="about-page__hero-tagline text-h5 text-brand"><?php echo esc_html( (string) $hero['tagline'] ); ?></p>
-					<?php endif; ?>
-				</div>
-			</div>
-		</section>
-		<?php
+		require self::COMPONENT_DIR . '/partials/hero.php';
 	}
 
 	/**
-	 * Render the mission section.
+	 * Render the Our Story section.
 	 */
-	public static function render_mission(): void {
-		$mission = is_array( self::$state['mission'] ?? null ) ? self::$state['mission'] : array();
+	public static function render_story(): void {
+		$story = self::get_section( 'story' );
+
+		if ( empty( $story['visible'] ) ) {
+			return;
+		}
+
+		require self::COMPONENT_DIR . '/partials/story.php';
+	}
+
+	/**
+	 * Render the Mission & Values section.
+	 */
+	public static function render_mission_values(): void {
+		$mission = self::get_section( 'mission' );
 
 		if ( empty( $mission['visible'] ) ) {
 			return;
 		}
 
-		$paragraphs = is_array( $mission['paragraphs'] ?? null ) ? $mission['paragraphs'] : array();
-		$cta        = is_array( $mission['cta'] ?? null ) ? $mission['cta'] : array();
-		?>
-		<section class="about-page__mission">
-			<div class="container about-page__mission-inner">
-				<?php if ( '' !== (string) ( $mission['heading'] ?? '' ) ) : ?>
-					<h2 class="about-page__mission-heading text-h3 text-inverse text-center">
-						<?php echo esc_html( (string) $mission['heading'] ); ?>
-					</h2>
-				<?php endif; ?>
-
-				<?php if ( ! empty( $paragraphs ) ) : ?>
-					<div class="about-page__mission-body">
-						<?php foreach ( $paragraphs as $paragraph ) : ?>
-							<p class="text-body text-inverse text-center"><?php echo esc_html( (string) $paragraph ); ?></p>
-						<?php endforeach; ?>
-					</div>
-				<?php endif; ?>
-
-				<?php if ( ! empty( $cta['visible'] ) ) : ?>
-					<div class="about-page__mission-actions">
-						<a class="btn btn--secondary btn--lg" href="<?php echo esc_url( (string) $cta['url'] ); ?>">
-							<?php echo esc_html( (string) $cta['text'] ); ?>
-						</a>
-					</div>
-				<?php endif; ?>
-			</div>
-		</section>
-		<?php
+		require self::COMPONENT_DIR . '/partials/mission-values.php';
 	}
 
 	/**
-	 * Render the features section.
+	 * Backward-compatible alias for mission rendering.
 	 */
-	public static function render_features(): void {
-		$features = is_array( self::$state['features'] ?? null ) ? self::$state['features'] : array();
-		$items    = is_array( $features['items'] ?? null ) ? $features['items'] : array();
+	public static function render_mission(): void {
+		self::render_mission_values();
+	}
 
-		if ( empty( $features['visible'] ) || empty( $items ) ) {
+	/**
+	 * Render the Why Choose section.
+	 */
+	public static function render_why_choose(): void {
+		$why = self::get_section( 'why_choose' );
+
+		if ( empty( $why['visible'] ) || empty( $why['items'] ) ) {
 			return;
 		}
-		?>
-		<section class="about-page__features">
-			<div class="container about-page__features-inner">
-				<?php if ( '' !== (string) ( $features['heading'] ?? '' ) || '' !== (string) ( $features['intro'] ?? '' ) ) : ?>
-					<header class="about-page__features-header">
-						<?php if ( '' !== (string) ( $features['heading'] ?? '' ) ) : ?>
-							<h2 class="about-page__features-heading text-h3 text-brand text-center">
-								<?php echo esc_html( (string) $features['heading'] ); ?>
-							</h2>
-						<?php endif; ?>
 
-						<?php if ( '' !== (string) ( $features['intro'] ?? '' ) ) : ?>
-							<p class="about-page__features-intro text-body text-secondary text-center">
-								<?php echo esc_html( (string) $features['intro'] ); ?>
-							</p>
-						<?php endif; ?>
-					</header>
-				<?php endif; ?>
+		require self::COMPONENT_DIR . '/partials/why-choose.php';
+	}
 
-				<ul class="about-page__features-grid" role="list">
-					<?php foreach ( $items as $item ) : ?>
-						<li class="about-page__feature">
-							<?php if ( ! empty( $item['image']['id'] ) ) : ?>
-								<span class="about-page__feature-icon" aria-hidden="true">
-									<?php self::render_image( (int) $item['image']['id'], self::ICON_SIZE ); ?>
-								</span>
-							<?php endif; ?>
+	/**
+	 * Backward-compatible alias for features rendering.
+	 */
+	public static function render_features(): void {
+		self::render_why_choose();
+	}
 
-							<?php if ( '' !== (string) ( $item['title'] ?? '' ) ) : ?>
-								<h3 class="about-page__feature-title text-h5"><?php echo esc_html( (string) $item['title'] ); ?></h3>
-							<?php endif; ?>
+	/**
+	 * Render the closing Call to Action section.
+	 */
+	public static function render_cta(): void {
+		$cta = self::get_section( 'cta' );
 
-							<?php if ( '' !== (string) ( $item['text'] ?? '' ) ) : ?>
-								<p class="about-page__feature-text text-body-sm text-secondary"><?php echo esc_html( (string) $item['text'] ); ?></p>
-							<?php endif; ?>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-		</section>
-		<?php
+		if ( empty( $cta['visible'] ) ) {
+			return;
+		}
+
+		require self::COMPONENT_DIR . '/partials/cta.php';
+	}
+
+	/**
+	 * Return a normalized section from the active render state.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public static function get_section( string $key ): array {
+		return is_array( self::$state[ $key ] ?? null ) ? self::$state[ $key ] : array();
 	}
 
 	/**
@@ -397,10 +429,12 @@ final class AboutPage {
 	 * @param array<string, mixed> $desktop Desktop image data.
 	 * @param array<string, mixed> $mobile  Mobile image data.
 	 * @param bool                 $eager   Whether to eager load (LCP).
+	 * @param string               $class   Extra image class suffix.
 	 */
-	private static function render_picture( array $desktop, array $mobile, bool $eager = false ): void {
+	public static function render_picture( array $desktop, array $mobile, bool $eager = false, string $class = '' ): void {
 		$desktop_src = (string) ( $desktop['src'] ?? '' );
 		$mobile_src  = (string) ( $mobile['src'] ?? '' );
+		$image_class = 'about-page__image' . ( '' !== $class ? ' ' . $class : '' );
 
 		if ( '' === $desktop_src && '' === $mobile_src ) {
 			return;
@@ -416,7 +450,7 @@ final class AboutPage {
 			<?php endif; ?>
 
 			<img
-				class="about-page__image"
+				class="<?php echo esc_attr( $image_class ); ?>"
 				src="<?php echo esc_url( '' !== $mobile_src ? $mobile_src : $desktop_src ); ?>"
 				<?php if ( ! empty( $mobile['srcset'] ) || ! empty( $desktop['srcset'] ) ) : ?>
 					srcset="<?php echo esc_attr( (string) ( $mobile['srcset'] ?: $desktop['srcset'] ) ); ?>"
@@ -438,7 +472,7 @@ final class AboutPage {
 	/**
 	 * Render a simple responsive attachment image.
 	 */
-	private static function render_image( int $attachment_id, string $size ): void {
+	public static function render_image( int $attachment_id, string $size ): void {
 		if ( $attachment_id <= 0 ) {
 			return;
 		}
@@ -500,48 +534,114 @@ final class AboutPage {
 	public static function build_page_state(): array {
 		$settings = self::get_settings();
 
-		$desktop = self::get_image_data( (int) $settings['hero_desktop_image_id'], self::DESKTOP_SIZE );
-		$mobile  = self::get_image_data( (int) $settings['hero_mobile_image_id'], self::MOBILE_SIZE );
+		$hero_desktop = self::get_image_data( (int) $settings['hero_desktop_image_id'], self::DESKTOP_SIZE );
+		$hero_mobile  = self::get_image_data( (int) $settings['hero_mobile_image_id'], self::MOBILE_SIZE );
 
-		if ( $mobile['id'] <= 0 && $desktop['id'] > 0 ) {
-			$mobile = self::get_image_data( (int) $settings['hero_desktop_image_id'], self::MOBILE_SIZE );
+		if ( $hero_mobile['id'] <= 0 && $hero_desktop['id'] > 0 ) {
+			$hero_mobile = self::get_image_data( (int) $settings['hero_desktop_image_id'], self::MOBILE_SIZE );
 		}
 
-		$has_media = $desktop['id'] > 0 || $mobile['id'] > 0;
+		$hero_headline = (string) $settings['hero_headline'];
+		$page_title    = (string) $settings['title'];
+		$h1            = '' !== $hero_headline ? $hero_headline : $page_title;
 
 		$hero = array(
 			'visible'     => ! empty( $settings['show_hero'] ),
-			'has_media'   => $has_media,
-			'desktop'     => $desktop,
-			'mobile'      => $mobile,
+			'has_media'   => $hero_desktop['id'] > 0 || $hero_mobile['id'] > 0,
+			'desktop'     => $hero_desktop,
+			'mobile'      => $hero_mobile,
 			'eyebrow'     => (string) $settings['hero_eyebrow'],
-			'headline'    => (string) $settings['hero_headline'],
+			'headline'    => $h1,
 			'subheadline' => (string) $settings['hero_subheadline'],
 			'tagline'     => (string) $settings['hero_tagline'],
+			'cta'         => self::get_cta_data( (string) $settings['hero_cta_text'], (string) $settings['hero_cta_url'] ),
 		);
+
+		$story_desktop = self::get_image_data( (int) $settings['story_desktop_image_id'], self::DESKTOP_SIZE );
+		$story_mobile  = self::get_image_data( (int) $settings['story_mobile_image_id'], self::MOBILE_SIZE );
+
+		if ( $story_mobile['id'] <= 0 && $story_desktop['id'] > 0 ) {
+			$story_mobile = self::get_image_data( (int) $settings['story_desktop_image_id'], self::MOBILE_SIZE );
+		}
+
+		$story_paragraphs = self::split_paragraphs( (string) $settings['story_body'] );
+		$story_has_copy   = '' !== (string) $settings['story_eyebrow']
+			|| '' !== (string) $settings['story_heading']
+			|| ! empty( $story_paragraphs );
+		$story_has_media  = $story_desktop['id'] > 0 || $story_mobile['id'] > 0;
+
+		$story = array(
+			'visible'    => ! empty( $settings['show_story'] ) && ( $story_has_copy || $story_has_media ),
+			'has_media'  => $story_has_media,
+			'desktop'    => $story_desktop,
+			'mobile'     => $story_mobile,
+			'media_side' => (string) $settings['story_media_side'],
+			'eyebrow'    => (string) $settings['story_eyebrow'],
+			'heading'    => (string) $settings['story_heading'],
+			'paragraphs' => $story_paragraphs,
+		);
+
+		$values             = self::get_card_items( $settings, 'value', self::VALUE_COUNT );
+		$mission_paragraphs = self::split_paragraphs( (string) $settings['mission_body'] );
+		$mission_has_copy   = '' !== (string) $settings['mission_eyebrow']
+			|| '' !== (string) $settings['mission_heading']
+			|| ! empty( $mission_paragraphs );
 
 		$mission = array(
-			'visible'    => ! empty( $settings['show_mission'] ),
+			'visible'    => ! empty( $settings['show_mission'] ) && ( $mission_has_copy || ! empty( $values ) ),
+			'eyebrow'    => (string) $settings['mission_eyebrow'],
 			'heading'    => (string) $settings['mission_heading'],
-			'paragraphs' => self::split_paragraphs( (string) $settings['mission_body'] ),
-			'cta'        => self::get_cta_data( (string) $settings['mission_cta_text'], (string) $settings['mission_cta_url'] ),
+			'paragraphs' => $mission_paragraphs,
+			'values'     => $values,
 		);
 
-		$features = array(
-			'visible' => ! empty( $settings['show_features'] ),
+		$why_items = self::get_card_items( $settings, 'feature', self::FEATURE_COUNT );
+
+		$why_choose = array(
+			'visible' => ! empty( $settings['show_features'] ) && ! empty( $why_items ),
+			'eyebrow' => (string) $settings['features_eyebrow'],
 			'heading' => (string) $settings['features_heading'],
 			'intro'   => (string) $settings['features_intro'],
-			'items'   => self::get_feature_items( $settings ),
+			'items'   => $why_items,
+		);
+
+		$cta_text = (string) $settings['cta_text'];
+		$cta_url  = (string) $settings['cta_url'];
+
+		if ( '' === trim( $cta_text ) ) {
+			$cta_text = (string) $settings['mission_cta_text'];
+		}
+
+		if ( '' === trim( $cta_url ) ) {
+			$cta_url = (string) $settings['mission_cta_url'];
+		}
+
+		$cta_button     = self::get_cta_data( $cta_text, $cta_url );
+		$cta_paragraphs = self::split_paragraphs( (string) $settings['cta_body'] );
+		$cta_has_copy   = '' !== (string) $settings['cta_eyebrow']
+			|| '' !== (string) $settings['cta_heading']
+			|| ! empty( $cta_paragraphs )
+			|| ! empty( $cta_button['visible'] );
+
+		$cta = array(
+			'visible'    => ! empty( $settings['show_cta'] ) && $cta_has_copy,
+			'eyebrow'    => (string) $settings['cta_eyebrow'],
+			'heading'    => (string) $settings['cta_heading'],
+			'paragraphs' => $cta_paragraphs,
+			'button'     => $cta_button,
 		);
 
 		return apply_filters(
 			'shanelle_about_page_state',
 			array(
-				'hero'     => $hero,
-				'mission'  => $mission,
-				'features' => $features,
-				'settings' => $settings,
-				'urls'     => array(
+				'hero'       => $hero,
+				'story'      => $story,
+				'mission'    => $mission,
+				'why_choose' => $why_choose,
+				'features'   => $why_choose,
+				'cta'        => $cta,
+				'settings'   => $settings,
+				'urls'       => array(
 					'shop' => self::get_shop_url(),
 				),
 			)
@@ -555,23 +655,46 @@ final class AboutPage {
 	 */
 	public static function get_settings(): array {
 		$settings = array(
-			'title'                 => self::get_theme_mod_string( self::MOD_TITLE, __( 'Sobre nosotros', 'shanelle' ) ),
-			'show_hero'             => self::get_theme_mod_bool( self::MOD_SHOW_HERO, true ),
-			'hero_desktop_image_id' => self::get_theme_mod_int( self::MOD_HERO_DESKTOP_IMAGE ),
-			'hero_mobile_image_id'  => self::get_theme_mod_int( self::MOD_HERO_MOBILE_IMAGE ),
-			'hero_eyebrow'          => self::get_theme_mod_string( self::MOD_HERO_EYEBROW ),
-			'hero_headline'         => self::get_theme_mod_string( self::MOD_HERO_HEADLINE ),
-			'hero_subheadline'      => self::get_theme_mod_string( self::MOD_HERO_SUBHEADLINE ),
-			'hero_tagline'          => self::get_theme_mod_string( self::MOD_HERO_TAGLINE ),
-			'show_mission'          => self::get_theme_mod_bool( self::MOD_SHOW_MISSION, true ),
-			'mission_heading'       => self::get_theme_mod_string( self::MOD_MISSION_HEADING ),
-			'mission_body'          => self::get_theme_mod_string( self::MOD_MISSION_BODY ),
-			'mission_cta_text'      => self::get_theme_mod_string( self::MOD_MISSION_CTA_TEXT ),
-			'mission_cta_url'       => self::get_theme_mod_url( self::MOD_MISSION_CTA_URL ),
-			'show_features'         => self::get_theme_mod_bool( self::MOD_SHOW_FEATURES, true ),
-			'features_heading'      => self::get_theme_mod_string( self::MOD_FEATURES_HEADING ),
-			'features_intro'        => self::get_theme_mod_string( self::MOD_FEATURES_INTRO ),
+			'title'                  => self::get_theme_mod_string( self::MOD_TITLE, __( 'Sobre nosotros', 'shanelle' ) ),
+			'show_hero'              => self::get_theme_mod_bool( self::MOD_SHOW_HERO, true ),
+			'hero_desktop_image_id'  => self::get_theme_mod_int( self::MOD_HERO_DESKTOP_IMAGE ),
+			'hero_mobile_image_id'   => self::get_theme_mod_int( self::MOD_HERO_MOBILE_IMAGE ),
+			'hero_eyebrow'           => self::get_theme_mod_string( self::MOD_HERO_EYEBROW ),
+			'hero_headline'          => self::get_theme_mod_string( self::MOD_HERO_HEADLINE ),
+			'hero_subheadline'       => self::get_theme_mod_string( self::MOD_HERO_SUBHEADLINE ),
+			'hero_tagline'           => self::get_theme_mod_string( self::MOD_HERO_TAGLINE ),
+			'hero_cta_text'          => self::get_theme_mod_string( self::MOD_HERO_CTA_TEXT ),
+			'hero_cta_url'           => self::get_theme_mod_url( self::MOD_HERO_CTA_URL ),
+			'show_story'             => self::get_theme_mod_bool( self::MOD_SHOW_STORY, true ),
+			'story_eyebrow'          => self::get_theme_mod_string( self::MOD_STORY_EYEBROW ),
+			'story_heading'          => self::get_theme_mod_string( self::MOD_STORY_HEADING ),
+			'story_body'             => self::get_theme_mod_string( self::MOD_STORY_BODY ),
+			'story_desktop_image_id' => self::get_theme_mod_int( self::MOD_STORY_DESKTOP_IMAGE ),
+			'story_mobile_image_id'  => self::get_theme_mod_int( self::MOD_STORY_MOBILE_IMAGE ),
+			'story_media_side'       => self::get_theme_mod_choice( self::MOD_STORY_MEDIA_SIDE, array( 'left', 'right' ), 'left' ),
+			'show_mission'           => self::get_theme_mod_bool( self::MOD_SHOW_MISSION, true ),
+			'mission_eyebrow'        => self::get_theme_mod_string( self::MOD_MISSION_EYEBROW ),
+			'mission_heading'        => self::get_theme_mod_string( self::MOD_MISSION_HEADING ),
+			'mission_body'           => self::get_theme_mod_string( self::MOD_MISSION_BODY ),
+			'mission_cta_text'       => self::get_theme_mod_string( self::MOD_MISSION_CTA_TEXT ),
+			'mission_cta_url'        => self::get_theme_mod_url( self::MOD_MISSION_CTA_URL ),
+			'show_features'          => self::get_theme_mod_bool( self::MOD_SHOW_FEATURES, true ),
+			'features_eyebrow'       => self::get_theme_mod_string( self::MOD_FEATURES_EYEBROW ),
+			'features_heading'       => self::get_theme_mod_string( self::MOD_FEATURES_HEADING ),
+			'features_intro'         => self::get_theme_mod_string( self::MOD_FEATURES_INTRO ),
+			'show_cta'               => self::get_theme_mod_bool( self::MOD_SHOW_CTA, true ),
+			'cta_eyebrow'            => self::get_theme_mod_string( self::MOD_CTA_EYEBROW ),
+			'cta_heading'            => self::get_theme_mod_string( self::MOD_CTA_HEADING ),
+			'cta_body'               => self::get_theme_mod_string( self::MOD_CTA_BODY ),
+			'cta_text'               => self::get_theme_mod_string( self::MOD_CTA_TEXT ),
+			'cta_url'                => self::get_theme_mod_url( self::MOD_CTA_URL ),
 		);
+
+		for ( $index = 1; $index <= self::VALUE_COUNT; $index++ ) {
+			$settings[ 'value_' . $index . '_image_id' ] = self::get_theme_mod_int( self::value_mod( $index, 'image' ) );
+			$settings[ 'value_' . $index . '_title' ]    = self::get_theme_mod_string( self::value_mod( $index, 'title' ) );
+			$settings[ 'value_' . $index . '_text' ]     = self::get_theme_mod_string( self::value_mod( $index, 'text' ) );
+		}
 
 		for ( $index = 1; $index <= self::FEATURE_COUNT; $index++ ) {
 			$settings[ 'feature_' . $index . '_image_id' ] = self::get_theme_mod_int( self::feature_mod( $index, 'image' ) );
@@ -583,18 +706,18 @@ final class AboutPage {
 	}
 
 	/**
-	 * Build feature items from settings, keeping only populated slots.
+	 * Build populated card items for values or features.
 	 *
 	 * @param array<string, mixed> $settings Normalized settings.
 	 * @return array<int, array<string, mixed>>
 	 */
-	private static function get_feature_items( array $settings ): array {
+	private static function get_card_items( array $settings, string $prefix, int $count ): array {
 		$items = array();
 
-		for ( $index = 1; $index <= self::FEATURE_COUNT; $index++ ) {
-			$image_id = (int) ( $settings[ 'feature_' . $index . '_image_id' ] ?? 0 );
-			$title    = (string) ( $settings[ 'feature_' . $index . '_title' ] ?? '' );
-			$text     = (string) ( $settings[ 'feature_' . $index . '_text' ] ?? '' );
+		for ( $index = 1; $index <= $count; $index++ ) {
+			$image_id = (int) ( $settings[ $prefix . '_' . $index . '_image_id' ] ?? 0 );
+			$title    = (string) ( $settings[ $prefix . '_' . $index . '_title' ] ?? '' );
+			$text     = (string) ( $settings[ $prefix . '_' . $index . '_text' ] ?? '' );
 
 			if ( $image_id <= 0 && '' === $title && '' === $text ) {
 				continue;
@@ -718,6 +841,22 @@ final class AboutPage {
 	 */
 	public static function sanitize_checkbox( mixed $value ): bool {
 		return (bool) $value;
+	}
+
+	/**
+	 * Sanitize story media side choice.
+	 */
+	public static function sanitize_media_side( mixed $value ): string {
+		$value = is_string( $value ) ? $value : '';
+
+		return in_array( $value, array( 'left', 'right' ), true ) ? $value : 'left';
+	}
+
+	/**
+	 * Build a value mod key for a slot and field.
+	 */
+	private static function value_mod( int $index, string $field ): string {
+		return self::MOD_VALUE_PREFIX . $index . '_' . $field;
 	}
 
 	/**
@@ -881,6 +1020,39 @@ final class AboutPage {
 	}
 
 	/**
+	 * Register a select customizer control.
+	 *
+	 * @param \WP_Customize_Manager $wp_customize Customizer manager.
+	 * @param array<string, string> $choices     Select choices.
+	 */
+	private static function register_select_control(
+		\WP_Customize_Manager $wp_customize,
+		string $mod_name,
+		string $label,
+		array $choices,
+		string $default
+	): void {
+		$wp_customize->add_setting(
+			$mod_name,
+			array(
+				'default'           => $default,
+				'sanitize_callback' => array( self::class, 'sanitize_media_side' ),
+				'transport'         => 'refresh',
+			)
+		);
+
+		$wp_customize->add_control(
+			$mod_name,
+			array(
+				'label'   => $label,
+				'section' => self::SECTION,
+				'type'    => 'select',
+				'choices' => $choices,
+			)
+		);
+	}
+
+	/**
 	 * Read a sanitized integer theme mod.
 	 */
 	private static function get_theme_mod_int( string $key, int $default = 0 ): int {
@@ -908,5 +1080,16 @@ final class AboutPage {
 	 */
 	private static function get_theme_mod_url( string $key ): string {
 		return esc_url_raw( (string) get_theme_mod( $key, '' ) );
+	}
+
+	/**
+	 * Read a choice theme mod constrained to allowed values.
+	 *
+	 * @param array<int, string> $allowed Allowed values.
+	 */
+	private static function get_theme_mod_choice( string $key, array $allowed, string $default ): string {
+		$value = self::get_theme_mod_string( $key, $default );
+
+		return in_array( $value, $allowed, true ) ? $value : $default;
 	}
 }
