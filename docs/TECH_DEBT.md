@@ -11,7 +11,7 @@ Known maintainability issues discovered during the codebase audit.
 |------|--------|
 | Header locations | Live header in `template-parts/` + CSS in `assets/css/components/`; empty `components/header/` |
 | Product card paths | Component system vs older `template-parts/components/product-card.php` |
-| Docs drift | Homepage docs aligned to live composition (HeroBanner + icons + rails + For You); watch for future drift |
+| Docs drift | Homepage docs aligned to live composition (icons + rails + For You; no HeroBanner); watch for future drift |
 | Duplicate checkout doc | `docs/pages/CHECKOUT.md` and `wp-content/docs/pages/CHECKOUT.md` |
 | Legacy ARCHITECTURE.md | High-level tree only; superseded by `PROJECT_ARCHITECTURE.md` |
 

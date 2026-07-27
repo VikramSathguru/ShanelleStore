@@ -66,8 +66,6 @@ final class HeroBanner {
 	public static function boot(): void {
 		add_action( 'after_setup_theme', array( self::class, 'register_image_sizes' ), 20 );
 		add_action( 'customize_register', array( self::class, 'register_customizer' ) );
-		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
-		add_action( 'wp_head', array( self::class, 'preload_lcp_image' ), 5 );
 	}
 
 	/**
@@ -95,8 +93,8 @@ final class HeroBanner {
 		$wp_customize->add_section(
 			'shanelle_hero_banner',
 			array(
-				'title'       => __( 'Banner principal', 'shanelle' ),
-				'description' => __( 'Primera sección de la página de inicio. Deja los campos vacíos para ocultar contenido opcional.', 'shanelle' ),
+				'title'       => __( 'Banner principal (inactivo)', 'shanelle' ),
+				'description' => __( 'Este banner no se muestra en la página de inicio actual. Los ajustes se conservan por si se vuelve a componer manualmente.', 'shanelle' ),
 				'panel'       => 'shanelle_homepage',
 				'priority'    => 10,
 			)
@@ -169,13 +167,11 @@ final class HeroBanner {
 	}
 
 	/**
-	 * Enqueue hero assets on the front page.
+	 * Enqueue hero assets when composing the banner manually.
+	 *
+	 * Not hooked on the live homepage. {@see render()} still registers assets on demand.
 	 */
 	public static function enqueue_assets(): void {
-		if ( ! is_front_page() ) {
-			return;
-		}
-
 		self::register_assets();
 	}
 
@@ -217,7 +213,10 @@ final class HeroBanner {
 	}
 
 	/**
-	 * Preload the LCP hero image on the front page.
+	 * Preload the LCP hero image when the banner is composed again.
+	 *
+	 * Not hooked on the live homepage. Re-add to `wp_head` if {@see render()}
+	 * returns to the front-page composition.
 	 */
 	public static function preload_lcp_image(): void {
 		if ( ! is_front_page() ) {
@@ -230,7 +229,7 @@ final class HeroBanner {
 			return;
 		}
 
-		$lcp = $slides[0]['lcp_image'];
+		$lcp  = $slides[0]['lcp_image'];
 		$href = (string) $lcp['href'];
 
 		if ( '' === $href ) {

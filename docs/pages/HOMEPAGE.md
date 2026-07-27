@@ -10,15 +10,14 @@ The homepage is composed by the `Homepage` page controller. It does not duplicat
 
 Live markup in `components/homepage/homepage.php`:
 
-1. **Full-bleed `HeroBanner`** via `Homepage::render_hero()` (Customizer image/copy/CTAs; brand fallback when media empty)
-2. **Category icon grid** (`Homepage::render_category_icons()`) — top-level `product_cat` terms with thumbnails
-3. **Featured rails** (`Homepage::render_featured_collections()`) — up to 3 rails × 4 products
-4. **For You feed** (`Homepage::render_for_you_grid()` → `ProductGrid` + `ProductCard`, load more; default 12 products)
-5. **Empty catalog state** when no published products
+1. **Category icon grid** (`Homepage::render_category_icons()`) — top-level `product_cat` terms with thumbnails
+2. **Featured rails** (`Homepage::render_featured_collections()`) — up to 3 rails × 4 products
+3. **For You feed** (`Homepage::render_for_you_grid()` → `ProductGrid` + `ProductCard`, load more; default 12 products)
+4. **Empty catalog state** when no published products
 
-### Design decision: full-bleed hero
+### Design decision: no homepage hero
 
-Shanelle keeps a **full-bleed HeroBanner** for brand-first first viewport. The older SHEIN-style side-tile `hero-promo` layout is **not** composed. Helpers remain deprecated for experiments only (`render_hero_promo()`, `shanelle_homepage_promo_tiles` filter).
+The live homepage starts with category icons. `HeroBanner` and the older SHEIN-style side-tile `hero-promo` layout are **not** composed. Helpers remain available for experiments only (`render_hero()`, `render_hero_promo()`, `shanelle_homepage_promo_tiles` filter).
 
 ### Featured rails honesty
 
@@ -31,7 +30,7 @@ Shanelle keeps a **full-bleed HeroBanner** for brand-first first viewport. The o
 - **Live homepage:** circular category icon grid (automatic from WooCommerce categories).
 - **Not live:** `CategoryNavigation` component / Customizer section labeled inactive. Call `shanelle_category_navigation()` only if composing manually.
 
-Unused helpers still exist for alternate compositions (`render_hero_promo()`, `render_category_navigation()`, `render_product_sections()` / `build_sections()`) but are **not** called by the live template.
+Unused helpers still exist for alternate compositions (`render_hero()`, `render_hero_promo()`, `render_category_navigation()`, `render_product_sections()` / `build_sections()`) but are **not** called by the live template.
 
 ## Controller
 
@@ -45,7 +44,7 @@ Panel: **Appearance → Customize → Inicio Shanelle**
 
 | Section | Controls |
 |---------|----------|
-| Banner principal | `HeroBanner` (image, copy, CTAs, overlay) |
+| Banner principal (inactivo) | `HeroBanner` settings — **not rendered** on live homepage |
 | Navegación de categorías (inactiva) | `CategoryNavigation` settings — **not rendered** on live homepage |
 | Para ti | Title, initial product count (default 12), sort |
 | Product Sections (inactive) | Informational only — optional grids not shown on live homepage |
@@ -66,7 +65,7 @@ Panel: **Appearance → Customize → Inicio Shanelle**
 |-------|------|
 | `shanelle:homepage:ready` | Homepage hydrated; exposes scroll/API helpers for PWA use |
 
-Child component events (`shanelle:hero-banner:ready`, `shanelle:product-grid:loaded`) still fire independently.
+Child component events (`shanelle:product-grid:loaded`) still fire independently. `shanelle:hero-banner:ready` only fires if `HeroBanner` is composed manually.
 
 ## Helper
 
@@ -80,7 +79,6 @@ shanelle_homepage();
 - Published products for grids to populate
 - Top-level product categories (thumbnails recommended) for category icons
 - Optional: `product_collection` terms for real featured rails
-- Customizer hero image/copy for a branded first viewport (site name + tagline fallback when media empty)
 
 ## Extending
 

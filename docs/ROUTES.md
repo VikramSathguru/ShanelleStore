@@ -18,6 +18,12 @@ Exact slugs are configured in **WooCommerce → Settings → Advanced → Page s
 | My Account | `/my-account/` (+ endpoints) | `woocommerce/myaccount/*` |
 | Search results | `/?s=` or pretty search | `search.php` → SearchPage |
 | About | Page using template `page-templates/about.php` | AboutPage |
+| Contact | Page using template `page-templates/contact.php` | InfoPage (`contact`) |
+| FAQ | Page using template `page-templates/faq.php` | InfoPage (`faq`) |
+| Shipping | Page using template `page-templates/shipping.php` | InfoPage (`shipping`) |
+| Returns | Page using template `page-templates/returns.php` | InfoPage (`returns`) |
+| Privacy | Page using template `page-templates/privacy.php` | InfoPage (`privacy`) |
+| Terms | Page using template `page-templates/terms.php` | InfoPage (`terms`) |
 | Collections index | Page using template `page-templates/collections.php` | CollectionsPage |
 | Collection archive | `/collection/{slug}/` | `product_collection` taxonomy templates |
 | Category | `/product-category/{slug}/` | Shop archive path |

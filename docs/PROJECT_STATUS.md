@@ -12,7 +12,7 @@ Update this file as milestones complete.
 | Custom theme bootstrap | `functions.php`, `inc/*` |
 | Design tokens + shared UI CSS | `assets/css/` |
 | Component architecture | `inc/components` + `components/` |
-| Homepage composer (current markup) | Full-bleed HeroBanner, category icons, featured rails (4/product), For You (default 12) |
+| Homepage composer (current markup) | Category icons, featured rails (4/product), For You (default 12); HeroBanner not composed |
 | Shop archive + catalog filters | `ShopArchive`, `CatalogFilters` (query merge, search filters, chips, load more) |
 | Collections taxonomy + admin + pages | `inc/catalog/*`, collections templates |
 | PDP composers | Gallery, summary, variations, purchase, information, reviews, related |
@@ -23,7 +23,7 @@ Update this file as milestones complete.
 | Search overlay + search page | SearchController / Overlay / Page |
 | Product grid AJAX + REST stubs | `shanelle/v1` |
 | Header / footer / category navbar | Present |
-| Homepage hero composed | `Homepage::render_hero()` first on front page |
+| Homepage hero removed | Live front page starts with category icons; `HeroBanner` retained but inactive |
 | Wave B header polish | Promo bar visible; wishlist/language stubs removed; drawer a11y + fallbacks |
 | Spanish-only theme UI | Customer-facing `shanelle` strings use LATAM Spanish source copy |
 | Wave C catalog polish | Sale color tokens, archive title scale, shared empty-state CSS |

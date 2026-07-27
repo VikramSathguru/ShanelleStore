@@ -26,7 +26,11 @@ defined( 'ABSPATH' ) || exit;
 
 			<?php Footer::render_menus(); ?>
 			<?php Footer::render_contact_details(); ?>
-			<?php Footer::render_newsletter(); ?>
+
+			<aside class="footer__engage" data-shanelle-footer-engage aria-label="<?php esc_attr_e( 'Boletín y redes', 'shanelle' ); ?>">
+				<?php Footer::render_newsletter(); ?>
+				<?php \Shanelle\Components\FooterBrand::render_social(); ?>
+			</aside>
 		</div>
 	</div>
 

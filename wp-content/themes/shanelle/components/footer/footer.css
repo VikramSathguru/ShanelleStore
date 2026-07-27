@@ -1,9 +1,11 @@
 /**
  * Shanelle Footer Layout
  *
- * Premium multi-column footer. Design tokens only.
- * Desktop: Brand | Useful Links | Customer Service | Policies | Newsletter
- * Contact sits under Brand with tight vertical rhythm.
+ * Compact multi-column footer. Design tokens only.
+ * Desktop: Brand | Useful Links | Customer Service | Policies | Engage
+ * Engage = compact newsletter + social icons.
+ * Contact sits under Brand.
+ * Colors and typography unchanged — layout only.
  */
 
 .footer {
@@ -15,7 +17,7 @@
 }
 
 .footer__main {
-	padding: var(--space-12) 0 var(--space-10);
+	padding: var(--space-10) 0 var(--space-8);
 }
 
 .footer__inner {
@@ -173,20 +175,31 @@
 }
 
 /* -------------------------------------------------------------------------
-   Newsletter — ~350px card; heading aligned with sibling columns
+   Engage cluster — compact newsletter + social
    ------------------------------------------------------------------------- */
+.footer__engage {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-4);
+	width: 100%;
+}
+
+.footer__engage:not(:has(.footer__newsletter)):not(:has(.footer-brand__social)) {
+	display: none;
+}
+
 .footer__newsletter {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-3);
 	width: 100%;
-	max-width: 21.875rem; /* 350px */
-	padding: var(--space-5);
-	border: 1px solid var(--color-border-subtle);
-	border-radius: var(--radius-xl);
-	background-color: var(--color-surface);
-	box-shadow: var(--shadow-sm);
-	justify-self: stretch;
+	max-width: 22rem;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background-color: transparent;
+	box-shadow: none;
 	box-sizing: border-box;
 }
 
@@ -238,6 +251,10 @@
 
 .footer__newsletter-message.is-error {
 	color: var(--color-text-muted);
+}
+
+.footer__engage .footer-brand__social {
+	justify-content: center;
 }
 
 /* -------------------------------------------------------------------------
@@ -392,14 +409,14 @@
 /* -------------------------------------------------------------------------
    Tablet — two-row grid
    Brand | Useful | Customer Service
-   Contact | Policies | Newsletter
+   Contact | Policies | Engage
    ------------------------------------------------------------------------- */
 @media (min-width: 48rem) {
 	.footer__inner {
 		grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr);
 		grid-template-areas:
 			"brand useful service"
-			"contact policies newsletter";
+			"contact policies engage";
 		column-gap: var(--space-6);
 		row-gap: var(--space-8);
 		align-items: start;
@@ -427,13 +444,19 @@
 		margin-top: calc(var(--space-2) * -1);
 	}
 
-	.footer__newsletter {
-		grid-area: newsletter;
-		max-width: 22.5rem; /* 360px */
-		width: 100%;
+	.footer__engage {
+		grid-area: engage;
+		align-items: flex-start;
+		max-width: 22rem;
 		justify-self: stretch;
-		/* Pull card up so inner heading aligns with sibling column titles */
-		margin-top: calc(var(--space-5) * -1);
+	}
+
+	.footer__engage .footer-brand__social {
+		justify-content: flex-start;
+	}
+
+	.footer__newsletter {
+		max-width: none;
 	}
 
 	.footer__menus {
@@ -468,6 +491,11 @@
 
 	.footer__newsletter-input {
 		flex: 1;
+		min-width: 0;
+	}
+
+	.footer__newsletter-submit {
+		flex-shrink: 0;
 	}
 
 	.footer__bottom-inner {
@@ -497,21 +525,21 @@
 }
 
 /* -------------------------------------------------------------------------
-   Desktop — single-row luxury grid
-   Brand (wider) | Useful | CS | Policies | Newsletter (wider)
-   Contact under Brand with reduced vertical gap
+   Desktop — single-row compact grid
+   Brand | Useful | CS | Policies | Engage (newsletter + social)
+   Contact under Brand
    ------------------------------------------------------------------------- */
 @media (min-width: 64rem) {
 	.footer__inner {
 		grid-template-columns:
-			minmax(12rem, 1.3fr)
+			minmax(12rem, 1.25fr)
 			minmax(0, 1fr)
 			minmax(0, 1fr)
 			minmax(0, 1fr)
-			minmax(14rem, 1.15fr);
+			minmax(14rem, 1.2fr);
 		grid-template-areas:
-			"brand useful service policies newsletter"
-			"contact useful service policies newsletter";
+			"brand useful service policies engage"
+			"contact useful service policies engage";
 		column-gap: var(--space-8);
 		row-gap: var(--space-3);
 		align-items: start;
@@ -534,12 +562,11 @@
 		grid-area: policies;
 	}
 
-	.footer__newsletter {
-		grid-area: newsletter;
-		max-width: 22.5rem; /* 360px */
+	.footer__engage {
+		grid-area: engage;
+		max-width: 22rem;
 		width: 100%;
 		justify-self: stretch;
-		margin-top: calc(var(--space-5) * -1);
 	}
 
 	.footer__contact {

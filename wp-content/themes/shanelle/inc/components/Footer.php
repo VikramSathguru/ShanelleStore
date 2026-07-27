@@ -50,6 +50,12 @@ final class Footer {
 
 	private const MOD_CONTACT_ADDRESS = 'shanelle_footer_contact_address';
 
+	private const MOD_CONTACT_WHATSAPP = 'shanelle_footer_contact_whatsapp';
+
+	private const MOD_CONTACT_HOURS = 'shanelle_footer_contact_hours';
+
+	private const MOD_CONTACT_MAPS_EMBED = 'shanelle_footer_contact_maps_embed';
+
 	private const MOD_SHOW_NEWSLETTER = 'shanelle_footer_show_newsletter';
 
 	private const MOD_NEWSLETTER_TITLE = 'shanelle_footer_newsletter_title';
@@ -216,6 +222,51 @@ final class Footer {
 				'label'   => __( 'Dirección', 'shanelle' ),
 				'section' => 'shanelle_footer',
 				'type'    => 'textarea',
+			)
+		);
+
+		self::register_text_control(
+			$wp_customize,
+			self::MOD_CONTACT_WHATSAPP,
+			__( 'WhatsApp (número o URL wa.me)', 'shanelle' ),
+			''
+		);
+
+		$wp_customize->add_setting(
+			self::MOD_CONTACT_HOURS,
+			array(
+				'default'           => '',
+				'sanitize_callback' => array( self::class, 'sanitize_textarea' ),
+				'transport'         => 'refresh',
+			)
+		);
+
+		$wp_customize->add_control(
+			self::MOD_CONTACT_HOURS,
+			array(
+				'label'       => __( 'Horario de atención', 'shanelle' ),
+				'description' => __( 'Una línea por bloque de horario. Visible en la página de contacto.', 'shanelle' ),
+				'section'     => 'shanelle_footer',
+				'type'        => 'textarea',
+			)
+		);
+
+		$wp_customize->add_setting(
+			self::MOD_CONTACT_MAPS_EMBED,
+			array(
+				'default'           => '',
+				'sanitize_callback' => array( self::class, 'sanitize_maps_embed' ),
+				'transport'         => 'refresh',
+			)
+		);
+
+		$wp_customize->add_control(
+			self::MOD_CONTACT_MAPS_EMBED,
+			array(
+				'label'       => __( 'Google Maps (embed)', 'shanelle' ),
+				'description' => __( 'Pega la URL de “Insertar un mapa” de Google Maps (https://www.google.com/maps/embed?…). Solo se muestra en la página de contacto cuando está configurada.', 'shanelle' ),
+				'section'     => 'shanelle_footer',
+				'type'        => 'textarea',
 			)
 		);
 
@@ -430,11 +481,13 @@ final class Footer {
 			return;
 		}
 
-		$title   = (string) ( self::$state['settings']['contact_title'] ?? '' );
-		$phone   = (string) ( self::$state['settings']['contact_phone'] ?? '' );
-		$email   = (string) ( self::$state['settings']['contact_email'] ?? '' );
-		$address = (string) ( self::$state['settings']['contact_address'] ?? '' );
-		$items   = array();
+		$title     = (string) ( self::$state['settings']['contact_title'] ?? '' );
+		$phone     = (string) ( self::$state['settings']['contact_phone'] ?? '' );
+		$email     = (string) ( self::$state['settings']['contact_email'] ?? '' );
+		$address   = (string) ( self::$state['settings']['contact_address'] ?? '' );
+		$whatsapp  = (string) ( self::$state['settings']['contact_whatsapp'] ?? '' );
+		$wa_href   = (string) ( self::$state['settings']['contact_whatsapp_url'] ?? '' );
+		$items     = array();
 
 		if ( '' !== $phone ) {
 			$items[] = array(
@@ -449,6 +502,14 @@ final class Footer {
 				'type'  => 'email',
 				'label' => $email,
 				'href'  => is_email( $email ) ? 'mailto:' . sanitize_email( $email ) : '',
+			);
+		}
+
+		if ( '' !== $whatsapp && '' !== $wa_href ) {
+			$items[] = array(
+				'type'  => 'whatsapp',
+				'label' => $whatsapp,
+				'href'  => $wa_href,
 			);
 		}
 
@@ -484,7 +545,11 @@ final class Footer {
 								<?php self::render_icon( (string) $item['type'] ); ?>
 							</span>
 							<?php if ( '' !== (string) $item['href'] ) : ?>
-								<a class="footer__contact-link" href="<?php echo esc_url( (string) $item['href'] ); ?>">
+								<a
+									class="footer__contact-link"
+									href="<?php echo esc_url( (string) $item['href'] ); ?>"
+									<?php echo 'whatsapp' === (string) $item['type'] ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
+								>
 									<?php echo esc_html( (string) $item['label'] ); ?>
 								</a>
 							<?php else : ?>
@@ -765,6 +830,15 @@ final class Footer {
 		$fab_url   = (string) ( $settings['contact_fab_url'] ?? '' );
 		$fab_label = (string) ( $settings['contact_fab_label'] ?? '' );
 
+		if ( '' === $fab_url ) {
+			$business = self::get_business_contact();
+			$fab_url  = (string) ( $business['whatsapp_url'] ?? '' );
+
+			if ( '' === $fab_url && class_exists( InfoPage::class ) ) {
+				$fab_url = InfoPage::get_page_url( 'contact' );
+			}
+		}
+
 		return apply_filters(
 			'shanelle_footer_state',
 			array(
@@ -804,6 +878,10 @@ final class Footer {
 				'contact_phone'          => self::get_theme_mod_string( self::MOD_CONTACT_PHONE ),
 				'contact_email'          => self::get_theme_mod_string( self::MOD_CONTACT_EMAIL ),
 				'contact_address'        => self::get_theme_mod_string( self::MOD_CONTACT_ADDRESS ),
+				'contact_whatsapp'       => self::get_theme_mod_string( self::MOD_CONTACT_WHATSAPP ),
+				'contact_whatsapp_url'   => self::build_whatsapp_href( self::get_theme_mod_string( self::MOD_CONTACT_WHATSAPP ) ),
+				'contact_hours'          => self::get_theme_mod_string( self::MOD_CONTACT_HOURS ),
+				'contact_maps_embed'     => self::get_theme_mod_string( self::MOD_CONTACT_MAPS_EMBED ),
 				'show_social'            => self::get_theme_mod_bool( self::MOD_SHOW_SOCIAL, true ),
 				'social_instagram'       => self::get_theme_mod_url( self::MOD_SOCIAL_INSTAGRAM ),
 				'social_tiktok'          => self::get_theme_mod_url( self::MOD_SOCIAL_TIKTOK ),
@@ -835,6 +913,146 @@ final class Footer {
 					self::MOD_CONTACT_FAB_LABEL,
 					__( 'Contactar por WhatsApp', 'shanelle' )
 				),
+			)
+		);
+	}
+
+	/**
+	 * Return normalized business contact data from the Footer Customizer.
+	 *
+	 * Single source of truth for footer contact column and the Contact page.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public static function get_business_contact(): array {
+		$settings = self::get_settings();
+		$phone    = trim( (string) ( $settings['contact_phone'] ?? '' ) );
+		$email    = trim( (string) ( $settings['contact_email'] ?? '' ) );
+		$address  = trim( (string) ( $settings['contact_address'] ?? '' ) );
+		$whatsapp = trim( (string) ( $settings['contact_whatsapp'] ?? '' ) );
+		$hours    = trim( (string) ( $settings['contact_hours'] ?? '' ) );
+		$maps     = trim( (string) ( $settings['contact_maps_embed'] ?? '' ) );
+		$wa_url   = self::build_whatsapp_href( $whatsapp );
+
+		$contact = array(
+			'title'         => (string) ( $settings['contact_title'] ?? '' ),
+			'phone'         => $phone,
+			'phone_url'     => '' !== $phone ? self::build_tel_href( $phone ) : '',
+			'email'         => $email,
+			'email_url'     => is_email( $email ) ? 'mailto:' . sanitize_email( $email ) : '',
+			'whatsapp'      => $whatsapp,
+			'whatsapp_url'  => $wa_url,
+			'address'       => $address,
+			'hours'         => $hours,
+			'hours_lines'   => self::split_multiline( $hours ),
+			'maps_embed'    => $maps,
+			'has_details'   => '' !== $phone || '' !== $email || '' !== $wa_url || '' !== $address || '' !== $hours,
+			'has_map'       => '' !== $maps,
+		);
+
+		/**
+		 * Filter normalized business contact data from the Footer Customizer.
+		 *
+		 * @param array<string, mixed> $contact  Normalized contact.
+		 * @param array<string, mixed> $settings Footer settings.
+		 */
+		return apply_filters( 'shanelle_business_contact', $contact, $settings );
+	}
+
+	/**
+	 * Sanitize Google Maps embed value (store embed URL only).
+	 */
+	public static function sanitize_maps_embed( mixed $value ): string {
+		$value = trim( (string) $value );
+
+		if ( '' === $value ) {
+			return '';
+		}
+
+		$src = $value;
+
+		if ( preg_match( '/src\s*=\s*[\'"]([^\'"]+)[\'"]/i', $value, $matches ) ) {
+			$src = (string) $matches[1];
+		}
+
+		$src = esc_url_raw( $src );
+
+		if ( '' === $src || ! self::is_allowed_maps_embed_url( $src ) ) {
+			return '';
+		}
+
+		return $src;
+	}
+
+	/**
+	 * Whether a URL is an allowed Google Maps embed source.
+	 */
+	public static function is_allowed_maps_embed_url( string $url ): bool {
+		$host = wp_parse_url( $url, PHP_URL_HOST );
+		$path = (string) wp_parse_url( $url, PHP_URL_PATH );
+
+		if ( ! is_string( $host ) || '' === $host ) {
+			return false;
+		}
+
+		$host = strtolower( $host );
+
+		$allowed_hosts = array(
+			'www.google.com',
+			'google.com',
+			'maps.google.com',
+			'www.google.com.ni',
+			'maps.google.com.ni',
+		);
+
+		if ( ! in_array( $host, $allowed_hosts, true ) && ! preg_match( '/(^|\.)google\.[a-z.]+$/', $host ) ) {
+			return false;
+		}
+
+		return false !== strpos( $path, '/maps/embed' ) || false !== strpos( $url, '/maps/embed?' );
+	}
+
+	/**
+	 * Build a WhatsApp chat URL from a phone number or wa.me link.
+	 */
+	public static function build_whatsapp_href( string $value ): string {
+		$value = trim( $value );
+
+		if ( '' === $value ) {
+			return '';
+		}
+
+		if ( preg_match( '#^https?://(wa\.me|api\.whatsapp\.com)/#i', $value ) ) {
+			return esc_url_raw( $value );
+		}
+
+		$digits = preg_replace( '/\D+/', '', $value );
+
+		if ( ! is_string( $digits ) || strlen( $digits ) < 8 ) {
+			return '';
+		}
+
+		return 'https://wa.me/' . $digits;
+	}
+
+	/**
+	 * Split multiline Customizer text into non-empty lines.
+	 *
+	 * @return array<int, string>
+	 */
+	private static function split_multiline( string $value ): array {
+		$value = trim( $value );
+
+		if ( '' === $value ) {
+			return array();
+		}
+
+		$lines = preg_split( '/\R+/', $value ) ?: array();
+
+		return array_values(
+			array_filter(
+				array_map( 'trim', $lines ),
+				static fn( string $line ): bool => '' !== $line
 			)
 		);
 	}
@@ -877,6 +1095,8 @@ final class Footer {
 			'phone'     => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2 2A15.5 15.5 0 0 1 4.5 5.5a2 2 0 0 1 2-2z"/></svg>',
 			'email'     => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>',
 			'location'  => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>',
+			'whatsapp'  => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8.5 19.5 6 21l.8-3.2A8 8 0 1 1 12 20a7.9 7.9 0 0 1-3.5-.8z"/><path d="M9.2 10.8c.3-.5.5-.5.8-.5h.6c.2 0 .4.1.5.4l.7 1.7c.1.2 0 .4-.1.5l-.4.5c-.1.1-.1.3 0 .4.4.6 1 1.2 1.6 1.6.1.1.3.1.4 0l.5-.4c.2-.1.4-.2.5-.1l1.7.7c.3.1.4.3.4.5v.6c0 .3 0 .5-.5.8-.4.2-.9.4-1.4.4A6.2 6.2 0 0 1 9 12.2c0-.5.1-1 .2-1.4z"/></svg>',
+			'hours'     => '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
 			'chat'      => '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M4 6.5A3.5 3.5 0 0 1 7.5 3h9A3.5 3.5 0 0 1 20 6.5v6A3.5 3.5 0 0 1 16.5 16H12l-4 4v-4H7.5A3.5 3.5 0 0 1 4 12.5v-6z"/></svg>',
 		);
 

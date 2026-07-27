@@ -162,6 +162,14 @@ final class SiteHeader {
 			return esc_url( $custom );
 		}
 
+		if ( class_exists( InfoPage::class ) ) {
+			$info_url = InfoPage::get_page_url( 'contact' );
+
+			if ( '' !== $info_url ) {
+				return esc_url( $info_url );
+			}
+		}
+
 		foreach ( array( 'contacto', 'contact', 'atencion-al-cliente' ) as $slug ) {
 			$page = get_page_by_path( $slug );
 

@@ -15,6 +15,7 @@ Renders expandable product information sections on the PDP using an accessible a
 - Render Description from WooCommerce long description
 - Render Specifications from visible attributes, SKU, weight, and dimensions
 - Provide filter hooks for CMS-driven content (size guide, care, shipping, returns)
+- **Shipping / Returns** default content can come from informational WP pages (`InfoPage`) when filters are empty
 - Enqueue component CSS/JS on product pages or on demand
 - Maintain PWA hydration attributes compatible with ProductDetail
 

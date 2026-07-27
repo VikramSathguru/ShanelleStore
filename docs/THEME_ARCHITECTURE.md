@@ -17,9 +17,15 @@
 | `search.php`, `404.php`, `index.php` | Core templates |
 | `taxonomy-product_collection.php` | Collection taxonomy archive |
 | `page-templates/about.php` | About page template |
+| `page-templates/contact.php` | Contact informational page |
+| `page-templates/faq.php` | FAQ informational page |
+| `page-templates/shipping.php` | Shipping policy page |
+| `page-templates/returns.php` | Returns policy page |
+| `page-templates/privacy.php` | Privacy policy page |
+| `page-templates/terms.php` | Terms & conditions page |
 | `page-templates/collections.php` | Collections index page template |
 | `assets/` | Global CSS/JS/images |
-| `components/` | Feature views + scoped CSS/JS |
+| `components/` | Feature views + scoped CSS/JS (includes reusable `page-hero/`) |
 | `inc/` | PHP bootstrap, controllers, catalog, WC helpers |
 | `template-parts/components/` | Shared / older partials |
 | `woocommerce/` | WC template overrides |
@@ -89,14 +95,14 @@ Note: `components/header/` directory exists but is empty (architecture cleanup d
 
 - `footer.php` calls `shanelle_footer()` → `Footer::render()`.  
 - Files: `inc/components/Footer.php`, `components/footer/{footer.php,footer.css,footer.js}`.  
-- Layout: CSS Grid — Brand | Useful Links | Customer Service | Policies | Newsletter (desktop); Contact under Brand. See [components/Footer.md](./components/Footer.md).  
-- Brand column: `inc/components/FooterBrand.php` + `components/footer-brand/`.  
+- Layout: CSS Grid — Brand | Useful Links | Customer Service | Policies | Engage (compact newsletter + social) on desktop; Contact under Brand. See [components/Footer.md](./components/Footer.md).  
+- Brand column: `inc/components/FooterBrand.php` + `components/footer-brand/` (logo + description; social rendered in engage cluster).  
 - Useful Links column: `inc/components/FooterLinks.php` + `components/footer-links/` (`wp_nav_menu`, no hard-coded links).  
 - Customer Service column: `inc/components/FooterCustomerService.php` + `components/footer-customer-service/` (reuses FooterLinks visual system).  
 - Policies column: `inc/components/FooterPolicies.php` + `components/footer-policies/` (reuses FooterLinks visual system).  
 - Menu locations **`footer_useful_links`**, **`footer_customer_service`**, **`footer_policies`**. Legacy `footer_shop` / `footer_legal` still resolved by Useful Links / Policies if the new locations are empty.  
-- Customizer-driven: logo, brand description, contact (title/phone/email/address), social URLs (empty → `#` in brand column), copyright, payment icon slugs, scroll-to-top toggle, optional contact/WhatsApp FAB.  
-- Newsletter block is optional and **off by default** until a list plugin is wired.  
+- Customizer-driven: logo, brand description, contact (title/phone/email/WhatsApp/address/hours/optional Maps embed), social URLs (empty → `#`), copyright, payment icon slugs, scroll-to-top toggle, optional contact/WhatsApp FAB.  
+- Newsletter block is optional and **off by default** until a list plugin is wired; when shown it shares the engage column with social icons.  
 - Floating controls use `--z-fixed` so MiniCart (`--z-drawer`) stays above them.
 
 ---

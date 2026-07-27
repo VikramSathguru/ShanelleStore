@@ -21,7 +21,7 @@ Page-level documentation lives in [`docs/pages/`](pages/).
 | Component | Doc |
 |-----------|-----|
 | Homepage composer | [HOMEPAGE.md](pages/HOMEPAGE.md) |
-| Hero Banner | Customizer: Shanelle Homepage → Hero Banner |
+| Hero Banner (inactive) | Customizer: Shanelle Homepage → Banner principal (inactivo) |
 | Category Navigation | Customizer: Shanelle Homepage → Category Navigation |
 
 ## Catalog & listing

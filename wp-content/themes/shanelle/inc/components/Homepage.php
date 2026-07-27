@@ -77,7 +77,7 @@ final class Homepage {
 			'shanelle_homepage_products',
 			array(
 				'title'       => __( 'Secciones de productos (inactivas)', 'shanelle' ),
-				'description' => __( 'Estas cuadrículas opcionales no forman parte del diseño de inicio actual (Hero → iconos → colecciones → Para ti). Se mantienen solo para extensión futura vía filtros.', 'shanelle' ),
+				'description' => __( 'Estas cuadrículas opcionales no forman parte del diseño de inicio actual (iconos → colecciones → Para ti). Se mantienen solo para extensión futura vía filtros.', 'shanelle' ),
 				'panel'       => 'shanelle_homepage',
 				'priority'    => 90,
 			)
@@ -250,10 +250,10 @@ final class Homepage {
 	/**
 	 * Render the hero promo grid with side tiles and center carousel.
 	 *
-	 * Unused by the live homepage. Shanelle keeps a full-bleed HeroBanner.
-	 * Retained for filter-based experiments via `shanelle_homepage_promo_tiles`.
+	 * Unused by the live homepage. Retained for filter-based experiments
+	 * via `shanelle_homepage_promo_tiles`.
 	 *
-	 * @deprecated 1.0.0 Live composition uses {@see render_hero()} instead.
+	 * @deprecated 1.0.0 Live homepage no longer composes a hero section.
 	 */
 	public static function render_hero_promo(): void {
 		require self::COMPONENT_DIR . '/partials/hero-promo.php';
@@ -739,6 +739,10 @@ final class Homepage {
 
 	/**
 	 * Render the hero banner section.
+	 *
+	 * Unused by the live homepage. Call manually if composing a hero again.
+	 *
+	 * @deprecated 1.0.0 Live homepage starts with category icons.
 	 */
 	public static function render_hero(): void {
 		shanelle_hero_banner();

@@ -15,6 +15,7 @@ Inventory of plugins present under `wp-content/plugins/` at audit time, relative
 | `seo-by-rank-math` | SEO titles, sitemaps, schema | SEO | No for theme boot | Yes for pure UI work; keep for production SEO | Could swap for Yoast/AIOSEO |
 | `query-monitor` | Dev debugging | Development | No | Yes on production Hostinger | Do not ship enabled to public traffic |
 | `health-check` | Site health / troubleshooting | Development | No | Yes on production | Ops utility |
+| `wp-mail-smtp` | Transactional email transport | Soft / ops | No for theme boot | Keep for production mail delivery (Fluent Forms, WooCommerce) | Configure mailer in plugin UI; never hardcode SMTP secrets in theme |
 | `akismet` | Comment spam | Optional WP default | No | Yes if unused | Keep if blog/comments enabled |
 
 ---
@@ -29,7 +30,9 @@ Inventory of plugins present under `wp-content/plugins/` at audit time, relative
 
 - Rank Math — production SEO (not imported by theme).  
 - ACF — installed but **not a theme code dependency** today.  
-- Query Monitor / Health Check — local FlyEnv tooling.
+- WP Mail SMTP — configure for Fluent Forms + WooCommerce mail on Hostinger.  
+- Query Monitor / Health Check — local FlyEnv tooling.  
+- Meta / TikTok / Site Kit / Omnisend — installed in this environment; theme does not hard-wire them (configure via each plugin).
 
 ---
 

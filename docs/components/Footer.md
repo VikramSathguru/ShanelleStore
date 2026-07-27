@@ -8,11 +8,11 @@ Site footer composition for Shanelle Store. Presentation only — no cart, check
 |-------|------|
 | `footer.php` | Theme chrome → `shanelle_footer()` |
 | `inc/components/Footer.php` | Footer composer (Customizer, remaining menus, contact, floats) |
-| `inc/components/FooterBrand.php` | Brand column (logo, description, social) |
+| `inc/components/FooterBrand.php` | Brand column (logo, description) |
 | `inc/components/FooterLinks.php` | Useful Links column (`wp_nav_menu`) |
 | `inc/components/FooterCustomerService.php` | Customer Service column (`wp_nav_menu`) |
 | `inc/components/FooterPolicies.php` | Policies column (`wp_nav_menu`) |
-| `components/footer/footer.php` | Assembles footer columns only |
+| `components/footer/footer.php` | Assembles footer columns + engage cluster |
 | `components/footer-brand/` | Brand column markup + CSS |
 | `components/footer-links/` | Useful Links markup + CSS |
 | `components/footer-customer-service/` | Customer Service markup + CSS |
@@ -26,7 +26,7 @@ Legacy partial `template-parts/components/site-footer.php` is **not** the live s
 | Owns | Does not own |
 |------|----------------|
 | Footer UI / UX / Customizer copy | MiniCart drawer behavior |
-| `FooterBrand` — first column identity | WhatsApp Business APIs / plugins |
+| `FooterBrand` — logo + description; social in engage cluster | WhatsApp Business APIs / plugins |
 | `FooterLinks` — WordPress useful-links menu | Hard-coded page URLs |
 | `FooterCustomerService` — customer-service menu | |
 | `FooterPolicies` — policies / legal menu | |
@@ -34,17 +34,22 @@ Legacy partial `template-parts/components/site-footer.php` is **not** the live s
 
 ## Layout (desktop ≥64rem)
 
-Premium CSS Grid on `.footer__inner`:
+Compact CSS Grid on `.footer__inner`:
 
 ```
-FooterBrand | FooterLinks | FooterCustomerService | FooterPolicies | Newsletter
+FooterBrand | FooterLinks | FooterCustomerService | FooterPolicies | Engage
 Contact (under Brand)
 ```
 
-- Brand and Newsletter tracks are slightly wider; Useful / CS / Policies share equal `1fr` tracks.
-- Contact is placed under Brand with a tight row gap (social → contact).
+**Engage** (`.footer__engage`) clusters:
+
+1. Compact newsletter (title, email, subscribe — no card chrome)
+2. Social icons (`FooterBrand::render_social()`)
+
+- Brand and Engage tracks are slightly wider; Useful / CS / Policies share equal `1fr` tracks.
+- Contact is placed under Brand with a tight row gap.
 - Section headings share the same bottom margin and line-height baseline.
-- Newsletter card `max-width` is ~24.5rem (~12% narrower than the previous 28rem card).
+- Newsletter is borderless/padding-free; form + social stack in one column.
 
 **FooterLinks** / **FooterCustomerService** / **FooterPolicies** stack:
 
@@ -54,7 +59,7 @@ Contact (under Brand)
 
 If no menu is assigned, that column is omitted entirely (`fallback_cb` → `false`).
 
-Mobile: single-column stack. Tablet (≥48rem): two-row grid. Desktop (≥64rem): single-row five-track grid with contact under brand.
+Mobile: single-column stack. Tablet (≥48rem): two-row grid (`Brand | Useful | CS` / `Contact | Policies | Engage`). Desktop (≥64rem): single-row five-track grid with contact under brand.
 
 ## Menu locations
 
@@ -95,10 +100,11 @@ Mobile: single-column stack. Tablet (≥48rem): two-row grid. Desktop (≥64rem)
 Notable controls:
 
 - Logo, brand description (default Shanelle brand copy)
-- Contact phone / email / address
+- Contact phone / email / WhatsApp / address / business hours
+- Optional Google Maps embed URL (Contact page only; sanitized `maps/embed` hosts)
 - Social URLs (used by `FooterBrand`; empty → `#`)
 - Scroll-to-top toggle
-- Optional contact FAB: toggle + URL + accessible label
+- Optional contact FAB: toggle + URL + accessible label (falls back to WhatsApp then Contact page)
 - Copyright, payment icon slugs
 - Newsletter block (off by default until a list plugin is wired)
 
@@ -106,7 +112,7 @@ Notable controls:
 
 | Control | Position | z-index |
 |---------|----------|---------|
-| Contact FAB | bottom-left | `--z-fixed` (below MiniCart `--z-drawer`) |
+| Contact FAB | bottom-left | `--z-fixed` (below MiniCart `--z-drawer`); URL falls back to WhatsApp then Contact info page when Customizer URL empty |
 | Scroll to top | bottom-right | `--z-fixed` |
 
 ## Filters / events

@@ -12,7 +12,8 @@ namespace Shanelle\Components;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * First footer column: logo, brand description, and social icons.
+ * First footer column: logo and brand description.
+ * Social icons are rendered in the footer engage cluster beside the newsletter.
  *
  * Presentation only. Customizer ownership stays on {@see Footer}.
  */

@@ -62,7 +62,7 @@ Assessment of the Shanelle theme as implemented on FlyEnv. Measurements should b
 
 - Custom sizes: product card, gallery main/thumb, hero, collection sizes.  
 - Lazy loading patterns on thumbs / responsive helper `shanelle_responsive_image()`.  
-- HeroBanner can preload LCP (`wp_head`).  
+- HeroBanner can preload LCP when composed (`preload_lcp_image()`; not hooked on live homepage). 
 
 **Risks**
 

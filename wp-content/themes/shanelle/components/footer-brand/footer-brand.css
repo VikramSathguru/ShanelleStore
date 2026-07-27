@@ -1,9 +1,9 @@
 /**
  * Shanelle Footer Brand Column
  *
- * First footer column: logo, description, social icons.
- * Spacing uses design tokens (24px = --space-6, 32px = --space-8).
- * No hard-coded brand colors.
+ * First footer column: logo + description.
+ * Social icons render in the footer engage cluster (newsletter).
+ * Spacing uses design tokens. No hard-coded brand colors.
  */
 
 .footer-brand {
@@ -48,7 +48,7 @@
 }
 
 .footer-brand__description {
-	margin: 0 0 var(--space-6); /* was --space-8; tighter before social */
+	margin: 0;
 	max-width: 20rem; /* ~320px */
 	width: 100%;
 	line-height: var(--line-height-relaxed);
@@ -61,7 +61,7 @@
 	justify-content: center;
 	align-items: center;
 	gap: var(--space-3);
-	margin: 0 0 var(--space-2); /* reduced space before contact (grid row below) */
+	margin: 0;
 	padding: 0;
 	list-style: none;
 }

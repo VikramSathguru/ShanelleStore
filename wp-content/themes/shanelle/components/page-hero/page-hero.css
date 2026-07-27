@@ -1,0 +1,165 @@
+/**
+ * Shanelle Page Hero
+ *
+ * Compact reusable hero for informational pages.
+ * Uses design tokens and existing typography utilities — no hard-coded colors.
+ * BEM: .page-hero, .page-hero__*
+ */
+
+.page-hero {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	background-color: var(--color-brand-50);
+}
+
+.page-hero__media {
+	position: absolute;
+	inset: 0;
+	z-index: var(--z-base);
+}
+
+.page-hero__image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.page-hero__veil {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		180deg,
+		rgb(23 23 23 / 18%) 0%,
+		rgb(23 23 23 / 42%) 100%
+	);
+	pointer-events: none;
+}
+
+.page-hero__inner {
+	position: relative;
+	z-index: var(--z-raised);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	padding-block: var(--space-10);
+	min-height: clamp(10rem, 28vw, 14rem);
+	justify-content: flex-end;
+}
+
+.page-hero--plain .page-hero__inner {
+	min-height: 0;
+	padding-block: var(--space-12) var(--space-10);
+	justify-content: center;
+}
+
+.page-hero__copy {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	max-width: 40rem;
+}
+
+.page-hero__title {
+	margin: 0;
+	color: var(--color-brand-800);
+	text-wrap: balance;
+}
+
+.page-hero__subtitle {
+	margin: 0;
+	max-width: 42ch;
+}
+
+.page-hero--has-media .page-hero__title {
+	color: var(--color-text-inverse);
+}
+
+.page-hero--has-media .page-hero__subtitle {
+	color: var(--color-text-inverse);
+	opacity: 0.92;
+}
+
+/* -------------------------------------------------------------------------
+   Breadcrumb — mirrors shop-archive trail patterns
+   ------------------------------------------------------------------------- */
+.page-hero__breadcrumb {
+	margin: 0;
+}
+
+.page-hero__breadcrumb-list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.page-hero__breadcrumb-item {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-snug);
+	color: var(--color-text-secondary);
+}
+
+.page-hero__breadcrumb-link {
+	color: inherit;
+	text-decoration: none;
+	transition: var(--transition-colors);
+}
+
+.page-hero__breadcrumb-link:hover,
+.page-hero__breadcrumb-link:focus-visible {
+	color: var(--color-text-link);
+}
+
+.page-hero__breadcrumb-link:focus-visible {
+	outline: 2px solid var(--color-border-focus);
+	outline-offset: 2px;
+	border-radius: var(--radius-xs);
+}
+
+.page-hero__breadcrumb-current {
+	color: var(--color-text);
+}
+
+.page-hero__breadcrumb-sep {
+	color: var(--color-text-muted);
+}
+
+.page-hero--has-media .page-hero__breadcrumb-item,
+.page-hero--has-media .page-hero__breadcrumb-sep {
+	color: rgb(255 255 255 / 78%);
+}
+
+.page-hero--has-media .page-hero__breadcrumb-current {
+	color: var(--color-text-inverse);
+}
+
+.page-hero--has-media .page-hero__breadcrumb-link:hover,
+.page-hero--has-media .page-hero__breadcrumb-link:focus-visible {
+	color: var(--color-text-inverse);
+}
+
+@media (min-width: 48rem) {
+	.page-hero__inner {
+		padding-block: var(--space-14) var(--space-12);
+		min-height: clamp(12rem, 24vw, 16rem);
+	}
+
+	.page-hero--plain .page-hero__inner {
+		padding-block: var(--space-14) var(--space-12);
+	}
+}
+
+@media (min-width: 64rem) {
+	.page-hero__inner {
+		padding-block: var(--space-16) var(--space-14);
+	}
+}

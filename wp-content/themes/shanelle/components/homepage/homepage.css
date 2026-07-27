@@ -1,8 +1,8 @@
 /**
  * Shanelle Homepage — fashion landing layout
  *
- * Live composition: full-bleed HeroBanner, category icons, featured rails, For You.
- * Side-tile hero-promo layout is intentionally not composed (full-bleed brand hero).
+ * Live composition: category icons, featured rails, For You.
+ * HeroBanner / hero-promo are intentionally not composed.
  */
 
 .front-page.site-main {

@@ -285,13 +285,37 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 ## Homepage & marketing
 
+### PageHero
+
+| Field | Detail |
+|-------|--------|
+| Purpose | Reusable informational page hero (title, subtitle, breadcrumb, optional background) |
+| Location | `inc/components/PageHero.php`, `components/page-hero/` |
+| Dependencies | None (args-driven) |
+| Used by | `InfoPage` (Contact, FAQ, Shipping, Returns, Privacy, Terms) |
+| Reusable | Yes |
+| Docs | [components/PageHero.md](./components/PageHero.md) |
+| Needs improvement | — |
+
+### InfoPage
+
+| Field | Detail |
+|-------|--------|
+| Purpose | Informational page composer — PageHero + WordPress editor content |
+| Location | `inc/components/InfoPage.php`, `components/info-page/` |
+| Dependencies | PageHero; WP pages; optional Fluent Forms / Omnisend shortcodes in content |
+| Used by | `page-templates/contact.php`, `faq.php`, `shipping.php`, `returns.php`, `privacy.php`, `terms.php` |
+| Reusable | Page |
+| Docs | [pages/INFO_PAGES.md](./pages/INFO_PAGES.md) |
+| Needs improvement | — |
+
 ### Homepage
 
 | Field | Detail |
 |-------|--------|
 | Purpose | Homepage composer |
 | Location | `inc/components/Homepage.php`, `components/homepage/` + partials |
-| Dependencies | HeroBanner, Catalog collections, ProductGrid, Customizer |
+| Dependencies | Catalog collections, ProductGrid, Customizer |
 | Used by | `front-page.php` |
 | Reusable | Page |
 | Needs improvement | Soften remaining P2 polish (load-more styling, “Ver todo” text) |
@@ -300,12 +324,12 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Full-bleed homepage hero / LCP preload |
+| Purpose | Full-bleed homepage hero / LCP preload (optional) |
 | Location | `inc/components/HeroBanner.php`, `components/hero-banner/` |
 | Dependencies | Customizer |
-| Used by | Live homepage via `Homepage::render_hero()` → `shanelle_hero_banner()` |
+| Used by | Manual `shanelle_hero_banner()` / `Homepage::render_hero()` only — **not** on live homepage |
 | Reusable | Yes |
-| Needs improvement | — |
+| Needs improvement | Customizer section labeled inactive to avoid merchant confusion |
 
 ### CategoryNavigation
 
@@ -337,7 +361,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Site footer composition (assembles brand, menus, contact, optional newsletter, floating controls) |
+| Purpose | Site footer composition (brand, menus, contact, engage cluster with compact newsletter + social, floating controls) |
 | Location | `inc/components/Footer.php`, `components/footer/` |
 | Dependencies | FooterBrand, Menus, Customizer |
 | Used by | `footer.php` |
@@ -349,7 +373,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | First footer column — logo, brand description, social icons |
+| Purpose | First footer column — logo + brand description; social render API used in engage cluster |
 | Location | `inc/components/FooterBrand.php`, `components/footer-brand/` |
 | Dependencies | Theme Customizer (via Footer settings), Footer icon SVGs |
 | Used by | `components/footer/footer.php` |

@@ -231,6 +231,44 @@ function shanelle_about_page(): void {
 }
 
 /**
+ * Render the reusable informational page hero.
+ *
+ * @param array<string, mixed> $args {
+ *     Optional. Page hero arguments.
+ *
+ *     @type string     $title                Required page title.
+ *     @type string     $subtitle             Optional subtitle.
+ *     @type array      $breadcrumb           Optional trail items with label/url keys.
+ *     @type int|string $background_image     Optional attachment ID or image URL.
+ *     @type string     $background_image_alt Optional alt text override.
+ *     @type int        $heading_level        Optional 1 or 2 (default 1).
+ *     @type string     $class                Optional extra root classes.
+ *     @type string     $id                   Optional root element id.
+ * }
+ */
+function shanelle_page_hero( array $args = array() ): void {
+	\Shanelle\Components\PageHero::render( $args );
+}
+
+/**
+ * Render an informational page composition (Contact, FAQ, policies, etc.).
+ *
+ * @param string $type One of: contact, faq, shipping, returns, privacy, terms.
+ */
+function shanelle_info_page( string $type ): void {
+	\Shanelle\Components\InfoPage::render( $type );
+}
+
+/**
+ * Return the URL of a published informational page by type, or empty string.
+ *
+ * @param string $type One of: contact, faq, shipping, returns, privacy, terms.
+ */
+function shanelle_get_info_page_url( string $type ): string {
+	return \Shanelle\Components\InfoPage::get_page_url( $type );
+}
+
+/**
  * Render the footer brand column.
  *
  * @param array<string, mixed> $args Optional brand overrides.
