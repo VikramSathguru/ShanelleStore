@@ -26,6 +26,16 @@ let lastFocusedElement = null;
 /** @type {boolean} */
 let isOpen = false;
 
+/** Suppress header-search focus reopen while closing the overlay. */
+let suppressHeaderSearchOpen = false;
+
+/**
+ * Ignore the first dismiss click after opening from the header field.
+ * Focus opens the overlay on mousedown; the same gesture's click then lands
+ * on the newly shown backdrop and would otherwise close it immediately.
+ */
+let ignoreDismissOnce = false;
+
 /** @type {boolean} */
 let isLoading = false;
 
@@ -497,6 +507,13 @@ function openSearchOverlay( options = {} ) {
 	root.classList.add( 'is-open' );
 	document.body.classList.add( 'is-search-overlay-open' );
 
+	if ( options.protectOpeningGesture === true ) {
+		ignoreDismissOnce = true;
+		window.setTimeout( () => {
+			ignoreDismissOnce = false;
+		}, 300 );
+	}
+
 	const presetQuery = typeof options.query === 'string' ? options.query : '';
 
 	if ( input ) {
@@ -561,9 +578,26 @@ function closeSearchOverlay() {
 
 	showIdlePanel();
 
-	if ( lastFocusedElement ) {
-		lastFocusedElement.focus();
+	const restoreTarget = lastFocusedElement;
+	lastFocusedElement = null;
+
+	/*
+	 * Restoring focus to the desktop header search field would fire focusin
+	 * and reopen the overlay. Skip that trigger and blur the field instead.
+	 */
+	suppressHeaderSearchOpen = true;
+
+	if ( restoreTarget instanceof HTMLElement ) {
+		if ( restoreTarget.matches( '[data-shanelle-header-search]' ) ) {
+			restoreTarget.blur();
+		} else {
+			restoreTarget.focus();
+		}
 	}
+
+	window.requestAnimationFrame( () => {
+		suppressHeaderSearchOpen = false;
+	} );
 
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:search-overlay:closed', {
@@ -596,12 +630,28 @@ function handleDocumentClick( event ) {
 	const closeTrigger = target.closest( '[data-shanelle-search-close]' );
 
 	if ( closeTrigger && isOpen ) {
+		if ( ignoreDismissOnce ) {
+			ignoreDismissOnce = false;
+			event.preventDefault();
+			return;
+		}
+
 		event.preventDefault();
 		closeSearchOverlay();
 		return;
 	}
 
 	if ( isOpen && dialog && ! dialog.contains( target ) ) {
+		if ( ignoreDismissOnce ) {
+			ignoreDismissOnce = false;
+			return;
+		}
+
+		// Header search opens via focus; its click is outside the dialog.
+		if ( target.closest( '[data-shanelle-header-search]' ) ) {
+			return;
+		}
+
 		closeSearchOverlay();
 	}
 
@@ -720,6 +770,10 @@ function initSearchOverlay( element = null ) {
  * @param {FocusEvent} event
  */
 function handleHeaderSearchFocus( event ) {
+	if ( suppressHeaderSearchOpen || isOpen ) {
+		return;
+	}
+
 	const target = event.target;
 
 	if ( ! ( target instanceof HTMLInputElement ) || ! target.matches( '[data-shanelle-header-search]' ) ) {
@@ -728,7 +782,10 @@ function handleHeaderSearchFocus( event ) {
 
 	const seed = target.value.trim();
 
-	openSearchOverlay( { query: seed } );
+	openSearchOverlay( {
+		query: seed,
+		protectOpeningGesture: true,
+	} );
 	target.blur();
 }
 

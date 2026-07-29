@@ -997,6 +997,23 @@ function initPurchase( panel ) {
 	updateControls( panel, getPurchaseState( panel ) );
 	syncWishlistState( panel );
 
+	document.body.addEventListener( 'shanelle:wishlist:change', ( event ) => {
+		if ( ! ( event instanceof CustomEvent ) ) {
+			return;
+		}
+
+		const ids = Array.isArray( event.detail?.wishlistIds )
+			? event.detail.wishlistIds.map( Number )
+			: getWishlistIds();
+		const productId = Number(
+			panel.querySelector( '[data-shanelle-purchase-wishlist]' )?.dataset.productId
+			|| getPurchaseState( panel ).productId
+			|| 0
+		);
+
+		setWishlistState( panel, ids.includes( productId ) );
+	} );
+
 	document.body.dispatchEvent(
 		new CustomEvent( 'shanelle:product-purchase:ready', {
 			bubbles: true,

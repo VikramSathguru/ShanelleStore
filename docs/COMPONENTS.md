@@ -50,7 +50,7 @@ Page-level documentation lives in [`docs/pages/`](pages/).
 | FooterBrand | Part of [Footer.md](components/Footer.md) (brand column) |
 | FooterLinks | Part of [Footer.md](components/Footer.md) (useful links menu) |
 | FooterCustomerService | Part of [Footer.md](components/Footer.md) (customer service menu) |
-| FooterPolicies | Part of [Footer.md](components/Footer.md) (policies menu) |
+| FooterPolicies | Part of [Footer.md](components/Footer.md) (bottom-bar legal links) |
 
 ## Related docs
 

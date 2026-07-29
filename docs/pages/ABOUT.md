@@ -48,6 +48,8 @@ Each section is optional. Empty fields or a disabled toggle omit that block; emp
 
 **Appearance → Customize → Página Sobre nosotros**
 
+Starter copy reflects the founder story: gratitude and trust, the seller–customer relationship, empathy from also being a customer, and the values **transparencia**, **empatía**, and **paciencia**. Merchants can edit every field.
+
 | Setting group | Purpose |
 |---------------|---------|
 | Título de la página | H1 fallback when hero titular is empty |
@@ -58,6 +60,12 @@ Each section is optional. Empty fields or a disabled toggle omit that block; emp
 | Llamado a la acción | Toggle, antetítulo, encabezado, texto, botón + URL (URL empty → shop) |
 
 Legacy mission CTA fields remain as fallback when the dedicated CTA button fields are empty.
+
+Defaults live in `AboutPage::get_default_content()`. To write them into theme mods:
+
+```bash
+php wp-content/themes/shanelle/bin/seed-about-page.php --force
+```
 
 ## Filters
 

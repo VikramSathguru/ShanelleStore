@@ -16,9 +16,9 @@ Shared PLP chrome for shop, category, tag, collection, and product search result
 1. Breadcrumbs / notices (surface-specific)
 2. Desktop `CatalogFilters` sidebar (`submit_mode=instant`)
 3. Title / count (or collection hero + count)
-4. Sticky mobile toolbar — Filtros + Ordenar
+4. Sticky mobile toolbar — Filtros + polished Ordenar pill control
 5. Active filter chips + clear all (every `shanelle_filter_*` URL param is clearable)
-6. `ProductGrid` (`pagination_mode=load_more`, label “Ver más”)
+6. `ProductGrid` (`pagination_mode=load_more`, label “Ver más”; catalog cards include media favourite heart)
 7. Mobile filter sheet — same `CatalogFilters` (`submit_mode=apply`)
 8. Empty state — clear-filters CTA when refined; archive-aware links otherwise (not forced to shop)
 

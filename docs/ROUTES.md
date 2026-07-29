@@ -24,6 +24,8 @@ Exact slugs are configured in **WooCommerce → Settings → Advanced → Page s
 | Returns | Page using template `page-templates/returns.php` | InfoPage (`returns`) |
 | Privacy | Page using template `page-templates/privacy.php` | InfoPage (`privacy`) |
 | Terms | Page using template `page-templates/terms.php` | InfoPage (`terms`) |
+| Cookies | Page using template `page-templates/cookies.php` | InfoPage (`cookies`) |
+| Editorial info | Page using template `page-templates/info-content.php` | InfoPage (`editorial`) |
 | Collections index | Page using template `page-templates/collections.php` | CollectionsPage |
 | Collection archive | `/collection/{slug}/` | `product_collection` taxonomy templates |
 | Category | `/product-category/{slug}/` | Shop archive path |

@@ -72,45 +72,6 @@ function syncMenuPanels() {
 }
 
 /**
- * @param {HTMLFormElement} form
- */
-function handleNewsletterSubmit( form ) {
-	const input = form.querySelector( 'input[type="email"]' );
-	const message = form.querySelector( '[data-shanelle-footer-newsletter-message]' );
-
-	if ( ! ( input instanceof HTMLInputElement ) || ! ( message instanceof HTMLElement ) ) {
-		return;
-	}
-
-	message.hidden = false;
-	message.classList.remove( 'is-success', 'is-error' );
-
-	if ( form.dataset.newsletterEnabled !== 'true' ) {
-		message.textContent = i18n.newsletterSoon || 'El boletín estará disponible pronto.';
-		message.classList.add( 'is-error' );
-		announce( message.textContent );
-		return;
-	}
-
-	const email = input.value.trim();
-	const isValid = input.checkValidity();
-
-	if ( ! isValid || '' === email ) {
-		message.textContent = i18n.newsletterInvalid || 'Ingresa un correo electrónico válido.';
-		message.classList.add( 'is-error' );
-		announce( message.textContent );
-		input.focus();
-		return;
-	}
-
-	message.textContent = i18n.newsletterSuccess || 'Gracias por suscribirte. Pronto estaremos en contacto.';
-	message.classList.add( 'is-success' );
-	announce( message.textContent );
-	form.classList.add( 'is-submitted' );
-	input.value = '';
-}
-
-/**
  * @returns {HTMLButtonElement|null}
  */
 function getScrollTopButton() {
@@ -190,15 +151,6 @@ function initFooter( element = null ) {
 	}
 
 	root.dataset.footerHydrated = 'true';
-
-	const newsletterForm = root.querySelector( '[data-shanelle-footer-newsletter]' );
-
-	if ( newsletterForm instanceof HTMLFormElement ) {
-		newsletterForm.addEventListener( 'submit', ( event ) => {
-			event.preventDefault();
-			handleNewsletterSubmit( newsletterForm );
-		} );
-	}
 
 	syncMenuPanels();
 	syncScrollTopVisibility();

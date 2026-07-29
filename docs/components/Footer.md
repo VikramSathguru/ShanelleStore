@@ -11,13 +11,13 @@ Site footer composition for Shanelle Store. Presentation only — no cart, check
 | `inc/components/FooterBrand.php` | Brand column (logo, description) |
 | `inc/components/FooterLinks.php` | Useful Links column (`wp_nav_menu`) |
 | `inc/components/FooterCustomerService.php` | Customer Service column (`wp_nav_menu`) |
-| `inc/components/FooterPolicies.php` | Policies column (`wp_nav_menu`) |
-| `components/footer/footer.php` | Assembles footer columns + engage cluster |
+| `inc/components/FooterPolicies.php` | Policies / legal links in bottom bar (`wp_nav_menu`) |
+| `components/footer/footer.php` | Assembles footer columns + engage cluster + bottom legal |
 | `components/footer-brand/` | Brand column markup + CSS |
 | `components/footer-links/` | Useful Links markup + CSS |
 | `components/footer-customer-service/` | Customer Service markup + CSS |
-| `components/footer-policies/` | Policies markup + CSS |
-| `components/footer/footer.js` | Accordion + scroll-to-top (respects `prefers-reduced-motion`) |
+| `components/footer-policies/` | Policies legal links markup + CSS |
+| `components/footer/footer.js` | Accordion + scroll-to-top (respects `prefers-reduced-motion`); no newsletter submit handling |
 
 Legacy partial `template-parts/components/site-footer.php` is **not** the live storefront footer.
 
@@ -29,7 +29,8 @@ Legacy partial `template-parts/components/site-footer.php` is **not** the live s
 | `FooterBrand` — logo + description; social in engage cluster | WhatsApp Business APIs / plugins |
 | `FooterLinks` — WordPress useful-links menu | Hard-coded page URLs |
 | `FooterCustomerService` — customer-service menu | |
-| `FooterPolicies` — policies / legal menu | |
+| `FooterPolicies` — policies / legal menu (bottom bar) | |
+| Newsletter presentation (title, description, embed slot) | List signup / ESP APIs / credentials (Omnisend, Mailchimp, etc.) |
 | Floating scroll-top + optional contact FAB | Payment gateway logic (icons are decorative) |
 
 ## Layout (desktop ≥64rem)
@@ -37,21 +38,21 @@ Legacy partial `template-parts/components/site-footer.php` is **not** the live s
 Compact CSS Grid on `.footer__inner`:
 
 ```
-FooterBrand | FooterLinks | FooterCustomerService | FooterPolicies | Engage
+FooterBrand | FooterLinks | FooterCustomerService | Engage
 Contact (under Brand)
 ```
 
 **Engage** (`.footer__engage`) clusters:
 
-1. Compact newsletter (title, email, subscribe — no card chrome)
+1. Compact newsletter (Customizer title + description + provider embed — no card chrome)
 2. Social icons (`FooterBrand::render_social()`)
 
-- Brand and Engage tracks are slightly wider; Useful / CS / Policies share equal `1fr` tracks.
+- Brand and Engage tracks are slightly wider; Useful / CS share equal `1fr` tracks.
 - Contact is placed under Brand with a tight row gap.
 - Section headings share the same bottom margin and line-height baseline.
-- Newsletter is borderless/padding-free; form + social stack in one column.
+- Newsletter is borderless/padding-free; embed + social stack in one column.
 
-**FooterLinks** / **FooterCustomerService** / **FooterPolicies** stack:
+**FooterLinks** / **FooterCustomerService** stack:
 
 1. Section title (`h2`)
 2. 16px (`--space-4`)
@@ -59,7 +60,19 @@ Contact (under Brand)
 
 If no menu is assigned, that column is omitted entirely (`fallback_cb` → `false`).
 
-Mobile: single-column stack. Tablet (≥48rem): two-row grid (`Brand | Useful | CS` / `Contact | Policies | Engage`). Desktop (≥64rem): single-row five-track grid with contact under brand.
+**Bottom bar** (`.footer__bottom`):
+
+```
+.footer__legal                          | payments
+  copyright
+  FooterPolicies (pipe-separated wrap)
+```
+
+- Copyright on its own line.
+- Policies render as a compact wrapping row of underlined links separated by `|` (no column heading).
+- Payment icons sit to the right on tablet/desktop.
+
+Mobile: single-column stack. Tablet (≥48rem): two-row grid (`Brand | Useful | CS` / `Contact | Engage | Engage`). Desktop (≥64rem): single-row four-track grid with contact under brand.
 
 ## Menu locations
 
@@ -68,7 +81,7 @@ Mobile: single-column stack. Tablet (≥48rem): two-row grid (`Brand | Useful | 
 | `footer_useful_links` | **Footer Useful Links** | `FooterLinks` |
 | `footer_shop` | *(legacy)* | Still honored by `FooterLinks` if new location empty |
 | `footer_customer_service` | **Footer Customer Service** | `FooterCustomerService` |
-| `footer_policies` | **Footer Policies** | `FooterPolicies` |
+| `footer_policies` | **Footer Policies** | `FooterPolicies` (bottom bar) |
 | `footer_legal` | *(legacy)* | Still honored by `FooterPolicies` if new location empty |
 | `footer_about` | Pie de página: Nosotros | `Footer::render_menus()` |
 
@@ -91,7 +104,7 @@ Mobile: single-column stack. Tablet (≥48rem): two-row grid (`Brand | Useful | 
 1. **Appearance → Menus → Edit Menus**
 2. Create or select a menu (privacy, terms, returns, etc.)
 3. Assign it to **Footer Policies**
-4. Save — the column appears automatically
+4. Save — links appear in the **bottom bar** under copyright (pipe-separated), not as a main column
 
 ## Customizer
 
@@ -106,7 +119,26 @@ Notable controls:
 - Scroll-to-top toggle
 - Optional contact FAB: toggle + URL + accessible label (falls back to WhatsApp then Contact page)
 - Copyright, payment icon slugs
-- Newsletter block (off by default until a list plugin is wired)
+- Newsletter block (off by default):
+  - Show toggle
+  - Title + description (theme copy)
+  - **Newsletter Embed Code** — paste provider embed markup (Omnisend JS embed, Mailchimp embed, iframe, or a lone WP shortcode). Theme places sanitized markup in the engage column. Empty embed → newsletter form area hidden (no fake form). Signup submission stays with the provider.
+
+## Newsletter (Plugin First)
+
+| Layer | Responsibility |
+|-------|----------------|
+| Theme | Visibility, title, description, embed placement, layout CSS |
+| Provider / plugin | Form markup, scripts, validation, list API, credentials |
+
+**Merchant setup**
+
+1. Create a signup form in the list provider (Omnisend, Mailchimp, etc.) or a WP form plugin.
+2. Copy the provider’s **embed code** (HTML/JS) — or a single form shortcode if the plugin exposes one.
+3. **Appearance → Customize → Pie de página** → enable **Mostrar bloque de boletín**.
+4. Paste into **Newsletter Embed Code**.
+5. Optionally edit title / description.
+6. Publish — footer engage column shows provider output; theme JS does not intercept submit.
 
 ## Floating controls
 
@@ -130,9 +162,11 @@ Notable controls:
 
 - [ ] Useful Links column shows title + vertical list when menu assigned
 - [ ] Customer Service column shows when `footer_customer_service` assigned
-- [ ] Policies column shows when `footer_policies` assigned
+- [ ] No Policies column in the main grid
+- [ ] Policies appear under copyright in the bottom bar when `footer_policies` assigned
+- [ ] Policy links wrap with `|` separators
 - [ ] Columns hidden when no menu assigned (no fallback pages)
-- [ ] Hover/focus: color transition + underline accent
+- [ ] Hover/focus: color transition on legal links
 - [ ] Keyboard tab through links
 - [ ] Useful Links `nav` has `aria-label="Footer Useful Links"`
 - [ ] Customer Service `nav` has `aria-label="Footer Customer Service"`
@@ -141,7 +175,8 @@ Notable controls:
 ### Mobile (&lt;48rem)
 
 - [ ] Useful Links centered below Brand
-- [ ] Vertical list preserved
+- [ ] Bottom legal block centered under copyright
+- [ ] Vertical useful/CS lists preserved
 - [ ] Tap targets usable
 
 ### Regression

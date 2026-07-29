@@ -107,6 +107,8 @@ shanelle_search_page();
 - [ ] Enter in input (no selection) navigates to full results
 - [ ] Combobox exposes `aria-expanded`, `aria-controls`, live region announcements
 - [ ] Focus trap keeps Tab inside overlay
+- [ ] Close / Escape dismisses overlay; closing does not restore focus to `[data-shanelle-header-search]` (avoids reopen loop)
+- [ ] Opening from the desktop header field does not dismiss on the same click (backdrop under the pointer)
 
 ### Recent and popular searches
 

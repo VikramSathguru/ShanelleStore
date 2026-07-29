@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 	id="<?php echo esc_attr( CategoryNavbar::get_root_id() ); ?>"
 	data-category-navbar
 >
-	<div class="container category-navbar__inner">
+	<div class="container-fluid category-navbar__inner">
 		<button
 			type="button"
 			class="category-navbar__scroll category-navbar__scroll--prev"
@@ -44,5 +44,5 @@ defined( 'ABSPATH' ) || exit;
 		</button>
 	</div>
 
-	<?php CategoryNavbar::render_dropdown_panel(); ?>
+	<?php CategoryNavbar::render_mega_menu(); ?>
 </div>

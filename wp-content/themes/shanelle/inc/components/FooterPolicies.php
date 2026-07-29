@@ -1,6 +1,6 @@
 <?php
 /**
- * Footer policies column component.
+ * Footer policies legal links component.
  *
  * @package Shanelle\Components
  */
@@ -12,9 +12,10 @@ namespace Shanelle\Components;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Footer policies column: WordPress-managed legal / policies menu.
+ * Footer policies: WordPress-managed legal / policies menu in the bottom bar.
  *
  * Presentation only. Menu items come exclusively from {@see wp_nav_menu()}.
+ * Renders as a compact, pipe-separated wrapping list under copyright — not a column.
  */
 final class FooterPolicies {
 
@@ -52,7 +53,7 @@ final class FooterPolicies {
 	}
 
 	/**
-	 * Enqueue policies column styles (shares visual system with FooterLinks).
+	 * Enqueue policies legal-links styles.
 	 */
 	public static function enqueue_assets(): void {
 		if ( is_admin() ) {
@@ -62,13 +63,13 @@ final class FooterPolicies {
 		wp_enqueue_style(
 			'shanelle-footer-policies',
 			self::COMPONENT_URI . '/footer-policies.css',
-			array( 'shanelle-main', 'shanelle-footer-links' ),
+			array( 'shanelle-main' ),
 			SHANELLE_VERSION
 		);
 	}
 
 	/**
-	 * Render the policies column when a menu is assigned.
+	 * Render the policies legal links when a menu is assigned.
 	 */
 	public static function render(): void {
 		$location = self::resolve_menu_location();
@@ -109,7 +110,7 @@ final class FooterPolicies {
 	}
 
 	/**
-	 * Return the visible section title (Spanish LATAM storefront).
+	 * Return a human title for admin / docs (not rendered in the bottom bar).
 	 */
 	public static function get_title(): string {
 		return __( 'Políticas', 'shanelle' );
@@ -136,7 +137,7 @@ final class FooterPolicies {
 			array(
 				'theme_location' => $location,
 				'container'      => false,
-				'menu_class'     => 'footer-links__list footer-policies__list',
+				'menu_class'     => 'footer-policies__list',
 				'menu_id'        => 'shanelle-footer-policies',
 				'depth'          => 1,
 				'fallback_cb'    => false,

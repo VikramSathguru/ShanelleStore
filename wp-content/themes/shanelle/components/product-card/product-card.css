@@ -13,6 +13,55 @@
 	position: relative;
 }
 
+.product-card__favourite {
+	position: absolute;
+	right: var(--space-2);
+	bottom: var(--space-2);
+	z-index: calc(var(--z-raised) + 1);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	min-width: 2.75rem;
+	min-height: 2.75rem;
+	padding: 0;
+	border: 0;
+	border-radius: var(--radius-full);
+	background-color: transparent;
+	color: var(--color-brand-500);
+	box-shadow: none;
+	filter: drop-shadow(0 1px 1px rgb(255 255 255 / 55%));
+}
+
+.product-card__favourite:hover,
+.product-card__favourite:focus-visible {
+	background-color: transparent;
+	color: var(--color-brand-600);
+}
+
+.product-card__favourite.is-active {
+	background-color: transparent;
+	color: var(--color-brand-500);
+}
+
+.product-card__favourite.is-active svg {
+	fill: var(--color-brand-500);
+	stroke: var(--color-brand-500);
+}
+
+.product-card__favourite svg {
+	width: 1.75rem;
+	height: 1.75rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.75;
+	transition: var(--transition-transform), fill var(--duration-base) var(--ease-out), stroke var(--duration-base) var(--ease-out);
+}
+
+.product-card__favourite:active svg {
+	transform: scale(0.92);
+}
+
 .product-card__badges {
 	position: absolute;
 	top: var(--space-2);
@@ -73,7 +122,7 @@
 .product-card__actions {
 	position: absolute;
 	right: var(--space-2);
-	bottom: var(--space-2);
+	bottom: calc(2.75rem + var(--space-2) + var(--space-2));
 	z-index: var(--z-raised);
 	display: flex;
 	flex-direction: column;
@@ -172,6 +221,19 @@
 	font-size: var(--font-size-xs);
 	font-weight: var(--font-weight-regular);
 	line-height: 1.4;
+}
+
+.product-card--catalog .product-card__favourite {
+	width: 2.75rem;
+	min-width: 2.75rem;
+	min-height: 2.75rem;
+	right: var(--space-1-5);
+	bottom: var(--space-1-5);
+}
+
+.product-card--catalog .product-card__favourite svg {
+	width: 1.875rem;
+	height: 1.875rem;
 }
 
 .product-card--catalog .product-card__sale-tag {
@@ -274,12 +336,14 @@
 		flex-direction: row;
 		right: var(--space-2);
 		left: auto;
+		bottom: calc(2.75rem + var(--space-2) + var(--space-2));
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
 	.product-card__image,
-	.product-card__actions {
+	.product-card__actions,
+	.product-card__favourite svg {
 		transition: none;
 	}
 }

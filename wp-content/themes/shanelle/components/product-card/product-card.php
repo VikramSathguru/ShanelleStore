@@ -24,6 +24,7 @@ $is_catalog    = ProductCard::is_catalog_variant();
 		<?php ProductCard::render_badges(); ?>
 		<?php ProductCard::render_sale_overlay(); ?>
 		<?php ProductCard::render_image(); ?>
+		<?php ProductCard::render_favourite(); ?>
 		<?php ProductCard::render_actions(); ?>
 	</div>
 

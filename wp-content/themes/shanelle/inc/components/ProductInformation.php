@@ -278,6 +278,7 @@ final class ProductInformation {
 	private static function build_description_section( \WC_Product $product ): ?array {
 		$content = apply_filters( 'the_content', $product->get_description() );
 		$content = is_string( $content ) ? trim( $content ) : '';
+		$content = self::sanitize_description_content( $content );
 
 		if ( '' === $content || '' === trim( wp_strip_all_tags( $content ) ) ) {
 			return null;
@@ -289,6 +290,125 @@ final class ProductInformation {
 			'content'     => $content,
 			'has_content' => true,
 		);
+	}
+
+	/**
+	 * Strip imported storefront accordion chrome from product description HTML.
+	 *
+	 * Some catalog imports paste Shopify/theme collapsible markup (trigger buttons
+	 * and wrapper divs). ProductInformation already owns the accordion UI, so that
+	 * chrome is redundant and reads as a duplicate "Description" control.
+	 */
+	private static function sanitize_description_content( string $content ): string {
+		$content = trim( $content );
+
+		if ( '' === $content ) {
+			return '';
+		}
+
+		$has_collapsible_chrome = false !== stripos( $content, 'collapsible-trigger' )
+			|| false !== stripos( $content, 'collapsible-content' );
+
+		if ( ! $has_collapsible_chrome ) {
+			return $content;
+		}
+
+		if ( ! class_exists( \DOMDocument::class ) ) {
+			return $content;
+		}
+
+		$previous = libxml_use_internal_errors( true );
+		$dom      = new \DOMDocument();
+		$wrapped  = '<div id="shanelle-description-root">' . $content . '</div>';
+		$loaded   = $dom->loadHTML(
+			'<?xml encoding="utf-8">' . $wrapped,
+			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+		);
+
+		if ( ! $loaded ) {
+			libxml_clear_errors();
+			libxml_use_internal_errors( $previous );
+			return $content;
+		}
+
+		$xpath = new \DOMXPath( $dom );
+
+		foreach ( self::query_elements_by_class( $xpath, 'collapsible-trigger' ) as $node ) {
+			if ( $node->parentNode instanceof \DOMNode ) {
+				$node->parentNode->removeChild( $node );
+			}
+		}
+
+		foreach ( array( 'collapsible-content__inner', 'collapsible-content' ) as $class_name ) {
+			foreach ( self::query_elements_by_class( $xpath, $class_name ) as $node ) {
+				self::unwrap_element( $node );
+			}
+		}
+
+		$root = $dom->getElementById( 'shanelle-description-root' );
+
+		if ( ! $root instanceof \DOMElement ) {
+			libxml_clear_errors();
+			libxml_use_internal_errors( $previous );
+			return $content;
+		}
+
+		$sanitized = '';
+
+		foreach ( $root->childNodes as $child ) {
+			$sanitized .= $dom->saveHTML( $child );
+		}
+
+		libxml_clear_errors();
+		libxml_use_internal_errors( $previous );
+
+		$sanitized = preg_replace( '/<p>(?:\s|&nbsp;)*<\/p>/i', '', $sanitized );
+
+		return is_string( $sanitized ) ? trim( $sanitized ) : '';
+	}
+
+	/**
+	 * Return elements whose class attribute contains a full class token.
+	 *
+	 * @return array<int, \DOMElement>
+	 */
+	private static function query_elements_by_class( \DOMXPath $xpath, string $class_name ): array {
+		$query = sprintf(
+			'//*[contains(concat(" ", normalize-space(@class), " "), " %s ")]',
+			$class_name
+		);
+		$nodes = $xpath->query( $query );
+
+		if ( ! $nodes instanceof \DOMNodeList ) {
+			return array();
+		}
+
+		$elements = array();
+
+		foreach ( $nodes as $node ) {
+			if ( $node instanceof \DOMElement ) {
+				$elements[] = $node;
+			}
+		}
+
+		return $elements;
+	}
+
+	/**
+	 * Replace an element with its children.
+	 */
+	private static function unwrap_element( \DOMElement $element ): void {
+		$parent = $element->parentNode;
+
+		if ( ! $parent instanceof \DOMNode ) {
+			return;
+		}
+
+		while ( $element->firstChild ) {
+			$parent->insertBefore( $element->firstChild, $element );
+		}
+
+		$parent->removeChild( $element );
 	}
 
 	/**

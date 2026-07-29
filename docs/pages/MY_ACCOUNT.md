@@ -48,6 +48,11 @@ MyAccountPage
     └── Reset confirmation
 ```
 
+## Visual treatment
+
+Reverse frost (presentation only in `my-account-page.css`): soft rose-tinted translucent shells for nav, content, and guest cards over a light atmospheric wash — not opaque white panels. Nested empty states / cards use a lighter inner frost. Blur respects `prefers-reduced-motion`.
+
+**Layout note:** WooCommerce core layout CSS floats `.woocommerce-MyAccount-navigation` at `width: 30%`. The theme overrides that inside `.my-account-page` so the frost shell fills the sidebar grid column (`width: 100%; float: none`).
 ## Controller
 
 - `inc/components/MyAccountPage.php`

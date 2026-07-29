@@ -75,12 +75,16 @@ final class ProductCard {
 			array(
 				'ajaxUrl' => \WC_AJAX::get_endpoint( '%%endpoint%%' ),
 				'i18n'    => array(
-					'addToCart'     => __( 'Agregar a la bolsa', 'shanelle' ),
-					'selectOptions' => __( 'Elegir opciones', 'shanelle' ),
-					'adding'        => __( 'Agregando…', 'shanelle' ),
-					'added'         => __( 'Agregado a la bolsa', 'shanelle' ),
-					'error'         => __( 'No se pudo agregar a la bolsa. Intenta de nuevo.', 'shanelle' ),
-					'soldOut'       => __( 'Agotado', 'shanelle' ),
+					'addToCart'           => __( 'Agregar a la bolsa', 'shanelle' ),
+					'selectOptions'       => __( 'Elegir opciones', 'shanelle' ),
+					'adding'              => __( 'Agregando…', 'shanelle' ),
+					'added'               => __( 'Agregado a la bolsa', 'shanelle' ),
+					'error'               => __( 'No se pudo agregar a la bolsa. Intenta de nuevo.', 'shanelle' ),
+					'soldOut'             => __( 'Agotado', 'shanelle' ),
+					'addToWishlist'       => __( 'Agregar a favoritos', 'shanelle' ),
+					'removeFromWishlist'  => __( 'Quitar de favoritos', 'shanelle' ),
+					'addedToWishlist'     => __( 'Agregado a favoritos', 'shanelle' ),
+					'removedFromWishlist' => __( 'Eliminado de favoritos', 'shanelle' ),
 				),
 			)
 		);
@@ -198,7 +202,7 @@ final class ProductCard {
 					$product->get_name()
 				) ); ?>"
 			>
-				<?php self::render_icon( 'bag' ); ?>
+				<?php self::render_icon( 'cart-plus' ); ?>
 			</button>
 			<?php
 			return;
@@ -214,7 +218,7 @@ final class ProductCard {
 				$product->get_name()
 			) ); ?>"
 		>
-			<?php self::render_icon( 'bag' ); ?>
+			<?php self::render_icon( 'cart-plus' ); ?>
 		</a>
 		<?php
 	}
@@ -325,6 +329,33 @@ final class ProductCard {
 		<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 			<?php echo wp_kses_post( $product->get_price_html() ); ?>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Render favourite (wishlist) control on product media.
+	 */
+	public static function render_favourite(): void {
+		if ( ! self::$args['show_favourite'] ) {
+			return;
+		}
+
+		$product = self::get_product();
+		?>
+		<button
+			type="button"
+			class="product-card__favourite btn btn--icon"
+			data-shanelle-card-wishlist
+			data-product-id="<?php echo esc_attr( (string) $product->get_id() ); ?>"
+			aria-pressed="false"
+			aria-label="<?php echo esc_attr( sprintf(
+				/* translators: %s: product name */
+				__( 'Agregar %s a favoritos', 'shanelle' ),
+				$product->get_name()
+			) ); ?>"
+		>
+			<?php self::render_icon( 'heart' ); ?>
+		</button>
 		<?php
 	}
 
@@ -441,11 +472,12 @@ final class ProductCard {
 				'image_sizes'    => '(max-width: 767px) 50vw, (max-width: 1023px) 33vw, 25vw',
 				'lazy'           => true,
 				'priority'       => false,
-				'show_rating'    => true,
-				'show_attributes'=> true,
-				'show_actions'   => true,
-				'variant'        => 'default',
-				'new_days'       => (int) apply_filters( 'shanelle_product_card_new_days', 30 ),
+				'show_rating'     => true,
+				'show_attributes' => true,
+				'show_actions'    => true,
+				'show_favourite'  => true,
+				'variant'         => 'default',
+				'new_days'        => (int) apply_filters( 'shanelle_product_card_new_days', 30 ),
 			)
 		);
 	}
@@ -593,7 +625,7 @@ final class ProductCard {
 					$product->get_name()
 				) ); ?>"
 			>
-				<?php self::render_icon( 'bag' ); ?>
+				<?php self::render_icon( 'cart-plus' ); ?>
 			</button>
 			<?php
 			return;
@@ -621,10 +653,11 @@ final class ProductCard {
 	 */
 	public static function render_icon( string $icon ): void {
 		$icons = array(
-			'heart'   => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 20.5 10.55 19.1C5.4 14.36 2 11.28 2 7.5A4.5 4.5 0 0 1 6.5 3 5.5 5.5 0 0 1 12 5.09 5.5 5.5 0 0 1 17.5 3 4.5 4.5 0 0 1 22 7.5c0 3.78-3.4 6.86-8.55 11.6Z"/></svg>',
-			'eye'     => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
-			'bag'     => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>',
-			'options' => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+			'heart'     => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 20.5 10.55 19.1C5.4 14.36 2 11.28 2 7.5A4.5 4.5 0 0 1 6.5 3 5.5 5.5 0 0 1 12 5.09 5.5 5.5 0 0 1 17.5 3 4.5 4.5 0 0 1 22 7.5c0 3.78-3.4 6.86-8.55 11.6Z"/></svg>',
+			'eye'       => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
+			'bag'       => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>',
+			'cart-plus' => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.1"/><circle cx="17" cy="20" r="1.1"/><path d="M3 4h2l1.8 9.4a1.4 1.4 0 0 0 1.4 1.1h7.4a1.4 1.4 0 0 0 1.4-1.1L19.5 7H7"/><path d="M16 2.75v4.5M13.75 5h4.5"/></svg>',
+			'options'   => '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
 		);
 
 		if ( ! isset( $icons[ $icon ] ) ) {

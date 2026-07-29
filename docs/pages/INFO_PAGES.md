@@ -1,6 +1,6 @@
 # Informational Pages
 
-Reusable WordPress page templates for Contact, FAQ, Shipping, Returns, Privacy, and Terms. Each page is **fully editable in the WordPress editor**. The theme provides layout + `PageHero` only — no hardcoded body copy and no custom forms.
+Reusable WordPress page templates for Contact, FAQ, Shipping, Returns, Privacy, Terms, Cookies, and other editorial info pages. Each page is **fully editable in the WordPress editor**. The theme provides layout + `PageHero` only — body copy lives in WordPress (seeded once as starter content).
 
 ## Templates
 
@@ -12,12 +12,16 @@ Reusable WordPress page templates for Contact, FAQ, Shipping, Returns, Privacy, 
 | Devoluciones | `page-templates/returns.php` | `returns` |
 | Política de privacidad | `page-templates/privacy.php` | `privacy` |
 | Términos y condiciones | `page-templates/terms.php` | `terms` |
+| Política de cookies | `page-templates/cookies.php` | `cookies` |
+| Contenido informativo | `page-templates/info-content.php` | `editorial` |
+
+`editorial` is used for Guía de tallas, Seguimiento de pedidos, Métodos de pago, and similar content pages.
 
 ## Composition
 
 ```
 InfoPage
-├── PageHero (FAQ, Shipping, Returns, Privacy, Terms)
+├── PageHero (FAQ, Shipping, Returns, Privacy, Terms, Cookies, Editorial)
 │   or compact title band on Contact (no banner)
 └── Body
     ├── Contact: Customizer business details + optional Maps + page content (Fluent Forms)
@@ -27,10 +31,23 @@ InfoPage
 | Editable in WP | Maps to |
 |----------------|---------|
 | Page title | Hero H1 |
-| Page excerpt | Hero subtitle (optional) |
+| Page excerpt | Hero subtitle + PDP teaser (Shipping / Returns) |
 | Featured image | Hero background |
 | Page body | Main content / Fluent Forms shortcode |
 | Footer Customizer contact fields | Contact page details + footer contact column |
+
+## Starter content (seed)
+
+Spanish starter copy for Nicaragua-oriented policies is defined in `inc/setup/InfoPageSeeder.php` and written into WordPress posts (not rendered from PHP on the storefront).
+
+```bash
+php wp-content/themes/shanelle/bin/seed-info-pages.php
+php wp-content/themes/shanelle/bin/seed-info-pages.php --force
+```
+
+- First run (or `--force`) fills titles, excerpts, body HTML, templates, and footer menu labels.
+- Merchants should edit pages afterward in **Pages**. Re-running without `--force` skips content overwrite once the seed option is set.
+- Option key: `shanelle_info_pages_seeded_v1`.
 
 ## Contact page
 
@@ -52,6 +69,8 @@ Business details come from **Appearance → Customize → Pie de página** (sing
 | Path | Role |
 |------|------|
 | `inc/components/InfoPage.php` | Composer, contact layout, page lookup, PDP bridge |
+| `inc/setup/InfoPageSeeder.php` | Starter content definitions + upsert helper |
+| `bin/seed-info-pages.php` | CLI runner for the seeder |
 | `components/info-page/info-page.php` | Markup |
 | `components/info-page/info-page.css` | Layout |
 | `Footer::get_business_contact()` | Shared Customizer contact API |
@@ -61,9 +80,9 @@ Helpers: `shanelle_info_page( $type )`, `shanelle_get_info_page_url( $type )`.
 
 ## Merchant setup
 
-1. **Pages → Add New** for each policy/contact page.
-2. Set **Page Attributes → Template** to the matching template above.
-3. Add title, optional excerpt, optional featured image, and body content.
+1. Run the seeder (or **Pages → Add New** for each policy/contact page).
+2. Confirm **Page Attributes → Template** matches the table above.
+3. Edit title, excerpt, featured image, and body as needed.
 4. **Contact:**
    - Fill Footer Customizer contact fields (email, phone, WhatsApp, address, hours, optional Maps embed URL).
    - Paste Fluent Forms shortcode in the page body.
@@ -92,7 +111,7 @@ Plugin is already under `wp-content/plugins/wp-mail-smtp`. Theme does not config
 | Header contact CTA | Customizer URL → Contact template page → slug fallbacks |
 | Footer contact FAB | Customizer URL → WhatsApp (if set) → Contact page |
 | Footer contact column | Same Customizer phone / email / WhatsApp / address |
-| PDP Envío / Devoluciones | Teaser from Shipping / Returns pages when filters empty |
+| PDP Envío / Devoluciones | Teaser from Shipping / Returns page excerpt (or trimmed body) when filters empty; theme fallbacks at priority 20 |
 
 ## Filters
 
@@ -101,7 +120,7 @@ Plugin is already under `wp-content/plugins/wp-mail-smtp`. Theme does not config
 | `shanelle_info_page_hero_args` | Adjust PageHero args |
 | `shanelle_info_page_breadcrumb` | Adjust breadcrumb trail |
 | `shanelle_business_contact` | Adjust normalized contact payload |
-| `shanelle_product_information_shipping` / `_returns` | Overridable; InfoPage fills empty defaults |
+| `shanelle_product_information_shipping` / `_returns` | InfoPage (10) then theme defaults (20) |
 
 ## Plugin First
 
@@ -109,6 +128,7 @@ Plugin is already under `wp-content/plugins/wp-mail-smtp`. Theme does not config
 - Prefer **Fluent Forms** + **WP Mail SMTP** for submissions and delivery.
 - Maps: merchant pastes Google embed URL only; theme builds the iframe.
 - No ACF required.
+- Legal copy is CMS content — have counsel review before production launch.
 
 ## Notes
 

@@ -22,7 +22,6 @@ defined( 'ABSPATH' ) || exit;
 			<?php \Shanelle\Components\FooterBrand::render(); ?>
 			<?php \Shanelle\Components\FooterLinks::render(); ?>
 			<?php \Shanelle\Components\FooterCustomerService::render(); ?>
-			<?php \Shanelle\Components\FooterPolicies::render(); ?>
 
 			<?php Footer::render_menus(); ?>
 			<?php Footer::render_contact_details(); ?>
@@ -36,7 +35,10 @@ defined( 'ABSPATH' ) || exit;
 
 	<div class="footer__bottom">
 		<div class="container footer__bottom-inner">
-			<?php Footer::render_copyright(); ?>
+			<div class="footer__legal">
+				<?php Footer::render_copyright(); ?>
+				<?php \Shanelle\Components\FooterPolicies::render(); ?>
+			</div>
 			<?php Footer::render_payment_icons(); ?>
 		</div>
 	</div>

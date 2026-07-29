@@ -1,6 +1,8 @@
 <?php
 /**
- * Footer policies column markup.
+ * Footer policies legal links markup (bottom bar).
+ *
+ * Compact pipe-separated legal links beside copyright — not a main-column stack.
  *
  * @package Shanelle
  */
@@ -10,19 +12,11 @@ declare(strict_types=1);
 use Shanelle\Components\FooterPolicies;
 
 defined( 'ABSPATH' ) || exit;
-
-$title_id = 'shanelle-footer-policies-title';
 ?>
-<section
-	class="footer-links footer-policies"
+<nav
+	class="footer-policies"
 	data-shanelle-footer-policies
-	aria-labelledby="<?php echo esc_attr( $title_id ); ?>"
+	aria-label="<?php echo esc_attr( FooterPolicies::get_nav_aria_label() ); ?>"
 >
-	<h2 id="<?php echo esc_attr( $title_id ); ?>" class="footer-links__title text-label">
-		<?php echo esc_html( FooterPolicies::get_title() ); ?>
-	</h2>
-
-	<nav class="footer-links__nav" aria-label="<?php echo esc_attr( FooterPolicies::get_nav_aria_label() ); ?>">
-		<?php FooterPolicies::render_menu(); ?>
-	</nav>
-</section>
+	<?php FooterPolicies::render_menu(); ?>
+</nav>

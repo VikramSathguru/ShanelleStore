@@ -197,6 +197,16 @@ Choose one primary security suite to avoid overlap.
 
 Theme should style forms, not reimplement form engines.
 
+### Newsletter / email lists
+
+| Preference | Notes |
+|------------|--------|
+| **Omnisend** | Installed ESP; paste form **embed code** from Omnisend into Customizer |
+| **Mailchimp** | Embed snippet or Mailchimp for WP shortcode |
+| **Fluent Forms** | Acceptable when a form shortcode (or embed) routes to a list |
+
+Footer newsletter is **presentation only**: Customizer **Newsletter Embed Code** → sanitized markup (or a lone `do_shortcode()` expansion) in the engage column. Theme must not own list APIs, fake signup UX, or ESP credentials.
+
 ### Media
 
 | Preference | Notes |

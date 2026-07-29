@@ -187,7 +187,9 @@ final class ShopArchive {
 				<label class="shop-archive__ordering-label" for="<?php echo esc_attr( self::ORDERBY_SELECT_ID ); ?>">
 					<?php esc_html_e( 'Ordenar por', 'shanelle' ); ?>
 				</label>
-				<?php self::render_ordering(); ?>
+				<div class="shop-archive__ordering-control">
+					<?php self::render_ordering(); ?>
+				</div>
 			</div>
 		</div>
 		<?php
@@ -240,9 +242,25 @@ final class ShopArchive {
 
 		// Guarantee a stable id for the visible label, even if WC/plugins set another id.
 		$html = preg_replace( '/\s+id=(["\']).*?\1/i', '', $html ) ?? $html;
-		$html = preg_replace(
-			'/<select\b/i',
-			'<select id="' . esc_attr( self::ORDERBY_SELECT_ID ) . '"',
+		$html = preg_replace_callback(
+			'/<select\b([^>]*)>/i',
+			static function ( array $matches ): string {
+				$attrs = $matches[1];
+
+				if ( preg_match( '/\bclass=(["\'])([^"\']*)\1/i', $attrs, $class_match ) ) {
+					$classes = trim( $class_match[2] . ' select shop-archive__orderby' );
+					$attrs   = preg_replace(
+						'/\bclass=(["\'])([^"\']*)\1/i',
+						'class=' . $class_match[1] . $classes . $class_match[1],
+						$attrs,
+						1
+					) ?? $attrs;
+				} else {
+					$attrs .= ' class="orderby select shop-archive__orderby"';
+				}
+
+				return '<select id="' . esc_attr( self::ORDERBY_SELECT_ID ) . '"' . $attrs . '>';
+			},
 			$html,
 			1
 		) ?? $html;

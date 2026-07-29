@@ -197,7 +197,7 @@ function shanelle_default_product_shipping_information( string $content, WC_Prod
 	<?php
 	return (string) ob_get_clean();
 }
-add_filter( 'shanelle_product_information_shipping', 'shanelle_default_product_shipping_information', 10, 2 );
+add_filter( 'shanelle_product_information_shipping', 'shanelle_default_product_shipping_information', 20, 2 );
 
 /**
  * Default returns information for product detail accordion.
@@ -224,7 +224,7 @@ function shanelle_default_product_returns_information( string $content, WC_Produ
 	<?php
 	return (string) ob_get_clean();
 }
-add_filter( 'shanelle_product_information_returns', 'shanelle_default_product_returns_information', 10, 2 );
+add_filter( 'shanelle_product_information_returns', 'shanelle_default_product_returns_information', 20, 2 );
 
 /**
  * Default size guide copy for product detail accordion.

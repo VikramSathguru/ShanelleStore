@@ -34,7 +34,7 @@ $has_drawer_menu    = has_nav_menu( 'mobile' ) || has_nav_menu( 'primary' ) || h
 <header class="site-header" data-header>
 	<?php if ( ! empty( $promo_items ) ) : ?>
 		<div class="site-header__promo">
-			<div class="container site-header__promo-inner">
+			<div class="container-fluid site-header__promo-inner">
 				<?php foreach ( $promo_items as $index => $item ) : ?>
 					<?php if ( $index > 0 ) : ?>
 						<span class="site-header__promo-divider" aria-hidden="true"></span>
@@ -60,7 +60,7 @@ $has_drawer_menu    = has_nav_menu( 'mobile' ) || has_nav_menu( 'primary' ) || h
 	<?php endif; ?>
 
 	<div class="site-header__main">
-		<div class="container site-header__main-inner">
+		<div class="container-fluid site-header__main-inner">
 			<div class="site-header__start">
 				<button
 					type="button"

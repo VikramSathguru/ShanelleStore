@@ -33,6 +33,7 @@ Inventory of plugins present under `wp-content/plugins/` at audit time, relative
 - WP Mail SMTP — configure for Fluent Forms + WooCommerce mail on Hostinger.  
 - Query Monitor / Health Check — local FlyEnv tooling.  
 - Meta / TikTok / Site Kit / Omnisend — installed in this environment; theme does not hard-wire them (configure via each plugin).
+- **Footer newsletter** — Plugin First. Theme Customizer accepts **Newsletter Embed Code** (provider HTML/JS embed, or a lone WP shortcode). Theme places sanitized markup in the footer engage column only. List capture, validation, and credentials stay with the provider (Omnisend, Mailchimp, Fluent Forms, etc.). Empty embed → no footer form markup.
 
 ---
 

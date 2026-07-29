@@ -1,10 +1,69 @@
 /**
- * Shanelle Footer Policies Column
+ * Shanelle Footer Policies — legal links (bottom bar)
  *
- * Policies column. Reuses FooterLinks visual system via shared
- * `.footer-links` classes; this file is a thin component handle for enqueue.
+ * Compact wrapping list with pipe separators (copyright sits above via Footer).
+ * Presentation only; menu items come from wp_nav_menu.
  */
 
 .footer-policies {
-	/* Visual styles inherited from .footer-links (FooterLinks CSS). */
+	width: 100%;
+}
+
+.footer-policies__list {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	row-gap: var(--space-1);
+	column-gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.footer-policies__list > li {
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+}
+
+.footer-policies__list > li:not(:last-child)::after {
+	content: "|";
+	margin: 0 var(--space-2);
+	color: var(--color-text-muted);
+	font-size: var(--font-size-xs);
+	line-height: 1;
+}
+
+.footer-policies__list a {
+	color: var(--color-text-secondary);
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
+	text-decoration-thickness: 1px;
+	font-size: var(--font-size-xs);
+	line-height: var(--line-height-relaxed);
+	transition: color var(--duration-base) var(--ease-in-out);
+}
+
+.footer-policies__list a:hover,
+.footer-policies__list a:focus-visible {
+	color: var(--color-text-link);
+}
+
+.footer-policies__list a:focus-visible {
+	outline: 2px solid var(--color-border-focus);
+	outline-offset: 2px;
+	border-radius: var(--radius-xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.footer-policies__list a {
+		transition: none;
+	}
+}
+
+@media (min-width: 48rem) {
+	.footer-policies__list {
+		justify-content: flex-start;
+	}
 }

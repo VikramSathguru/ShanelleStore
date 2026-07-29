@@ -5,7 +5,7 @@
 .product-summary {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-5);
+	gap: var(--space-6);
 }
 
 .product-summary__header {
@@ -95,8 +95,9 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-3);
-	padding-block: var(--space-4);
-	border-block: 1px solid var(--color-border-subtle);
+	padding-block: var(--space-5);
+	border-block: 0;
+	border-top: 1px solid var(--color-border-subtle);
 }
 
 .product-summary__price {
@@ -108,15 +109,16 @@
 
 .product-summary__price-current {
 	margin: 0;
-	font-family: var(--font-family-base);
-	font-size: var(--font-size-2xl);
-	font-weight: var(--font-weight-bold);
+	font-family: var(--font-family-heading);
+	font-size: clamp(1.75rem, 1.5rem + 1vw, 2.375rem);
+	font-weight: var(--font-weight-medium);
 	letter-spacing: var(--letter-spacing-tight);
+	line-height: var(--line-height-tight);
 	color: var(--color-text);
 }
 
 .product-summary__price--on-sale .product-summary__price-current {
-	color: var(--color-brand-600);
+	color: var(--color-brand-700);
 }
 
 .product-summary__price-regular {
@@ -251,7 +253,11 @@
 }
 
 @media (min-width: 48rem) {
+	.product-summary {
+		gap: var(--space-7);
+	}
+
 	.product-summary__commerce {
-		padding-block: var(--space-5);
+		padding-block: var(--space-6);
 	}
 }

@@ -6,6 +6,7 @@
 
 const config = window.shanelleProductCard ?? {};
 const i18n = config.i18n ?? {};
+const WISHLIST_STORAGE_KEY = 'shanelle_wishlist';
 
 /**
  * @param {HTMLElement} card
@@ -26,6 +27,125 @@ function announce( card, message ) {
 	if ( live ) {
 		live.textContent = message;
 	}
+}
+
+/**
+ * @returns {number[]}
+ */
+function getWishlistIds() {
+	try {
+		const parsed = JSON.parse( localStorage.getItem( WISHLIST_STORAGE_KEY ) || '[]' );
+		return Array.isArray( parsed ) ? parsed.map( Number ).filter( Number.isFinite ) : [];
+	} catch ( error ) {
+		return [];
+	}
+}
+
+/**
+ * @param {number[]} ids
+ */
+function saveWishlistIds( ids ) {
+	localStorage.setItem( WISHLIST_STORAGE_KEY, JSON.stringify( ids ) );
+}
+
+/**
+ * @param {HTMLButtonElement} button
+ * @param {boolean} isActive
+ */
+function setWishlistButtonState( button, isActive ) {
+	const productName = button.closest( '[data-shanelle-product-card]' )?.querySelector( '.product-card__title a' )?.textContent?.trim() || '';
+
+	button.classList.toggle( 'is-active', isActive );
+	button.setAttribute( 'aria-pressed', isActive ? 'true' : 'false' );
+
+	if ( productName ) {
+		button.setAttribute(
+			'aria-label',
+			isActive
+				? ( i18n.removeFromWishlist || 'Quitar de favoritos' ) + ': ' + productName
+				: ( i18n.addToWishlist || 'Agregar a favoritos' ) + ': ' + productName
+		);
+	} else {
+		button.setAttribute(
+			'aria-label',
+			isActive ? ( i18n.removeFromWishlist || 'Quitar de favoritos' ) : ( i18n.addToWishlist || 'Agregar a favoritos' )
+		);
+	}
+}
+
+/**
+ * @param {HTMLElement} card
+ */
+function syncCardWishlist( card ) {
+	const button = card.querySelector( '[data-shanelle-card-wishlist]' );
+
+	if ( ! ( button instanceof HTMLButtonElement ) ) {
+		return;
+	}
+
+	const productId = Number( button.dataset.productId || card.dataset.productId || 0 );
+	setWishlistButtonState( button, getWishlistIds().includes( productId ) );
+}
+
+/**
+ * Sync all visible card wishlist buttons (and keep PDP in sync via shared event).
+ *
+ * @param {number[]} [ids]
+ */
+function syncAllCardWishlists( ids ) {
+	const wishlistIds = Array.isArray( ids ) ? ids : getWishlistIds();
+
+	document.querySelectorAll( '[data-shanelle-card-wishlist]' ).forEach( ( button ) => {
+		if ( ! ( button instanceof HTMLButtonElement ) ) {
+			return;
+		}
+
+		const productId = Number( button.dataset.productId || 0 );
+		setWishlistButtonState( button, wishlistIds.includes( productId ) );
+	} );
+}
+
+/**
+ * @param {HTMLButtonElement} button
+ */
+function toggleCardWishlist( button ) {
+	const card = button.closest( '[data-shanelle-product-card]' );
+	const productId = Number( button.dataset.productId || card?.dataset.productId || 0 );
+
+	if ( ! productId ) {
+		return;
+	}
+
+	const ids = getWishlistIds();
+	const index = ids.indexOf( productId );
+	const wasActive = index >= 0;
+
+	if ( wasActive ) {
+		ids.splice( index, 1 );
+	} else {
+		ids.push( productId );
+	}
+
+	saveWishlistIds( ids );
+	setWishlistButtonState( button, ! wasActive );
+
+	if ( card instanceof HTMLElement ) {
+		announce(
+			card,
+			wasActive ? ( i18n.removedFromWishlist || 'Eliminado de favoritos' ) : ( i18n.addedToWishlist || 'Agregado a favoritos' )
+		);
+	}
+
+	document.body.dispatchEvent(
+		new CustomEvent( 'shanelle:wishlist:change', {
+			bubbles: true,
+			detail: {
+				productId,
+				isActive: ! wasActive,
+				wishlistIds: ids,
+			},
+		} )
+	);
 }
 
 /**
@@ -107,10 +227,28 @@ async function quickAddToCart( button ) {
  * @param {HTMLElement} card
  */
 function initCard( card ) {
+	if ( card.dataset.shanelleCardReady === 'true' ) {
+		return;
+	}
+
+	card.dataset.shanelleCardReady = 'true';
+
 	markTouchCard( card );
 
 	if ( card.querySelector( '.badge--sold-out' ) ) {
 		card.classList.add( 'is-sold-out' );
+	}
+
+	syncCardWishlist( card );
+
+	const wishlist = card.querySelector( '[data-shanelle-card-wishlist]' );
+
+	if ( wishlist instanceof HTMLButtonElement ) {
+		wishlist.addEventListener( 'click', ( event ) => {
+			event.preventDefault();
+			event.stopPropagation();
+			toggleCardWishlist( wishlist );
+		} );
 	}
 
 	const quickAdd = card.querySelector( '[data-shanelle-quick-add]' );
@@ -145,6 +283,11 @@ function initCard( card ) {
 
 document.querySelectorAll( '[data-shanelle-product-card]' ).forEach( initCard );
 
+document.body.addEventListener( 'shanelle:wishlist:change', ( event ) => {
+	const ids = event.detail?.wishlistIds;
+	syncAllCardWishlists( Array.isArray( ids ) ? ids.map( Number ) : undefined );
+} );
+
 const observer = new MutationObserver( ( mutations ) => {
 	mutations.forEach( ( mutation ) => {
 		mutation.addedNodes.forEach( ( node ) => {
@@ -163,4 +306,4 @@ const observer = new MutationObserver( ( mutations ) => {
 
 observer.observe( document.body, { childList: true, subtree: true } );
 
-export { quickAddToCart, initCard };
+export { quickAddToCart, initCard, toggleCardWishlist };

@@ -2,9 +2,10 @@
  * Shanelle Footer Layout
  *
  * Compact multi-column footer. Design tokens only.
- * Desktop: Brand | Useful Links | Customer Service | Policies | Engage
+ * Desktop: Brand | Useful Links | Customer Service | Engage
  * Engage = compact newsletter + social icons.
  * Contact sits under Brand.
+ * Policies / legal links live in the bottom bar (pipe-separated).
  * Colors and typography unchanged — layout only.
  */
 
@@ -209,48 +210,32 @@
 	line-height: var(--line-height-relaxed);
 }
 
-.footer__newsletter-form {
+.footer__newsletter-embed {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-3);
+	width: 100%;
 }
 
-.footer__newsletter-label {
+.footer__newsletter-embed :where(form) {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
 	margin: 0;
 }
 
-.footer__newsletter-row {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3);
-}
-
-.footer__newsletter-input {
+.footer__newsletter-embed :where(input[type="email"], input[type="text"], input:not([type])) {
 	width: 100%;
 	min-height: var(--input-height);
+	box-sizing: border-box;
 }
 
-.footer__newsletter-message,
-.footer__newsletter-note {
+.footer__newsletter-embed :where(label) {
 	margin: 0;
 }
 
-.footer__newsletter-form.is-disabled .footer__newsletter-input,
-.footer__newsletter-form.is-disabled .footer__newsletter-submit {
-	opacity: 0.72;
-	cursor: not-allowed;
-}
-
-.footer__newsletter-form.is-submitted .footer__newsletter-submit {
-	opacity: 0.7;
-}
-
-.footer__newsletter-message.is-success {
-	color: var(--color-success-text);
-}
-
-.footer__newsletter-message.is-error {
-	color: var(--color-text-muted);
+.footer__newsletter-embed :where(p) {
+	margin: 0;
 }
 
 .footer__engage .footer-brand__social {
@@ -258,7 +243,7 @@
 }
 
 /* -------------------------------------------------------------------------
-   Bottom bar
+   Bottom bar — copyright + pipe-separated legal links | payments
    ------------------------------------------------------------------------- */
 .footer__bottom {
 	padding: var(--space-4) 0;
@@ -276,12 +261,22 @@
 	min-height: 3rem;
 }
 
+.footer__legal {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-2);
+	min-width: 0;
+	max-width: 100%;
+}
+
 .footer__copyright {
 	margin: 0;
 	color: var(--color-text-secondary);
-	line-height: 1;
+	line-height: var(--line-height-snug);
 	display: flex;
 	align-items: center;
+	font-size: var(--font-size-xs);
 }
 
 .footer__copyright a {
@@ -409,14 +404,14 @@
 /* -------------------------------------------------------------------------
    Tablet — two-row grid
    Brand | Useful | Customer Service
-   Contact | Policies | Engage
+   Contact | Engage | Engage
    ------------------------------------------------------------------------- */
 @media (min-width: 48rem) {
 	.footer__inner {
 		grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 1fr);
 		grid-template-areas:
 			"brand useful service"
-			"contact policies engage";
+			"contact engage engage";
 		column-gap: var(--space-6);
 		row-gap: var(--space-8);
 		align-items: start;
@@ -433,10 +428,6 @@
 
 	.footer__inner > [data-shanelle-footer-customer-service] {
 		grid-area: service;
-	}
-
-	.footer__inner > [data-shanelle-footer-policies] {
-		grid-area: policies;
 	}
 
 	.footer__contact {
@@ -457,6 +448,21 @@
 
 	.footer__newsletter {
 		max-width: none;
+	}
+
+	.footer__newsletter-embed :where(form) {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: stretch;
+	}
+
+	.footer__newsletter-embed :where(input[type="email"], input[type="text"], input:not([type])) {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.footer__newsletter-embed :where(button, input[type="submit"]) {
+		flex-shrink: 0;
 	}
 
 	.footer__menus {
@@ -484,30 +490,25 @@
 		display: block;
 	}
 
-	.footer__newsletter-row {
-		flex-direction: row;
-		align-items: stretch;
-	}
-
-	.footer__newsletter-input {
-		flex: 1;
-		min-width: 0;
-	}
-
-	.footer__newsletter-submit {
-		flex-shrink: 0;
-	}
-
 	.footer__bottom-inner {
 		flex-direction: row;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: space-between;
+		gap: var(--space-6);
 		text-align: left;
 	}
 
+	.footer__legal {
+		align-items: flex-start;
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
 	.footer__payments {
+		flex-shrink: 0;
 		justify-content: flex-end;
 		align-items: center;
+		padding-top: 0.1rem;
 	}
 
 	.footer__scroll-top,
@@ -526,7 +527,7 @@
 
 /* -------------------------------------------------------------------------
    Desktop — single-row compact grid
-   Brand | Useful | CS | Policies | Engage (newsletter + social)
+   Brand | Useful | CS | Engage (newsletter + social)
    Contact under Brand
    ------------------------------------------------------------------------- */
 @media (min-width: 64rem) {
@@ -535,11 +536,10 @@
 			minmax(12rem, 1.25fr)
 			minmax(0, 1fr)
 			minmax(0, 1fr)
-			minmax(0, 1fr)
 			minmax(14rem, 1.2fr);
 		grid-template-areas:
-			"brand useful service policies engage"
-			"contact useful service policies engage";
+			"brand useful service engage"
+			"contact useful service engage";
 		column-gap: var(--space-8);
 		row-gap: var(--space-3);
 		align-items: start;
@@ -556,10 +556,6 @@
 
 	.footer__inner > [data-shanelle-footer-customer-service] {
 		grid-area: service;
-	}
-
-	.footer__inner > [data-shanelle-footer-policies] {
-		grid-area: policies;
 	}
 
 	.footer__engage {

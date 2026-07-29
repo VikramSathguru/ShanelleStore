@@ -5,12 +5,13 @@
 .product-purchase {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-5);
-	padding: var(--space-5);
-	border: 1px solid var(--color-border-subtle);
-	border-radius: var(--radius-xl);
-	background: linear-gradient(180deg, var(--color-brand-50) 0%, var(--color-surface) 28%);
-	box-shadow: var(--shadow-sm);
+	gap: var(--space-6);
+	padding: var(--space-6) 0 0;
+	border: 0;
+	border-top: 1px solid var(--color-border-subtle);
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
 }
 
 .product-purchase__notices {
@@ -70,21 +71,21 @@
 	gap: var(--space-1);
 	width: fit-content;
 	padding: var(--space-1);
-	border: 1px solid var(--color-brand-200);
-	border-radius: var(--radius-pill);
-	background: var(--color-surface);
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-sm);
+	background: transparent;
 }
 
 .product-purchase__stepper-btn {
 	min-width: 2.25rem;
 	min-height: 2.25rem;
 	padding: 0;
-	color: var(--color-brand-700);
+	color: var(--color-text-secondary);
 }
 
 .product-purchase__stepper-btn:hover:not(:disabled) {
-	background: var(--color-brand-100);
-	color: var(--color-brand-800);
+	background: var(--color-background-subtle);
+	color: var(--color-text);
 }
 
 .product-purchase__quantity-input {
@@ -115,7 +116,7 @@
 }
 
 .product-purchase__stepper:focus-within {
-	border-color: var(--color-brand-400);
+	border-color: var(--color-border-focus);
 	box-shadow: var(--shadow-focus);
 }
 
@@ -127,13 +128,13 @@
 
 .product-purchase__add {
 	font-size: var(--font-size-sm);
-	font-weight: var(--font-weight-semibold);
+	font-weight: var(--font-weight-medium);
 	letter-spacing: var(--letter-spacing-wider);
-	box-shadow: var(--shadow-brand);
+	box-shadow: none;
 }
 
 .product-purchase__add:hover:not(:disabled) {
-	transform: translateY(-1px);
+	transform: none;
 }
 
 .product-purchase__secondary-actions {
@@ -190,22 +191,27 @@
 	align-items: flex-start;
 	gap: var(--space-3);
 	width: 100%;
-	padding: var(--space-3);
-	border: 1px solid var(--color-border-subtle);
-	border-radius: var(--radius-md);
-	background: var(--color-surface);
+	padding: var(--space-2) 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
 	color: var(--color-text-secondary);
 	text-align: left;
 	cursor: pointer;
-	transition: var(--transition-all);
+	transition: var(--transition-colors);
 }
 
 .product-purchase__estimate:hover,
 .product-purchase__estimate:focus-visible {
-	border-color: var(--color-brand-300);
-	background: var(--color-brand-50);
+	border-color: transparent;
+	background: transparent;
+	color: var(--color-text);
 	outline: none;
-	box-shadow: var(--shadow-xs);
+	box-shadow: none;
+}
+
+.product-purchase__estimate:focus-visible .product-purchase__estimate-icon {
+	box-shadow: var(--shadow-focus);
 }
 
 .product-purchase__estimate-icon {
@@ -213,11 +219,11 @@
 	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
-	width: 2.25rem;
-	height: 2.25rem;
+	width: 2rem;
+	height: 2rem;
 	border-radius: var(--radius-full);
-	background: var(--color-brand-100);
-	color: var(--color-brand-700);
+	background: var(--color-background-subtle);
+	color: var(--color-text-secondary);
 }
 
 .product-purchase__estimate-copy {
@@ -331,7 +337,7 @@
 .product-purchase__sticky-add {
 	flex-shrink: 0;
 	min-width: 10rem;
-	box-shadow: var(--shadow-brand);
+	box-shadow: none;
 }
 
 html.has-product-purchase-sticky {
@@ -340,7 +346,8 @@ html.has-product-purchase-sticky {
 
 @media (min-width: 48rem) {
 	.product-purchase {
-		padding: var(--space-6);
+		padding: var(--space-8) 0 0;
+		gap: var(--space-7);
 	}
 
 	.product-purchase__estimates {

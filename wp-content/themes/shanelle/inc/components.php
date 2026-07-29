@@ -253,7 +253,7 @@ function shanelle_page_hero( array $args = array() ): void {
 /**
  * Render an informational page composition (Contact, FAQ, policies, etc.).
  *
- * @param string $type One of: contact, faq, shipping, returns, privacy, terms.
+ * @param string $type One of: contact, faq, shipping, returns, privacy, terms, cookies, editorial.
  */
 function shanelle_info_page( string $type ): void {
 	\Shanelle\Components\InfoPage::render( $type );
@@ -262,7 +262,7 @@ function shanelle_info_page( string $type ): void {
 /**
  * Return the URL of a published informational page by type, or empty string.
  *
- * @param string $type One of: contact, faq, shipping, returns, privacy, terms.
+ * @param string $type One of: contact, faq, shipping, returns, privacy, terms, cookies, editorial.
  */
 function shanelle_get_info_page_url( string $type ): string {
 	return \Shanelle\Components\InfoPage::get_page_url( $type );

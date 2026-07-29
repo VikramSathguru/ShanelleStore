@@ -23,6 +23,8 @@
 | `page-templates/returns.php` | Returns policy page |
 | `page-templates/privacy.php` | Privacy policy page |
 | `page-templates/terms.php` | Terms & conditions page |
+| `page-templates/cookies.php` | Cookie policy page |
+| `page-templates/info-content.php` | Generic editorial info (size guide, tracking, payments) |
 | `page-templates/collections.php` | Collections index page template |
 | `assets/` | Global CSS/JS/images |
 | `components/` | Feature views + scoped CSS/JS (includes reusable `page-hero/`) |
@@ -79,13 +81,14 @@ Helper: `shanelle_component( $slug )` → `get_template_part( 'template-parts/co
 - Markup: `template-parts/components/site-header.php`.  
 - Styles: `assets/css/components/site-header.css` (pulled through `main.css`).  
 - Customizer / helpers: `inc/components/SiteHeader.php` (promo trust strip copy/toggle, contact URL).  
-- Behavior: `assets/js/main.js` → `modules/mobile-drawer.js` (drawer hydration via `[data-header]`).  
+- Behavior: `assets/js/main.js` → `modules/mobile-drawer.js` (drawer hydration via `[data-header]`), `modules/sticky-header-offset.js` (publishes `--site-header-sticky-height`), `modules/auto-hide-header.js` (homepage only: hide on scroll-down, reveal on scroll-up).  
+- Layout: promo / main / category navbar inners use `container-fluid` so the header chrome spans the full viewport width on desktop (token padding, no max-width cap).  
 - Search: desktop header field focuses `SearchOverlay`; mobile uses search icon + drawer CTA (`data-shanelle-search-open`).  
 - Integrates: promo trust strip, cart count badge, account link, category navbar via `CategoryNavbar::render()`.  
 - Mobile drawer: focus trap + `aria-modal`, nested menu styles, fallback links when no menus assigned; customer-service CTA uses Customizer/WP contact page URL.  
 - Storefront copy is Latin American Spanish only (no language switcher in chrome).
 
-**Not implemented yet:** server-side wishlist (PDP favourites remain localStorage-only); full migrate of markup into `components/header/` package.
+**Not implemented yet:** server-side wishlist (card + PDP favourites remain localStorage-only); full migrate of markup into `components/header/` package.
 
 Note: `components/header/` directory exists but is empty (architecture cleanup deferred).
 
@@ -95,14 +98,14 @@ Note: `components/header/` directory exists but is empty (architecture cleanup d
 
 - `footer.php` calls `shanelle_footer()` → `Footer::render()`.  
 - Files: `inc/components/Footer.php`, `components/footer/{footer.php,footer.css,footer.js}`.  
-- Layout: CSS Grid — Brand | Useful Links | Customer Service | Policies | Engage (compact newsletter + social) on desktop; Contact under Brand. See [components/Footer.md](./components/Footer.md).  
+- Layout: CSS Grid — Brand | Useful Links | Customer Service | Engage (compact newsletter + social) on desktop; Contact under Brand. Policies / legal links sit in the bottom bar as a pipe-separated wrapping list under copyright. See [components/Footer.md](./components/Footer.md).  
 - Brand column: `inc/components/FooterBrand.php` + `components/footer-brand/` (logo + description; social rendered in engage cluster).  
 - Useful Links column: `inc/components/FooterLinks.php` + `components/footer-links/` (`wp_nav_menu`, no hard-coded links).  
 - Customer Service column: `inc/components/FooterCustomerService.php` + `components/footer-customer-service/` (reuses FooterLinks visual system).  
-- Policies column: `inc/components/FooterPolicies.php` + `components/footer-policies/` (reuses FooterLinks visual system).  
+- Policies legal links: `inc/components/FooterPolicies.php` + `components/footer-policies/` (bottom bar; pipe-separated wrap).  
 - Menu locations **`footer_useful_links`**, **`footer_customer_service`**, **`footer_policies`**. Legacy `footer_shop` / `footer_legal` still resolved by Useful Links / Policies if the new locations are empty.  
 - Customizer-driven: logo, brand description, contact (title/phone/email/WhatsApp/address/hours/optional Maps embed), social URLs (empty → `#`), copyright, payment icon slugs, scroll-to-top toggle, optional contact/WhatsApp FAB.  
-- Newsletter block is optional and **off by default** until a list plugin is wired; when shown it shares the engage column with social icons.  
+- Newsletter block is optional (**off by default**). Theme renders Customizer title/description plus **Newsletter Embed Code** (provider HTML/JS embed such as Omnisend, Mailchimp iframe/JS, or a lone WP shortcode). Empty embed → no fake form. Signup logic stays with the provider. When shown, the block shares the engage column with social icons.  
 - Floating controls use `--z-fixed` so MiniCart (`--z-drawer`) stays above them.
 
 ---
@@ -112,8 +115,8 @@ Note: `components/header/` directory exists but is empty (architecture cleanup d
 | Mechanism | Location |
 |-----------|----------|
 | WP menus | `primary`, `mobile`, `footer`, `categories` (`inc/setup.php`) |
-| Footer column menus | `footer_useful_links` (`FooterLinks`), `footer_customer_service` (`FooterCustomerService`), `footer_policies` (`FooterPolicies`), plus `footer_about` (`Footer`) |
-| Header category navbar | `CategoryNavbar` |
+| Footer column menus | `footer_useful_links` (`FooterLinks`), `footer_customer_service` (`FooterCustomerService`), plus `footer_about` (`Footer`); `footer_policies` (`FooterPolicies`) renders in the bottom legal bar |
+| Header category navbar | `CategoryNavbar` (desktop hover mega-menu: sidebar + shop-by + picks + CTA strip) |
 | Homepage category icons | `Homepage::render_category_icons()` (live). `CategoryNavigation` exists but is inactive on the front page |
 | Mobile drawer | Header + `mobile-drawer.js` |
 | My Account mobile bottom nav | `MyAccountPage` partial |

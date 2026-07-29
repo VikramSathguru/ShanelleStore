@@ -1,6 +1,6 @@
 # PageHero
 
-Reusable informational page hero for Shanelle Store content pages (Contact, FAQ, Shipping, Privacy, Terms, Returns, and similar). Presentation only — callers pass copy and media.
+Reusable informational page hero for Shanelle Store content pages (Contact, FAQ, Shipping, Privacy, Terms, Returns, Cookies, editorial info, and similar). Presentation only — callers pass copy and media.
 
 **Not** the homepage `HeroBanner` (carousel / Customizer-driven LCP surface).
 

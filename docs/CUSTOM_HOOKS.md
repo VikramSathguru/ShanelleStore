@@ -67,7 +67,10 @@ Client-side analogues are CustomEvents — see [EVENTS.md](./EVENTS.md).
 | `shanelle_hero_banner_slides` | `HeroBanner.php` | Hero slides |
 | `shanelle_category_navigation_settings` | `CategoryNavigation.php` | Nav settings |
 | `shanelle_category_navigation_categories` | `CategoryNavigation.php` | Category list |
-| `shanelle_category_navbar_categories` | `CategoryNavbar.php` | Header navbar categories |
+| `shanelle_category_navbar_categories` | `CategoryNavbar.php` | Header navbar categories + mega panes |
+| `shanelle_category_navbar_shop_by_items` | `CategoryNavbar.php` | Mega-menu “Comprar por categoría” circle items |
+| `shanelle_category_navbar_picks_items` | `CategoryNavbar.php` | Mega-menu “Elegidos para ti” circle items |
+| `shanelle_category_navbar_cta_cards` | `CategoryNavbar.php` | Mega-menu footer explanation cards |
 
 ### PDP
 

@@ -62,6 +62,11 @@ final class Footer {
 
 	private const MOD_NEWSLETTER_DESCRIPTION = 'shanelle_footer_newsletter_description';
 
+	private const MOD_NEWSLETTER_EMBED = 'shanelle_footer_newsletter_embed';
+
+	/** @deprecated Migrated to MOD_NEWSLETTER_EMBED; kept for theme_mod fallback. */
+	private const MOD_NEWSLETTER_SHORTCODE_LEGACY = 'shanelle_footer_newsletter_shortcode';
+
 	private const MOD_COPYRIGHT = 'shanelle_footer_copyright';
 
 	private const MOD_SHOW_PAYMENT_ICONS = 'shanelle_footer_show_payment_icons';
@@ -127,7 +132,7 @@ final class Footer {
 			'shanelle_footer',
 			array(
 				'title'       => __( 'Pie de página', 'shanelle' ),
-				'description' => __( 'Configura la marca, contacto, menús, botón flotante opcional e íconos de pago. Para las columnas de enlaces, asigna menús a «Footer Useful Links», «Footer Customer Service» y «Footer Policies».', 'shanelle' ),
+				'description' => __( 'Configura la marca, contacto, menús, botón flotante opcional e íconos de pago. Columnas: «Footer Useful Links» y «Footer Customer Service». Los enlaces legales de «Footer Policies» aparecen en la barra inferior junto al copyright.', 'shanelle' ),
 				'priority'    => 120,
 			)
 		);
@@ -315,6 +320,25 @@ final class Footer {
 			)
 		);
 
+		$wp_customize->add_setting(
+			self::MOD_NEWSLETTER_EMBED,
+			array(
+				'default'           => '',
+				'sanitize_callback' => array( self::class, 'sanitize_newsletter_embed' ),
+				'transport'         => 'refresh',
+			)
+		);
+
+		$wp_customize->add_control(
+			self::MOD_NEWSLETTER_EMBED,
+			array(
+				'label'       => __( 'Newsletter Embed Code', 'shanelle' ),
+				'description' => __( 'Pega el código de inserción del proveedor (Omnisend, Mailchimp, etc.). Sin código no se muestra el formulario.', 'shanelle' ),
+				'section'     => 'shanelle_footer',
+				'type'        => 'textarea',
+			)
+		);
+
 		self::register_text_control(
 			$wp_customize,
 			self::MOD_COPYRIGHT,
@@ -418,12 +442,9 @@ final class Footer {
 			array(
 				'initialState' => self::build_footer_state(),
 				'i18n'         => array(
-					'newsletterSuccess' => __( 'Gracias por suscribirte. Pronto estaremos en contacto.', 'shanelle' ),
-					'newsletterInvalid' => __( 'Ingresa un correo electrónico válido.', 'shanelle' ),
-					'newsletterSoon'    => __( 'El boletín estará disponible pronto.', 'shanelle' ),
-					'menuExpand'        => __( 'Expandir menú', 'shanelle' ),
-					'menuCollapse'      => __( 'Contraer menú', 'shanelle' ),
-					'scrollTop'         => __( 'Volver arriba', 'shanelle' ),
+					'menuExpand'   => __( 'Expandir menú', 'shanelle' ),
+					'menuCollapse' => __( 'Contraer menú', 'shanelle' ),
+					'scrollTop'    => __( 'Volver arriba', 'shanelle' ),
 				),
 			)
 		);
@@ -621,17 +642,35 @@ final class Footer {
 	}
 
 	/**
-	 * Render newsletter signup notice (subscription plugin not wired yet).
+	 * Render newsletter block via provider embed markup (Plugin First).
+	 *
+	 * Theme owns title/description presentation and placement only.
+	 * Signup HTML/scripts and submission belong to Omnisend, Mailchimp,
+	 * or any embed/shortcode-based provider configured in the Customizer.
 	 */
 	public static function render_newsletter(): void {
 		if ( empty( self::$state['settings']['show_newsletter'] ) ) {
 			return;
 		}
 
+		$embed = trim( (string) ( self::$state['settings']['newsletter_embed'] ?? '' ) );
+
+		if ( '' === $embed ) {
+			return;
+		}
+
 		$title       = (string) ( self::$state['settings']['newsletter_title'] ?? '' );
 		$description = (string) ( self::$state['settings']['newsletter_description'] ?? '' );
+		$labelled_by = '' !== $title ? self::get_newsletter_title_id() : '';
 		?>
-		<section class="footer__newsletter" aria-labelledby="<?php echo esc_attr( self::get_newsletter_title_id() ); ?>">
+		<section
+			class="footer__newsletter"
+			<?php if ( '' !== $labelled_by ) : ?>
+				aria-labelledby="<?php echo esc_attr( $labelled_by ); ?>"
+			<?php else : ?>
+				aria-label="<?php esc_attr_e( 'Boletín', 'shanelle' ); ?>"
+			<?php endif; ?>
+		>
 			<?php if ( '' !== $title ) : ?>
 				<h2 id="<?php echo esc_attr( self::get_newsletter_title_id() ); ?>" class="footer__newsletter-title text-h3">
 					<?php echo esc_html( $title ); ?>
@@ -642,38 +681,26 @@ final class Footer {
 				<p class="footer__newsletter-description text-muted"><?php echo esc_html( $description ); ?></p>
 			<?php endif; ?>
 
-			<form
-				class="footer__newsletter-form is-disabled"
-				data-shanelle-footer-newsletter
-				data-newsletter-enabled="false"
-				novalidate
-			>
-				<label class="footer__newsletter-label text-label" for="<?php echo esc_attr( self::get_newsletter_input_id() ); ?>">
-					<?php esc_html_e( 'Correo electrónico', 'shanelle' ); ?>
-				</label>
-				<div class="footer__newsletter-row">
-					<input
-						type="email"
-						class="footer__newsletter-input input"
-						id="<?php echo esc_attr( self::get_newsletter_input_id() ); ?>"
-						name="footer_newsletter_email"
-						placeholder="<?php esc_attr_e( 'tu@ejemplo.com', 'shanelle' ); ?>"
-						autocomplete="email"
-						inputmode="email"
-						disabled
-						aria-disabled="true"
-					/>
-					<button type="submit" class="btn btn--primary footer__newsletter-submit" disabled aria-disabled="true">
-						<?php esc_html_e( 'Próximamente', 'shanelle' ); ?>
-					</button>
-				</div>
-				<p class="footer__newsletter-note text-caption text-muted">
-					<?php esc_html_e( 'El boletín estará disponible pronto. Mientras tanto, síguenos en redes.', 'shanelle' ); ?>
-				</p>
-				<p class="footer__newsletter-message text-caption" data-shanelle-footer-newsletter-message hidden></p>
-			</form>
+			<div class="footer__newsletter-embed" data-shanelle-footer-newsletter>
+				<?php self::print_newsletter_embed( $embed ); ?>
+			</div>
 		</section>
 		<?php
+	}
+
+	/**
+	 * Print sanitized newsletter embed markup (or expand a lone shortcode).
+	 */
+	private static function print_newsletter_embed( string $embed ): void {
+		$trimmed = trim( $embed );
+
+		// Compatibility: a single WP shortcode (e.g. Mailchimp for WP / Fluent Forms).
+		if ( preg_match( '/^\[[a-zA-Z][\w-]*(?:\s[^\]]*)?\]$/', $trimmed ) ) {
+			echo do_shortcode( $trimmed ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- provider shortcode HTML.
+			return;
+		}
+
+		echo $embed; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- sanitized via sanitize_newsletter_embed on save.
 	}
 
 	/**
@@ -806,13 +833,6 @@ final class Footer {
 	}
 
 	/**
-	 * Return newsletter input ID.
-	 */
-	public static function get_newsletter_input_id(): string {
-		return self::ROOT_ID . '-newsletter-email';
-	}
-
-	/**
 	 * Return footer state JSON.
 	 */
 	public static function get_state_json(): string {
@@ -888,15 +908,16 @@ final class Footer {
 				'social_pinterest'       => self::get_theme_mod_url( self::MOD_SOCIAL_PINTEREST ),
 				'social_facebook'        => self::get_theme_mod_url( self::MOD_SOCIAL_FACEBOOK ),
 				'social_youtube'         => self::get_theme_mod_url( self::MOD_SOCIAL_YOUTUBE ),
-				'show_newsletter'        => self::get_theme_mod_bool( self::MOD_SHOW_NEWSLETTER, false ),
-				'newsletter_title'       => self::get_theme_mod_string(
+				'show_newsletter'         => self::get_theme_mod_bool( self::MOD_SHOW_NEWSLETTER, false ),
+				'newsletter_title'        => self::get_theme_mod_string(
 					self::MOD_NEWSLETTER_TITLE,
 					__( 'Únete a nuestra lista', 'shanelle' )
 				),
-				'newsletter_description' => self::get_theme_mod_string(
+				'newsletter_description'  => self::get_theme_mod_string(
 					self::MOD_NEWSLETTER_DESCRIPTION,
 					__( 'Sé la primera en saber de novedades, ofertas exclusivas y ediciones de estilo.', 'shanelle' )
 				),
+				'newsletter_embed'        => self::get_newsletter_embed_mod(),
 				'copyright'              => self::get_theme_mod_string(
 					self::MOD_COPYRIGHT,
 					'© {year} {site_name}. ' . __( 'Todos los derechos reservados.', 'shanelle' )
@@ -1062,6 +1083,159 @@ final class Footer {
 	 */
 	public static function sanitize_textarea( mixed $value ): string {
 		return sanitize_textarea_field( (string) $value );
+	}
+
+	/**
+	 * Sanitize newsletter provider embed markup (presentation config only).
+	 *
+	 * Allows HTML/JS embeds from list providers. PHP tags are always stripped.
+	 * Users without `unfiltered_html` are limited to an allow-list of tags.
+	 */
+	public static function sanitize_newsletter_embed( mixed $value ): string {
+		$value = trim( (string) $value );
+
+		if ( '' === $value ) {
+			return '';
+		}
+
+		// Never persist executable PHP.
+		$value = (string) preg_replace( '/<\?(?:php|=)?[\s\S]*?\?>/i', '', $value );
+		$value = str_replace( array( '<?', '?>' ), '', $value );
+
+		if ( current_user_can( 'unfiltered_html' ) ) {
+			return $value;
+		}
+
+		return wp_kses( $value, self::get_newsletter_embed_allowed_html() );
+	}
+
+	/**
+	 * Allowed HTML for newsletter embeds when the user lacks unfiltered_html.
+	 *
+	 * @return array<string, array<string, bool|array<string, bool>>>
+	 */
+	private static function get_newsletter_embed_allowed_html(): array {
+		$global = array(
+			'id'    => true,
+			'class' => true,
+			'style' => true,
+			'title' => true,
+			'role'  => true,
+		);
+
+		return array(
+			'div'      => array_merge(
+				$global,
+				array(
+					'data-*' => true,
+				)
+			),
+			'span'     => array_merge( $global, array( 'data-*' => true ) ),
+			'p'        => $global,
+			'label'    => array_merge(
+				$global,
+				array(
+					'for' => true,
+				)
+			),
+			'form'     => array_merge(
+				$global,
+				array(
+					'action'       => true,
+					'method'       => true,
+					'target'       => true,
+					'novalidate'   => true,
+					'autocomplete' => true,
+					'name'         => true,
+					'data-*'       => true,
+				)
+			),
+			'input'    => array_merge(
+				$global,
+				array(
+					'type'         => true,
+					'name'         => true,
+					'value'        => true,
+					'placeholder'  => true,
+					'required'     => true,
+					'autocomplete' => true,
+					'inputmode'    => true,
+					'aria-*'       => true,
+					'data-*'       => true,
+				)
+			),
+			'button'   => array_merge(
+				$global,
+				array(
+					'type'     => true,
+					'name'     => true,
+					'value'    => true,
+					'disabled' => true,
+					'data-*'   => true,
+				)
+			),
+			'a'        => array_merge(
+				$global,
+				array(
+					'href'   => true,
+					'target' => true,
+					'rel'    => true,
+				)
+			),
+			'img'      => array_merge(
+				$global,
+				array(
+					'src'    => true,
+					'alt'    => true,
+					'width'  => true,
+					'height' => true,
+					'loading' => true,
+				)
+			),
+			'iframe'   => array_merge(
+				$global,
+				array(
+					'src'             => true,
+					'width'           => true,
+					'height'          => true,
+					'frameborder'     => true,
+					'allow'           => true,
+					'allowfullscreen' => true,
+					'loading'         => true,
+					'referrerpolicy'  => true,
+					'title'           => true,
+				)
+			),
+			'script'   => array(
+				'src'     => true,
+				'type'    => true,
+				'async'   => true,
+				'defer'   => true,
+				'charset' => true,
+				'id'      => true,
+				'class'   => true,
+				'data-*'  => true,
+			),
+			'noscript' => $global,
+			'style'    => array(
+				'type'  => true,
+				'media' => true,
+				'id'    => true,
+			),
+		);
+	}
+
+	/**
+	 * Read newsletter embed theme mod (with legacy shortcode fallback).
+	 */
+	private static function get_newsletter_embed_mod(): string {
+		$embed = self::get_theme_mod_string( self::MOD_NEWSLETTER_EMBED );
+
+		if ( '' !== trim( $embed ) ) {
+			return $embed;
+		}
+
+		return self::get_theme_mod_string( self::MOD_NEWSLETTER_SHORTCODE_LEGACY );
 	}
 
 	/**

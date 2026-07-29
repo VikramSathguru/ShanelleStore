@@ -41,6 +41,7 @@ shanelle_product_card( WC_Product $product, array $args = [] );
 | `show_rating` | `true` | Show star rating when reviews exist |
 | `show_attributes` | `true` | Show visible attribute summary |
 | `show_actions` | `true` | Show quick action buttons |
+| `show_favourite` | `true` | Show favourite (heart) control on product media |
 | `new_days` | `30` | Days a product is considered “new” |
 
 ### JavaScript exports
@@ -49,6 +50,7 @@ From `components/product-card/product-card.js`:
 
 - `initCard( card )`
 - `quickAddToCart( button )`
+- `toggleCardWishlist( button )`
 
 ## Dependencies
 
@@ -56,12 +58,14 @@ From `components/product-card/product-card.js`:
 - WooCommerce (`WC_Product`)
 - `Shanelle\WooCommerce\ProductPrice` (compact price classes, sale badge labels)
 - WooCommerce AJAX add-to-cart endpoint
+- Shared browser wishlist key `shanelle_wishlist` (localStorage; same as PDP ProductPurchase)
 
 ## Events
 
 | Event | Source | Payload |
 |-------|--------|---------|
 | `shanelle:added_to_cart` | Quick add success | `{ productId, data }` |
+| `shanelle:wishlist:change` | Favourite toggle | `{ productId, isActive, wishlistIds }` |
 
 ## Extension points
 
@@ -107,6 +111,7 @@ ProductGrid::render( $query, array(
 ## Known limitations
 
 - Quick add supports simple products with AJAX add-to-cart only; variable products link to the PDP
-- Wishlist and quick view buttons are placeholders (disabled)
+- Favourites use the same localStorage key as PDP (`shanelle_wishlist`); server-side wishlist is not implemented yet
+- Quick view is not implemented yet
 - Hover image uses the first gallery image only
 - Does not handle grouped or external product types with custom layouts

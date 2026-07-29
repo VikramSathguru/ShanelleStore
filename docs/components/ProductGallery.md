@@ -107,7 +107,7 @@ document.querySelectorAll( '[data-shanelle-product-gallery]' ).forEach( initGall
 ## Known limitations
 
 - Image zoom is a placeholder (button disabled); no magnifier implementation yet
-- Fullscreen modal is a functional shell without deep gallery integration
+- Fullscreen modal is portaled to `document.body` on open so sticky gallery ancestors cannot trap `position: fixed` (keeps image centered and blocks PDP chrome bleed-through)
 - Thumbnail lazy-load observer is prepared but thumbs use native `loading="lazy"`
 - Variable product image switching is not wired; ProductVariations dispatches a separate gallery-change event for future use
 - One image hides thumbnails and disables navigation; no images show WooCommerce placeholder

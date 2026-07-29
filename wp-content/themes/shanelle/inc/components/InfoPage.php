@@ -42,12 +42,14 @@ final class InfoPage {
 	 * @var array<string, string>
 	 */
 	private const TEMPLATES = array(
-		'contact'  => 'page-templates/contact.php',
-		'faq'      => 'page-templates/faq.php',
-		'shipping' => 'page-templates/shipping.php',
-		'returns'  => 'page-templates/returns.php',
-		'privacy'  => 'page-templates/privacy.php',
-		'terms'    => 'page-templates/terms.php',
+		'contact'   => 'page-templates/contact.php',
+		'faq'       => 'page-templates/faq.php',
+		'shipping'  => 'page-templates/shipping.php',
+		'returns'   => 'page-templates/returns.php',
+		'privacy'   => 'page-templates/privacy.php',
+		'terms'     => 'page-templates/terms.php',
+		'cookies'   => 'page-templates/cookies.php',
+		'editorial' => 'page-templates/info-content.php',
 	);
 
 	/**
@@ -56,6 +58,7 @@ final class InfoPage {
 	public static function boot(): void {
 		add_action( 'wp', array( self::class, 'configure_page_hooks' ), 20 );
 		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
+		// Priority 10: prefer Shipping / Returns WP page teasers when present.
 		add_filter( 'shanelle_product_information_shipping', array( self::class, 'filter_product_shipping_content' ), 10, 2 );
 		add_filter( 'shanelle_product_information_returns', array( self::class, 'filter_product_returns_content' ), 10, 2 );
 	}
@@ -119,7 +122,7 @@ final class InfoPage {
 	/**
 	 * Render an informational page composition.
 	 *
-	 * @param string $type One of: contact, faq, shipping, returns, privacy, terms.
+	 * @param string $type One of: contact, faq, shipping, returns, privacy, terms, cookies, editorial.
 	 */
 	public static function render( string $type ): void {
 		$type = sanitize_key( $type );

@@ -113,13 +113,39 @@ function getActiveImage( gallery ) {
 }
 
 /**
+ * Resolve modal image even when the lightbox is portaled to document.body.
+ *
+ * @param {HTMLElement} gallery
+ * @returns {HTMLImageElement|null}
+ */
+function getModalImage( gallery ) {
+	const local = gallery.querySelector( '[data-shanelle-gallery-modal-image]' );
+
+	if ( local instanceof HTMLImageElement ) {
+		return local;
+	}
+
+	const portaled = gallery.shanelleGalleryModal;
+
+	if ( portaled instanceof HTMLElement ) {
+		const image = portaled.querySelector( '[data-shanelle-gallery-modal-image]' );
+
+		if ( image instanceof HTMLImageElement ) {
+			return image;
+		}
+	}
+
+	return null;
+}
+
+/**
  * @param {HTMLElement} gallery
  * @param {Record<string, unknown>} item
  * @param {number} index
  */
 function swapImageInstant( gallery, item, index ) {
 	const main = getActiveImage( gallery ) || gallery.querySelector( '[data-shanelle-gallery-main]' );
-	const modalImage = gallery.querySelector( '[data-shanelle-gallery-modal-image]' );
+	const modalImage = getModalImage( gallery );
 
 	if ( main ) {
 		applyImageData( main, item, index );
@@ -185,7 +211,7 @@ function swapImageAnimated( gallery, item, index ) {
 				next.dataset.shanelleGalleryMain = '';
 				current.removeAttribute( 'data-shanelle-gallery-main' );
 
-				const modalImage = gallery.querySelector( '[data-shanelle-gallery-modal-image]' );
+				const modalImage = getModalImage( gallery );
 
 				if ( modalImage ) {
 					modalImage.src = item.full_src || item.src;
@@ -275,7 +301,7 @@ function syncModalImage( gallery ) {
 	const items = getItems( gallery );
 	const index = Number( gallery.dataset.activeIndex || 0 );
 	const item = items[ index ];
-	const modalImage = gallery.querySelector( '[data-shanelle-gallery-modal-image]' );
+	const modalImage = getModalImage( gallery );
 
 	if ( ! item || ! ( modalImage instanceof HTMLImageElement ) ) {
 		return;
@@ -476,7 +502,8 @@ function getFocusableElements( container ) {
 	return Array.from( container.querySelectorAll( FOCUSABLE_SELECTOR ) ).filter( ( element ) => {
 		return element instanceof HTMLElement
 			&& ! element.hasAttribute( 'disabled' )
-			&& element.offsetParent !== null;
+			&& element.getAttribute( 'aria-hidden' ) !== 'true'
+			&& element.getClientRects().length > 0;
 	} );
 }
 
@@ -492,13 +519,48 @@ function initModal( gallery ) {
 	const overlay = gallery.querySelector( '[data-shanelle-gallery-modal-overlay]' );
 	const main = gallery.querySelector( '.product-gallery__main' );
 
-	if ( ! modal || ! ( panel instanceof HTMLElement ) || ! openBtn ) {
+	if ( ! ( modal instanceof HTMLElement ) || ! ( panel instanceof HTMLElement ) || ! openBtn ) {
 		return null;
 	}
+
+	gallery.shanelleGalleryModal = modal;
+
+	const modalHome = modal.parentElement;
+	const modalPlaceholder = document.createComment( 'shanelle-gallery-modal' );
 
 	/** @type {HTMLElement|null} */
 	let lastFocused = null;
 	let isOpen = false;
+
+	/**
+	 * Move modal to body so sticky gallery ancestors cannot trap position:fixed.
+	 */
+	const mountModal = () => {
+		if ( modal.parentElement === document.body ) {
+			return;
+		}
+
+		if ( modalHome instanceof Node ) {
+			modalHome.insertBefore( modalPlaceholder, modal );
+		}
+
+		document.body.appendChild( modal );
+	};
+
+	/**
+	 * Restore modal to its gallery home for clean teardown / re-init.
+	 */
+	const unmountModal = () => {
+		if ( modalPlaceholder.parentNode ) {
+			modalPlaceholder.parentNode.insertBefore( modal, modalPlaceholder );
+			modalPlaceholder.remove();
+			return;
+		}
+
+		if ( modalHome instanceof HTMLElement ) {
+			modalHome.appendChild( modal );
+		}
+	};
 
 	/**
 	 * @param {KeyboardEvent} event
@@ -548,9 +610,11 @@ function initModal( gallery ) {
 		const index = Number( gallery.dataset.activeIndex || 0 );
 		setActiveIndex( gallery, index, { animate: false, force: true } );
 		syncModalImage( gallery );
+		mountModal();
 		modal.hidden = false;
 		isOpen = true;
 		document.body.style.overflow = 'hidden';
+		document.body.classList.add( 'has-product-gallery-modal' );
 
 		requestAnimationFrame( () => {
 			const focusTarget = closeBtn instanceof HTMLElement ? closeBtn : panel;
@@ -566,6 +630,8 @@ function initModal( gallery ) {
 		modal.hidden = true;
 		isOpen = false;
 		document.body.style.overflow = '';
+		document.body.classList.remove( 'has-product-gallery-modal' );
+		unmountModal();
 
 		const restore = lastFocused instanceof HTMLElement && document.contains( lastFocused )
 			? lastFocused

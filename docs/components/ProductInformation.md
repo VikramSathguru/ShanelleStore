@@ -12,7 +12,9 @@ Renders expandable product information sections on the PDP using an accessible a
 
 - Build accordion sections: Description, Specifications, Size Guide, Care Instructions, Shipping, Returns
 - Hide individual sections when no content exists
+- Present accordion triggers with editorial typography, soft hover affordances, and clear expanded state (CSS presentation only)
 - Render Description from WooCommerce long description
+- Strip imported Shopify/theme collapsible chrome (trigger buttons and wrapper divs) from description HTML so it does not duplicate the accordion control
 - Render Specifications from visible attributes, SKU, weight, and dimensions
 - Provide filter hooks for CMS-driven content (size guide, care, shipping, returns)
 - **Shipping / Returns** default content can come from informational WP pages (`InfoPage`) when filters are empty
@@ -143,3 +145,4 @@ add_filter( 'shanelle_product_information_sections', function ( array $sections,
 - Does not render downloadable files or custom tabs beyond defined sections
 - Specifications use visible product attributes only; hidden attributes are excluded
 - No REST endpoint yet; hydration JSON is embedded in `data-information-json`
+- Description sanitization only removes known import chrome (`collapsible-trigger` / `collapsible-content*`); other pasted storefront markup may still need catalog cleanup

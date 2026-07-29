@@ -2,14 +2,36 @@
  * Shanelle My Account Page Layout
  *
  * Page-specific layout and scoped WooCommerce account styling only.
+ * Reverse frost: rose-tinted glass shells (not milky white) over a soft landing wash.
  */
 
 .my-account-page {
+	--account-frost-blur: blur(16px);
+	--account-frost-border: rgb(232 122 158 / 16%);
+	--account-frost-highlight: inset 0 1px 0 rgb(255 255 255 / 62%);
+	--account-frost-shadow: 0 10px 28px rgb(110 47 69 / 6%), var(--account-frost-highlight);
+	--account-frost-shell: linear-gradient(
+		155deg,
+		rgb(255 255 255 / 38%) 0%,
+		rgb(255 232 239 / 56%) 52%,
+		rgb(255 245 248 / 48%) 100%
+	);
+	--account-frost-shell-solid: rgb(255 245 248 / 78%);
+	--account-frost-inner: rgb(255 255 255 / 58%);
+	--account-frost-inner-solid: rgb(255 255 255 / 82%);
+	--account-frost-active: rgb(255 232 239 / 72%);
+
+	position: relative;
+	isolation: isolate;
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-6);
 	width: 100%;
 	padding-bottom: calc(var(--space-20) + env(safe-area-inset-bottom, 0px));
+	background:
+		radial-gradient(ellipse 58% 42% at 8% 12%, rgb(255 255 255 / 55%) 0%, transparent 58%),
+		radial-gradient(ellipse 48% 36% at 92% 28%, rgb(247 143 179 / 18%) 0%, transparent 55%),
+		radial-gradient(ellipse 55% 40% at 50% 100%, rgb(255 232 239 / 35%) 0%, transparent 60%);
 }
 
 .my-account-page__section,
@@ -77,9 +99,17 @@
 	flex-direction: column;
 	gap: var(--space-4);
 	padding: var(--space-4);
-	border: 1px solid var(--color-border-subtle);
+	border: 1px solid var(--account-frost-border);
 	border-radius: var(--radius-lg);
-	background-color: var(--color-background-subtle);
+	background-color: var(--account-frost-inner-solid);
+	background-image: linear-gradient(
+		180deg,
+		rgb(255 255 255 / 72%) 0%,
+		var(--account-frost-inner) 100%
+	);
+	box-shadow: var(--account-frost-highlight);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
 }
 
 .my-account-page__order-card-header,
@@ -154,7 +184,8 @@
 }
 
 .my-account-page__address-card--empty {
-	background-color: var(--color-surface);
+	background-color: var(--account-frost-inner-solid);
+	background-image: none;
 }
 
 .my-account-page__download-card {
@@ -180,7 +211,12 @@
 
 .my-account-page__payment-card--default {
 	border-color: var(--color-brand-200);
-	background-color: var(--color-brand-50);
+	background-color: var(--account-frost-active);
+	background-image: linear-gradient(
+		160deg,
+		rgb(255 255 255 / 45%) 0%,
+		rgb(255 232 239 / 70%) 100%
+	);
 }
 
 .my-account-page__payment-card-badge {
@@ -195,9 +231,17 @@
 	align-items: flex-start;
 	gap: var(--space-4);
 	padding: var(--space-8) var(--space-4);
-	border: 1px dashed var(--color-border);
+	border: 1px dashed rgb(232 122 158 / 28%);
 	border-radius: var(--radius-xl);
-	background-color: var(--color-background-subtle);
+	background-color: var(--account-frost-inner-solid);
+	background-image: linear-gradient(
+		165deg,
+		rgb(255 255 255 / 70%) 0%,
+		rgb(255 245 248 / 48%) 100%
+	);
+	box-shadow: var(--account-frost-highlight);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
 	text-align: left;
 }
 
@@ -215,9 +259,11 @@
 	display: grid;
 	gap: var(--space-3);
 	padding: var(--space-4);
-	border: 1px solid var(--color-border-subtle);
+	border: 1px solid var(--account-frost-border);
 	border-radius: var(--radius-lg);
-	background-color: var(--color-surface);
+	background-color: var(--account-frost-inner-solid);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
 }
 
 .my-account-page__skeleton-line {
@@ -274,9 +320,16 @@
 
 .my-account-page__order-update {
 	padding: var(--space-4);
-	border: 1px solid var(--color-border-subtle);
+	border: 1px solid var(--account-frost-border);
 	border-radius: var(--radius-lg);
-	background-color: var(--color-background-subtle);
+	background-color: var(--account-frost-inner-solid);
+	background-image: linear-gradient(
+		180deg,
+		rgb(255 255 255 / 68%) 0%,
+		var(--account-frost-inner) 100%
+	);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
 }
 
 .my-account-page__order-update-meta {
@@ -298,9 +351,15 @@
 	z-index: var(--z-index-sticky, 20);
 	display: block;
 	padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
-	border-top: 1px solid var(--color-border-subtle);
-	background-color: var(--color-surface-overlay);
-	backdrop-filter: blur(12px);
+	border-top: 1px solid var(--account-frost-border);
+	background-color: rgb(255 245 248 / 78%);
+	background-image: linear-gradient(
+		180deg,
+		rgb(255 255 255 / 55%) 0%,
+		rgb(255 232 239 / 70%) 100%
+	);
+	backdrop-filter: blur(14px);
+	-webkit-backdrop-filter: blur(14px);
 }
 
 .my-account-page__bottom-nav-list {
@@ -329,7 +388,7 @@
 
 .my-account-page__bottom-nav-item.is-active .my-account-page__bottom-nav-link,
 .my-account-page__bottom-nav-link:hover {
-	background-color: var(--color-brand-50);
+	background-color: var(--account-frost-active);
 	color: var(--color-brand-700);
 }
 
@@ -379,6 +438,7 @@
 .my-account-page__nav,
 .my-account-page__content {
 	min-width: 0;
+	width: 100%;
 }
 
 .my-account-page__nav-toggle {
@@ -387,18 +447,56 @@
 
 .my-account-page__nav-panel {
 	display: none;
+	width: 100%;
 }
 
 .my-account-page__nav-panel.is-open {
 	display: block;
 }
 
+/*
+ * Neutralize WooCommerce layout floats/widths.
+ * WC sets .woocommerce-MyAccount-navigation { float; width: 30% } which
+ * collapses our frost shell inside the already-narrow grid column.
+ */
+.my-account-page .woocommerce-MyAccount-navigation,
+.my-account-page .woocommerce-MyAccount-content {
+	float: none;
+	width: 100%;
+	margin: 0;
+}
+
+.my-account-page .woocommerce-MyAccount-navigation ul {
+	margin: 0;
+	padding: 0;
+}
+
+.my-account-page .woocommerce-MyAccount-navigation li {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.my-account-page .woocommerce-MyAccount-navigation li a {
+	text-decoration: none;
+}
+
+.my-account-page .woocommerce-MyAccount-navigation li.is-active a,
+.my-account-page .woocommerce-MyAccount-navigation li a:hover {
+	text-decoration: none;
+}
+
 .my-account-page__navigation {
+	box-sizing: border-box;
+	width: 100%;
 	padding: var(--space-4);
-	border: 1px solid var(--color-border-subtle);
+	border: 1px solid var(--account-frost-border);
 	border-radius: var(--radius-xl);
-	background-color: var(--color-surface);
-	box-shadow: var(--shadow-sm);
+	background-color: var(--account-frost-shell-solid);
+	background-image: var(--account-frost-shell);
+	box-shadow: var(--account-frost-shadow);
+	backdrop-filter: var(--account-frost-blur);
+	-webkit-backdrop-filter: var(--account-frost-blur);
 }
 
 .my-account-page__navigation-list {
@@ -416,41 +514,53 @@
 
 .my-account-page__navigation-link {
 	display: block;
+	width: 100%;
+	box-sizing: border-box;
 	padding: var(--space-3) var(--space-4);
 	border-radius: var(--radius-lg);
 	color: var(--color-text);
 	text-decoration: none;
 	transition: var(--transition-colors);
+	overflow-wrap: anywhere;
 }
 
 .my-account-page__navigation-link:hover {
-	background-color: var(--color-background-subtle);
+	background-color: rgb(255 255 255 / 42%);
 	color: var(--color-text);
 }
 
 .my-account-page__navigation-item.is-active .my-account-page__navigation-link,
 .my-account-page__navigation-item.woocommerce-MyAccount-navigation-link--active .my-account-page__navigation-link {
-	background-color: var(--color-brand-50);
+	background-color: var(--account-frost-active);
+	box-shadow: var(--account-frost-highlight);
 	color: var(--color-brand-700);
 	font-weight: var(--font-weight-semibold);
 }
 
 .my-account-page__content-inner {
+	box-sizing: border-box;
+	width: 100%;
 	padding: var(--space-5);
-	border: 1px solid var(--color-border-subtle);
+	border: 1px solid var(--account-frost-border);
 	border-radius: var(--radius-xl);
-	background-color: var(--color-surface);
-	box-shadow: var(--shadow-sm);
+	background-color: var(--account-frost-shell-solid);
+	background-image: var(--account-frost-shell);
+	box-shadow: var(--account-frost-shadow);
+	backdrop-filter: var(--account-frost-blur);
+	-webkit-backdrop-filter: var(--account-frost-blur);
 }
 
 .my-account-page__guest-card {
 	width: 100%;
 	max-width: 40rem;
 	padding: var(--space-5);
-	border: 1px solid var(--color-border-subtle);
+	border: 1px solid var(--account-frost-border);
 	border-radius: var(--radius-xl);
-	background-color: var(--color-surface);
-	box-shadow: var(--shadow-sm);
+	background-color: var(--account-frost-shell-solid);
+	background-image: var(--account-frost-shell);
+	box-shadow: var(--account-frost-shadow);
+	backdrop-filter: var(--account-frost-blur);
+	-webkit-backdrop-filter: var(--account-frost-blur);
 }
 
 .my-account-page__guest-card:has(.my-account-page__auth-columns) {
@@ -578,9 +688,16 @@
 
 .my-account-page__content-inner :where(.woocommerce-PaymentMethod) {
 	padding: var(--space-3);
-	border: 1px solid var(--color-border-subtle);
+	border: 1px solid var(--account-frost-border);
 	border-radius: var(--radius-lg);
-	background-color: var(--color-background-subtle);
+	background-color: var(--account-frost-inner-solid);
+	background-image: linear-gradient(
+		180deg,
+		rgb(255 255 255 / 68%) 0%,
+		var(--account-frost-inner) 100%
+	);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
 }
 
 .my-account-page__content-inner :where(.woocommerce-MyAccount-content > p:first-child) {
@@ -607,13 +724,13 @@
 	}
 
 	.my-account-page__layout {
-		grid-template-columns: minmax(14rem, 16rem) minmax(0, 1fr);
+		grid-template-columns: minmax(15rem, 18rem) minmax(0, 1fr);
 		align-items: start;
 	}
 
 	.my-account-page__navigation {
 		position: sticky;
-		top: calc(var(--space-8) + 4rem);
+		top: calc(var(--site-header-sticky-height, 6.325rem) + var(--space-4));
 	}
 
 	.my-account-page__auth-columns {
@@ -640,5 +757,21 @@
 @media (prefers-reduced-motion: reduce) {
 	.my-account-page__navigation {
 		position: static;
+	}
+
+	.my-account-page__navigation,
+	.my-account-page__content-inner,
+	.my-account-page__guest-card,
+	.my-account-page__empty-state,
+	.my-account-page__order-card,
+	.my-account-page__address-card,
+	.my-account-page__download-card,
+	.my-account-page__payment-card,
+	.my-account-page__order-update,
+	.my-account-page__skeleton-card,
+	.my-account-page__bottom-nav,
+	.my-account-page__content-inner :where(.woocommerce-PaymentMethod) {
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
 	}
 }

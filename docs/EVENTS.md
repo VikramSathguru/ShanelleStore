@@ -144,6 +144,8 @@ shanelle:hero-banner:ready
 
 shanelle:category-navigation:ready
 
+shanelle:category-navbar:ready
+
 shanelle:mini-cart:ready
 
 shanelle:mini-cart:opened

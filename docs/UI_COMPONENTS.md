@@ -18,7 +18,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Dependencies | WooCommerce product, `ProductPrice`, design-system buttons |
 | Used by | ProductGrid, shop loops, related, homepage grids, cross-sells |
 | Reusable | Yes |
-| Needs improvement | Wishlist/quick view still “coming soon” placeholders |
+| Needs improvement | Favourites are localStorage-only (shared with PDP); quick view still not implemented |
 
 ### ProductGrid
 
@@ -165,6 +165,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Dependencies | WC account endpoints |
 | Used by | `woocommerce/myaccount/*` |
 | Reusable | Page |
+| Visual | Reverse frost shells (rose-tinted glass + blur) in `my-account-page.css` |
 | Needs improvement | Large surface area; social login not present |
 
 ---
@@ -304,7 +305,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Purpose | Informational page composer — PageHero + WordPress editor content |
 | Location | `inc/components/InfoPage.php`, `components/info-page/` |
 | Dependencies | PageHero; WP pages; optional Fluent Forms / Omnisend shortcodes in content |
-| Used by | `page-templates/contact.php`, `faq.php`, `shipping.php`, `returns.php`, `privacy.php`, `terms.php` |
+| Used by | `page-templates/contact.php`, `faq.php`, `shipping.php`, `returns.php`, `privacy.php`, `terms.php`, `cookies.php`, `info-content.php` |
 | Reusable | Page |
 | Docs | [pages/INFO_PAGES.md](./pages/INFO_PAGES.md) |
 | Needs improvement | — |
@@ -346,12 +347,13 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Sticky/header category strip |
+| Purpose | Sticky/header category strip with desktop hover mega-menu |
 | Location | `inc/components/CategoryNavbar.php`, `components/category-navbar/` |
-| Dependencies | Menu / product categories |
+| Dependencies | WooCommerce `product_cat` (thumbnails), optional `category_navbar` menu override |
 | Used by | Site header |
 | Reusable | Yes |
-| Needs improvement | — |
+| Docs | [components/CategoryNavbar.md](./components/CategoryNavbar.md) |
+| Needs improvement | Mega-menu desktop-only (≥64rem); enrich picks via filters when catalog is shallow |
 
 ---
 
@@ -361,9 +363,9 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Site footer composition (brand, menus, contact, engage cluster with compact newsletter + social, floating controls) |
+| Purpose | Site footer composition (brand, menus, contact, engage cluster with compact newsletter provider embed + social, floating controls) |
 | Location | `inc/components/Footer.php`, `components/footer/` |
-| Dependencies | FooterBrand, Menus, Customizer |
+| Dependencies | FooterBrand, Menus, Customizer; optional provider embed / shortcode (Omnisend / Mailchimp / Fluent Forms / etc.) |
 | Used by | `footer.php` |
 | Reusable | Yes |
 | Docs | [components/Footer.md](./components/Footer.md) |
@@ -406,10 +408,10 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Policies / legal footer column via `wp_nav_menu` |
+| Purpose | Policies / legal links in the footer bottom bar via `wp_nav_menu` (pipe-separated wrap under copyright) |
 | Location | `inc/components/FooterPolicies.php`, `components/footer-policies/` |
-| Dependencies | Menu location `footer_policies` (legacy: `footer_legal`); visual system from FooterLinks CSS |
-| Used by | `components/footer/footer.php` |
+| Dependencies | Menu location `footer_policies` (legacy: `footer_legal`) |
+| Used by | `components/footer/footer.php` (`.footer__legal`) |
 | Reusable | Yes |
 | Needs improvement | — |
 
@@ -421,6 +423,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Location | `template-parts/components/site-header.php` + `assets/css/components/site-header.css` + `inc/components/SiteHeader.php` |
 | Dependencies | SiteHeader Customizer, SearchOverlay, cart count, CategoryNavbar |
 | Used by | `header.php` |
+| Behavior | Sticky; homepage auto-hide on scroll-down / reveal on scroll-up (`auto-hide-header.js`); full-bleed `container-fluid` inners on desktop |
 | Reusable | Yes |
 | Needs improvement | Markup not yet migrated into `components/header/` package |
 
