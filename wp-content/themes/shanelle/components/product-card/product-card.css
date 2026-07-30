@@ -212,15 +212,24 @@
 	opacity: 0.72;
 }
 
-/* Catalog listing variant */
+/* Catalog listing variant — image-first fashion PLP */
 .product-card--catalog .product-card__image-stack {
 	border-radius: var(--radius-sm);
 }
 
+.product-card--catalog .card__body,
+.product-card--catalog .product-card__body {
+	gap: var(--space-1);
+	padding-block: var(--space-2) var(--space-1);
+}
+
 .product-card--catalog .product-card__title {
-	font-size: var(--font-size-xs);
-	font-weight: var(--font-weight-regular);
-	line-height: 1.4;
+	font-family: var(--font-family-heading);
+	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--line-height-snug);
+	letter-spacing: var(--letter-spacing-tight);
+	color: var(--color-text);
 }
 
 .product-card--catalog .product-card__favourite {
@@ -268,7 +277,7 @@
 }
 
 .product-card--catalog .product-card__price--catalog {
-	font-size: var(--font-size-sm);
+	font-size: var(--font-size-base);
 	font-weight: var(--font-weight-semibold);
 	line-height: 1.2;
 }

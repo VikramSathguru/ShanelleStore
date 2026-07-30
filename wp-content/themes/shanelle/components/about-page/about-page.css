@@ -1,40 +1,56 @@
 /**
  * Shanelle About Page Layout
  *
- * Premium brand story landing page. Page-specific layout only.
- * Uses design tokens from variables.css — no hard-coded colors.
+ * Luxury editorial brand story. Layout + visual hierarchy only.
+ * Colors, type, space, and motion come exclusively from design tokens.
  */
 
 .about-page {
 	display: flex;
 	flex-direction: column;
 	background-color: var(--color-background);
+	color: var(--color-text);
 }
 
 .about-page__eyebrow {
 	margin: 0;
+	color: var(--color-text-brand);
 	letter-spacing: var(--letter-spacing-widest);
 }
 
 .about-page__section-heading {
 	margin: 0;
 	color: var(--color-brand-800);
+	font-family: var(--font-family-heading);
 	letter-spacing: var(--letter-spacing-tight);
+	font-weight: var(--font-weight-semibold);
+}
+
+.about-page__rule {
+	display: block;
+	width: 3rem;
+	height: 1px;
+	margin: 0;
+	border: 0;
+	background-color: var(--color-brand-300);
 }
 
 .about-page__prose {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
-	max-width: 42rem;
+	gap: var(--space-5);
+	max-width: 40rem;
 }
 
 .about-page__prose p {
 	margin: 0;
+	font-size: var(--font-size-md);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-secondary);
 }
 
 .about-page__prose--inverse p {
-	opacity: 0.92;
+	color: color-mix(in srgb, var(--color-text-inverse) 88%, var(--color-brand-200));
 }
 
 .about-page__picture,
@@ -67,15 +83,24 @@
 .about-page__hero-frame {
 	position: relative;
 	display: grid;
-	min-height: clamp(22rem, 68vh, 40rem);
+	min-height: clamp(24rem, 72vh, 44rem);
 	overflow: hidden;
-	background:
-		radial-gradient(ellipse 70% 55% at 15% 20%, rgb(255 255 255 / 55%) 0%, transparent 55%),
-		radial-gradient(ellipse 60% 45% at 90% 80%, rgb(247 143 179 / 28%) 0%, transparent 50%),
+	background-color: var(--color-landing);
+	background-image:
+		radial-gradient(
+			ellipse 55% 50% at 12% 18%,
+			color-mix(in srgb, var(--color-neutral-0) 70%, transparent) 0%,
+			transparent 58%
+		),
+		radial-gradient(
+			ellipse 50% 45% at 88% 78%,
+			color-mix(in srgb, var(--color-brand-200) 55%, transparent) 0%,
+			transparent 52%
+		),
 		linear-gradient(
-			145deg,
+			165deg,
 			var(--color-brand-50) 0%,
-			var(--color-brand-100) 48%,
+			var(--color-brand-100) 42%,
 			var(--color-neutral-50) 100%
 		);
 }
@@ -97,10 +122,10 @@
 	position: absolute;
 	inset: 0;
 	background: linear-gradient(
-		105deg,
-		rgb(23 23 23 / 48%) 0%,
-		rgb(23 23 23 / 22%) 42%,
-		rgb(23 23 23 / 8%) 100%
+		115deg,
+		color-mix(in srgb, var(--color-neutral-900) 52%, transparent) 0%,
+		color-mix(in srgb, var(--color-neutral-900) 28%, transparent) 38%,
+		color-mix(in srgb, var(--color-brand-900) 18%, transparent) 100%
 	);
 	pointer-events: none;
 }
@@ -111,14 +136,15 @@
 	display: flex;
 	align-items: flex-end;
 	width: 100%;
-	padding-block: var(--space-16) var(--space-12);
+	padding-block: var(--space-20) var(--space-16);
 }
 
 .about-page__hero-copy {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
-	max-width: 36rem;
+	align-items: flex-start;
+	gap: var(--space-5);
+	max-width: 38rem;
 }
 
 .about-page__hero--has-media .about-page__eyebrow,
@@ -128,47 +154,72 @@
 }
 
 .about-page__hero--has-media .about-page__eyebrow {
-	opacity: 0.9;
+	opacity: 0.92;
 }
 
 .about-page__hero--has-media .about-page__hero-headline {
 	color: var(--color-text-inverse);
 }
 
+.about-page__hero--has-media .about-page__rule {
+	background-color: color-mix(in srgb, var(--color-text-inverse) 70%, var(--color-brand-200));
+}
+
 .about-page__hero--has-media .about-page__hero-subheadline {
-	opacity: 0.92;
+	color: color-mix(in srgb, var(--color-text-inverse) 90%, transparent);
 }
 
 .about-page__hero--plain .about-page__hero-inner {
 	align-items: center;
-	padding-block: var(--space-20);
+	justify-content: center;
+	padding-block: clamp(var(--space-20), 12vh, var(--space-24));
+}
+
+.about-page__hero--plain .about-page__hero-copy {
+	align-items: center;
+	text-align: center;
+	max-width: 44rem;
+	margin-inline: auto;
 }
 
 .about-page__hero-headline {
 	margin: 0;
 	color: var(--color-brand-800);
+	font-family: var(--font-family-display);
+	font-size: var(--font-size-5xl);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--line-height-tight);
+	letter-spacing: var(--letter-spacing-tighter);
 }
 
-.about-page__hero-subheadline,
+.about-page__hero-subheadline {
+	margin: 0;
+	max-width: 46ch;
+	font-size: var(--font-size-md);
+	line-height: var(--line-height-relaxed);
+	color: var(--color-text-secondary);
+}
+
 .about-page__hero-tagline {
 	margin: 0;
 	max-width: 44ch;
-}
-
-.about-page__hero-tagline {
+	color: var(--color-text-brand);
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
 	text-transform: uppercase;
-	letter-spacing: var(--letter-spacing-wide);
+	letter-spacing: var(--letter-spacing-widest);
 }
 
 .about-page__hero-actions {
-	margin-top: var(--space-2);
+	margin-top: var(--space-3);
 }
 
 /* -------------------------------------------------------------------------
-   Our Story — alternating content block
+   Our Story — editorial measure / alternating media
    ------------------------------------------------------------------------- */
 .about-page__story {
-	padding-block: var(--space-16);
+	padding-block: clamp(var(--space-16), 8vw, var(--space-24));
 	background-color: var(--color-background);
 }
 
@@ -178,12 +229,27 @@
 	align-items: center;
 }
 
+.about-page__story:not(.about-page__story--has-media) .about-page__story-inner {
+	justify-items: center;
+}
+
+.about-page__story:not(.about-page__story--has-media) .about-page__story-copy {
+	align-items: center;
+	text-align: center;
+	max-width: 42rem;
+}
+
+.about-page__story:not(.about-page__story--has-media) .about-page__prose {
+	align-items: center;
+	text-align: center;
+}
+
 .about-page__story-media {
 	overflow: hidden;
 	border-radius: var(--radius-2xl);
 	aspect-ratio: 4 / 5;
 	background-color: var(--color-brand-100);
-	box-shadow: var(--shadow-lg);
+	box-shadow: var(--shadow-md);
 }
 
 .about-page__story-media .about-page__picture,
@@ -198,16 +264,14 @@
 	gap: var(--space-5);
 }
 
-@media (min-width: 40rem) {
-	.about-page__story {
-		padding-block: var(--space-20);
-	}
+.about-page__story-copy .about-page__section-heading {
+	font-size: var(--font-size-3xl);
 }
 
 @media (min-width: 48rem) {
 	.about-page__story--has-media .about-page__story-inner {
-		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-		gap: var(--space-12);
+		grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+		gap: var(--space-14);
 	}
 
 	.about-page__story--media-right .about-page__story-media {
@@ -220,42 +284,73 @@
 }
 
 @media (min-width: 64rem) {
-	.about-page__story {
-		padding-block: var(--space-24);
-	}
-
 	.about-page__story--has-media .about-page__story-inner {
 		gap: var(--space-16);
+	}
+
+	.about-page__story-media {
+		border-radius: var(--radius-3xl);
 	}
 }
 
 /* -------------------------------------------------------------------------
-   Mission & Values
+   Mission & Values — deep rose editorial band
    ------------------------------------------------------------------------- */
 .about-page__mission {
-	padding-block: var(--space-16);
+	position: relative;
+	isolation: isolate;
+	padding-block: clamp(var(--space-16), 9vw, var(--space-24));
 	background-color: var(--color-brand-900);
 	color: var(--color-text-inverse);
+	overflow: hidden;
+}
+
+.about-page__mission::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background:
+		radial-gradient(
+			ellipse 70% 55% at 0% 0%,
+			color-mix(in srgb, var(--color-brand-700) 45%, transparent) 0%,
+			transparent 55%
+		),
+		radial-gradient(
+			ellipse 55% 45% at 100% 100%,
+			color-mix(in srgb, var(--color-brand-800) 55%, transparent) 0%,
+			transparent 50%
+		);
+	pointer-events: none;
 }
 
 .about-page__mission-inner {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-12);
+	gap: var(--space-14);
 }
 
 .about-page__mission-header {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-5);
 	align-items: center;
 	text-align: center;
-	max-width: 44rem;
+	max-width: 40rem;
 	margin-inline: auto;
 }
 
 .about-page__mission-header .about-page__eyebrow {
 	color: var(--color-brand-200);
+}
+
+.about-page__mission-header .about-page__section-heading {
+	color: var(--color-text-inverse);
+	font-size: var(--font-size-3xl);
+}
+
+.about-page__mission-header .about-page__rule {
+	background-color: var(--color-brand-300);
 }
 
 .about-page__mission-header .about-page__prose {
@@ -268,98 +363,120 @@
 	padding: 0;
 	display: grid;
 	grid-template-columns: 1fr;
-	gap: var(--space-6);
+	gap: 0;
+	counter-reset: about-value;
+	border-top: 1px solid color-mix(in srgb, var(--color-text-inverse) 14%, transparent);
 }
 
 .about-page__value {
+	counter-increment: about-value;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	text-align: center;
-	gap: var(--space-3);
-	padding: var(--space-6);
-	border-radius: var(--radius-xl);
-	background-color: rgb(255 255 255 / 6%);
-	border: 1px solid rgb(255 255 255 / 10%);
+	align-items: flex-start;
+	text-align: left;
+	gap: var(--space-4);
+	padding-block: var(--space-8);
+	padding-inline: 0;
+	border-bottom: 1px solid color-mix(in srgb, var(--color-text-inverse) 14%, transparent);
+	background: transparent;
+}
+
+.about-page__value::before {
+	content: counter(about-value, decimal-leading-zero);
+	font-family: var(--font-family-heading);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: var(--letter-spacing-widest);
+	color: var(--color-brand-200);
 }
 
 .about-page__value-icon {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 4.5rem;
-	height: 4.5rem;
+	width: 3.25rem;
+	height: 3.25rem;
 	border-radius: var(--radius-full);
-	background-color: rgb(255 255 255 / 10%);
+	background-color: color-mix(in srgb, var(--color-text-inverse) 10%, transparent);
+	border: 1px solid color-mix(in srgb, var(--color-text-inverse) 14%, transparent);
 	overflow: hidden;
 }
 
 .about-page__value-icon .about-page__img {
-	width: 55%;
-	height: 55%;
+	width: 52%;
+	height: 52%;
 	object-fit: contain;
 }
 
-.about-page__value-title,
+.about-page__value-title {
+	margin: 0;
+	color: var(--color-text-inverse);
+	font-family: var(--font-family-heading);
+	font-size: var(--font-size-xl);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: var(--letter-spacing-tight);
+}
+
 .about-page__value-text {
 	margin: 0;
-}
-
-.about-page__value-text {
-	max-width: 28ch;
-	color: var(--color-brand-100);
-	opacity: 0.9;
-}
-
-@media (min-width: 40rem) {
-	.about-page__values-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
+	max-width: 36ch;
+	color: color-mix(in srgb, var(--color-brand-100) 92%, var(--color-text-inverse));
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-relaxed);
 }
 
 @media (min-width: 48rem) {
-	.about-page__mission {
-		padding-block: var(--space-20);
-	}
-}
-
-@media (min-width: 64rem) {
-	.about-page__mission {
-		padding-block: var(--space-24);
-	}
-
 	.about-page__values-grid {
-		grid-template-columns: repeat(3, 1fr);
-		gap: var(--space-8);
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		border-top: 0;
+		gap: 0;
+	}
+
+	.about-page__value {
+		padding: var(--space-2) var(--space-8);
+		border-bottom: 0;
+		border-inline-start: 1px solid color-mix(in srgb, var(--color-text-inverse) 14%, transparent);
+	}
+
+	.about-page__value:first-child {
+		border-inline-start: 0;
+		padding-inline-start: 0;
+	}
+
+	.about-page__value:last-child {
+		padding-inline-end: 0;
 	}
 }
 
 /* -------------------------------------------------------------------------
-   Why Choose
+   Why Choose — soft blush surface
    ------------------------------------------------------------------------- */
 .about-page__why {
-	padding-block: var(--space-16);
+	padding-block: clamp(var(--space-16), 8vw, var(--space-24));
 	background-color: var(--color-brand-50);
 }
 
 .about-page__why-inner {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-10);
+	gap: var(--space-12);
 }
 
 .about-page__why-header {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-3);
+	gap: var(--space-4);
 	align-items: center;
 	text-align: center;
-	max-width: 42rem;
+	max-width: 40rem;
 	margin-inline: auto;
 }
 
 .about-page__why-intro {
 	margin: 0;
+	color: var(--color-text-secondary);
+	font-size: var(--font-size-md);
+	line-height: var(--line-height-relaxed);
 }
 
 .about-page__why-grid {
@@ -376,22 +493,24 @@
 	flex-direction: column;
 	align-items: flex-start;
 	gap: var(--space-4);
-	padding: var(--space-6);
+	padding: var(--space-7);
 	border-radius: var(--radius-xl);
 	background-color: var(--color-surface);
-	box-shadow: var(--shadow-sm);
+	border: 1px solid var(--color-border-subtle);
+	box-shadow: var(--shadow-xs);
 }
 
 .about-page__why-item--accent {
 	background-color: var(--color-neutral-0);
+	border-color: var(--color-brand-100);
 }
 
 .about-page__why-icon {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 3.5rem;
-	height: 3.5rem;
+	width: 3.25rem;
+	height: 3.25rem;
 	flex-shrink: 0;
 	border-radius: var(--radius-full);
 	background-color: var(--color-brand-100);
@@ -400,8 +519,8 @@
 }
 
 .about-page__why-icon .about-page__img {
-	width: 55%;
-	height: 55%;
+	width: 52%;
+	height: 52%;
 	object-fit: contain;
 }
 
@@ -414,10 +533,13 @@
 .about-page__why-title {
 	margin: 0;
 	color: var(--color-brand-800);
+	font-family: var(--font-family-heading);
 }
 
 .about-page__why-text {
 	margin: 0;
+	color: var(--color-text-secondary);
+	line-height: var(--line-height-relaxed);
 }
 
 @media (min-width: 40rem) {
@@ -425,42 +547,35 @@
 		grid-template-columns: repeat(2, 1fr);
 		gap: var(--space-8);
 	}
-
-	.about-page__why-item {
-		flex-direction: row;
-		align-items: flex-start;
-	}
-}
-
-@media (min-width: 48rem) {
-	.about-page__why {
-		padding-block: var(--space-20);
-	}
 }
 
 @media (min-width: 64rem) {
-	.about-page__why {
-		padding-block: var(--space-24);
-	}
-
 	.about-page__why-grid {
 		grid-template-columns: repeat(4, 1fr);
-	}
-
-	.about-page__why-item {
-		flex-direction: column;
 	}
 }
 
 /* -------------------------------------------------------------------------
-   Call to Action
+   Call to Action — soft blush closing band
    ------------------------------------------------------------------------- */
 .about-page__cta {
-	padding-block: var(--space-16);
-	background:
-		radial-gradient(ellipse 80% 70% at 80% 20%, rgb(247 143 179 / 22%) 0%, transparent 55%),
-		linear-gradient(160deg, var(--color-brand-800) 0%, var(--color-brand-900) 100%);
-	color: var(--color-text-inverse);
+	position: relative;
+	isolation: isolate;
+	padding-block: clamp(var(--space-16), 9vw, var(--space-24));
+	background-color: var(--color-landing);
+	background-image:
+		radial-gradient(
+			ellipse 60% 50% at 85% 15%,
+			color-mix(in srgb, var(--color-brand-200) 50%, transparent) 0%,
+			transparent 55%
+		),
+		linear-gradient(
+			180deg,
+			var(--color-brand-50) 0%,
+			var(--color-brand-100) 100%
+		);
+	color: var(--color-text);
+	overflow: hidden;
 }
 
 .about-page__cta-inner {
@@ -469,22 +584,32 @@
 	align-items: center;
 	gap: var(--space-8);
 	text-align: center;
-	max-width: 40rem;
+	max-width: 38rem;
+	margin-inline: auto;
 }
 
 .about-page__cta-copy {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: var(--space-4);
+	gap: var(--space-5);
 }
 
 .about-page__cta-copy .about-page__eyebrow {
-	color: var(--color-brand-200);
+	color: var(--color-text-brand);
+}
+
+.about-page__cta-copy .about-page__section-heading {
+	color: var(--color-brand-800);
+	font-size: var(--font-size-3xl);
 }
 
 .about-page__cta-copy .about-page__prose {
 	align-items: center;
+}
+
+.about-page__cta-copy .about-page__prose p {
+	color: var(--color-text-secondary);
 }
 
 .about-page__cta-actions {
@@ -494,28 +619,16 @@
 	gap: var(--space-3);
 }
 
-@media (min-width: 48rem) {
-	.about-page__cta {
-		padding-block: var(--space-20);
-	}
-}
-
-@media (min-width: 64rem) {
-	.about-page__cta {
-		padding-block: var(--space-24);
-	}
-}
-
 /* -------------------------------------------------------------------------
-   Reveal motion (respects prefers-reduced-motion)
+   Reveal motion
    ------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
 	.about-page [data-about-reveal] {
 		opacity: 0;
-		transform: translateY(var(--space-4));
+		transform: translateY(var(--space-5));
 		transition:
-			opacity var(--duration-slow, 400ms) var(--ease-out, ease),
-			transform var(--duration-slow, 400ms) var(--ease-out, ease);
+			opacity var(--duration-slower) var(--ease-out, ease),
+			transform var(--duration-slower) var(--ease-out, ease);
 	}
 
 	.about-page [data-about-reveal].is-visible {
@@ -526,5 +639,30 @@
 	.about-page__hero[data-about-reveal] {
 		opacity: 1;
 		transform: none;
+	}
+
+	.about-page__value {
+		opacity: 0;
+		transform: translateY(var(--space-3));
+		transition:
+			opacity var(--duration-slow) var(--ease-out, ease),
+			transform var(--duration-slow) var(--ease-out, ease);
+	}
+
+	.about-page__value:nth-child(1) {
+		transition-delay: 0ms;
+	}
+
+	.about-page__value:nth-child(2) {
+		transition-delay: 80ms;
+	}
+
+	.about-page__value:nth-child(3) {
+		transition-delay: 160ms;
+	}
+
+	.about-page [data-about-reveal].is-visible .about-page__value {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }

@@ -93,7 +93,7 @@ function shanelle_products_per_page(): int {
  * @return int
  */
 function shanelle_loop_columns(): int {
-	return 4;
+	return 5;
 }
 
 /**

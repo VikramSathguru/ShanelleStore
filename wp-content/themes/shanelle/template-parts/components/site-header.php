@@ -33,28 +33,53 @@ $has_drawer_menu    = has_nav_menu( 'mobile' ) || has_nav_menu( 'primary' ) || h
 ?>
 <header class="site-header" data-header>
 	<?php if ( ! empty( $promo_items ) ) : ?>
-		<div class="site-header__promo">
+		<?php
+		$promo_speed = SiteHeader::get_promo_speed();
+		$promo_label = __( 'Promociones', 'shanelle' );
+		?>
+		<div
+			class="site-header__promo is-static"
+			data-shanelle-promo-banner
+			data-promo-speed="<?php echo esc_attr( (string) $promo_speed ); ?>"
+			role="region"
+			aria-label="<?php echo esc_attr( $promo_label ); ?>"
+		>
 			<div class="container-fluid site-header__promo-inner">
-				<?php foreach ( $promo_items as $index => $item ) : ?>
-					<?php if ( $index > 0 ) : ?>
-						<span class="site-header__promo-divider" aria-hidden="true"></span>
-					<?php endif; ?>
-					<p class="site-header__promo-item<?php echo 0 === $index ? ' site-header__promo-item--primary' : ' site-header__promo-item--secondary'; ?>">
-						<?php if ( 0 === $index ) : ?>
-							<svg class="site-header__promo-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
-						<?php else : ?>
-							<svg class="site-header__promo-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-						<?php endif; ?>
-						<span>
-							<?php if ( '' !== $item['emphasis'] ) : ?>
-								<strong><?php echo esc_html( $item['emphasis'] ); ?></strong>
+				<div class="site-header__promo-viewport" data-shanelle-promo-viewport>
+					<div class="site-header__promo-track" data-shanelle-promo-track>
+						<?php foreach ( $promo_items as $index => $item ) : ?>
+							<?php
+							$emphasis = (string) ( $item['emphasis'] ?? '' );
+							$text     = (string) ( $item['text'] ?? '' );
+							$url      = (string) ( $item['url'] ?? '' );
+							?>
+							<?php if ( $index > 0 ) : ?>
+								<span class="site-header__promo-sep" aria-hidden="true"></span>
 							<?php endif; ?>
-							<?php if ( '' !== $item['text'] ) : ?>
-								<?php echo esc_html( ' ' . $item['text'] ); ?>
-							<?php endif; ?>
-						</span>
-					</p>
-				<?php endforeach; ?>
+							<p class="site-header__promo-item">
+								<?php if ( '' !== $url ) : ?>
+									<a class="site-header__promo-link" href="<?php echo esc_url( $url ); ?>">
+										<?php if ( '' !== $emphasis ) : ?>
+											<strong><?php echo esc_html( $emphasis ); ?></strong>
+										<?php endif; ?>
+										<?php if ( '' !== $text ) : ?>
+											<span><?php echo esc_html( $text ); ?></span>
+										<?php endif; ?>
+									</a>
+								<?php else : ?>
+									<span class="site-header__promo-copy">
+										<?php if ( '' !== $emphasis ) : ?>
+											<strong><?php echo esc_html( $emphasis ); ?></strong>
+										<?php endif; ?>
+										<?php if ( '' !== $text ) : ?>
+											<span><?php echo esc_html( $text ); ?></span>
+										<?php endif; ?>
+									</span>
+								<?php endif; ?>
+							</p>
+						<?php endforeach; ?>
+					</div>
+				</div>
 			</div>
 		</div>
 	<?php endif; ?>

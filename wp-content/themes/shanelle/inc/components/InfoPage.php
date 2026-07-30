@@ -13,10 +13,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Composes WordPress informational pages (Contact, FAQ, Shipping, Returns,
- * Privacy, Terms) with PageHero + editable page content.
+ * Privacy, Terms, etc.) with a compact title band + editable page content.
  *
  * Body copy always comes from the WordPress editor (or shortcodes such as
- * Fluent Forms / Omnisend). No hardcoded marketing body text.
+ * Fluent Forms / Omnisend). Full-bleed PageHero banners are not rendered.
  */
 final class InfoPage {
 
@@ -103,10 +103,6 @@ final class InfoPage {
 	 * Register and enqueue informational page assets.
 	 */
 	private static function register_assets(): void {
-		if ( ! wp_style_is( 'shanelle-page-hero', 'enqueued' ) ) {
-			PageHero::enqueue_assets();
-		}
-
 		if ( wp_style_is( 'shanelle-info-page', 'enqueued' ) ) {
 			return;
 		}
@@ -114,7 +110,7 @@ final class InfoPage {
 		wp_enqueue_style(
 			'shanelle-info-page',
 			self::COMPONENT_URI . '/info-page.css',
-			array( 'shanelle-main', 'shanelle-page-hero' ),
+			array( 'shanelle-main' ),
 			SHANELLE_VERSION
 		);
 	}
@@ -178,14 +174,10 @@ final class InfoPage {
 	}
 
 	/**
-	 * Return heading ID used by PageHero (or Contact title when hero is omitted).
+	 * Return heading ID for the compact title band.
 	 */
 	public static function get_heading_id(): string {
-		if ( 'contact' === self::$type ) {
-			return self::get_root_id() . '-heading';
-		}
-
-		return 'shanelle-page-hero-heading';
+		return self::get_root_id() . '-heading';
 	}
 
 	/**
@@ -194,69 +186,24 @@ final class InfoPage {
 	 * @return array<int, string>
 	 */
 	public static function get_root_classes(): array {
-		$classes = array( 'site-main', 'info-page' );
+		$classes = array( 'site-main', 'info-page', 'info-page--no-hero' );
 
 		if ( '' !== self::$type ) {
 			$classes[] = 'info-page--' . sanitize_html_class( self::$type );
-		}
-
-		if ( 'contact' === self::$type ) {
-			$classes[] = 'info-page--no-hero';
 		}
 
 		return $classes;
 	}
 
 	/**
-	 * Render PageHero from the current page (title, excerpt, featured image, breadcrumbs).
-	 *
-	 * Contact pages omit the hero banner; they use a compact title instead.
+	 * Render compact page title (heroes removed storefront-wide).
 	 */
 	public static function render_hero(): void {
-		if ( 'contact' === self::$type ) {
-			self::render_contact_title();
-			return;
-		}
-
-		$page = self::$page;
-
-		if ( ! $page instanceof \WP_Post ) {
-			return;
-		}
-
-		$title = get_the_title( $page );
-
-		if ( '' === $title ) {
-			$title = __( 'Página', 'shanelle' );
-		}
-
-		$subtitle = has_excerpt( $page ) ? get_the_excerpt( $page ) : '';
-		$thumb_id = (int) get_post_thumbnail_id( $page );
-
-		$args = array(
-			'title'            => $title,
-			'subtitle'         => is_string( $subtitle ) ? $subtitle : '',
-			'breadcrumb'       => self::build_breadcrumb( $title ),
-			'background_image' => $thumb_id > 0 ? $thumb_id : 0,
-			'heading_level'    => 1,
-			'class'            => 'info-page__hero',
-			'id'               => 'shanelle-page-hero',
-		);
-
-		/**
-		 * Filter informational page hero arguments before render.
-		 *
-		 * @param array<string, mixed> $args Hero args.
-		 * @param string               $type Page type key.
-		 * @param \WP_Post             $page Current page.
-		 */
-		$args = apply_filters( 'shanelle_info_page_hero_args', $args, self::$type, $page );
-
-		shanelle_page_hero( is_array( $args ) ? $args : array() );
+		self::render_contact_title();
 	}
 
 	/**
-	 * Render a compact Contact page title (no banner / PageHero).
+	 * Render a compact page title band (no banner / PageHero).
 	 */
 	public static function render_contact_title(): void {
 		$page = self::$page;
@@ -268,7 +215,9 @@ final class InfoPage {
 		$title = get_the_title( $page );
 
 		if ( '' === $title ) {
-			$title = __( 'Contacto', 'shanelle' );
+			$title = 'contact' === self::$type
+				? __( 'Contacto', 'shanelle' )
+				: __( 'Página', 'shanelle' );
 		}
 		?>
 		<header class="info-page__title-band">

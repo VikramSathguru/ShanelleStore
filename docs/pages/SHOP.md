@@ -15,12 +15,21 @@ Shared PLP chrome for shop, category, tag, collection, and product search result
 
 1. Breadcrumbs / notices (surface-specific)
 2. Desktop `CatalogFilters` sidebar (`submit_mode=instant`)
-3. Title / count (or collection hero + count)
+3. Screen-reader archive H1 only (visible title / product-count header removed)
 4. Sticky mobile toolbar — Filtros + polished Ordenar pill control
 5. Active filter chips + clear all (every `shanelle_filter_*` URL param is clearable)
 6. `ProductGrid` (`pagination_mode=load_more`, label “Ver más”; catalog cards include media favourite heart)
 7. Mobile filter sheet — same `CatalogFilters` (`submit_mode=apply`)
 8. Empty state — clear-filters CTA when refined; archive-aware links otherwise (not forced to shop)
+
+## Layout (image-first PLP)
+
+- Full-width stage via `container-fluid` (not the capped `.container`).
+- Filter column width: `--shop-archive-filter-width` (`15.4rem`, +10% vs prior). Sticky sidebar scrolls internally when options exceed the viewport.
+- From `80rem`, product columns use `repeat(auto-fill, var(--shop-archive-filter-width))` so each card matches the filter panel width.
+- Below that: 3 columns (`64rem`), 2 columns (`40rem`), 2 on small mobile.
+- Color filter options render as a **two-column** swatch list.
+- Catalog cards omit the favourite control; titles use a larger heading-scale name.
 
 ## Filters
 

@@ -30,15 +30,17 @@ $heading_id = AboutPage::get_root_id() . '-cta-heading';
 			<?php endif; ?>
 
 			<?php if ( '' !== $heading ) : ?>
-				<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="about-page__section-heading text-h2 text-inverse">
+				<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="about-page__section-heading">
 					<?php echo esc_html( $heading ); ?>
 				</h2>
 			<?php endif; ?>
 
+			<hr class="about-page__rule" aria-hidden="true" />
+
 			<?php if ( ! empty( $paragraphs ) ) : ?>
-				<div class="about-page__prose about-page__prose--inverse">
+				<div class="about-page__prose">
 					<?php foreach ( $paragraphs as $paragraph ) : ?>
-						<p class="text-body text-inverse"><?php echo esc_html( (string) $paragraph ); ?></p>
+						<p><?php echo esc_html( (string) $paragraph ); ?></p>
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
@@ -46,7 +48,7 @@ $heading_id = AboutPage::get_root_id() . '-cta-heading';
 
 		<?php if ( ! empty( $button['visible'] ) ) : ?>
 			<div class="about-page__cta-actions">
-				<a class="btn btn--secondary btn--lg" href="<?php echo esc_url( (string) $button['url'] ); ?>">
+				<a class="btn btn--primary btn--lg" href="<?php echo esc_url( (string) $button['url'] ); ?>">
 					<?php echo esc_html( (string) $button['text'] ); ?>
 				</a>
 			</div>

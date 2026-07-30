@@ -123,32 +123,12 @@ final class ShopArchive {
 	}
 
 	/**
-	 * Render archive title and description.
+	 * Archive title / count band removed — keep a screen-reader H1 for accessibility.
 	 */
 	public static function render_header(): void {
-		$title       = self::get_archive_title();
-		$description = self::get_archive_description();
-		$count       = self::get_product_count();
+		$title = self::get_archive_title();
 		?>
-		<header class="shop-archive__header">
-			<div class="shop-archive__heading">
-				<h1 class="shop-archive__title text-h2"><?php echo esc_html( $title ); ?></h1>
-				<?php if ( $description ) : ?>
-					<div class="shop-archive__description text-body-sm text-secondary"><?php echo wp_kses_post( $description ); ?></div>
-				<?php endif; ?>
-			</div>
-			<p class="shop-archive__count text-caption">
-				<?php
-				echo esc_html(
-					sprintf(
-						/* translators: %d: number of products */
-						_n( '%d producto', '%d productos', $count, 'shanelle' ),
-						$count
-					)
-				);
-				?>
-			</p>
-		</header>
+		<h1 class="sr-only"><?php echo esc_html( $title ); ?></h1>
 		<?php
 	}
 
@@ -461,6 +441,7 @@ final class ShopArchive {
 					'show_rating'     => false,
 					'show_attributes' => false,
 					'show_actions'    => false,
+					'show_favourite'  => false,
 				),
 			)
 		);

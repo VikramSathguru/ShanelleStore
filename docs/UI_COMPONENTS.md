@@ -302,9 +302,9 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Informational page composer — PageHero + WordPress editor content |
+| Purpose | Informational page composer — compact title + WordPress editor content |
 | Location | `inc/components/InfoPage.php`, `components/info-page/` |
-| Dependencies | PageHero; WP pages; optional Fluent Forms / Omnisend shortcodes in content |
+| Dependencies | WP pages; optional Fluent Forms / Omnisend shortcodes in content (PageHero unused) |
 | Used by | `page-templates/contact.php`, `faq.php`, `shipping.php`, `returns.php`, `privacy.php`, `terms.php`, `cookies.php`, `info-content.php` |
 | Reusable | Page |
 | Docs | [pages/INFO_PAGES.md](./pages/INFO_PAGES.md) |
@@ -431,11 +431,24 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Header Customizer (promo strip, contact URL) + presentation helpers |
+| Purpose | Header Customizer + presentation helpers |
 | Location | `inc/components/SiteHeader.php` |
 | Dependencies | Theme Customizer, WP pages for contact fallback |
 | Used by | `site-header.php` |
+| Behavior | Customizer section **Encabezado**: toggle banner, speed (20–80 px/s), up to 6 promo slots (`emphasis` + `text` + optional `url`). Empty slots omitted. Filter `shanelle_header_promo_items`. Legacy mods for slots 1–2 still read when new mods are empty. |
 | Reusable | Yes |
+| Needs improvement | — |
+
+### Promotion banner (header ticker)
+
+| Field | Detail |
+|-------|--------|
+| Purpose | Multi-promo announcement ribbon (stadium LED style) |
+| Location | Markup in `site-header.php`; styles in `site-header.css`; JS `assets/js/modules/promo-banner.js` |
+| Dependencies | `SiteHeader` Customizer helpers |
+| Used by | Global header |
+| Behavior | If items fit the viewport → static centered row. If they overflow → seamless horizontal marquee (cloned track). Pause on hover/focus. `prefers-reduced-motion` disables animation (static/wrap). |
+| Reusable | Header-scoped |
 | Needs improvement | — |
 
 ---

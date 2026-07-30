@@ -1,6 +1,6 @@
 # Informational Pages
 
-Reusable WordPress page templates for Contact, FAQ, Shipping, Returns, Privacy, Terms, Cookies, and other editorial info pages. Each page is **fully editable in the WordPress editor**. The theme provides layout + `PageHero` only — body copy lives in WordPress (seeded once as starter content).
+Reusable WordPress page templates for Contact, FAQ, Shipping, Returns, Privacy, Terms, Cookies, and other editorial info pages. Each page is **fully editable in the WordPress editor**. The theme provides a compact title band + layout — body copy lives in WordPress (seeded once as starter content). Full-bleed heroes are not used.
 
 ## Templates
 
@@ -21,8 +21,7 @@ Reusable WordPress page templates for Contact, FAQ, Shipping, Returns, Privacy, 
 
 ```
 InfoPage
-├── PageHero (FAQ, Shipping, Returns, Privacy, Terms, Cookies, Editorial)
-│   or compact title band on Contact (no banner)
+├── Compact title band (breadcrumb + H1) — all types
 └── Body
     ├── Contact: Customizer business details + optional Maps + page content (Fluent Forms)
     └── Other types: WordPress page content only
@@ -30,9 +29,8 @@ InfoPage
 
 | Editable in WP | Maps to |
 |----------------|---------|
-| Page title | Hero H1 |
-| Page excerpt | Hero subtitle + PDP teaser (Shipping / Returns) |
-| Featured image | Hero background |
+| Page title | Compact title H1 |
+| Page excerpt | PDP teaser (Shipping / Returns) when used |
 | Page body | Main content / Fluent Forms shortcode |
 | Footer Customizer contact fields | Contact page details + footer contact column |
 
@@ -74,7 +72,7 @@ Business details come from **Appearance → Customize → Pie de página** (sing
 | `components/info-page/info-page.php` | Markup |
 | `components/info-page/info-page.css` | Layout |
 | `Footer::get_business_contact()` | Shared Customizer contact API |
-| `PageHero` | Shared hero |
+| Compact title band | Shared by all info types (PageHero unused) |
 
 Helpers: `shanelle_info_page( $type )`, `shanelle_get_info_page_url( $type )`.
 

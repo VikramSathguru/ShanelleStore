@@ -30,15 +30,17 @@ $heading_id = AboutPage::get_root_id() . '-mission-heading';
 			<?php endif; ?>
 
 			<?php if ( '' !== $heading ) : ?>
-				<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="about-page__section-heading text-h2 text-inverse">
+				<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="about-page__section-heading">
 					<?php echo esc_html( $heading ); ?>
 				</h2>
 			<?php endif; ?>
 
+			<hr class="about-page__rule" aria-hidden="true" />
+
 			<?php if ( ! empty( $paragraphs ) ) : ?>
 				<div class="about-page__prose about-page__prose--inverse">
 					<?php foreach ( $paragraphs as $paragraph ) : ?>
-						<p class="text-body text-inverse"><?php echo esc_html( (string) $paragraph ); ?></p>
+						<p><?php echo esc_html( (string) $paragraph ); ?></p>
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
@@ -55,11 +57,11 @@ $heading_id = AboutPage::get_root_id() . '-mission-heading';
 						<?php endif; ?>
 
 						<?php if ( '' !== (string) ( $value['title'] ?? '' ) ) : ?>
-							<h3 class="about-page__value-title text-h5 text-inverse"><?php echo esc_html( (string) $value['title'] ); ?></h3>
+							<h3 class="about-page__value-title"><?php echo esc_html( (string) $value['title'] ); ?></h3>
 						<?php endif; ?>
 
 						<?php if ( '' !== (string) ( $value['text'] ?? '' ) ) : ?>
-							<p class="about-page__value-text text-body-sm"><?php echo esc_html( (string) $value['text'] ); ?></p>
+							<p class="about-page__value-text"><?php echo esc_html( (string) $value['text'] ); ?></p>
 						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>

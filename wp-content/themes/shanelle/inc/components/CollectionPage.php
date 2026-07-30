@@ -15,7 +15,7 @@ use Shanelle\Catalog\Queries as CatalogQueries;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Composes collection term archives using collection hero chrome and ShopArchive catalog UI.
+ * Composes collection term archives using compact title chrome and ShopArchive catalog UI.
  */
 final class CollectionPage {
 
@@ -183,56 +183,31 @@ final class CollectionPage {
 	}
 
 	/**
-	 * Render collection hero banner.
+	 * Render compact collection title (full-bleed hero removed).
 	 */
 	public static function render_hero(): void {
 		$collection  = is_array( self::$state['collection'] ?? null ) ? self::$state['collection'] : array();
-		$hero_id     = (int) ( $collection['hero_id'] ?? 0 );
 		$name        = (string) ( $collection['name'] ?? '' );
 		$type_label  = (string) ( $collection['type_label'] ?? '' );
 		$description = (string) ( $collection['description'] ?? '' );
 		?>
-		<section class="collection-page__hero" aria-labelledby="<?php echo esc_attr( self::get_heading_id() ); ?>">
-			<div class="collection-page__hero-media">
-				<?php if ( $hero_id > 0 ) : ?>
-					<?php
-					shanelle_responsive_image(
-						$hero_id,
-						self::HERO_SIZE,
-						array(
-							'class'         => 'collection-page__hero-image',
-							'alt'           => $name,
-							'loading'       => 'eager',
-							'fetchpriority' => 'high',
-							'decoding'      => 'async',
-						)
-					);
-					?>
-				<?php else : ?>
-					<div class="collection-page__hero-placeholder" aria-hidden="true"></div>
-				<?php endif; ?>
+		<header class="collection-page__header shop-archive__header" aria-labelledby="<?php echo esc_attr( self::get_heading_id() ); ?>">
+			<?php if ( '' !== $type_label ) : ?>
+				<p class="collection-page__type text-caption text-muted">
+					<?php echo esc_html( $type_label ); ?>
+				</p>
+			<?php endif; ?>
 
-				<div class="collection-page__hero-copy">
-					<div class="container collection-page__hero-copy-inner">
-						<?php if ( '' !== $type_label ) : ?>
-							<p class="collection-page__hero-type text-caption">
-								<?php echo esc_html( $type_label ); ?>
-							</p>
-						<?php endif; ?>
+			<h1 id="<?php echo esc_attr( self::get_heading_id() ); ?>" class="collection-page__title shop-archive__title">
+				<?php echo esc_html( $name ); ?>
+			</h1>
 
-						<h1 id="<?php echo esc_attr( self::get_heading_id() ); ?>" class="collection-page__hero-title text-h1">
-							<?php echo esc_html( $name ); ?>
-						</h1>
-
-						<?php if ( '' !== wp_strip_all_tags( $description ) ) : ?>
-							<div class="collection-page__hero-description text-body">
-								<?php echo wp_kses_post( $description ); ?>
-							</div>
-						<?php endif; ?>
-					</div>
+			<?php if ( '' !== wp_strip_all_tags( $description ) ) : ?>
+				<div class="collection-page__description shop-archive__description text-body text-secondary">
+					<?php echo wp_kses_post( $description ); ?>
 				</div>
-			</div>
-		</section>
+			<?php endif; ?>
+		</header>
 		<?php
 	}
 

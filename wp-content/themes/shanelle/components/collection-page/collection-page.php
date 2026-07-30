@@ -19,20 +19,19 @@ defined( 'ABSPATH' ) || exit;
 	data-shanelle-shop-archive
 	data-collection-state="<?php echo esc_attr( CollectionPage::get_state_json() ); ?>"
 >
-	<?php CollectionPage::render_hero(); ?>
-
-	<div class="container collection-page__container shop-archive__container">
-		<?php CollectionPage::render_related_collections(); ?>
-		<?php ShopArchive::render_notices(); ?>
-
+	<div class="container-fluid collection-page__container shop-archive__container">
 		<?php if ( CollectionPage::show_breadcrumbs() ) : ?>
 			<?php ShopArchive::render_breadcrumbs(); ?>
 		<?php endif; ?>
+
+		<?php CollectionPage::render_related_collections(); ?>
+		<?php ShopArchive::render_notices(); ?>
 
 		<div class="shop-archive__layout">
 			<?php ShopArchive::render_sidebar(); ?>
 
 			<div class="shop-archive__main collection-page__main">
+				<?php CollectionPage::render_hero(); ?>
 				<?php CollectionPage::render_product_count(); ?>
 				<?php ShopArchive::render_toolbar(); ?>
 				<?php ShopArchive::render_active_filters(); ?>

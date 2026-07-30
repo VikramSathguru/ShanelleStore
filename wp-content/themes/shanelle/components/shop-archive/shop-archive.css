@@ -3,13 +3,17 @@
  */
 
 .shop-archive {
-	padding-block: var(--space-6);
+	/* Filter column width (+10%); largest screens match product cards to this. */
+	--shop-archive-filter-width: 15.4rem;
+	padding-block: var(--space-4) var(--space-8);
 }
 
 .shop-archive__container {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-3);
+	width: 100%;
+	max-width: none;
 }
 
 .shop-archive__layout {
@@ -201,13 +205,31 @@
 	width: 100%;
 }
 
+/* Larger product tiles (overrides shared ProductGrid columns on shop) */
 .shop-archive .product-grid__items {
 	gap: var(--space-3);
 }
 
-@media (min-width: 90rem) {
+@media (min-width: 40rem) {
 	.shop-archive .product-grid__items {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-4);
+	}
+}
+
+@media (min-width: 64rem) {
+	.shop-archive .product-grid__items {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-4);
+	}
+}
+
+/* Largest screens: each product column width equals the filter panel */
+@media (min-width: 80rem) {
+	.shop-archive .product-grid__items {
+		grid-template-columns: repeat(auto-fill, var(--shop-archive-filter-width));
+		justify-content: start;
+		gap: var(--space-4);
 	}
 }
 
@@ -368,13 +390,13 @@ body.shop-archive-filters-open {
 	}
 }
 
-/* Desktop — persistent left sidebar */
+/* Desktop — persistent left sidebar + wide product stage */
 @media (min-width: 64rem) {
 	.shop-archive__layout {
 		display: grid;
-		grid-template-columns: minmax(13.5rem, 15rem) minmax(0, 1fr);
+		grid-template-columns: var(--shop-archive-filter-width) minmax(0, 1fr);
 		align-items: start;
-		gap: var(--space-6);
+		gap: var(--space-5);
 	}
 
 	.shop-archive__toolbar {
@@ -385,14 +407,63 @@ body.shop-archive-filters-open {
 	}
 
 	.shop-archive__sidebar {
-		display: block;
+		display: flex;
+		flex-direction: column;
 		position: sticky;
 		top: var(--space-4);
+		width: var(--shop-archive-filter-width);
 		max-height: calc(100vh - var(--space-8));
+		min-height: 0;
+		overflow: hidden;
 	}
 
 	.shop-archive__sidebar .catalog-filters {
+		flex: 1 1 auto;
+		width: 100%;
+		height: 100%;
 		max-height: calc(100vh - var(--space-8));
+		min-height: 0;
+	}
+
+	.shop-archive__sidebar .catalog-filters__scroll {
+		flex: 1 1 auto;
+		min-height: 0;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		scrollbar-gutter: stable;
+	}
+
+	/* Larger filter typography (+ panel is 10% wider via --shop-archive-filter-width) */
+	.shop-archive__sidebar .catalog-filters__header {
+		padding: var(--space-5) var(--space-5) var(--space-4);
+	}
+
+	.shop-archive__sidebar .catalog-filters__title {
+		font-size: var(--font-size-md);
+	}
+
+	.shop-archive__sidebar .catalog-filters__trigger {
+		padding: var(--space-3) var(--space-5);
+		font-size: var(--font-size-sm);
+	}
+
+	.shop-archive__sidebar .catalog-filters__panel {
+		padding: 0 var(--space-5) var(--space-4);
+	}
+
+	.shop-archive__sidebar .catalog-filters__radio-label,
+	.shop-archive__sidebar .catalog-filters__checkbox-label,
+	.shop-archive__sidebar .catalog-filters__color-label,
+	.shop-archive__sidebar .catalog-filters__option-text,
+	.shop-archive__sidebar .catalog-filters__price-label,
+	.shop-archive__sidebar .catalog-filters__price-input,
+	.shop-archive__sidebar .catalog-filters__view-more {
+		font-size: var(--font-size-sm);
+	}
+
+	.shop-archive__sidebar .catalog-filters__swatch {
+		width: 1.125rem;
+		height: 1.125rem;
 	}
 
 	.shop-archive__filter-toggle {

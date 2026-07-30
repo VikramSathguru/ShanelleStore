@@ -59,6 +59,7 @@ Client-side analogues are CustomEvents — see [EVENTS.md](./EVENTS.md).
 
 | Filter | Defined in | Purpose |
 |--------|------------|---------|
+| `shanelle_header_promo_items` | `SiteHeader.php` | Header promotion banner rows (`emphasis`, `text`, `url`) |
 | `shanelle_homepage_promo_tiles` | `Homepage.php` | Hero promo side tiles |
 | `shanelle_homepage_category_icon_items` | `Homepage.php` | Category icon grid items |
 | `shanelle_homepage_featured_collections` | `Homepage.php` | Featured collection cards |

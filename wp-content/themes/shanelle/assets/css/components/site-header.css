@@ -28,31 +28,79 @@
 }
 
 /* -------------------------------------------------------------------------
-   Promo bar
+   Promo banner — stadium-style ticker
    ------------------------------------------------------------------------- */
 .site-header__promo {
 	display: block;
 	background-color: var(--color-brand-100);
-	border-bottom: 1px solid rgb(110 47 69 / 8%);
+	border-bottom: 1px solid color-mix(in srgb, var(--color-brand-900) 8%, transparent);
 }
 
 .site-header__promo-inner {
+	padding-block: var(--space-1-5);
+}
+
+.site-header__promo-viewport {
+	overflow: hidden;
+	width: 100%;
+}
+
+.site-header__promo-track {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	gap: var(--space-4);
+	gap: var(--space-6);
+	width: max-content;
 	min-height: 2.3rem;
-	padding-block: var(--space-1-5);
+	will-change: transform;
+}
+
+.site-header__promo.is-static .site-header__promo-track {
+	width: 100%;
+	max-width: 100%;
+	justify-content: center;
+	flex-wrap: wrap;
+	row-gap: var(--space-1);
+	column-gap: var(--space-6);
+}
+
+.site-header__promo-track.is-marquee {
+	animation: shanelle-promo-marquee var(--promo-marquee-duration, 30s) linear infinite;
+}
+
+.site-header__promo:hover .site-header__promo-track.is-marquee,
+.site-header__promo:focus-within .site-header__promo-track.is-marquee {
+	animation-play-state: paused;
 }
 
 .site-header__promo-item {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--space-2);
+	flex-shrink: 0;
 	margin: 0;
 	font-size: var(--font-size-xs);
 	line-height: var(--line-height-snug);
 	color: var(--color-brand-800);
+	white-space: nowrap;
+}
+
+.site-header__promo-copy,
+.site-header__promo-link {
+	display: inline-flex;
+	align-items: baseline;
+	gap: var(--space-1);
+	color: inherit;
+	text-decoration: none;
+}
+
+.site-header__promo-link:hover,
+.site-header__promo-link:focus-visible {
+	color: var(--color-brand-900);
+}
+
+.site-header__promo-link:focus-visible {
+	outline: 2px solid var(--color-border-focus);
+	outline-offset: 2px;
+	border-radius: var(--radius-xs);
 }
 
 .site-header__promo-item strong {
@@ -60,16 +108,22 @@
 	color: var(--color-brand-900);
 }
 
-.site-header__promo-icon {
+.site-header__promo-sep {
 	flex-shrink: 0;
-	color: var(--color-brand-800);
+	width: 0.25rem;
+	height: 0.25rem;
+	border-radius: var(--radius-full);
+	background-color: color-mix(in srgb, var(--color-brand-700) 45%, transparent);
 }
 
-.site-header__promo-divider {
-	display: none;
-	width: 1px;
-	height: 0.875rem;
-	background-color: rgb(110 47 69 / 18%);
+@keyframes shanelle-promo-marquee {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(calc(-1 * var(--promo-marquee-distance, 50%)));
+	}
 }
 
 /* -------------------------------------------------------------------------
@@ -380,12 +434,6 @@
 /* -------------------------------------------------------------------------
    Responsive
    ------------------------------------------------------------------------- */
-@media (min-width: 30rem) {
-	.site-header__promo-divider {
-		display: block;
-	}
-}
-
 @media (min-width: 48rem) {
 	.site-header__menu-toggle {
 		display: none;
@@ -420,20 +468,11 @@
 	}
 }
 
-/* Keep sticky chrome short on small screens: one promo line */
-@media (max-width: 29.99rem) {
-	.site-header__promo-item--secondary,
-	.site-header__promo-divider {
-		display: none;
-	}
-
-	.site-header__promo-item--primary {
-		justify-content: center;
-		text-align: center;
-	}
-}
-
 @media (prefers-reduced-motion: reduce) {
+	.site-header__promo-track.is-marquee {
+		animation: none;
+	}
+
 	.site-header,
 	.site-header__drawer-overlay,
 	.site-header__drawer-panel,

@@ -177,7 +177,7 @@ final class AboutPage {
 		);
 
 		// Hero.
-		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_HERO, __( 'Mostrar sección hero', 'shanelle' ), true );
+		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_HERO, __( 'Mostrar sección hero (desactivado — no se renderiza)', 'shanelle' ), false );
 
 		self::register_image_control(
 			$wp_customize,
@@ -267,7 +267,7 @@ final class AboutPage {
 		self::register_url_control( $wp_customize, self::MOD_MISSION_CTA_URL, __( 'Misión: URL del botón legado (vacío = tienda)', 'shanelle' ) );
 
 		// Why Choose.
-		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_FEATURES, __( 'Mostrar sección Por qué elegirnos', 'shanelle' ), true );
+		self::register_checkbox_control( $wp_customize, self::MOD_SHOW_FEATURES, __( 'Mostrar sección Por qué elegirnos', 'shanelle' ), false );
 		self::register_text_control( $wp_customize, self::MOD_FEATURES_EYEBROW, __( 'Por qué: antetítulo', 'shanelle' ), (string) $defaults['features_eyebrow'] );
 		self::register_text_control( $wp_customize, self::MOD_FEATURES_HEADING, __( 'Por qué: encabezado', 'shanelle' ), (string) $defaults['features_heading'] );
 		self::register_textarea_control( $wp_customize, self::MOD_FEATURES_INTRO, __( 'Por qué: texto introductorio', 'shanelle' ), (string) $defaults['features_intro'] );
@@ -358,16 +358,10 @@ final class AboutPage {
 	}
 
 	/**
-	 * Render the hero section.
+	 * Hero section is retired — kept as a no-op for backward-compatible callers.
 	 */
 	public static function render_hero(): void {
-		$hero = self::get_section( 'hero' );
-
-		if ( empty( $hero['visible'] ) ) {
-			return;
-		}
-
-		require self::COMPONENT_DIR . '/partials/hero.php';
+		// Intentionally empty: About page no longer renders a hero band.
 	}
 
 	/**
@@ -568,7 +562,7 @@ final class AboutPage {
 		$h1            = '' !== $hero_headline ? $hero_headline : $page_title;
 
 		$hero = array(
-			'visible'     => ! empty( $settings['show_hero'] ),
+			'visible'     => false,
 			'has_media'   => $hero_desktop['id'] > 0 || $hero_mobile['id'] > 0,
 			'desktop'     => $hero_desktop,
 			'mobile'      => $hero_mobile,
@@ -671,10 +665,10 @@ final class AboutPage {
 	}
 
 	/**
-	 * Default About page copy from the brand founder story.
+	 * Default About page copy — professional brand story for Shanelle Store.
 	 *
-	 * Themes: gratitude and trust, seller–customer relationship,
-	 * empathy from also being a customer, values of transparency / empathy / patience.
+	 * Maps to Customizer sections: Hero, Story, Mission & Values, CTA.
+	 * Why Choose is empty by default (optional; merchant can enable later).
 	 *
 	 * @return array<string, string>
 	 */
@@ -683,43 +677,43 @@ final class AboutPage {
 			'title' => __( 'Sobre nosotros', 'shanelle' ),
 
 			'hero_eyebrow'     => __( 'Shanelle Store', 'shanelle' ),
-			'hero_headline'    => __( 'Confianza que cuidamos', 'shanelle' ),
-			'hero_subheadline' => __( 'Agradecemos la confianza que depositan en nosotras. Nuestro compromiso es conservarla y dejar a cada clienta satisfecha.', 'shanelle' ),
+			'hero_headline'    => __( 'Sobre nosotros', 'shanelle' ),
+			'hero_subheadline' => __( 'En Shanelle Store creemos que cada compra representa mucho más que adquirir una prenda; representa una experiencia basada en confianza, cercanía y satisfacción.', 'shanelle' ),
 			'hero_tagline'     => __( 'Transparencia · Empatía · Paciencia', 'shanelle' ),
 			'hero_cta_text'    => __( 'Explorar la tienda', 'shanelle' ),
 
 			'story_eyebrow' => __( 'Nuestra historia', 'shanelle' ),
-			'story_heading' => __( 'La relación que construimos contigo', 'shanelle' ),
-			'story_body'    => __( "A lo largo de nuestro trabajo como vendedoras hemos cultivado una relación cercana con cada clienta. Ver su satisfacción después de una compra es lo que más nos importa: gracias a eso hemos logrado reflejar una buena imagen, con honestidad y constancia.\n\nAdemás de vender, también hemos sido clientas de otras tiendas. Esa experiencia nos hizo reflexionar sobre el trato al consumidor, empatizar con quien compra y tener muy claro cómo queremos tratar a los demás.", 'shanelle' ),
+			'story_heading' => __( 'Confianza, cercanía y satisfacción', 'shanelle' ),
+			'story_body'    => __( "Nuestro compromiso es agradecer a cada cliente por la confianza que deposita en nosotros y brindar siempre una atención personalizada, transparente y responsable. A lo largo de nuestra trayectoria como vendedora, hemos construido relaciones basadas en el respeto y la dedicación, logrando que cada cliente se sienta valorado antes, durante y después de su compra.\n\nAdemás de nuestra experiencia como vendedora, también hemos vivido la experiencia desde el otro lado: como clientas de diferentes tiendas. Esto nos ha permitido comprender mejor las necesidades de quienes compran, reflexionar sobre la importancia de un buen servicio y empatizar con cada persona que nos elige.", 'shanelle' ),
 
 			'mission_eyebrow' => __( 'Nuestros valores', 'shanelle' ),
-			'mission_heading' => __( 'Cómo te acompañamos', 'shanelle' ),
-			'mission_body'    => __( 'Queremos que cada visita a Shanelle se sienta clara, humana y sin prisa. Estos tres principios guían cada conversación y cada pedido.', 'shanelle' ),
+			'mission_heading' => __( 'Tres valores fundamentales', 'shanelle' ),
+			'mission_body'    => __( 'En Shanelle Store trabajamos con tres valores que guían cada conversación y cada pedido.', 'shanelle' ),
 
 			'value_1_title' => __( 'Transparencia', 'shanelle' ),
-			'value_1_text'  => __( 'Te hablamos con claridad sobre productos, tallas, tiempos y expectativas. Sin rodeos: información honesta para que compres con seguridad.', 'shanelle' ),
+			'value_1_text'  => __( 'Creemos en una comunicación clara y honesta, ofreciendo información confiable para que cada cliente pueda comprar con seguridad.', 'shanelle' ),
 			'value_2_title' => __( 'Empatía', 'shanelle' ),
-			'value_2_text'  => __( 'Sabemos lo que se siente estar del otro lado. Escuchamos tu necesidad y te tratamos como nos gustaría que nos trataran a nosotras.', 'shanelle' ),
+			'value_2_text'  => __( 'Nos ponemos en el lugar de nuestros clientes para entender sus necesidades y brindar una experiencia cercana y agradable.', 'shanelle' ),
 			'value_3_title' => __( 'Paciencia', 'shanelle' ),
-			'value_3_text'  => __( 'No hay preguntas tontas ni prisas innecesarias. Te acompañamos con calma hasta que encuentres lo que buscas.', 'shanelle' ),
+			'value_3_text'  => __( 'Cada persona tiene sus propias dudas y necesidades. Por eso ofrecemos una atención amable y dedicada en cada etapa del proceso.', 'shanelle' ),
 
-			'features_eyebrow' => __( 'Por qué Shanelle', 'shanelle' ),
-			'features_heading' => __( 'Lo que nos mueve cada día', 'shanelle' ),
-			'features_intro'   => __( 'Más que una tienda: una forma de cuidar la confianza que nos depositan.', 'shanelle' ),
+			'features_eyebrow' => '',
+			'features_heading' => '',
+			'features_intro'   => '',
 
-			'feature_1_title' => __( 'Confianza cuidada', 'shanelle' ),
-			'feature_1_text'  => __( 'Agradecemos cada compra y trabajamos para conservar esa confianza, con clientas satisfechas de principio a fin.', 'shanelle' ),
-			'feature_2_title' => __( 'Relación cercana', 'shanelle' ),
-			'feature_2_text'  => __( 'La relación vendedora–clienta se construye con el tiempo. Escuchamos, acompañamos y estamos presentes después de la compra.', 'shanelle' ),
-			'feature_3_title' => __( 'Buena imagen, de verdad', 'shanelle' ),
-			'feature_3_text'  => __( 'La satisfacción de quienes compran con nosotras es el mejor reflejo de quiénes somos. Esa reputación se gana día a día.', 'shanelle' ),
-			'feature_4_title' => __( 'Trato humano', 'shanelle' ),
-			'feature_4_text'  => __( 'Haber sido clientas en otras tiendas nos enseñó a empatizar y a tratar a cada persona con respeto, claridad y calidez.', 'shanelle' ),
+			'feature_1_title' => '',
+			'feature_1_text'  => '',
+			'feature_2_title' => '',
+			'feature_2_text'  => '',
+			'feature_3_title' => '',
+			'feature_3_text'  => '',
+			'feature_4_title' => '',
+			'feature_4_text'  => '',
 
-			'cta_eyebrow' => __( 'Gracias por estar aquí', 'shanelle' ),
-			'cta_heading' => __( 'Tu confianza nos inspira', 'shanelle' ),
-			'cta_body'    => __( 'Seguiremos cuidándola con transparencia, empatía y paciencia — en cada prenda y en cada conversación.', 'shanelle' ),
-			'cta_text'    => __( 'Ver la colección', 'shanelle' ),
+			'cta_eyebrow' => __( 'Gracias', 'shanelle' ),
+			'cta_heading' => __( 'Formar parte de tus momentos especiales', 'shanelle' ),
+			'cta_body'    => __( 'Gracias por permitirnos formar parte de sus momentos especiales. Seguiremos trabajando para ofrecer no solo prendas, sino también una experiencia de compra que deje una buena impresión y genere confianza.', 'shanelle' ),
+			'cta_text'    => __( 'Ir a la tienda', 'shanelle' ),
 		);
 	}
 
@@ -773,10 +767,10 @@ final class AboutPage {
 			set_theme_mod( $mod, $value );
 		}
 
-		set_theme_mod( self::MOD_SHOW_HERO, true );
+		set_theme_mod( self::MOD_SHOW_HERO, false );
 		set_theme_mod( self::MOD_SHOW_STORY, true );
 		set_theme_mod( self::MOD_SHOW_MISSION, true );
-		set_theme_mod( self::MOD_SHOW_FEATURES, true );
+		set_theme_mod( self::MOD_SHOW_FEATURES, false );
 		set_theme_mod( self::MOD_SHOW_CTA, true );
 	}
 
@@ -790,7 +784,7 @@ final class AboutPage {
 
 		$settings = array(
 			'title'                  => self::get_theme_mod_string( self::MOD_TITLE, $defaults['title'] ),
-			'show_hero'              => self::get_theme_mod_bool( self::MOD_SHOW_HERO, true ),
+			'show_hero'              => false,
 			'hero_desktop_image_id'  => self::get_theme_mod_int( self::MOD_HERO_DESKTOP_IMAGE ),
 			'hero_mobile_image_id'   => self::get_theme_mod_int( self::MOD_HERO_MOBILE_IMAGE ),
 			'hero_eyebrow'           => self::get_theme_mod_string( self::MOD_HERO_EYEBROW, $defaults['hero_eyebrow'] ),
@@ -812,7 +806,7 @@ final class AboutPage {
 			'mission_body'           => self::get_theme_mod_string( self::MOD_MISSION_BODY, $defaults['mission_body'] ),
 			'mission_cta_text'       => self::get_theme_mod_string( self::MOD_MISSION_CTA_TEXT ),
 			'mission_cta_url'        => self::get_theme_mod_url( self::MOD_MISSION_CTA_URL ),
-			'show_features'          => self::get_theme_mod_bool( self::MOD_SHOW_FEATURES, true ),
+			'show_features'          => self::get_theme_mod_bool( self::MOD_SHOW_FEATURES, false ),
 			'features_eyebrow'       => self::get_theme_mod_string( self::MOD_FEATURES_EYEBROW, $defaults['features_eyebrow'] ),
 			'features_heading'       => self::get_theme_mod_string( self::MOD_FEATURES_HEADING, $defaults['features_heading'] ),
 			'features_intro'         => self::get_theme_mod_string( self::MOD_FEATURES_INTRO, $defaults['features_intro'] ),

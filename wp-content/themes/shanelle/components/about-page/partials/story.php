@@ -39,19 +39,21 @@ if ( $has_media ) {
 
 		<div class="about-page__story-copy">
 			<?php if ( '' !== $eyebrow ) : ?>
-				<p class="about-page__eyebrow text-overline text-brand"><?php echo esc_html( $eyebrow ); ?></p>
+				<p class="about-page__eyebrow text-overline"><?php echo esc_html( $eyebrow ); ?></p>
 			<?php endif; ?>
 
 			<?php if ( '' !== $heading ) : ?>
-				<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="about-page__section-heading text-h2">
+				<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="about-page__section-heading">
 					<?php echo esc_html( $heading ); ?>
 				</h2>
 			<?php endif; ?>
 
+			<hr class="about-page__rule" aria-hidden="true" />
+
 			<?php if ( ! empty( $paragraphs ) ) : ?>
 				<div class="about-page__prose">
 					<?php foreach ( $paragraphs as $paragraph ) : ?>
-						<p class="text-body text-secondary"><?php echo esc_html( (string) $paragraph ); ?></p>
+						<p><?php echo esc_html( (string) $paragraph ); ?></p>
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>

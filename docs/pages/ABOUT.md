@@ -8,7 +8,6 @@ Marketing "Sobre nosotros" page composed by **`AboutPage`**. Content is **100% T
 |------|------|
 | `page-templates/about.php` | WordPress page template → `AboutPage::render()` |
 | `components/about-page/about-page.php` | Page shell (section composition) |
-| `components/about-page/partials/hero.php` | Hero — full-bleed brand intro (H1) |
 | `components/about-page/partials/story.php` | Our Story — alternating image + copy |
 | `components/about-page/partials/mission-values.php` | Mission & Values |
 | `components/about-page/partials/why-choose.php` | Why Choose Shanelle |
@@ -20,14 +19,14 @@ Marketing "Sobre nosotros" page composed by **`AboutPage`**. Content is **100% T
 
 ```
 AboutPage
-├── Hero (full-bleed media + eyebrow, H1, subheadline, tagline, optional CTA)
+├── Screen-reader H1 (page title)
 ├── Our Story (alternating image + body; media left/right on desktop)
 ├── Mission & Values (contrast band + up to 3 value cards)
 ├── Why Choose (up to 4 reason cards)
 └── Call to Action (closing band + button)
 ```
 
-Each section is optional. Empty fields or a disabled toggle omit that block; empty value/feature slots are skipped. When Hero is hidden, a screen-reader-only H1 keeps heading hierarchy intact.
+The hero band is retired (not rendered). Remaining sections are optional. Empty fields or a disabled toggle omit that block; empty value/feature slots are skipped.
 
 ## Controllers
 
@@ -48,12 +47,12 @@ Each section is optional. Empty fields or a disabled toggle omit that block; emp
 
 **Appearance → Customize → Página Sobre nosotros**
 
-Starter copy reflects the founder story: gratitude and trust, the seller–customer relationship, empathy from also being a customer, and the values **transparencia**, **empatía**, and **paciencia**. Merchants can edit every field.
+Starter copy is the professional brand story: trust and satisfaction before/during/after purchase, seller + customer perspective, and values **Transparencia**, **Empatía**, and **Paciencia**. The optional “Por qué elegirnos” section is off by default. Merchants can edit every field.
 
 | Setting group | Purpose |
 |---------------|---------|
-| Título de la página | H1 fallback when hero titular is empty |
-| Hero | Toggle, desktop/mobile images, antetítulo, titular (H1), subtítulo, eslogan, botón |
+| Título de la página | Screen-reader H1 |
+| Hero | Legacy Customizer fields retained but not rendered |
 | Nuestra historia | Toggle, antetítulo, encabezado, texto, images, media side (left/right) |
 | Misión y valores | Toggle, antetítulo, encabezado, texto, Valores 1–3 (ícono, título, descripción) |
 | Por qué elegirnos | Toggle, antetítulo, encabezado, intro, Motivos 1–4 |
@@ -101,6 +100,10 @@ shanelle_about_page();
 - Images use attachment alt text via `wp_get_attachment_image` / picture markup.
 - Buttons use design-system `.btn` focus-visible ring (`--shadow-focus`).
 - Reveal animation respects `prefers-reduced-motion`.
+
+## Visual direction
+
+Luxury editorial presentation: soft rose/blush token palette, generous whitespace, Cormorant display type, hairline rules, and unboxed value columns on a deep brand band. CTA closes on a light blush surface (not a second dark band). Colors use design tokens / `color-mix` only — no hard-coded hex in the About CSS.
 
 ## Notes
 

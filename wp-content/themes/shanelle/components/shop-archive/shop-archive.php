@@ -12,7 +12,7 @@ use Shanelle\Components\ShopArchive;
 defined( 'ABSPATH' ) || exit;
 ?>
 <main id="primary" class="site-main shop-archive" data-shanelle-shop-archive>
-	<div class="container shop-archive__container">
+	<div class="container-fluid shop-archive__container">
 		<?php ShopArchive::render_breadcrumbs(); ?>
 		<?php ShopArchive::render_notices(); ?>
 

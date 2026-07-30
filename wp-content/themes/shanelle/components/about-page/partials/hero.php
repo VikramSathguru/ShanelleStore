@@ -36,11 +36,11 @@ $section_id = AboutPage::get_heading_id();
 		<div class="container about-page__hero-inner">
 			<div class="about-page__hero-copy">
 				<?php if ( '' !== $eyebrow ) : ?>
-					<p class="about-page__eyebrow text-overline text-brand"><?php echo esc_html( $eyebrow ); ?></p>
+					<p class="about-page__eyebrow text-overline"><?php echo esc_html( $eyebrow ); ?></p>
 				<?php endif; ?>
 
 				<?php if ( '' !== $headline ) : ?>
-					<h1 id="<?php echo esc_attr( $section_id ); ?>" class="about-page__hero-headline text-display">
+					<h1 id="<?php echo esc_attr( $section_id ); ?>" class="about-page__hero-headline">
 						<?php echo esc_html( $headline ); ?>
 					</h1>
 				<?php else : ?>
@@ -49,12 +49,14 @@ $section_id = AboutPage::get_heading_id();
 					</h1>
 				<?php endif; ?>
 
+				<hr class="about-page__rule" aria-hidden="true" />
+
 				<?php if ( '' !== $subhead ) : ?>
-					<p class="about-page__hero-subheadline text-body text-secondary"><?php echo esc_html( $subhead ); ?></p>
+					<p class="about-page__hero-subheadline"><?php echo esc_html( $subhead ); ?></p>
 				<?php endif; ?>
 
 				<?php if ( '' !== $tagline ) : ?>
-					<p class="about-page__hero-tagline text-h5 text-brand"><?php echo esc_html( $tagline ); ?></p>
+					<p class="about-page__hero-tagline"><?php echo esc_html( $tagline ); ?></p>
 				<?php endif; ?>
 
 				<?php if ( ! empty( $cta['visible'] ) ) : ?>

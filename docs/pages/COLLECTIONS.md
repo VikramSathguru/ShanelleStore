@@ -25,7 +25,7 @@ CollectionsPage (index)
 └── CollectionCard grid grouped by collection type
 
 CollectionPage (term archive)
-├── Collection hero (term meta hero image + description)
+├── Compact collection title (+ optional description; full-bleed hero removed)
 ├── Related collection navigation (child/sibling terms)
 ├── WooCommerce notices (ShopArchive)
 ├── Optional breadcrumbs (ShopArchive)
