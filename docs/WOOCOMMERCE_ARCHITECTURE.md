@@ -65,6 +65,7 @@ Docs: [pages/SHOP.md](./pages/SHOP.md).
 | Gallery | `ProductGallery` |
 | Title/price/stock/excerpt | `ProductSummary` |
 | Attributes / swatches | `ProductVariations` |
+| Size guide modal | `SizeGuide` (trigger on size row) |
 | Qty / ATC / buy now / favourites / shipping UI | `ProductPurchase` |
 | Description accordion | `ProductInformation` (theme-owned presentation, outside the cart form) |
 | Reviews block | `ProductDetail` partial `reviews-section.php` |

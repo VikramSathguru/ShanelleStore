@@ -77,6 +77,15 @@ function shanelle_product_variations( WC_Product $product, array $args = array()
 }
 
 /**
+ * Render the product size guide modal.
+ *
+ * @param WC_Product $product Product instance.
+ */
+function shanelle_size_guide( WC_Product $product ): void {
+	\Shanelle\Components\SizeGuide::render_modal( $product );
+}
+
+/**
  * Render the product purchase panel component.
  *
  * @param \WC_Product          $product Product instance.

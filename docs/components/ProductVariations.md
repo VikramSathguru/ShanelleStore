@@ -7,6 +7,7 @@ Provides custom variation selectors (color swatches, size chips) for WooCommerce
 ## Responsibilities
 
 - Render color swatches and size/option chip selectors
+- Place SizeGuide trigger on the same row as size chips (`pa_size` / `pa_talla`)
 - Output hidden native selects via `wc_dropdown_variation_attribute_options()`
 - Sync disabled/unavailable options from WooCommerce variation script
 - Display per-variation availability when a match is found
@@ -62,6 +63,7 @@ From `components/product-variations/product-variations.js`:
 - `wc-add-to-cart-variation` script (jQuery)
 - Parent `form.variations_form` with `data-product_variations` (provided by ProductDetail)
 - `Shanelle\WooCommerce\ProductPrice` (variation price extensions)
+- `Shanelle\Components\SizeGuide` (modal trigger + render on size groups)
 
 ## Events
 

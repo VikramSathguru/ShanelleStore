@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'SHANELLE_VERSION', '1.0.6' );
+define( 'SHANELLE_VERSION', '1.0.7' );
 define( 'SHANELLE_DIR', get_template_directory() );
 define( 'SHANELLE_URI', get_template_directory_uri() );
 
@@ -24,6 +24,7 @@ require_once SHANELLE_DIR . '/inc/components/ProductGallery.php';
 require_once SHANELLE_DIR . '/inc/woocommerce/ProductPrice.php';
 require_once SHANELLE_DIR . '/inc/components/ProductSummary.php';
 require_once SHANELLE_DIR . '/inc/components/ProductVariations.php';
+require_once SHANELLE_DIR . '/inc/components/SizeGuide.php';
 require_once SHANELLE_DIR . '/inc/components/ProductPurchase.php';
 require_once SHANELLE_DIR . '/inc/components/ProductDetail.php';
 require_once SHANELLE_DIR . '/inc/components/ProductInformation.php';
@@ -63,6 +64,7 @@ Shanelle\Components\CatalogFilters::boot();
 Shanelle\Components\ProductGallery::boot();
 Shanelle\Components\ProductSummary::boot();
 Shanelle\Components\ProductVariations::boot();
+Shanelle\Components\SizeGuide::boot();
 Shanelle\Components\ProductPurchase::boot();
 Shanelle\Components\ProductDetail::boot();
 Shanelle\Components\ProductInformation::boot();

@@ -27,7 +27,7 @@ Update this file as milestones complete.
 | Wave B header polish | Stadium-style multi-promo banner (Customizer, up to 6 slots, marquee on overflow); wishlist/language stubs removed; drawer a11y + fallbacks |
 | Spanish-only theme UI | Customer-facing `shanelle` strings use LATAM Spanish source copy |
 | Wave C catalog polish | Sale color tokens, archive title scale, shared empty-state CSS |
-| Wave D PDP polish | Sticky mobile ATC, honest shipping estimates, info defaults, review form; luxury spacing/chrome pass (unboxed purchase/reviews, editorial price, quieter gallery) |
+| Wave D PDP polish | Sticky mobile ATC, honest shipping estimates, info defaults, review form; luxury spacing/chrome pass (unboxed purchase/reviews, editorial price, quieter gallery); SizeGuide modal on size row |
 | Wave E homepage/footer honesty | Real collections rails, Customizer sync, newsletter via provider embed code, SVG payment marks |
 | Wave F consistency polish | Unified grid density, navbar prev, empty catalog band, focus/error tokens |
 | Storefront heroes removed | About / InfoPage / Collection full-bleed heroes retired; compact titles only; homepage HeroBanner remains inactive |

@@ -165,6 +165,10 @@ final class ProductVariations {
 
 		require self::COMPONENT_DIR . '/product-variations.php';
 
+		if ( SizeGuide::is_enabled( $product ) ) {
+			SizeGuide::render_modal( $product );
+		}
+
 		self::reset_context();
 	}
 
@@ -189,6 +193,8 @@ final class ProductVariations {
 		$label     = (string) $group['label'];
 		$options   = $group['options'];
 		$legend_id = self::get_group_legend_id( $slug );
+		$product   = self::get_product();
+		$show_guide = 'size' === $type && $product instanceof \WC_Product && SizeGuide::is_enabled( $product );
 		?>
 		<fieldset class="product-variations__group product-variations__group--<?php echo esc_attr( $type ); ?>">
 			<legend id="<?php echo esc_attr( $legend_id ); ?>" class="product-variations__legend text-label">
@@ -207,6 +213,21 @@ final class ProductVariations {
 					<?php foreach ( $options as $option ) : ?>
 						<?php self::render_color_swatch( $attribute, $option ); ?>
 					<?php endforeach; ?>
+				</div>
+			<?php elseif ( $show_guide ) : ?>
+				<div class="product-variations__size-row">
+					<div
+						class="product-variations__options chip-list chip-list--wrap"
+						role="radiogroup"
+						aria-labelledby="<?php echo esc_attr( $legend_id ); ?>"
+						data-shanelle-variation-group="<?php echo esc_attr( $slug ); ?>"
+						data-attribute-name="<?php echo esc_attr( $attribute ); ?>"
+					>
+						<?php foreach ( $options as $option ) : ?>
+							<?php self::render_size_option( $attribute, $option, $type ); ?>
+						<?php endforeach; ?>
+					</div>
+					<?php SizeGuide::render_trigger( $product ); ?>
 				</div>
 			<?php else : ?>
 				<div
@@ -538,7 +559,7 @@ final class ProductVariations {
 	 */
 	private static function guess_attribute_type( string $slug ): string {
 		$color_slugs = array( 'color', 'colour', 'colors', 'colours', 'pa_color', 'pa_colour' );
-		$size_slugs  = array( 'size', 'sizes', 'pa_size', 'pa_sizes' );
+		$size_slugs  = array( 'size', 'sizes', 'pa_size', 'pa_sizes', 'talla', 'tallas', 'pa_talla', 'pa_tallas' );
 
 		foreach ( $color_slugs as $match ) {
 			if ( $slug === $match || str_contains( $slug, 'color' ) || str_contains( $slug, 'colour' ) ) {
@@ -547,7 +568,7 @@ final class ProductVariations {
 		}
 
 		foreach ( $size_slugs as $match ) {
-			if ( $slug === $match || str_contains( $slug, 'size' ) ) {
+			if ( $slug === $match || str_contains( $slug, 'size' ) || str_contains( $slug, 'talla' ) ) {
 				return 'size';
 			}
 		}

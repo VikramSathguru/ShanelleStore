@@ -105,6 +105,45 @@
 	margin: 0;
 }
 
+.product-variations__size-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-3) var(--space-4);
+}
+
+.product-variations__size-row .product-variations__options {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.product-variations__size-guide-trigger {
+	flex: 0 0 auto;
+	margin-left: auto;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--color-text-secondary);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.02em;
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+.product-variations__size-guide-trigger:hover,
+.product-variations__size-guide-trigger:focus-visible {
+	color: var(--color-text);
+}
+
+.product-variations__size-guide-trigger:focus-visible {
+	outline: 2px solid var(--color-border-focus);
+	outline-offset: 2px;
+	border-radius: var(--radius-xs);
+}
+
 .product-variations__option.is-selected {
 	background-color: var(--color-brand-primary);
 	border-color: var(--color-brand-primary);

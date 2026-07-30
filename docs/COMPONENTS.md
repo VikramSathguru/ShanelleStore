@@ -39,6 +39,7 @@ Page-level documentation lives in [`docs/pages/`](pages/).
 | ProductGallery | [ProductGallery.md](components/ProductGallery.md) |
 | ProductSummary | [ProductSummary.md](components/ProductSummary.md) |
 | ProductVariations | [ProductVariations.md](components/ProductVariations.md) |
+| SizeGuide | [SizeGuide.md](components/SizeGuide.md) |
 | ProductPurchase | [ProductPurchase.md](components/ProductPurchase.md) |
 | ProductInformation | [ProductInformation.md](components/ProductInformation.md) |
 

@@ -89,6 +89,8 @@ Client-side analogues are CustomEvents — see [EVENTS.md](./EVENTS.md).
 | `shanelle_product_shipping_estimate` | `ProductPurchase.php` | Shipping estimate copy |
 | `shanelle_product_delivery_estimate` | `ProductPurchase.php` | Delivery estimate copy |
 | `shanelle_variation_swatch_color` | `ProductVariations.php` | Swatch hex/color |
+| `shanelle_size_guide_data` | `SizeGuide.php` | PDP size guide modal payload |
+| `shanelle_size_guide_fit` | `SizeGuide.php` | Fit marker (`skinny` / `regular` / `oversized`) |
 | `shanelle_related_products_*` | `ProductRelated.php` | Scores, IDs, limits, weights, taxonomies, fallbacks, candidate query |
 | `shanelle_customers_also_viewed_title` | `ProductRelated.php` | Section title string filter path |
 

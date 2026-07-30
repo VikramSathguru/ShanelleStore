@@ -70,10 +70,22 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 |-------|--------|
 | Purpose | Attribute selectors / swatches for variable products |
 | Location | `inc/components/ProductVariations.php`, `components/product-variations/` |
-| Dependencies | WC variable product, variation JSON |
+| Dependencies | WC variable product, variation JSON, SizeGuide |
 | Used by | ProductDetail |
+| Behavior | Size/talla row includes **Guía de tallas** trigger beside chips |
 | Reusable | Yes |
 | Needs improvement | Gallery sync “coming soon” |
+
+### SizeGuide
+
+| Field | Detail |
+|-------|--------|
+| Purpose | PDP size guide modal (type, IN/CM, fit scale, product/body charts) |
+| Location | `inc/components/SizeGuide.php`, `components/size-guide/` |
+| Dependencies | ProductVariations size row; filterable chart data |
+| Used by | ProductVariations |
+| Reusable | Yes |
+| Needs improvement | Default charts are reference tables; override via `shanelle_size_guide_data` |
 
 ### ProductPurchase
 
@@ -95,7 +107,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Dependencies | Product description/attributes; `shanelle_product_information_*` filters |
 | Used by | ProductDetail |
 | Reusable | Yes |
-| Needs improvement | Size guide / care empty unless filters provide content |
+| Needs improvement | Accordion size-guide copy is separate from SizeGuide modal; care empty unless filters provide content |
 
 ### ProductDetail
 
