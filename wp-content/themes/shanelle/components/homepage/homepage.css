@@ -48,9 +48,9 @@
 	align-items: center;
 	justify-content: center;
 	width: 3.75rem;
-	height: 3.75rem;
+	height: 4.5rem;
 	overflow: hidden;
-	border-radius: var(--radius-full);
+	border-radius: var(--radius-xl);
 	background-color: rgb(255 255 255 / 72%);
 	box-shadow: 0 2px 8px rgb(232 122 158 / 12%);
 	transition:
@@ -257,8 +257,9 @@
 	}
 
 	.homepage__category-icon-media {
-		width: 4.5rem;
-		height: 4.5rem;
+		width: 4.75rem;
+		height: 5.75rem;
+		border-radius: var(--radius-xl);
 	}
 
 	.homepage__featured-collections-grid {

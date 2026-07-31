@@ -32,7 +32,8 @@ body.admin-bar .site-header {
  * (accounts for promo bar on/off and navbar height).
  */
 :root {
-	--site-header-sticky-height: 6.325rem;
+	/* ~15% taller main bar + logo vs prior 6.325rem baseline */
+	--site-header-sticky-height: 7.274rem;
 }
 
 /* -------------------------------------------------------------------------
@@ -148,8 +149,8 @@ body.admin-bar .site-header {
 	grid-template-columns: auto minmax(0, 1fr) auto;
 	align-items: center;
 	gap: var(--space-3);
-	min-height: 4.025rem;
-	padding-block: var(--space-2);
+	min-height: 4.629rem; /* +15% from 4.025rem */
+	padding-block: var(--space-2-5);
 }
 
 .site-header__start {
@@ -173,7 +174,7 @@ body.admin-bar .site-header {
 .site-header__logo :where(img, .custom-logo) {
 	display: block;
 	width: auto;
-	max-height: 2.875rem;
+	max-height: 3.306rem; /* +15% from 2.875rem */
 }
 
 .site-header__icon-btn {
@@ -459,11 +460,11 @@ body.admin-bar .site-header {
 
 	.site-header__main-inner {
 		gap: var(--space-6);
-		min-height: 4.6rem;
+		min-height: 5.29rem; /* +15% from 4.6rem */
 	}
 
 	.site-header__logo :where(img, .custom-logo) {
-		max-height: 3.2775rem;
+		max-height: 3.769rem; /* +15% from 3.2775rem */
 	}
 
 	.site-header__actions {

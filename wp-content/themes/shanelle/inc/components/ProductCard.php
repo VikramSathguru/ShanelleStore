@@ -475,7 +475,7 @@ final class ProductCard {
 				'show_rating'     => true,
 				'show_attributes' => true,
 				'show_actions'    => true,
-				'show_favourite'  => true,
+				'show_favourite'  => false,
 				'variant'         => 'default',
 				'new_days'        => (int) apply_filters( 'shanelle_product_card_new_days', 30 ),
 			)
