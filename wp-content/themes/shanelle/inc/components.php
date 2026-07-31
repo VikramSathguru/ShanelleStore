@@ -212,6 +212,13 @@ function shanelle_category_navbar(): void {
 }
 
 /**
+ * Render the site header composition.
+ */
+function shanelle_site_header(): void {
+	\Shanelle\Components\SiteHeader::render();
+}
+
+/**
  * Render the site footer composition.
  */
 function shanelle_footer(): void {

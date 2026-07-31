@@ -23,7 +23,7 @@ SearchPage         → Full results page via ShopArchive + ProductGrid
 | `components/search-overlay/search-overlay.js` | Open/close, debounced AJAX, keyboard nav, recent searches |
 | `components/search-results/search-results.php` | Results panel sections (products, categories, collections) |
 | `components/search-results/search-results.css` | Suggestion row layout, skeleton, chips |
-| `template-parts/components/site-header.php` | Header search trigger (`data-shanelle-search-open`) |
+| `components/header/header.php` | Header search trigger (`data-shanelle-search-open`) |
 | `search.php` | Full search results route → `SearchPage` |
 
 ## Entry points

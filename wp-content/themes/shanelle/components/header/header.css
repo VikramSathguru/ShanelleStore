@@ -28,7 +28,7 @@ body.admin-bar .site-header {
 
 /*
  * Fallback sticky offset for PLP toolbar / other sticky chrome.
- * Refined at runtime by assets/js/modules/sticky-header-offset.js
+ * Refined at runtime by components/header/modules/sticky-header-offset.js
  * (accounts for promo bar on/off and navbar height).
  */
 :root {

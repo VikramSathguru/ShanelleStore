@@ -57,7 +57,8 @@ wp-content/themes/shanelle/
 ├── assets/{css,js,images}
 ├── components/{feature}/         Views + CSS/JS
 ├── inc/{setup,assets,components,woocommerce,catalog}
-├── template-parts/components/    Shared partials (e.g. site-header)
+├── template-parts/components/    Shared partials (cart-count, empty-state)
+├── components/header/            Site header package (markup + CSS + JS)
 ├── woocommerce/                  Template overrides
 └── page-templates/
 ```

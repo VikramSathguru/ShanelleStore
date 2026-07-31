@@ -1,8 +1,8 @@
 <?php
 /**
- * Site header Customizer and presentation helpers.
+ * Site header Customizer, assets, and presentation helpers.
  *
- * Markup remains in template-parts/components/site-header.php.
+ * Markup: components/header/header.php
  *
  * @package Shanelle\Components
  */
@@ -17,6 +17,10 @@ defined( 'ABSPATH' ) || exit;
  * Header chrome settings — no commerce business logic.
  */
 final class SiteHeader {
+
+	private const COMPONENT_DIR = SHANELLE_DIR . '/components/header';
+
+	private const COMPONENT_URI = SHANELLE_URI . '/components/header';
 
 	private const MOD_SHOW_PROMO = 'shanelle_header_show_promo';
 
@@ -35,10 +39,51 @@ final class SiteHeader {
 	public const PROMO_SPEED_DEFAULT = 40;
 
 	/**
-	 * Boot header Customizer hooks.
+	 * Boot header Customizer and front-end assets.
 	 */
 	public static function boot(): void {
 		add_action( 'customize_register', array( self::class, 'register_customizer' ) );
+		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
+	}
+
+	/**
+	 * Enqueue header CSS/JS site-wide.
+	 */
+	public static function enqueue_assets(): void {
+		if ( is_admin() ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'shanelle-header',
+			self::COMPONENT_URI . '/header.css',
+			array( 'shanelle-main' ),
+			SHANELLE_VERSION
+		);
+
+		wp_enqueue_script(
+			'shanelle-header',
+			self::COMPONENT_URI . '/header.js',
+			array(),
+			SHANELLE_VERSION,
+			array(
+				'strategy'  => 'defer',
+				'in_footer' => true,
+			)
+		);
+
+		wp_script_add_data( 'shanelle-header', 'type', 'module' );
+	}
+
+	/**
+	 * Render the storefront header.
+	 */
+	public static function render(): void {
+		if ( ! wp_style_is( 'shanelle-header', 'enqueued' ) ) {
+			self::enqueue_assets();
+		}
+
+		require self::COMPONENT_DIR . '/header.php';
 	}
 
 	/**

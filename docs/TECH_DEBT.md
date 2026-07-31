@@ -9,7 +9,6 @@ Known maintainability issues discovered during the codebase audit.
 
 | Item | Detail |
 |------|--------|
-| Header package | Live markup still in `template-parts/components/site-header.php` + CSS in `assets/css/components/`; full `components/header/` migrate deferred |
 | Docs drift | Homepage docs aligned to live composition (icons + rails + For You; no HeroBanner); watch for future drift |
 | Duplicate checkout doc | `docs/pages/CHECKOUT.md` and `wp-content/docs/pages/CHECKOUT.md` (if present) |
 | Legacy ARCHITECTURE.md | High-level tree only; superseded by `PROJECT_ARCHITECTURE.md` |
@@ -76,10 +75,10 @@ Known maintainability issues discovered during the codebase audit.
 
 ## Suggested debt paydown order (when approved)
 
-1. Migrate `site-header` markup into `components/header/` package.  
-2. Sync homepage docs and dead composer methods.  
-3. Introduce minimal asset build for production.  
-4. Implement adapters under `inc/integrations/` only when plugins are insufficient.  
+1. Sync homepage docs and dead composer methods.  
+2. Introduce minimal asset build for production.  
+3. Implement adapters under `inc/integrations/` only when plugins are insufficient.  
+4. Optionally delete duplicate `wp-content/docs/` if still present.  
 
 ---
 

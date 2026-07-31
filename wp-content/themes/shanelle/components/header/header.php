@@ -1,6 +1,6 @@
 <?php
 /**
- * Site header component.
+ * Site header markup.
  *
  * @package Shanelle
  */

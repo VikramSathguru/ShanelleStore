@@ -62,32 +62,29 @@ Located under `template-parts/components/`:
 
 | File | Purpose |
 |------|---------|
-| `site-header.php` | Global header (promo bar, logo, search, nav actions) |
 | `cart-count.php` | Header cart count fragment |
 | `empty-state.php` | Empty state block |
 
 Helper: `shanelle_component( $slug )` → `get_template_part( 'template-parts/components/' . $slug )`.
 
-Legacy unused partials (`product-card`, `hero-banner`, `site-footer`, `category-chips`, `section-heading`) were removed — live markup lives under `components/`.
+Header markup lives in `components/header/` (not template-parts).
 
 ---
 
 ## Header
 
-- Rendered from `header.php` via `shanelle_component( 'site-header' )`.  
-- Markup: `template-parts/components/site-header.php`.  
-- Styles: `assets/css/components/site-header.css` (pulled through `main.css`).  
+- Rendered from `header.php` via `shanelle_site_header()` → `SiteHeader::render()`.  
+- Markup: `components/header/header.php`.  
+- Styles: `components/header/header.css` (enqueued as `shanelle-header`).  
 - Customizer / helpers: `inc/components/SiteHeader.php` (promotion banner: up to 6 slots, optional URLs, marquee speed, contact URL).  
-- Behavior: `assets/js/main.js` → `modules/mobile-drawer.js` (drawer hydration via `[data-header]`), `modules/sticky-header-offset.js` (publishes `--site-header-sticky-height`), `modules/auto-hide-header.js` (**disabled** — promo + main header + category nav stay sticky/visible while scrolling), `modules/promo-banner.js` (stadium-style ticker when promos overflow).  
+- Behavior: `components/header/header.js` → `modules/mobile-drawer.js` (drawer hydration via `[data-header]`), `modules/sticky-header-offset.js` (publishes `--site-header-sticky-height`), `modules/auto-hide-header.js` (**disabled** — promo + main header + category nav stay sticky/visible while scrolling), `modules/promo-banner.js` (stadium-style ticker when promos overflow).  
 - Layout: promo / main / category navbar inners use `container-fluid` so the header chrome spans the full viewport width on desktop (token padding, no max-width cap).  
 - Search: desktop header field focuses `SearchOverlay`; mobile uses search icon + drawer CTA (`data-shanelle-search-open`).  
 - Integrates: promotion banner, cart count badge, account link, category navbar via `CategoryNavbar::render()`.  
 - Mobile drawer: focus trap + `aria-modal`, nested menu styles, fallback links when no menus assigned; customer-service CTA uses Customizer/WP contact page URL.  
 - Storefront copy is Latin American Spanish only (no language switcher in chrome).
 
-**Not implemented yet:** server-side wishlist (card + PDP favourites remain localStorage-only); full migrate of markup into a `components/header/` package.
-
-Empty `components/header/` placeholder directory was removed.
+**Not implemented yet:** server-side wishlist (card + PDP favourites remain localStorage-only).
 
 ---
 
@@ -148,16 +145,16 @@ Full inventory: [UI_COMPONENTS.md](./UI_COMPONENTS.md).
 1. `base/variables.css` — design tokens  
 2. `base/reset.css`, `typography.css`, `animations.css`  
 3. `utilities/*` — layout, spacing, display, flex, grid  
-4. `components/*` — buttons, forms, badges, chips, cards, modals, site-header  
+4. `components/*` — buttons, forms, badges, chips, cards, modals, empty-state, contact-page  
 
-Feature CSS is enqueued separately per component.
+Feature CSS is enqueued separately per component (including `components/header/header.css`).
 
 ### Global JS
 
 | File | Role |
 |------|------|
-| `assets/js/main.js` | Entry; imports mobile drawer |
-| `assets/js/modules/mobile-drawer.js` | Header drawer |
+| `assets/js/main.js` | Reserved global entry (header JS lives in the header package) |
+| `components/header/header.js` | Header drawer, sticky offset, promo banner |
 
 Module loading: `wp_script_add_data( …, 'type', 'module' )` plus `script_loader_tag` filter for `shanelle-*` handles in `inc/assets.php`.
 

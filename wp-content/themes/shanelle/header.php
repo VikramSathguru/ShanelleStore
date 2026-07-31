@@ -20,4 +20,4 @@ declare(strict_types=1);
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Saltar al contenido', 'shanelle' ); ?></a>
 
-	<?php shanelle_component( 'site-header' ); ?>
+	<?php shanelle_site_header(); ?>

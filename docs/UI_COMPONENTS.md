@@ -428,26 +428,26 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Reusable | Yes |
 | Needs improvement | — |
 
-### Site header (template-part)
+### Site header
 
 | Field | Detail |
 |-------|--------|
 | Purpose | Global header chrome |
-| Location | `template-parts/components/site-header.php` + `assets/css/components/site-header.css` + `inc/components/SiteHeader.php` |
+| Location | `components/header/` + `inc/components/SiteHeader.php` |
 | Dependencies | SiteHeader Customizer, SearchOverlay, cart count, CategoryNavbar |
-| Used by | `header.php` |
+| Used by | `header.php` via `shanelle_site_header()` |
 | Behavior | Sticky (promo + main + category nav always remain visible while scrolling); full-bleed `container-fluid` inners on desktop |
 | Reusable | Yes |
-| Needs improvement | Markup not yet migrated into `components/header/` package |
+| Needs improvement | — |
 
 ### SiteHeader
 
 | Field | Detail |
 |-------|--------|
-| Purpose | Header Customizer + presentation helpers |
+| Purpose | Header Customizer, assets, and `render()` |
 | Location | `inc/components/SiteHeader.php` |
 | Dependencies | Theme Customizer, WP pages for contact fallback |
-| Used by | `site-header.php` |
+| Used by | `components/header/header.php` |
 | Behavior | Customizer section **Encabezado**: toggle banner, speed (20–80 px/s), up to 6 promo slots (`emphasis` + `text` + optional `url`). Empty slots omitted. Filter `shanelle_header_promo_items`. Legacy mods for slots 1–2 still read when new mods are empty. |
 | Reusable | Yes |
 | Needs improvement | — |
@@ -457,7 +457,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Field | Detail |
 |-------|--------|
 | Purpose | Multi-promo announcement ribbon (stadium LED style) |
-| Location | Markup in `site-header.php`; styles in `site-header.css`; JS `assets/js/modules/promo-banner.js` |
+| Location | Markup in `components/header/header.php`; styles in `header.css`; JS `components/header/modules/promo-banner.js` |
 | Dependencies | `SiteHeader` Customizer helpers |
 | Used by | Global header |
 | Behavior | If items fit the viewport → static centered row. If they overflow → seamless horizontal marquee (cloned track). Pause on hover/focus. `prefers-reduced-motion` disables animation (static/wrap). |

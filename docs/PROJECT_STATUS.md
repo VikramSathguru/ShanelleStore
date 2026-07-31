@@ -41,6 +41,7 @@ Update this file as milestones complete.
 | Integrations skeleton | `inc/integrations/Integrations.php` + [INTEGRATIONS.md](./INTEGRATIONS.md); no vendor adapters yet |
 | Theme class autoload | `inc/autoload.php` PSR-4-style loader; `functions.php` slimmed to procedural requires + boot list |
 | Legacy template-parts cleanup | Removed unused product-card / hero-banner / site-footer / category-chips / section-heading partials |
+| Header component package | `components/header/` (markup + CSS + JS); `shanelle_site_header()` |
 
 ---
 
@@ -108,7 +109,7 @@ Prioritized after UI approval:
 5. Social login + social commerce  
 6. PWA → apps  
 7. Autoload + asset build pipeline → **autoload done** (`inc/autoload.php`); asset build still not started  
-8. Migrate header markup into `components/header/`  
+8. Migrate header markup into `components/header/` → **done**  
 
 See [FUTURE_INTEGRATIONS.md](./FUTURE_INTEGRATIONS.md).
 
