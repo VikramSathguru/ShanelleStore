@@ -1,0 +1,165 @@
+/**
+ * SHANELLESTORE Contact Page
+ *
+ * Gutenberg block classes on the Contacto page (Fluent Forms in the form card).
+ * Layout + presentation only — no plugin file changes.
+ */
+
+/* -------------------------------------------------------------------------
+   SHANELLESTORE Contact Page
+   ------------------------------------------------------------------------- */
+
+.contact-layout {
+	gap: 3.75rem; /* 60px — matches Additional CSS */
+	align-items: flex-start;
+}
+
+.contact-info {
+	padding: var(--space-5) var(--space-2-5);
+	min-width: 0;
+}
+
+.contact-eyebrow {
+	margin: 0 0 1.125rem;
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.28em;
+	text-transform: uppercase;
+	color: #c48b5a;
+}
+
+.contact-info :is(h1, h2),
+.contact-form-card :is(h1, h2) {
+	margin: 0 0 var(--space-6);
+	font-family: var(--font-family-heading);
+	font-size: clamp(2rem, 1.6rem + 1.5vw, 2.625rem); /* ~32–42px */
+	font-weight: var(--font-weight-medium);
+	line-height: 1.15;
+	color: #351b24;
+}
+
+.contact-info p {
+	margin: 0 0 1.375rem;
+	color: #5c4650;
+	line-height: var(--line-height-loose);
+}
+
+.contact-form-card {
+	min-width: 0;
+	padding: var(--space-8) var(--space-6);
+	background-color: var(--color-neutral-0);
+	border: 1px solid #ead9d2;
+	box-shadow: 0 15px 40px rgb(0 0 0 / 4%);
+}
+
+/* Fluent Forms — scoped to the contact form card only */
+
+.contact-form-card .ff-el-input--label label {
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: #7d5968;
+}
+
+.contact-form-card input:not([type='checkbox']):not([type='radio']):not([type='submit']):not([type='hidden']):not([type='file']),
+.contact-form-card select,
+.contact-form-card textarea {
+	width: 100%;
+	padding: var(--space-4);
+	border: 1px solid #ead9d2;
+	border-radius: var(--radius-sm);
+	background-color: var(--color-neutral-0);
+	color: var(--color-text);
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-base);
+	transition: border-color var(--duration-base) var(--ease-in-out),
+		box-shadow var(--duration-base) var(--ease-in-out);
+}
+
+.contact-form-card input:not([type='checkbox']):not([type='radio']):not([type='submit']):not([type='hidden']):not([type='file']):focus,
+.contact-form-card select:focus,
+.contact-form-card textarea:focus {
+	outline: none;
+	border-color: #c48b5a;
+	box-shadow: 0 0 0 3px rgb(196 139 90 / 15%);
+}
+
+.contact-form-card textarea {
+	min-height: 10rem;
+	resize: vertical;
+}
+
+.contact-form-card .ff-btn-submit,
+.contact-form-card button.ff-btn-submit,
+.contact-form-card .ff-btn.ff-btn-submit {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: var(--button-height-md);
+	padding: var(--space-4) 2.625rem !important;
+	border: none !important;
+	border-radius: 0 !important;
+	background-color: #c95f85 !important;
+	background-image: none !important;
+	color: var(--color-text-inverse) !important;
+	font-family: var(--font-family-base);
+	font-size: 0.6875rem;
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: background-color var(--duration-base) var(--ease-in-out),
+		box-shadow var(--duration-base) var(--ease-in-out);
+	box-shadow: none !important;
+}
+
+.contact-form-card .ff-btn-submit:hover,
+.contact-form-card .ff-btn-submit:focus-visible,
+.contact-form-card button.ff-btn-submit:hover,
+.contact-form-card button.ff-btn-submit:focus-visible,
+.contact-form-card .ff-btn.ff-btn-submit:hover,
+.contact-form-card .ff-btn.ff-btn-submit:focus-visible {
+	background-color: #a94768 !important;
+	background-image: none !important;
+	color: var(--color-text-inverse) !important;
+}
+
+.contact-form-card .ff-btn-submit:focus-visible {
+	outline: 2px solid var(--color-border-focus);
+	outline-offset: 2px;
+}
+
+/* Mobile — single column, form below info, comfortable spacing */
+@media (max-width: 47.9375rem) {
+	.contact-layout.wp-block-columns:not(.is-not-stacked-on-mobile) {
+		flex-direction: column;
+		gap: var(--space-10);
+	}
+
+	.contact-layout.wp-block-columns:not(.is-not-stacked-on-mobile) > .contact-info,
+	.contact-layout.wp-block-columns:not(.is-not-stacked-on-mobile) > .contact-form-card {
+		flex-basis: 100% !important;
+		width: 100%;
+	}
+
+	.contact-info {
+		padding: var(--space-2) 0;
+	}
+
+	.contact-form-card {
+		padding: var(--space-6) var(--space-5);
+	}
+}
+
+/* Desktop — two columns: information left, form right */
+@media (min-width: 48rem) {
+	.contact-layout {
+		gap: 3.75rem;
+	}
+
+	.contact-form-card {
+		padding: 2.5rem; /* 40px — matches Additional CSS */
+	}
+}
