@@ -69,6 +69,13 @@ function layoutPromoBanner( root ) {
 		return;
 	}
 
+	const viewportWidth = Math.round( viewport.clientWidth );
+
+	// Skip no-op relayouts (sticky scroll often retriggers ResizeObserver).
+	if ( root.dataset.promoLayoutWidth === String( viewportWidth ) && track.childElementCount > 0 ) {
+		return;
+	}
+
 	clearClones( track );
 	track.classList.remove( 'is-marquee' );
 	track.style.removeProperty( '--promo-marquee-distance' );
@@ -84,6 +91,8 @@ function layoutPromoBanner( root ) {
 	void track.offsetWidth;
 
 	const overflows = track.scrollWidth > viewport.clientWidth + 2;
+
+	root.dataset.promoLayoutWidth = String( viewportWidth );
 
 	if ( prefersReducedMotion || ! overflows ) {
 		root.classList.add( 'is-static' );
@@ -107,8 +116,21 @@ export function initPromoBanner( header = null ) {
 
 		root.dataset.promoHydrated = 'true';
 
+		let frame = 0;
+		let timer = 0;
+
 		const schedule = () => {
-			window.requestAnimationFrame( () => layoutPromoBanner( root ) );
+			window.clearTimeout( timer );
+			timer = window.setTimeout( () => {
+				if ( frame ) {
+					window.cancelAnimationFrame( frame );
+				}
+
+				frame = window.requestAnimationFrame( () => {
+					layoutPromoBanner( root );
+					frame = 0;
+				} );
+			}, 80 );
 		};
 
 		schedule();

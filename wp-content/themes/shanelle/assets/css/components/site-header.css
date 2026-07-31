@@ -11,13 +11,19 @@
 	background-color: var(--color-landing);
 }
 
-.site-header__chrome {
-	transition: var(--transition-opacity);
+/* Keep promo + logo/search/nav pinned while scrolling (no auto-hide). */
+body.admin-bar .site-header {
+	top: var(--wp-admin--admin-bar--height, 32px);
 }
 
-/* Homepage: hide main/nav chrome on scroll-down; promo bar stays visible. */
-.site-header[data-auto-hide].is-hidden .site-header__chrome {
-	display: none;
+@media screen and (max-width: 782px) {
+	body.admin-bar .site-header {
+		top: var(--wp-admin--admin-bar--height, 46px);
+	}
+}
+
+.site-header__chrome {
+	display: block;
 }
 
 /*
@@ -30,12 +36,12 @@
 }
 
 /* -------------------------------------------------------------------------
-   Promo banner — stadium-style ticker (always visible in sticky header)
+   Promo banner — stadium-style ticker (always visible with sticky header)
    ------------------------------------------------------------------------- */
 .site-header__promo {
 	display: block;
 	position: relative;
-	z-index: calc(var(--z-sticky) + 1);
+	z-index: 1;
 	background-color: var(--color-brand-200);
 	border-bottom: 1px solid color-mix(in srgb, var(--color-brand-900) 12%, transparent);
 }

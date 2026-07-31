@@ -436,7 +436,7 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 | Location | `template-parts/components/site-header.php` + `assets/css/components/site-header.css` + `inc/components/SiteHeader.php` |
 | Dependencies | SiteHeader Customizer, SearchOverlay, cart count, CategoryNavbar |
 | Used by | `header.php` |
-| Behavior | Sticky; homepage auto-hide on scroll-down / reveal on scroll-up (`auto-hide-header.js`); full-bleed `container-fluid` inners on desktop |
+| Behavior | Sticky (promo + main + category nav always remain visible while scrolling); full-bleed `container-fluid` inners on desktop |
 | Reusable | Yes |
 | Needs improvement | Markup not yet migrated into `components/header/` package |
 
