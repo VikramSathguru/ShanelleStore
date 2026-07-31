@@ -274,18 +274,6 @@ final class Homepage {
 	}
 
 	/**
-	 * Render the hero promo grid with side tiles and center carousel.
-	 *
-	 * Unused by the live homepage. Retained for filter-based experiments
-	 * via `shanelle_homepage_promo_tiles`.
-	 *
-	 * @deprecated 1.0.0 Live homepage no longer composes a hero section.
-	 */
-	public static function render_hero_promo(): void {
-		require self::COMPONENT_DIR . '/partials/hero-promo.php';
-	}
-
-	/**
 	 * Render the circular category icon grid.
 	 */
 	public static function render_category_icons(): void {
@@ -338,7 +326,10 @@ final class Homepage {
 	}
 
 	/**
-	 * Return promo tiles for a hero sidebar.
+	 * Return promo tiles for a hero sidebar experiment.
+	 *
+	 * Not composed by the live homepage. Pair with
+	 * `components/homepage/partials/hero-promo.php` if needed.
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
@@ -816,29 +807,9 @@ final class Homepage {
 	}
 
 	/**
-	 * Render the hero banner section.
-	 *
-	 * Unused by the live homepage. Call manually if composing a hero again.
-	 *
-	 * @deprecated 1.0.0 Live homepage starts with category icons.
-	 */
-	public static function render_hero(): void {
-		shanelle_hero_banner();
-	}
-
-	/**
-	 * Render the CategoryNavigation component.
-	 *
-	 * Unused by the live homepage (category icon grid is the active surface).
-	 *
-	 * @deprecated 1.0.0 Live composition uses {@see render_category_icons()} instead.
-	 */
-	public static function render_category_navigation(): void {
-		shanelle_category_navigation();
-	}
-
-	/**
 	 * Render configured homepage product sections.
+	 *
+	 * Optional / inactive Customizer grids — not called by the live homepage template.
 	 */
 	public static function render_product_sections(): void {
 		foreach ( self::$sections as $section ) {

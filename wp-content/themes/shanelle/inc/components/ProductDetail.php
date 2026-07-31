@@ -230,78 +230,6 @@ final class ProductDetail {
 	}
 
 	/**
-	 * Render below-the-fold placeholder sections.
-	 */
-	public static function render_below_sections(): void {
-		?>
-		<div class="product-detail__below">
-			<?php self::render_information_section(); ?>
-			<?php self::render_related_section(); ?>
-			<?php self::render_reviews_section(); ?>
-			<?php self::render_recently_viewed_section(); ?>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Render product information accordion placeholder.
-	 */
-	public static function render_information_section(): void {
-		$panels = self::get_information_panels();
-		?>
-		<section
-			class="product-detail__section product-detail__section--information"
-			id="<?php echo esc_attr( self::get_section_id( 'information' ) ); ?>"
-			data-shanelle-detail-section="information"
-			data-shanelle-detail-hydrate
-			aria-labelledby="<?php echo esc_attr( self::get_section_heading_id( 'information' ) ); ?>"
-		>
-			<h2 id="<?php echo esc_attr( self::get_section_heading_id( 'information' ) ); ?>" class="product-detail__section-title">
-				<?php esc_html_e( 'Información del producto', 'shanelle' ); ?>
-			</h2>
-
-			<div class="product-detail__accordion" data-shanelle-detail-accordion="information">
-				<?php foreach ( $panels as $index => $panel ) : ?>
-					<div class="product-detail__accordion-item">
-						<h3 class="product-detail__accordion-heading">
-							<button
-								type="button"
-								class="product-detail__accordion-trigger"
-								id="<?php echo esc_attr( self::get_accordion_trigger_id( (string) $panel['id'] ) ); ?>"
-								aria-expanded="<?php echo 0 === $index ? 'true' : 'false'; ?>"
-								aria-controls="<?php echo esc_attr( self::get_accordion_panel_id( (string) $panel['id'] ) ); ?>"
-								data-shanelle-detail-accordion-trigger
-							>
-								<span><?php echo esc_html( (string) $panel['title'] ); ?></span>
-								<span class="product-detail__accordion-icon" aria-hidden="true"></span>
-							</button>
-						</h3>
-						<div
-							class="product-detail__accordion-panel"
-							id="<?php echo esc_attr( self::get_accordion_panel_id( (string) $panel['id'] ) ); ?>"
-							role="region"
-							aria-labelledby="<?php echo esc_attr( self::get_accordion_trigger_id( (string) $panel['id'] ) ); ?>"
-							<?php echo 0 === $index ? '' : 'hidden'; ?>
-							data-shanelle-detail-accordion-panel
-						>
-							<?php if ( ! empty( $panel['content'] ) ) : ?>
-								<div class="product-detail__accordion-content">
-									<?php echo wp_kses_post( (string) $panel['content'] ); ?>
-								</div>
-							<?php else : ?>
-								<p class="product-detail__placeholder text-caption text-muted">
-									<?php echo esc_html( (string) $panel['placeholder'] ); ?>
-								</p>
-							<?php endif; ?>
-						</div>
-					</div>
-				<?php endforeach; ?>
-			</div>
-		</section>
-		<?php
-	}
-
-	/**
 	 * Render customer reviews section.
 	 */
 	public static function render_reviews_section(): void {
@@ -517,56 +445,6 @@ final class ProductDetail {
 	}
 
 	/**
-	 * Render related products placeholder section.
-	 */
-	public static function render_related_section(): void {
-		?>
-		<section
-			class="product-detail__section product-detail__section--related"
-			id="<?php echo esc_attr( self::get_section_id( 'related' ) ); ?>"
-			data-shanelle-detail-section="related"
-			data-shanelle-detail-hydrate
-			data-related-product-id="<?php echo esc_attr( (string) self::get_product()->get_id() ); ?>"
-			aria-labelledby="<?php echo esc_attr( self::get_section_heading_id( 'related' ) ); ?>"
-		>
-			<h2 id="<?php echo esc_attr( self::get_section_heading_id( 'related' ) ); ?>" class="product-detail__section-title">
-				<?php esc_html_e( 'Productos relacionados', 'shanelle' ); ?>
-			</h2>
-			<div class="product-detail__placeholder-grid" data-shanelle-detail-related>
-				<p class="product-detail__placeholder text-caption text-muted">
-					<?php esc_html_e( 'Productos relacionados próximamente.', 'shanelle' ); ?>
-				</p>
-			</div>
-		</section>
-		<?php
-	}
-
-	/**
-	 * Render recently viewed placeholder section.
-	 */
-	public static function render_recently_viewed_section(): void {
-		?>
-		<section
-			class="product-detail__section product-detail__section--recently-viewed"
-			id="<?php echo esc_attr( self::get_section_id( 'recently-viewed' ) ); ?>"
-			data-shanelle-detail-section="recently-viewed"
-			data-shanelle-detail-hydrate
-			data-product-id="<?php echo esc_attr( (string) self::get_product()->get_id() ); ?>"
-			aria-labelledby="<?php echo esc_attr( self::get_section_heading_id( 'recently-viewed' ) ); ?>"
-		>
-			<h2 id="<?php echo esc_attr( self::get_section_heading_id( 'recently-viewed' ) ); ?>" class="product-detail__section-title">
-				<?php esc_html_e( 'Vistos recientemente', 'shanelle' ); ?>
-			</h2>
-			<div class="product-detail__placeholder-grid" data-shanelle-detail-recently-viewed>
-				<p class="product-detail__placeholder text-caption text-muted">
-					<?php esc_html_e( 'Productos vistos recientemente próximamente.', 'shanelle' ); ?>
-				</p>
-			</div>
-		</section>
-		<?php
-	}
-
-	/**
 	 * Open WooCommerce cart or variation form.
 	 */
 	public static function render_form_open(): void {
@@ -604,42 +482,11 @@ final class ProductDetail {
 			'productId'   => $product->get_id(),
 			'productType' => $product->get_type(),
 			'sections'    => array(
-				'information',
-				'related',
 				'reviews',
-				'recently-viewed',
 			),
 		);
 
 		return wp_json_encode( $data ) ?: '{}';
-	}
-
-	/**
-	 * Return section element ID.
-	 */
-	public static function get_section_id( string $slug ): string {
-		return self::get_root_id() . '-section-' . sanitize_title( $slug );
-	}
-
-	/**
-	 * Return section heading ID.
-	 */
-	public static function get_section_heading_id( string $slug ): string {
-		return self::get_section_id( $slug ) . '-heading';
-	}
-
-	/**
-	 * Return accordion trigger ID.
-	 */
-	public static function get_accordion_trigger_id( string $panel_id ): string {
-		return self::get_root_id() . '-accordion-trigger-' . sanitize_title( $panel_id );
-	}
-
-	/**
-	 * Return accordion panel ID.
-	 */
-	public static function get_accordion_panel_id( string $panel_id ): string {
-		return self::get_root_id() . '-accordion-panel-' . sanitize_title( $panel_id );
 	}
 
 	/**
@@ -674,38 +521,6 @@ final class ProductDetail {
 			<?php wp_nonce_field( 'woocommerce-cart', 'woocommerce-cart-nonce' ); ?>
 			<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( (string) $product->get_id() ); ?>">
 		<?php
-	}
-
-	/**
-	 * Build accordion panel definitions for product information.
-	 *
-	 * @return array<int, array<string, string>>
-	 */
-	private static function get_information_panels(): array {
-		$product     = self::get_product();
-		$description = apply_filters( 'the_content', $product->get_description() );
-		$description = is_string( $description ) ? trim( $description ) : '';
-
-		return array(
-			array(
-				'id'          => 'description',
-				'title'       => __( 'Descripción', 'shanelle' ),
-				'content'     => $description,
-				'placeholder' => __( 'La descripción completa del producto estará disponible pronto.', 'shanelle' ),
-			),
-			array(
-				'id'          => 'details',
-				'title'       => __( 'Detalles', 'shanelle' ),
-				'content'     => '',
-				'placeholder' => __( 'Los detalles del producto estarán disponibles pronto.', 'shanelle' ),
-			),
-			array(
-				'id'          => 'shipping-returns',
-				'title'       => __( 'Envío y devoluciones', 'shanelle' ),
-				'content'     => '',
-				'placeholder' => __( 'La información de envío y devoluciones estará disponible pronto.', 'shanelle' ),
-			),
-		);
 	}
 
 	/**

@@ -10,7 +10,6 @@ Known maintainability issues discovered during the codebase audit.
 | Item | Detail |
 |------|--------|
 | Docs drift | Homepage docs aligned to live composition (icons + rails + For You; no HeroBanner); watch for future drift |
-| Duplicate checkout doc | `docs/pages/CHECKOUT.md` and `wp-content/docs/pages/CHECKOUT.md` (if present) |
 | Legacy ARCHITECTURE.md | High-level tree only; superseded by `PROJECT_ARCHITECTURE.md` |
 
 ---
@@ -34,7 +33,7 @@ Known maintainability issues discovered during the codebase audit.
 | Product card wishlist / quick view | Disabled controls removed from card actions (quick-add only) |
 | Header wishlist / language | Removed from header (Spanish-only storefront; no language switcher) |
 | Variation gallery sync | Wired via `gallery-change` → ProductGallery (`setActiveIndex` by attachment id) |
-| ProductDetail placeholder methods | Related/recently-viewed placeholders still in class while live page uses `ProductRelated` |
+| ProductDetail placeholder methods | Removed unused related/recently-viewed placeholders; live page uses `ProductRelated` + reviews |
 | Favourites | localStorage only; not synced to account |
 | Shipping/delivery on PDP | Estimated copy from weekday math / filters — not live WC rates |
 | Homepage Customizer drift | Inactive product-section Customizer labeled; live rails use collections or honest fallbacks |
@@ -75,10 +74,9 @@ Known maintainability issues discovered during the codebase audit.
 
 ## Suggested debt paydown order (when approved)
 
-1. Sync homepage docs and dead composer methods.  
-2. Introduce minimal asset build for production.  
-3. Implement adapters under `inc/integrations/` only when plugins are insufficient.  
-4. Optionally delete duplicate `wp-content/docs/` if still present.  
+1. Introduce minimal asset build for production.  
+2. Implement adapters under `inc/integrations/` only when plugins are insufficient.  
+3. Slim inactive homepage Customizer product-section builders if still unused long-term.  
 
 ---
 

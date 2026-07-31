@@ -42,6 +42,7 @@ Update this file as milestones complete.
 | Theme class autoload | `inc/autoload.php` PSR-4-style loader; `functions.php` slimmed to procedural requires + boot list |
 | Legacy template-parts cleanup | Removed unused product-card / hero-banner / site-footer / category-chips / section-heading partials |
 | Header component package | `components/header/` (markup + CSS + JS); `shanelle_site_header()` |
+| Dead composer cleanup | Removed unused Homepage deprecated wrappers + ProductDetail placeholder sections; deleted duplicate `wp-content/docs/` |
 
 ---
 

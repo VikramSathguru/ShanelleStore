@@ -109,6 +109,27 @@ WordPress typically uses `wp-config.php` constants rather than `.env`.
 
 ---
 
+## Day-one Hostinger runbook
+
+Ordered ops path after the theme is uploaded. Theme code is already gateway-agnostic.
+
+1. **PHP & HTTPS** — Hostinger panel: PHP **8.3+**, force HTTPS, set site URL to `https://…`.  
+2. **`wp-config.php`** — production DB credentials; **new** salts; `WP_DEBUG` / `WP_DEBUG_DISPLAY` / `WP_DEBUG_LOG` = `false`; add `define( 'DISALLOW_FILE_EDIT', true );`.  
+3. **Plugins** — keep WooCommerce + one payment gateway + Rank Math + WP Mail SMTP; **disable/remove Query Monitor**.  
+4. **Language** — Ajustes → Generales → Idioma del sitio = **Español**; install language pack.  
+5. **Permalinks & WC pages** — save permalinks; confirm Cart / Checkout / My Account / Shop pages; checkout must be classic shortcode (not Checkout block).  
+6. **Payments** — enable **one** gateway (PayPal / Pagadito / Fygaro); sandbox credentials; place one full test order through Shanelle checkout.  
+7. **Shipping** — WC → Envío: zones/rates for Nicaragua (or target market).  
+8. **Mail** — configure WP Mail SMTP; confirm order email arrives.  
+9. **Footer honesty** — Customizer → Footer payment icons match **enabled** gateways only.  
+10. **Cache** — Hostinger/LiteSpeed: exclude cart, checkout, my-account; purge after deploy.  
+11. **Smoke** — mobile: home → shop → PDP → mini-cart qty → checkout.  
+12. **Go live** — switch gateway to live credentials; one small real order; then enable ads pixels only if needed.
+
+Full checklists below. Secrets never belong in the theme or docs.
+
+---
+
 ## Deployment checklist
 
 ### Pre-deploy

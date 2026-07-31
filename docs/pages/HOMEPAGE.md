@@ -17,7 +17,7 @@ Live markup in `components/homepage/homepage.php`:
 
 ### Design decision: no homepage hero
 
-The live homepage starts with category icons. `HeroBanner` and the older SHEIN-style side-tile `hero-promo` layout are **not** composed. Helpers remain available for experiments only (`render_hero()`, `render_hero_promo()`, `shanelle_homepage_promo_tiles` filter).
+The live homepage starts with category icons. `HeroBanner` and the older SHEIN-style side-tile `hero-promo` layout are **not** composed. Optional APIs for experiments: `shanelle_hero_banner()`, `Homepage::get_promo_tiles()` + `partials/hero-promo.php`, `shanelle_category_navigation()`, `Homepage::render_product_sections()`.
 
 ### Featured rails honesty
 
@@ -30,7 +30,7 @@ The live homepage starts with category icons. `HeroBanner` and the older SHEIN-s
 - **Live homepage:** circular category icon grid (automatic from WooCommerce categories).
 - **Not live:** `CategoryNavigation` component / Customizer section labeled inactive. Call `shanelle_category_navigation()` only if composing manually.
 
-Unused helpers still exist for alternate compositions (`render_hero()`, `render_hero_promo()`, `render_category_navigation()`, `render_product_sections()` / `build_sections()`) but are **not** called by the live template.
+Unused helpers still exist for alternate compositions (`shanelle_hero_banner()`, `get_promo_tiles()` / `hero-promo.php`, `shanelle_category_navigation()`, `render_product_sections()` / `build_sections()`) but are **not** called by the live template.
 
 ## Controller
 

@@ -116,10 +116,8 @@ function initProductDetail( detail ) {
 				data,
 				sections,
 				hydrationTargets: {
-					information: detail.querySelector( '[data-shanelle-detail-section="information"]' ),
 					reviews: detail.querySelector( '[data-shanelle-detail-reviews]' ),
-					related: detail.querySelector( '[data-shanelle-detail-related]' ),
-					recentlyViewed: detail.querySelector( '[data-shanelle-detail-recently-viewed]' ),
+					related: detail.querySelector( '[data-shanelle-product-related]' ),
 				},
 			},
 		} )
