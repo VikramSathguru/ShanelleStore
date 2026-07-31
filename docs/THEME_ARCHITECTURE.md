@@ -166,7 +166,7 @@ Module loading: `wp_script_add_data( …, 'type', 'module' )` plus `script_loade
 
 ### Fonts
 
-Google Fonts stylesheet handle `shanelle-fonts` (Cormorant Garamond + DM Sans).
+Google Fonts removed — self-hosted `shanelle-fonts` → `assets/css/fonts.css` (Cormorant Garamond + DM Sans woff2).
 
 ### Images
 

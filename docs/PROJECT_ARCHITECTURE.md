@@ -26,7 +26,7 @@ The theme is **component-orchestrated**: thin WordPress/WooCommerce templates de
 | Language | PHP 8.3+ | `declare(strict_types=1)` throughout theme |
 | Frontend JS | ES modules (`type="module"`) | Per-component scripts |
 | CSS | Native design tokens + `@import` | No theme bundler / `package.json` |
-| Fonts | Google Fonts (Cormorant Garamond, DM Sans) | Enqueued in `inc/assets.php` |
+| Fonts | Self-hosted Cormorant Garamond + DM Sans (woff2) | `assets/css/fonts.css` via `inc/assets.php` |
 | Search / SEO plugin | Rank Math | Present under `wp-content/plugins` |
 | Fields plugin | Advanced Custom Fields | Installed; theme catalog uses custom term meta, not ACF APIs |
 | Dev tools | Query Monitor, Health Check | Local diagnostics |

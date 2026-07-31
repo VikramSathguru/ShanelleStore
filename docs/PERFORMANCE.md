@@ -80,7 +80,7 @@ Assessment of the Shanelle theme as implemented on FlyEnv. Measurements should b
 
 ## Fonts
 
-- Google Fonts loaded remotely (`shanelle-fonts`).  
+- Self-hosted fonts via `assets/css/fonts.css` (no remote Google Fonts request).  
 - **Risks:** extra DNS/TLS, GDPR/privacy considerations, FOIT/FOUT.  
 - **Opportunities:** self-host on Hostinger, `font-display: swap` (verify in Google CSS URL — `display=swap` is present).
 

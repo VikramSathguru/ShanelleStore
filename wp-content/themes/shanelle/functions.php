@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'SHANELLE_VERSION', '1.0.16' );
+define( 'SHANELLE_VERSION', '1.0.17' );
 define( 'SHANELLE_DIR', get_template_directory() );
 define( 'SHANELLE_URI', get_template_directory_uri() );
 
@@ -55,6 +55,7 @@ require_once SHANELLE_DIR . '/inc/components/FooterCustomerService.php';
 require_once SHANELLE_DIR . '/inc/components/FooterPolicies.php';
 require_once SHANELLE_DIR . '/inc/woocommerce.php';
 require_once SHANELLE_DIR . '/inc/catalog/Catalog.php';
+require_once SHANELLE_DIR . '/inc/integrations/Integrations.php';
 
 Shanelle\Catalog\Catalog::boot();
 Shanelle\Components\ProductCard::boot();
@@ -92,3 +93,4 @@ Shanelle\Components\FooterLinks::boot();
 Shanelle\Components\FooterCustomerService::boot();
 Shanelle\Components\FooterPolicies::boot();
 Shanelle\Components\Footer::boot();
+Shanelle\Integrations\Integrations::boot();

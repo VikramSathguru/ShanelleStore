@@ -87,6 +87,7 @@ graph TD
 | [SECURITY.md](./SECURITY.md) | Yes | Escaping, nonces, risks |
 | [PERFORMANCE.md](./PERFORMANCE.md) | Yes | Assets, queries, caching |
 | [FUTURE_INTEGRATIONS.md](./FUTURE_INTEGRATIONS.md) | Yes | Payments, pixels, logistics, PWA, apps (plans) |
+| [INTEGRATIONS.md](./INTEGRATIONS.md) | Yes | Theme `inc/integrations` adapter skeleton + how to add glue |
 | [DEPLOYMENT.md](./DEPLOYMENT.md) | Yes | FlyEnv → Hostinger |
 | [PROJECT_STATUS.md](./PROJECT_STATUS.md) | Yes | Completed / in progress / not started |
 | [TECH_DEBT.md](./TECH_DEBT.md) | Yes | Debt and maintainability risks |
@@ -118,7 +119,7 @@ graph TD
 | Theme | `wp-content/themes/shanelle/` |
 | Theme controllers | `wp-content/themes/shanelle/inc/components/` |
 | Catalog module | `wp-content/themes/shanelle/inc/catalog/` |
-| Future integrations (policy target) | `wp-content/themes/shanelle/inc/integrations/` (**Not implemented yet** as a populated tree) |
+| Future integrations | `wp-content/themes/shanelle/inc/integrations/` — skeleton + [INTEGRATIONS.md](./INTEGRATIONS.md); adapters empty until justified |
 | Plugins | `wp-content/plugins/` |
 | Agent rules | `.cursorrules` (repo root) |
 

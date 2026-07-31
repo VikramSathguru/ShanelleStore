@@ -37,6 +37,8 @@ Update this file as milestones complete.
 | Cart AJAX nonce hardening | MiniCart + CartPage WC-AJAX verify `shanelle_cart_ajax`; JS sends localized nonce |
 | Homepage promo max price | Customizer + WC currency label + `shanelle_filter_max_price` shop link (no hard-coded `C$`) |
 | Footer payment marks | Defaults include PayPal + Pagadito + Fygaro (align Customizer list to enabled gateways) |
+| Self-hosted fonts | DM Sans + Cormorant Garamond woff2 via `assets/css/fonts.css` (no Google Fonts CDN) |
+| Integrations skeleton | `inc/integrations/Integrations.php` + [INTEGRATIONS.md](./INTEGRATIONS.md); no vendor adapters yet |
 
 ---
 
@@ -69,7 +71,7 @@ Update this file as milestones complete.
 | Payment gateway **merchant config** (live credentials, webhooks, certification) | Plugins installed (PayPal Payments, Pagadito, Fygaro); theme stays gateway-agnostic — ops must enable and test |
 | Stripe / PixelPay / BAC Credomatic | Not installed yet |
 | Cargo Mobil logistics | Not implemented yet |
-| Theme-owned Meta / TikTok / GA pixel modules | Prefer installed plugins; custom `inc/integrations` not started |
+| Theme-owned Meta / TikTok / GA pixel modules | Prefer installed plugins; `inc/integrations` skeleton ready — adapters not started |
 | Instagram / TikTok Shop sync beyond plugin connectors | Not implemented yet |
 | Social login | Not implemented yet |
 | PWA service worker / manifest | Not implemented yet |

@@ -15,9 +15,9 @@ defined( 'ABSPATH' ) || exit;
 function shanelle_enqueue_assets(): void {
 	wp_enqueue_style(
 		'shanelle-fonts',
-		'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap',
+		SHANELLE_URI . '/assets/css/fonts.css',
 		array(),
-		null
+		SHANELLE_VERSION
 	);
 
 	wp_enqueue_style(

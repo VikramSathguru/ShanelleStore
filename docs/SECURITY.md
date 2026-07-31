@@ -72,8 +72,7 @@ Custom WC-AJAX endpoints `shanelle_mini_cart_*` and `shanelle_cart_page_get` req
 2. **Secrets in `wp-config.php`** — local DB password and salts exist on disk; ensure not committed to public remotes; use Hostinger env-specific config; never paste secrets into docs.  
 3. **`WP_DEBUG` / `WP_DEBUG_LOG` true locally** — must be disabled in production to avoid path/info leaks.  
 4. **Wishlist in `localStorage`** — not authorization-sensitive, but users may believe it is server-backed.  
-5. **Google Fonts third-party request** — privacy consideration for EU/LATAM compliance programs.  
-6. **ACF + other plugins** — keep updated; theme is not their security boundary.
+5. **ACF + other plugins** — keep updated; theme is not their security boundary.
 
 ---
 

@@ -62,9 +62,9 @@ docs/
 
 Do **not** mass-move files until links and `.cursorrules` paths are updated in one pass.
 
-### 5. Keep integration stubs out of theme docs until code exists
+### 5. Integration adapters
 
-When `inc/integrations/` is created, add `docs/INTEGRATIONS.md` with one subsection per adapter. Until then, FUTURE_INTEGRATIONS remains the plan doc.
+Skeleton lives at `inc/integrations/` with [INTEGRATIONS.md](./INTEGRATIONS.md). Add one subsection per adapter as they ship. [FUTURE_INTEGRATIONS.md](./FUTURE_INTEGRATIONS.md) remains the capability plan.
 
 ### 6. Event + pixel mapping sheet
 
