@@ -35,12 +35,12 @@ ABSPATH guards and `defined( 'ABSPATH' ) || exit` are consistent.
 | Search suggest AJAX | `check_ajax_referer` — **good** |
 | Collection term save | `wp_verify_nonce` — **good** |
 | Cart forms | `woocommerce-cart` nonce fields — **good** |
-| Mini cart WC AJAX update/get | **No theme nonce verification** (phpcs nonce ignore on POST) |
-| Cart page WC AJAX get | **No theme nonce verification** observed |
+| Mini cart WC AJAX update/get | `MiniCart::verify_ajax_nonce()` (`shanelle_cart_ajax`) — **good** |
+| Cart page WC AJAX get | Same shared nonce via `MiniCart::verify_ajax_nonce()` — **good** |
 
-### Risk: cart AJAX CSRF
+### Cart AJAX CSRF (mitigated)
 
-An attacker page could potentially trigger quantity changes for a victim who has an active WooCommerce session cookie, depending on browser CSRF protections and SameSite cookie settings. **Mitigation recommendation (future work):** send and verify a WP/WC nonce on `shanelle_mini_cart_*` and `shanelle_cart_page_get`.
+Custom WC-AJAX endpoints `shanelle_mini_cart_*` and `shanelle_cart_page_get` require the localized `nonce` field created with `wp_create_nonce( 'shanelle_cart_ajax' )`. Invalid or missing nonces return JSON 403.
 
 ---
 
@@ -68,13 +68,12 @@ An attacker page could potentially trigger quantity changes for a victim who has
 
 ## Potential vulnerabilities / issues
 
-1. **Missing nonces on custom WC AJAX cart endpoints** (above).  
-2. **Public REST** for search/grid — acceptable if query sanitization remains strict; watch for future endpoints that expose PII.  
-3. **Secrets in `wp-config.php`** — local DB password and salts exist on disk; ensure not committed to public remotes; use Hostinger env-specific config; never paste secrets into docs.  
-4. **`WP_DEBUG` / `WP_DEBUG_LOG` true locally** — must be disabled in production to avoid path/info leaks.  
-5. **Wishlist in `localStorage`** — not authorization-sensitive, but users may believe it is server-backed.  
-6. **Google Fonts third-party request** — privacy consideration for EU/LATAM compliance programs.  
-7. **ACF + other plugins** — keep updated; theme is not their security boundary.
+1. **Public REST** for search/grid — acceptable if query sanitization remains strict; watch for future endpoints that expose PII.  
+2. **Secrets in `wp-config.php`** — local DB password and salts exist on disk; ensure not committed to public remotes; use Hostinger env-specific config; never paste secrets into docs.  
+3. **`WP_DEBUG` / `WP_DEBUG_LOG` true locally** — must be disabled in production to avoid path/info leaks.  
+4. **Wishlist in `localStorage`** — not authorization-sensitive, but users may believe it is server-backed.  
+5. **Google Fonts third-party request** — privacy consideration for EU/LATAM compliance programs.  
+6. **ACF + other plugins** — keep updated; theme is not their security boundary.
 
 ---
 
@@ -92,7 +91,7 @@ Uses WP Media Library / WC product images. No custom upload endpoints in theme.
 
 ## Recommended pre-production checklist
 
-- [ ] Nonces on all custom cart AJAX  
+- [x] Nonces on all custom cart AJAX  
 - [ ] `WP_DEBUG` false on Hostinger  
 - [ ] Unique salts/keys per environment  
 - [ ] Disable file editor (`DISALLOW_FILE_EDIT`)  

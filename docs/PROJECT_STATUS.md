@@ -34,6 +34,8 @@ Update this file as milestones complete.
 | Informational / policy pages | `InfoPage` templates + Spanish starter content seeded into WP (shipping, returns, privacy, terms, cookies, FAQ, CS pages) |
 | Internal docs (events, pages, components) | `docs/` supplementary files |
 | ES module script tag guard | `inc/assets.php` |
+| Cart AJAX nonce hardening | MiniCart + CartPage WC-AJAX verify `shanelle_cart_ajax`; JS sends localized nonce |
+| Homepage promo max price | Customizer + WC currency label + `shanelle_filter_max_price` shop link (no hard-coded `C$`) |
 
 ---
 
@@ -63,10 +65,11 @@ Update this file as milestones complete.
 
 | Area | Notes |
 |------|-------|
-| Payment gateways (Stripe, PayPal, PixelPay, BAC) | Not implemented yet |
+| Payment gateway **merchant config** (live credentials, webhooks, certification) | Plugins installed (PayPal Payments, Pagadito, Fygaro); theme stays gateway-agnostic — ops must enable and test |
+| Stripe / PixelPay / BAC Credomatic | Not installed yet |
 | Cargo Mobil logistics | Not implemented yet |
-| Meta / TikTok / GA pixels | Not implemented yet |
-| Instagram / TikTok Shop sync | Not implemented yet |
+| Theme-owned Meta / TikTok / GA pixel modules | Prefer installed plugins; custom `inc/integrations` not started |
+| Instagram / TikTok Shop sync beyond plugin connectors | Not implemented yet |
 | Social login | Not implemented yet |
 | PWA service worker / manifest | Not implemented yet |
 | Native mobile apps | Not implemented yet |
@@ -93,13 +96,13 @@ Nothing in the theme codebase appears blocked by a hard technical dependency tod
 
 Prioritized after UI approval:
 
-1. Security harden cart AJAX nonces  
-2. Deploy to Hostinger ([DEPLOYMENT.md](./DEPLOYMENT.md))  
-3. Payments  
-4. Analytics pixels  
-5. Shipping integration  
-6. Social login + social commerce  
-7. PWA → apps  
+1. Deploy to Hostinger ([DEPLOYMENT.md](./DEPLOYMENT.md))  
+2. Configure and E2E-test payment gateways (plugins already present)  
+3. Analytics / ads plugin configuration (avoid double-firing)  
+4. Shipping integration (Cargo Mobil or WC zones)  
+5. Social login + social commerce  
+6. PWA → apps  
+7. Autoload + slim `functions.php` / asset build pipeline  
 
 See [FUTURE_INTEGRATIONS.md](./FUTURE_INTEGRATIONS.md).
 

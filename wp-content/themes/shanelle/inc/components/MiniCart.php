@@ -25,6 +25,11 @@ final class MiniCart {
 	private const ROOT_ID = 'shanelle-mini-cart';
 
 	/**
+	 * Shared nonce action for mini-cart and cart-page WC-AJAX endpoints.
+	 */
+	public const NONCE_ACTION = 'shanelle_cart_ajax';
+
+	/**
 	 * Cached cart state for the active render cycle.
 	 *
 	 * @var array<string, mixed>
@@ -87,6 +92,7 @@ final class MiniCart {
 			'shanelleMiniCart',
 			array(
 				'ajaxUrl'       => \WC_AJAX::get_endpoint( '%%endpoint%%' ),
+				'nonce'         => wp_create_nonce( self::NONCE_ACTION ),
 				'cartUrl'       => wc_get_cart_url(),
 				'checkoutUrl'   => wc_get_checkout_url(),
 				'shopUrl'       => wc_get_page_permalink( 'shop' ) ?: home_url( '/' ),
@@ -161,10 +167,10 @@ final class MiniCart {
 	 * AJAX: update cart item quantity.
 	 */
 	public static function ajax_update_item(): void {
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		self::verify_ajax_nonce();
+
 		$cart_item_key = wc_clean( wp_unslash( (string) ( $_POST['cart_item_key'] ?? '' ) ) );
 		$quantity      = wc_stock_amount( wp_unslash( $_POST['quantity'] ?? 0 ) );
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$include_cart_page = ! empty( $_POST['include_cart_page'] );
 
 		if ( '' === $cart_item_key || ! WC()->cart ) {
@@ -209,10 +215,25 @@ final class MiniCart {
 	 * AJAX: return the latest mini cart payload.
 	 */
 	public static function ajax_get_cart(): void {
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		self::verify_ajax_nonce();
+
 		$include_cart_page = ! empty( $_POST['include_cart_page'] );
 
 		wp_send_json_success( self::build_ui_payload( $include_cart_page ) );
+	}
+
+	/**
+	 * Verify the shared cart AJAX nonce or abort with JSON error.
+	 */
+	public static function verify_ajax_nonce(): void {
+		if ( ! check_ajax_referer( self::NONCE_ACTION, 'nonce', false ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'La sesión expiró. Recarga la página e inténtalo de nuevo.', 'shanelle' ),
+				),
+				403
+			);
+		}
 	}
 
 	/**

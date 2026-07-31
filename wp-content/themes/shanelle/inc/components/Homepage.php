@@ -35,11 +35,15 @@ final class Homepage {
 
 	private const FOR_YOU_DEFAULT_LIMIT = 12;
 
+	private const PROMO_MAX_PRICE_DEFAULT = 1000;
+
 	private const MOD_FOR_YOU_TITLE = 'shanelle_homepage_for_you_title';
 
 	private const MOD_FOR_YOU_LIMIT = 'shanelle_homepage_for_you_limit';
 
 	private const MOD_FOR_YOU_ORDERBY = 'shanelle_homepage_for_you_orderby';
+
+	private const MOD_PROMO_MAX_PRICE = 'shanelle_homepage_promo_max_price';
 
 	/**
 	 * Product section configuration for the active render cycle.
@@ -83,7 +87,29 @@ final class Homepage {
 			)
 		);
 
-		// Controls intentionally not registered — keeps Customizer aligned with live homepage.php.
+		$wp_customize->add_setting(
+			self::MOD_PROMO_MAX_PRICE,
+			array(
+				'default'           => self::PROMO_MAX_PRICE_DEFAULT,
+				'sanitize_callback' => array( self::class, 'sanitize_promo_max_price' ),
+				'transport'         => 'refresh',
+			)
+		);
+
+		$wp_customize->add_control(
+			self::MOD_PROMO_MAX_PRICE,
+			array(
+				'label'       => __( 'Precio máximo del tile promocional', 'shanelle' ),
+				'description' => __( 'Usado por el tile «Hasta …» del hero lateral (si se reactiva). Etiqueta y enlace usan la moneda de WooCommerce y el filtro de catálogo.', 'shanelle' ),
+				'section'     => 'shanelle_homepage_products',
+				'type'        => 'number',
+				'input_attrs' => array(
+					'min'  => 1,
+					'max'  => 1000000,
+					'step' => 1,
+				),
+			)
+		);
 
 		$wp_customize->add_section(
 			'shanelle_homepage_for_you',
@@ -320,6 +346,12 @@ final class Homepage {
 		$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/' );
 		$shop_url = is_string( $shop_url ) ? $shop_url : home_url( '/' );
 
+		$max_price     = self::get_promo_max_price();
+		$max_price_arg = function_exists( 'wc_format_decimal' )
+			? wc_format_decimal( $max_price, 0 )
+			: (string) (int) $max_price;
+		$max_price_label = self::format_promo_max_price_label( $max_price );
+
 		$left = array(
 			array(
 				'index' => 0,
@@ -346,8 +378,12 @@ final class Homepage {
 			),
 			array(
 				'index' => 1,
-				'label' => __( 'Hasta C$1,000', 'shanelle' ),
-				'url'   => $shop_url,
+				'label' => sprintf(
+					/* translators: %s: formatted max price with currency */
+					__( 'Hasta %s', 'shanelle' ),
+					$max_price_label
+				),
+				'url'   => add_query_arg( 'shanelle_filter_max_price', $max_price_arg, $shop_url ),
 			),
 			array(
 				'index' => 2,
@@ -361,6 +397,48 @@ final class Homepage {
 		$tiles = apply_filters( 'shanelle_homepage_promo_tiles', $tiles, $side );
 
 		return is_array( $tiles ) ? array_values( $tiles ) : array();
+	}
+
+	/**
+	 * Return the configured promo max price amount.
+	 */
+	public static function get_promo_max_price(): float {
+		$amount = self::sanitize_promo_max_price(
+			get_theme_mod( self::MOD_PROMO_MAX_PRICE, self::PROMO_MAX_PRICE_DEFAULT )
+		);
+
+		/**
+		 * Filter homepage promo tile max price (store currency units).
+		 *
+		 * @param float $amount Max price amount.
+		 */
+		$filtered = apply_filters( 'shanelle_homepage_promo_max_price', $amount );
+
+		return self::sanitize_promo_max_price( $filtered );
+	}
+
+	/**
+	 * Format a max-price amount with the active WooCommerce currency.
+	 */
+	public static function format_promo_max_price_label( float $amount ): string {
+		if ( function_exists( 'wc_price' ) ) {
+			return wp_strip_all_tags( wc_price( $amount ) );
+		}
+
+		return (string) (int) $amount;
+	}
+
+	/**
+	 * Sanitize promo max price Customizer value.
+	 */
+	public static function sanitize_promo_max_price( mixed $value ): float {
+		$amount = is_numeric( $value ) ? (float) $value : (float) self::PROMO_MAX_PRICE_DEFAULT;
+
+		if ( $amount < 1 ) {
+			return (float) self::PROMO_MAX_PRICE_DEFAULT;
+		}
+
+		return min( $amount, 1000000.0 );
 	}
 
 	/**

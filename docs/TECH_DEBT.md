@@ -50,9 +50,10 @@ Known maintainability issues discovered during the codebase audit.
 |-------|----------|------|
 | Attribute role aliases still opinionated | `CatalogFilters::ATTRIBUTE_ROLE_CANDIDATES` | Unusual attribute names need `shanelle_catalog_filter_attribute_map` |
 | Related default taxonomies | `pa_season`, `pa_occasion`, `pa_color-family` | May not exist in catalog |
-| Shop per page 24 / columns 4 | `woocommerce.php` | Global opinion |
+| Shop per page 24 / columns 5 | `woocommerce.php` | Global opinion |
 | Google Fonts URL | `assets.php` | Vendor lock / privacy |
 | Nicaragua-oriented shipping copy | `woocommerce.php` defaults | Localization assumptions |
+| Promo max price default `1000` | `Homepage::PROMO_MAX_PRICE_DEFAULT` | Overridable via Customizer + `shanelle_homepage_promo_max_price` filter |
 
 ---
 
@@ -78,12 +79,12 @@ Known maintainability issues discovered during the codebase audit.
 
 ## Suggested debt paydown order (when approved)
 
-1. Cart AJAX nonces (security).  
-2. Autoload + slim `functions.php`.  
-3. Unify header into component package; delete empty folders.  
-4. Sync homepage docs and dead composer methods.  
-5. Introduce minimal asset build for production.  
-6. Extract `inc/integrations` skeleton before pixels/payments.  
+1. Autoload + slim `functions.php`.  
+2. Unify header into component package; delete empty folders.  
+3. Sync homepage docs and dead composer methods.  
+4. Introduce minimal asset build for production.  
+5. Extract `inc/integrations` skeleton before custom pixels/payments.  
+6. Self-host or consent-gate Google Fonts.  
 
 ---
 

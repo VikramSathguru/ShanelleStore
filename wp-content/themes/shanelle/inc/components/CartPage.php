@@ -211,6 +211,7 @@ final class CartPage {
 			'shanelleCartPage',
 			array(
 				'ajaxUrl'       => \WC_AJAX::get_endpoint( '%%endpoint%%' ),
+				'nonce'         => wp_create_nonce( MiniCart::NONCE_ACTION ),
 				'cartUrl'       => wc_get_cart_url(),
 				'checkoutUrl'   => wc_get_checkout_url(),
 				'shopUrl'       => wc_get_page_permalink( 'shop' ) ?: home_url( '/' ),
@@ -736,6 +737,8 @@ final class CartPage {
 	 * AJAX: return latest cart page payload (includes MiniCart + header count).
 	 */
 	public static function ajax_get_page(): void {
+		MiniCart::verify_ajax_nonce();
+
 		wp_send_json_success( self::build_ui_payload( true ) );
 	}
 

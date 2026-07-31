@@ -283,7 +283,10 @@ async function requestCartAction( endpoint, payload = {} ) {
 	}
 
 	const url = String( config.ajaxUrl ).replace( '%%endpoint%%', endpoint );
-	const body = new URLSearchParams( payload );
+	const body = new URLSearchParams( {
+		...payload,
+		nonce: config.nonce || '',
+	} );
 	const response = await fetch( url, {
 		method: 'POST',
 		headers: {
