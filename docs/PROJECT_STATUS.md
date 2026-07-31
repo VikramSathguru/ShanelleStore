@@ -36,6 +36,7 @@ Update this file as milestones complete.
 | ES module script tag guard | `inc/assets.php` |
 | Cart AJAX nonce hardening | MiniCart + CartPage WC-AJAX verify `shanelle_cart_ajax`; JS sends localized nonce |
 | Homepage promo max price | Customizer + WC currency label + `shanelle_filter_max_price` shop link (no hard-coded `C$`) |
+| Footer payment marks | Defaults include PayPal + Pagadito + Fygaro (align Customizer list to enabled gateways) |
 
 ---
 

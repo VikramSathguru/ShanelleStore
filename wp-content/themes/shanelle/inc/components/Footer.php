@@ -357,7 +357,7 @@ final class Footer {
 		$wp_customize->add_setting(
 			self::MOD_PAYMENT_ICONS,
 			array(
-				'default'           => 'visa,mastercard,amex,paypal,apple_pay',
+				'default'           => 'visa,mastercard,amex,paypal,pagadito,fygaro',
 				'sanitize_callback' => array( self::class, 'sanitize_payment_icons' ),
 				'transport'         => 'refresh',
 			)
@@ -367,7 +367,7 @@ final class Footer {
 			self::MOD_PAYMENT_ICONS,
 			array(
 				'label'       => __( 'Íconos de pago', 'shanelle' ),
-				'description' => __( 'Slugs separados por comas: visa, mastercard, amex, paypal, apple_pay, google_pay.', 'shanelle' ),
+				'description' => __( 'Slugs separados por comas: visa, mastercard, amex, paypal, pagadito, fygaro, apple_pay, google_pay. Alinea la lista con los gateways activos en WooCommerce → Pagos.', 'shanelle' ),
 				'section'     => 'shanelle_footer',
 				'type'        => 'text',
 			)
@@ -925,7 +925,7 @@ final class Footer {
 				'show_payment_icons'     => self::get_theme_mod_bool( self::MOD_SHOW_PAYMENT_ICONS, true ),
 				'payment_icons'          => self::get_theme_mod_string(
 					self::MOD_PAYMENT_ICONS,
-					'visa,mastercard,amex,paypal,apple_pay'
+					'visa,mastercard,amex,paypal,pagadito,fygaro'
 				),
 				'show_scroll_top'        => self::get_theme_mod_bool( self::MOD_SHOW_SCROLL_TOP, true ),
 				'show_contact_fab'       => self::get_theme_mod_bool( self::MOD_SHOW_CONTACT_FAB, false ),
@@ -1305,6 +1305,8 @@ final class Footer {
 			'mastercard'  => 'Mastercard',
 			'amex'         => 'American Express',
 			'paypal'      => 'PayPal',
+			'pagadito'    => 'Pagadito',
+			'fygaro'      => 'Fygaro',
 			'apple_pay'   => 'Apple Pay',
 			'google_pay'  => 'Google Pay',
 		);
@@ -1323,6 +1325,8 @@ final class Footer {
 			'mastercard' => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><circle cx="16" cy="12" r="6" fill="currentColor" opacity="0.35"/><circle cx="24" cy="12" r="6" fill="currentColor" opacity="0.55"/></svg>',
 			'amex'       => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="7" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">AMEX</text></svg>',
 			'paypal'     => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="7" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">PayPal</text></svg>',
+			'pagadito'   => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="5.5" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">Pagadito</text></svg>',
+			'fygaro'     => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="7" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">Fygaro</text></svg>',
 			'apple_pay'  => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="6.5" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">Apple Pay</text></svg>',
 			'google_pay' => '<svg ' . $common . ' aria-hidden="true"><rect width="40" height="24" rx="4" fill="currentColor" opacity="0.08"/><text x="20" y="16" text-anchor="middle" font-size="6.5" font-weight="700" font-family="system-ui,sans-serif" fill="currentColor">G Pay</text></svg>',
 		);
@@ -1336,7 +1340,7 @@ final class Footer {
 	 * @return array<int, string>
 	 */
 	private static function parse_payment_icons( string $value ): array {
-		$allowed = array( 'visa', 'mastercard', 'amex', 'paypal', 'apple_pay', 'google_pay' );
+		$allowed = array( 'visa', 'mastercard', 'amex', 'paypal', 'pagadito', 'fygaro', 'apple_pay', 'google_pay' );
 		$parts   = preg_split( '/\s*,\s*/', strtolower( $value ) ) ?: array();
 		$icons   = array();
 

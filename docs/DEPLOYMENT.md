@@ -13,7 +13,7 @@ Deployment of Shanelle Store from FlyEnv local development to Hostinger producti
 | PHP | Must be **8.3+** (theme requirement) | Configure in Hostinger panel |
 | Database | Local MySQL (see `wp-config.php`) | Hostinger MySQL |
 | Debug | `WP_DEBUG` / log typically enabled locally | Must be **off** |
-| Integrations | Deferred | Add after UI freeze |
+| Integrations | Deferred until UI freeze | Enable payment + marketing plugins after deploy smoke tests |
 
 **Never commit or paste production/local DB passwords, salts, or API keys into documentation or public repos.**
 
@@ -118,7 +118,17 @@ WordPress typically uses `wp-config.php` constants rather than `.env`.
 - [ ] WooCommerce compatible version tested locally  
 - [ ] Theme syntax smoke (`php -l` on changed files if desired)  
 - [ ] No secrets in git  
-- [ ] Cart AJAX nonce fix recommended (see SECURITY)  
+- [x] Cart AJAX nonces (`shanelle_cart_ajax`) — see [SECURITY.md](./SECURITY.md)  
+
+### Hostinger hardening (required before public traffic)
+
+- [ ] `WP_DEBUG` / `WP_DEBUG_DISPLAY` / `WP_DEBUG_LOG` **false** (or log only to a non-public path)  
+- [ ] Unique auth keys/salts (do not reuse local)  
+- [ ] `DISALLOW_FILE_EDIT` true  
+- [ ] HTTPS enforced (site URL + admin)  
+- [ ] Query Monitor **disabled/removed**  
+- [ ] Health Check disabled when not troubleshooting  
+- [ ] Site language **Español** + language pack installed (WC/core strings)  
 
 ### Deploy
 
@@ -127,17 +137,39 @@ WordPress typically uses `wp-config.php` constants rather than `.env`.
 - [ ] Migrate DB + uploads (if needed)  
 - [ ] Update `wp-config.php`  
 - [ ] Activate theme + WooCommerce  
-- [ ] Flush permalinks  
+- [ ] Flush permalinks (**Ajustes → Enlaces permanentes → Guardar**)  
 - [ ] Confirm WC carts/checkout/account pages  
 - [ ] Confirm checkout page uses classic `[woocommerce_checkout]` (not the Checkout block)  
 
-### Post-deploy
+### Payments E2E (ops — plugins present, theme stays gateway-agnostic)
 
-- [ ] Place test order  
-- [ ] Email delivery works  
+Installed gateways in this project (see [PLUGIN_DEPENDENCIES.md](./PLUGIN_DEPENDENCIES.md)): PayPal Payments, Pagadito, Fygaro.
+
+- [ ] Choose **one primary** live method for day one; leave others off until certified  
+- [ ] WooCommerce → Payments: enable gateway, sandbox/live credentials, webhooks reachable on Hostinger  
+- [ ] Place **sandbox/test** order: home → shop → PDP → ATC → mini-cart qty → cart → checkout → pay → thank-you  
+- [ ] Confirm order email + customer account order history  
+- [ ] Confirm gateway shows correctly in Shanelle classic checkout (express slot + `#payment`)  
+- [ ] Align footer payment icons (Customizer → Footer → Íconos de pago) with **enabled** methods only  
+- [ ] Switch to live credentials only after sandbox pass; re-test one small live order  
+
+### Shipping & mail
+
+- [ ] WC shipping zones/rates for Nicaragua (or target market)  
+- [ ] WP Mail SMTP configured; test order + Fluent Forms contact mail  
+- [ ] PDP/shipping policy pages still accurate (estimate copy ≠ live rates)  
+
+### Marketing / SEO (after payments smoke)
+
+- [ ] Rank Math sitemap + titles  
+- [ ] Meta / TikTok / Site Kit: enable only what you will use; verify no double Purchase events  
+- [ ] Omnisend or MailPoet (pick one list provider) + footer newsletter embed if used  
+
+### Post-deploy smoke
+
+- [ ] Mobile: shop, PDP sticky ATC, mini-cart, checkout  
 - [ ] HTTPS + redirects  
 - [ ] Cache configured (exclude cart/checkout/account/my-account)  
-- [ ] Rank Math sitemap  
 - [ ] Monitoring / uptime  
 
 ---
