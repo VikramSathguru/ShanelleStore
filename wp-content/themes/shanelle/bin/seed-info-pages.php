@@ -17,7 +17,6 @@ if ( PHP_SAPI !== 'cli' ) {
 }
 
 require dirname( __DIR__, 4 ) . '/wp-load.php';
-require_once get_template_directory() . '/inc/setup/InfoPageSeeder.php';
 
 $force = in_array( '--force', $argv, true );
 

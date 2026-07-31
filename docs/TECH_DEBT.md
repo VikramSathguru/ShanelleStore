@@ -9,10 +9,9 @@ Known maintainability issues discovered during the codebase audit.
 
 | Item | Detail |
 |------|--------|
-| Header locations | Live header in `template-parts/` + CSS in `assets/css/components/`; empty `components/header/` |
-| Product card paths | Component system vs older `template-parts/components/product-card.php` |
+| Header package | Live markup still in `template-parts/components/site-header.php` + CSS in `assets/css/components/`; full `components/header/` migrate deferred |
 | Docs drift | Homepage docs aligned to live composition (icons + rails + For You; no HeroBanner); watch for future drift |
-| Duplicate checkout doc | `docs/pages/CHECKOUT.md` and `wp-content/docs/pages/CHECKOUT.md` |
+| Duplicate checkout doc | `docs/pages/CHECKOUT.md` and `wp-content/docs/pages/CHECKOUT.md` (if present) |
 | Legacy ARCHITECTURE.md | High-level tree only; superseded by `PROJECT_ARCHITECTURE.md` |
 
 ---
@@ -26,7 +25,6 @@ Known maintainability issues discovered during the codebase audit.
 | `inc/components/CartPage.php` | State, totals, AJAX, Customizer combined |
 | `inc/components/ProductRelated.php` | Scoring engine complexity |
 | `inc/components/MiniCart.php` | State + AJAX + markup helpers in one class |
-| `functions.php` | Long manual `require_once` + boot list (no autoload) |
 
 ---
 
@@ -78,11 +76,10 @@ Known maintainability issues discovered during the codebase audit.
 
 ## Suggested debt paydown order (when approved)
 
-1. Autoload + slim `functions.php`.  
-2. Unify header into component package; delete empty folders.  
-3. Sync homepage docs and dead composer methods.  
-4. Introduce minimal asset build for production.  
-5. Implement adapters under `inc/integrations/` only when plugins are insufficient.  
+1. Migrate `site-header` markup into `components/header/` package.  
+2. Sync homepage docs and dead composer methods.  
+3. Introduce minimal asset build for production.  
+4. Implement adapters under `inc/integrations/` only when plugins are insufficient.  
 
 ---
 

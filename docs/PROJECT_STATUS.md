@@ -39,6 +39,8 @@ Update this file as milestones complete.
 | Footer payment marks | Defaults include PayPal + Pagadito + Fygaro (align Customizer list to enabled gateways) |
 | Self-hosted fonts | DM Sans + Cormorant Garamond woff2 via `assets/css/fonts.css` (no Google Fonts CDN) |
 | Integrations skeleton | `inc/integrations/Integrations.php` + [INTEGRATIONS.md](./INTEGRATIONS.md); no vendor adapters yet |
+| Theme class autoload | `inc/autoload.php` PSR-4-style loader; `functions.php` slimmed to procedural requires + boot list |
+| Legacy template-parts cleanup | Removed unused product-card / hero-banner / site-footer / category-chips / section-heading partials |
 
 ---
 
@@ -76,7 +78,7 @@ Update this file as milestones complete.
 | Social login | Not implemented yet |
 | PWA service worker / manifest | Not implemented yet |
 | Native mobile apps | Not implemented yet |
-| Theme Composer autoload / CI | Not implemented yet |
+| Theme Composer autoload / CI | Autoload shipped (`inc/autoload.php`); Composer/CI not started |
 | Asset build pipeline | Not implemented yet |
 | Server-side wishlist | Not implemented yet |
 | Recently viewed products (live) | Placeholder remnants only |
@@ -105,7 +107,8 @@ Prioritized after UI approval:
 4. Shipping integration (Cargo Mobil or WC zones)  
 5. Social login + social commerce  
 6. PWA → apps  
-7. Autoload + slim `functions.php` / asset build pipeline  
+7. Autoload + asset build pipeline → **autoload done** (`inc/autoload.php`); asset build still not started  
+8. Migrate header markup into `components/header/`  
 
 See [FUTURE_INTEGRATIONS.md](./FUTURE_INTEGRATIONS.md).
 

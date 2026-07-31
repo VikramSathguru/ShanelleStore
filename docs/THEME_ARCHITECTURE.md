@@ -10,7 +10,7 @@
 
 | Path | Role |
 |------|------|
-| `functions.php` | Constants, requires, `::boot()` calls |
+| `functions.php` | Constants, procedural requires, `::boot()` list |
 | `style.css` | Theme header metadata only |
 | `header.php` / `footer.php` | Document chrome |
 | `front-page.php` | Homepage shell → `shanelle_homepage()` |
@@ -29,7 +29,7 @@
 | `assets/` | Global CSS/JS/images |
 | `components/` | Feature views + scoped CSS/JS (includes reusable `page-hero/`) |
 | `inc/` | PHP bootstrap, controllers, catalog, WC helpers |
-| `template-parts/components/` | Shared / older partials |
+| `template-parts/components/` | Shared partials still used by header/chrome |
 | `woocommerce/` | WC template overrides |
 
 ---
@@ -63,15 +63,12 @@ Located under `template-parts/components/`:
 | File | Purpose |
 |------|---------|
 | `site-header.php` | Global header (promo bar, logo, search, nav actions) |
-| `site-footer.php` | Legacy/simple footer partial (primary footer is `Footer` component) |
 | `cart-count.php` | Header cart count fragment |
-| `product-card.php` | Legacy wrapper path (live cards use `ProductCard` component) |
-| `hero-banner.php` | Legacy/partial hero markup |
-| `category-chips.php` | Category chip UI |
 | `empty-state.php` | Empty state block |
-| `section-heading.php` | Section heading pattern |
 
 Helper: `shanelle_component( $slug )` → `get_template_part( 'template-parts/components/' . $slug )`.
+
+Legacy unused partials (`product-card`, `hero-banner`, `site-footer`, `category-chips`, `section-heading`) were removed — live markup lives under `components/`.
 
 ---
 
@@ -88,9 +85,9 @@ Helper: `shanelle_component( $slug )` → `get_template_part( 'template-parts/co
 - Mobile drawer: focus trap + `aria-modal`, nested menu styles, fallback links when no menus assigned; customer-service CTA uses Customizer/WP contact page URL.  
 - Storefront copy is Latin American Spanish only (no language switcher in chrome).
 
-**Not implemented yet:** server-side wishlist (card + PDP favourites remain localStorage-only); full migrate of markup into `components/header/` package.
+**Not implemented yet:** server-side wishlist (card + PDP favourites remain localStorage-only); full migrate of markup into a `components/header/` package.
 
-Note: `components/header/` directory exists but is empty (architecture cleanup deferred).
+Empty `components/header/` placeholder directory was removed.
 
 ---
 
@@ -178,6 +175,7 @@ Google Fonts removed — self-hosted `shanelle-fonts` → `assets/css/fonts.css`
 
 | Path | Namespace / role |
 |------|------------------|
+| `inc/autoload.php` | PSR-4-style `spl_autoload_register` for `Shanelle\*` (no Composer) |
 | `inc/setup.php` | Theme supports, menus, image sizes, widgets |
 | `inc/assets.php` | Global enqueue + module script tag filter |
 | `inc/components.php` | Render helpers |
@@ -185,8 +183,10 @@ Google Fonts removed — self-hosted `shanelle-fonts` → `assets/css/fonts.css`
 | `inc/woocommerce/ProductPrice.php` | `Shanelle\WooCommerce\ProductPrice` |
 | `inc/components/*.php` | `Shanelle\Components\*` composers |
 | `inc/catalog/*` | `Shanelle\Catalog\*` collections module |
+| `inc/integrations/*` | `Shanelle\Integrations\*` adapter skeleton |
+| `inc/setup/*` | `Shanelle\Setup\*` seeders |
 
-**No Composer autoload.** Classes are manually `require_once`’d in `functions.php`.
+Classes under those namespaces are autoloaded. `functions.php` only requires procedural bootstrap files, then calls `::boot()`.
 
 ---
 
