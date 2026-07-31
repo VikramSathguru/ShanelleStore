@@ -84,6 +84,7 @@ $has_drawer_menu    = has_nav_menu( 'mobile' ) || has_nav_menu( 'primary' ) || h
 		</div>
 	<?php endif; ?>
 
+	<div class="site-header__chrome" data-header-chrome>
 	<div class="site-header__main">
 		<div class="container-fluid site-header__main-inner">
 			<div class="site-header__start">
@@ -200,6 +201,7 @@ $has_drawer_menu    = has_nav_menu( 'mobile' ) || has_nav_menu( 'primary' ) || h
 	<?php if ( shanelle_is_woocommerce_active() ) : ?>
 		<?php \Shanelle\Components\CategoryNavbar::render(); ?>
 	<?php endif; ?>
+	</div><!-- .site-header__chrome -->
 
 	<div
 		class="site-header__drawer"

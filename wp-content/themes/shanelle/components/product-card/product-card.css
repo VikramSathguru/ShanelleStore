@@ -192,6 +192,15 @@
 
 .product-card__rating .star-rating {
 	font-size: var(--font-size-xs);
+	color: var(--color-rating);
+}
+
+.product-card__rating .star-rating::before {
+	color: var(--color-rating-empty);
+}
+
+.product-card__rating .star-rating span::before {
+	color: var(--color-rating);
 }
 
 .product-card__price ins {

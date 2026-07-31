@@ -24,6 +24,17 @@ final class ProductRelated {
 
 	private const DEFAULT_LIMIT = 16;
 
+	/**
+	 * Products shown before the shopper uses “Ver más”.
+	 * Desktop max: 2 rows × 4 columns. JS re-collapses to 2 rows at each breakpoint.
+	 */
+	private const DEFAULT_INITIAL_VISIBLE = 8;
+
+	/**
+	 * Rows revealed per “Ver más” press (multiplied by current column count in JS).
+	 */
+	private const DEFAULT_ROWS_PER_PAGE = 2;
+
 	private const DEFAULT_CANDIDATE_POOL = 120;
 
 	/**
@@ -113,6 +124,17 @@ final class ProductRelated {
 		);
 
 		wp_script_add_data( 'shanelle-product-related', 'type', 'module' );
+
+		wp_localize_script(
+			'shanelle-product-related',
+			'shanelleProductRelated',
+			array(
+				'i18n' => array(
+					'loadMore' => __( 'Ver más', 'shanelle' ),
+					'loading'  => __( 'Cargando…', 'shanelle' ),
+				),
+			)
+		);
 	}
 
 	/**
@@ -152,19 +174,31 @@ final class ProductRelated {
 			return;
 		}
 
-		$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/' );
-		$shop_url = is_string( $shop_url ) ? $shop_url : home_url( '/' );
+		$initial  = self::get_initial_visible( self::get_product() );
+		$total    = count( $products );
+		$has_more = $total > self::get_min_collapsed_count();
+		$rows     = self::get_rows_per_page( self::get_product() );
+		$list_id  = self::get_root_id() . '-items';
 		?>
-		<ul class="product-related__items" role="list">
+		<ul
+			id="<?php echo esc_attr( $list_id ); ?>"
+			class="product-related__items"
+			role="list"
+			data-shanelle-related-items
+			data-rows-per-page="<?php echo esc_attr( (string) $rows ); ?>"
+		>
 			<?php foreach ( $products as $index => $product ) : ?>
 				<?php
 				if ( ! $product instanceof \WC_Product ) {
 					continue;
 				}
+
+				$deferred = $index >= $initial;
 				?>
 				<li
-					class="product-related__item"
+					class="product-related__item<?php echo $deferred ? ' is-deferred' : ''; ?>"
 					data-related-index="<?php echo esc_attr( (string) $index ); ?>"
+					<?php echo $deferred ? 'hidden' : ''; ?>
 				>
 					<?php
 					ProductCard::render(
@@ -175,6 +209,7 @@ final class ProductRelated {
 								'show_rating'     => true,
 								'show_attributes' => false,
 								'show_actions'    => true,
+								'show_favourite'  => false,
 							)
 						)
 					);
@@ -183,13 +218,58 @@ final class ProductRelated {
 			<?php endforeach; ?>
 		</ul>
 
-		<div class="product-related__view-more-wrap">
-			<a class="product-related__view-more btn btn--outline" href="<?php echo esc_url( $shop_url ); ?>">
-				<?php esc_html_e( 'Ver más', 'shanelle' ); ?>
-				<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-			</a>
-		</div>
+		<?php if ( $has_more ) : ?>
+			<div class="product-related__view-more-wrap">
+				<button
+					type="button"
+					class="product-related__view-more btn btn--outline"
+					data-shanelle-related-load-more
+					data-rows-per-page="<?php echo esc_attr( (string) $rows ); ?>"
+					aria-controls="<?php echo esc_attr( $list_id ); ?>"
+				>
+					<span data-shanelle-related-load-more-label><?php esc_html_e( 'Ver más', 'shanelle' ); ?></span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+				</button>
+			</div>
+		<?php endif; ?>
 		<?php
+	}
+
+	/**
+	 * Minimum cards that still warrant a “Ver más” control (2 rows × 2 cols).
+	 */
+	private static function get_min_collapsed_count(): int {
+		return 4;
+	}
+
+	/**
+	 * How many related cards to show before “Ver más” (SSR / no-JS desktop baseline).
+	 */
+	public static function get_initial_visible( \WC_Product $product ): int {
+		/**
+		 * Filter initial visible related products count.
+		 *
+		 * @param int         $count   Visible before load-more.
+		 * @param \WC_Product $product Source product.
+		 */
+		$count = (int) apply_filters( 'shanelle_related_products_initial_visible', self::DEFAULT_INITIAL_VISIBLE, $product );
+
+		return max( self::get_min_collapsed_count(), min( 24, $count ) );
+	}
+
+	/**
+	 * Rows revealed each time “Ver más” is pressed.
+	 */
+	public static function get_rows_per_page( \WC_Product $product ): int {
+		/**
+		 * Filter related products rows per load-more page.
+		 *
+		 * @param int         $rows    Row count.
+		 * @param \WC_Product $product Source product.
+		 */
+		$rows = (int) apply_filters( 'shanelle_related_products_rows_per_page', self::DEFAULT_ROWS_PER_PAGE, $product );
+
+		return max( 1, min( 6, $rows ) );
 	}
 
 	/**
@@ -261,6 +341,8 @@ final class ProductRelated {
 		$data = array(
 			'sourceProductId' => self::get_product()->get_id(),
 			'limit'           => self::get_limit( self::get_product() ),
+			'initialVisible'  => self::get_initial_visible( self::get_product() ),
+			'rowsPerPage'     => self::get_rows_per_page( self::get_product() ),
 			'fallback'        => self::get_fallback_strategy( self::get_product() ),
 			'engine'          => 'rules',
 			'items'           => $items,

@@ -97,7 +97,7 @@
 	min-width: 6.5rem;
 	padding: var(--space-1-5) 1.75rem var(--space-1-5) var(--space-3);
 	border: 1px solid var(--color-neutral-300);
-	border-radius: var(--radius-full);
+	border-radius: var(--radius-xs);
 	background-color: var(--color-surface);
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23404040' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
@@ -330,6 +330,8 @@
 	border: 1px solid var(--color-neutral-200);
 	text-align: center;
 	white-space: nowrap;
+	transition: background-color 0.12s ease;
+	cursor: pointer;
 }
 
 .size-guide__table th {
@@ -347,6 +349,28 @@
 
 .size-guide__table .is-highlight {
 	background-color: var(--color-neutral-50);
+}
+
+/* Crosshair: hovered cell’s row + column */
+.size-guide__table tr.is-crosshair-row > * {
+	background-color: color-mix(in srgb, var(--color-brand-100) 70%, var(--color-neutral-50));
+}
+
+.size-guide__table .is-crosshair-col {
+	background-color: color-mix(in srgb, var(--color-brand-100) 70%, var(--color-neutral-50));
+}
+
+.size-guide__table .is-crosshair-active {
+	background-color: color-mix(in srgb, var(--color-brand-200) 85%, var(--color-neutral-100));
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-neutral-900);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.size-guide__table th,
+	.size-guide__table td {
+		transition: none;
+	}
 }
 
 .size-guide__disclaimer {

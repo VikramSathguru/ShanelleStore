@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'SHANELLE_VERSION', '1.0.7' );
+define( 'SHANELLE_VERSION', '1.0.14' );
 define( 'SHANELLE_DIR', get_template_directory() );
 define( 'SHANELLE_URI', get_template_directory_uri() );
 

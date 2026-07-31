@@ -81,7 +81,7 @@ Helper: `shanelle_component( $slug )` → `get_template_part( 'template-parts/co
 - Markup: `template-parts/components/site-header.php`.  
 - Styles: `assets/css/components/site-header.css` (pulled through `main.css`).  
 - Customizer / helpers: `inc/components/SiteHeader.php` (promotion banner: up to 6 slots, optional URLs, marquee speed, contact URL).  
-- Behavior: `assets/js/main.js` → `modules/mobile-drawer.js` (drawer hydration via `[data-header]`), `modules/sticky-header-offset.js` (publishes `--site-header-sticky-height`), `modules/auto-hide-header.js` (homepage only: hide on scroll-down, reveal on scroll-up), `modules/promo-banner.js` (stadium-style ticker when promos overflow).  
+- Behavior: `assets/js/main.js` → `modules/mobile-drawer.js` (drawer hydration via `[data-header]`), `modules/sticky-header-offset.js` (publishes `--site-header-sticky-height`), `modules/auto-hide-header.js` (homepage only: hide main/nav chrome on scroll-down, reveal on scroll-up; **promotion banner stays visible**), `modules/promo-banner.js` (stadium-style ticker when promos overflow).  
 - Layout: promo / main / category navbar inners use `container-fluid` so the header chrome spans the full viewport width on desktop (token padding, no max-width cap).  
 - Search: desktop header field focuses `SearchOverlay`; mobile uses search icon + drawer CTA (`data-shanelle-search-open`).  
 - Integrates: promotion banner, cart count badge, account link, category navbar via `CategoryNavbar::render()`.  

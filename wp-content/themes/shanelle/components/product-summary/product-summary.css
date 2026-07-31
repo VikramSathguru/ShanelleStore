@@ -5,13 +5,13 @@
 .product-summary {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-6);
+	gap: var(--space-3);
 }
 
 .product-summary__header {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-2);
+	gap: var(--space-1-5);
 }
 
 .product-summary__brand {
@@ -77,6 +77,15 @@
 
 .product-summary__rating .star-rating {
 	font-size: var(--font-size-sm);
+	color: var(--color-rating);
+}
+
+.product-summary__rating .star-rating::before {
+	color: var(--color-rating-empty);
+}
+
+.product-summary__rating .star-rating span::before {
+	color: var(--color-rating);
 }
 
 .product-summary__review-link {
@@ -94,10 +103,10 @@
 .product-summary__commerce {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-3);
-	padding-block: var(--space-5);
+	gap: var(--space-2);
+	padding-block: var(--space-3) 0;
 	border-block: 0;
-	border-top: 1px solid var(--color-border-subtle);
+	border-top: 0;
 }
 
 .product-summary__price {
@@ -172,6 +181,17 @@
 	font-size: var(--font-size-base);
 	line-height: var(--line-height-loose);
 	color: var(--color-text-secondary);
+}
+
+/* Keep CMS headings inside the excerpt from looking like a second product title. */
+.product-summary__description :is(h1, h2, h3, h4, h5, h6) {
+	margin: 0 0 var(--space-2);
+	font-family: var(--font-family-body);
+	font-size: var(--font-size-base);
+	font-weight: var(--font-weight-semibold);
+	line-height: var(--line-height-snug);
+	letter-spacing: normal;
+	color: var(--color-text);
 }
 
 .product-summary__description p {

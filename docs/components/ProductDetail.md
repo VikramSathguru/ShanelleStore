@@ -11,8 +11,8 @@ Orchestrates the single product page (PDP) by composing existing product compone
 - Open/close WooCommerce cart or variation forms with required hidden fields
 - Keep ProductInformation in the commerce column but outside the WooCommerce cart form
 - Disable default WooCommerce single product template output
-- Render breadcrumbs via `woocommerce_breadcrumb()`
-- Manage below-the-fold sections (information, reviews, related, recently viewed)
+- Render breadcrumbs via `woocommerce_breadcrumb()` (current product crumb omitted to avoid duplicating the H1)
+- Manage below-the-fold sections (related recommendations, then reviews; information stays in the commerce column)
 - Fire WooCommerce before/after single product actions
 - Enqueue product detail layout CSS/JS
 

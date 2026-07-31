@@ -25,8 +25,8 @@ global $product;
 			<?php ProductDetail::render_hero(); ?>
 
 			<div class="product-detail__below">
-				<?php ProductDetail::render_reviews_section(); ?>
 				<?php shanelle_product_related( $product ); ?>
+				<?php ProductDetail::render_reviews_section(); ?>
 			</div>
 		</article>
 	</div>

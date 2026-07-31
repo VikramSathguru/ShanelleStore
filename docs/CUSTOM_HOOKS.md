@@ -91,7 +91,9 @@ Client-side analogues are CustomEvents — see [EVENTS.md](./EVENTS.md).
 | `shanelle_variation_swatch_color` | `ProductVariations.php` | Swatch hex/color |
 | `shanelle_size_guide_data` | `SizeGuide.php` | PDP size guide modal payload |
 | `shanelle_size_guide_fit` | `SizeGuide.php` | Fit marker (`skinny` / `regular` / `oversized`) |
-| `shanelle_related_products_*` | `ProductRelated.php` | Scores, IDs, limits, weights, taxonomies, fallbacks, candidate query |
+| `shanelle_related_products_*` | `ProductRelated.php` | Scores, IDs, limits, initial visible, weights, taxonomies, fallbacks, candidate query |
+| `shanelle_related_products_initial_visible` | `ProductRelated.php` | SSR baseline before in-page “Ver más” (desktop 2×4) |
+| `shanelle_related_products_rows_per_page` | `ProductRelated.php` | Rows revealed per “Ver más” (× column count) |
 | `shanelle_customers_also_viewed_title` | `ProductRelated.php` | Section title string filter path |
 
 ### Mini cart / cart / checkout / account

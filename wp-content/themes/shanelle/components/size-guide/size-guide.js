@@ -111,7 +111,86 @@ function renderMeasureTable( root, guide ) {
 		return `<tr>${ cells }</tr>`;
 	} ).join( '' );
 
-	host.innerHTML = `<table class="size-guide__table"><thead><tr>${ thead }</tr></thead><tbody>${ tbody }</tbody></table>`;
+	host.innerHTML = `<table class="size-guide__table" data-shanelle-size-guide-grid><thead><tr>${ thead }</tr></thead><tbody>${ tbody }</tbody></table>`;
+}
+
+/**
+ * @param {HTMLElement} host
+ */
+function clearTableCrosshair( host ) {
+	host.querySelectorAll( '.is-crosshair-row' ).forEach( ( row ) => {
+		row.classList.remove( 'is-crosshair-row' );
+	} );
+
+	host.querySelectorAll( '.is-crosshair-col, .is-crosshair-active' ).forEach( ( cell ) => {
+		cell.classList.remove( 'is-crosshair-col', 'is-crosshair-active' );
+	} );
+}
+
+/**
+ * Highlight the hovered cell’s full row and column (crosshair).
+ *
+ * @param {HTMLElement} host
+ * @param {HTMLTableCellElement} cell
+ */
+function applyTableCrosshair( host, cell ) {
+	const table = cell.closest( 'table' );
+	const row = cell.parentElement;
+
+	if ( !( table instanceof HTMLTableElement ) || !( row instanceof HTMLTableRowElement ) ) {
+		return;
+	}
+
+	clearTableCrosshair( host );
+
+	const colIndex = cell.cellIndex;
+
+	row.classList.add( 'is-crosshair-row' );
+
+	table.querySelectorAll( 'tr' ).forEach( ( tr ) => {
+		const colCell = tr.children[ colIndex ];
+
+		if ( colCell instanceof HTMLElement ) {
+			colCell.classList.add( 'is-crosshair-col' );
+		}
+	} );
+
+	cell.classList.add( 'is-crosshair-active' );
+}
+
+/**
+ * Bind delegated hover crosshair once per table host.
+ *
+ * @param {HTMLElement} root
+ */
+function bindTableCrosshair( root ) {
+	const host = root.querySelector( '[data-shanelle-size-guide-table]' );
+
+	if ( !( host instanceof HTMLElement ) || host.dataset.crosshairBound === 'true' ) {
+		return;
+	}
+
+	host.dataset.crosshairBound = 'true';
+
+	host.addEventListener( 'mouseover', ( event ) => {
+		const target = event.target;
+
+		if ( !( target instanceof Element ) ) {
+			return;
+		}
+
+		const cell = target.closest( 'th, td' );
+
+		if ( !( cell instanceof HTMLTableCellElement ) || ! host.contains( cell ) ) {
+			return;
+		}
+
+		applyTableCrosshair( host, cell );
+	} );
+
+	host.addEventListener( 'mouseleave', () => {
+		clearTableCrosshair( host );
+	} );
 }
 
 /**
@@ -143,6 +222,7 @@ function refresh( root ) {
 	const guide = parseGuide( root );
 	renderMeasureTable( root, guide );
 	updateDisclaimer( root, guide );
+	bindTableCrosshair( root );
 }
 
 /**

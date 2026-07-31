@@ -1,5 +1,6 @@
 /**
- * Hide the sticky header on scroll-down; reveal on scroll-up (homepage only).
+ * Hide the sticky header chrome on scroll-down; reveal on scroll-up (homepage only).
+ * The promotion banner stays visible at all times.
  *
  * @package Shanelle
  */
@@ -8,7 +9,6 @@ const SCROLL_DELTA = 8;
 const SHOW_AT_TOP = 24;
 
 /**
- * @param {HTMLElement} header
  * @returns {boolean}
  */
 function isHomepage() {
@@ -45,6 +45,13 @@ function initAutoHideHeader( header ) {
 		: document.querySelector( '[data-header]' );
 
 	if ( ! ( root instanceof HTMLElement ) ) {
+		return;
+	}
+
+	const chrome = root.querySelector( '[data-header-chrome]' );
+
+	// Without chrome wrapper, skip auto-hide so the promo never vanishes with the header.
+	if ( ! ( chrome instanceof HTMLElement ) ) {
 		return;
 	}
 

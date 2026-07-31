@@ -9,7 +9,7 @@ Renders the primary product summary block on the single product page: title, met
 - Render product title, brand placeholder, SKU, and rating
 - Output structured price block (current, regular, savings) via `ProductPrice`
 - Display stock status (in stock, low stock, backorder, out of stock)
-- Render WooCommerce short description
+- Render WooCommerce short description (omits title-only duplicates so the product name is not shown twice)
 - Extend variation JSON with formatted price fields for client sync
 - Enqueue summary CSS/JS on product pages or on demand
 

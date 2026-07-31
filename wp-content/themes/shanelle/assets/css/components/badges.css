@@ -38,8 +38,13 @@
 }
 
 .badge--new {
-	background-color: var(--color-neutral-900);
-	color: var(--color-text-inverse);
+	background-color: var(--color-brand-100);
+	color: var(--color-brand-800);
+	border: 1px solid color-mix(in srgb, var(--color-brand-300) 55%, transparent);
+	border-radius: var(--radius-pill);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: 0.08em;
+	box-shadow: 0 1px 0 color-mix(in srgb, var(--color-brand-200) 70%, transparent);
 }
 
 .badge--limited {

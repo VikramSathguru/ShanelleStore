@@ -10,6 +10,7 @@ Product-page size guide modal opened from the size options row. Presentation-onl
 - Open a centered modal matching the brand size-guide reference layout
 - Support garment type switch, IN/CM toggle, fit-type indicator, product/body charts
 - Convert stored CM measurements to inches in the browser
+- Highlight hovered cell’s full row and column (crosshair) for easier reading
 - Remain disabled when `shanelle_size_guide_data` sets `enabled` to false
 
 ## Plugin First

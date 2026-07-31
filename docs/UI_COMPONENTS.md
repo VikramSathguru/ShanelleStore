@@ -126,8 +126,9 @@ Controllers live under `wp-content/themes/shanelle/inc/components/` unless noted
 |-------|--------|
 | Purpose | Scored “customers also viewed” recommendations |
 | Location | `inc/components/ProductRelated.php`, `components/product-related/` |
-| Dependencies | ProductGrid, catalog helpers, attribute taxonomies |
-| Used by | ProductDetail |
+| Dependencies | ProductCard, catalog helpers, attribute taxonomies |
+| Used by | ProductDetail (below product information, above reviews) |
+| Behavior | First **two rows** visible; **Ver más** reveals two more rows on the PDP (does not link to shop). Favourites hidden on related cards. |
 | Reusable | Yes |
 | Needs improvement | Candidate pool can be heavy; taxonomy assumptions |
 

@@ -287,12 +287,21 @@ final class ProductSummary {
 
 	/**
 	 * Render short description.
+	 *
+	 * Skips content that only repeats the product title (common import/CMS habit
+	 * that otherwise prints a second large name above the variation selectors).
 	 */
 	public static function render_short_description(): void {
 		$product     = self::get_product();
 		$description = apply_filters( 'woocommerce_short_description', $product->get_short_description() );
 
-		if ( ! is_string( $description ) || '' === trim( wp_strip_all_tags( $description ) ) ) {
+		if ( ! is_string( $description ) ) {
+			return;
+		}
+
+		$description = self::normalize_short_description( $description, $product->get_name() );
+
+		if ( '' === $description ) {
 			return;
 		}
 		?>
@@ -300,6 +309,41 @@ final class ProductSummary {
 			<?php echo wp_kses_post( $description ); ?>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Remove title-only / leading title-heading duplicates from short description HTML.
+	 */
+	private static function normalize_short_description( string $description, string $product_name ): string {
+		$description = trim( $description );
+		$name        = trim( $product_name );
+
+		if ( '' === $description || '' === $name ) {
+			return $description;
+		}
+
+		$plain = trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $description ) ) ?? '' );
+
+		if ( '' === $plain || 0 === strcasecmp( $plain, $name ) ) {
+			return '';
+		}
+
+		$quoted = preg_quote( $name, '/' );
+		$pattern = '/^\s*<(h[1-6]|p|div|strong|span)(\s[^>]*)?>\s*' . $quoted . '\s*<\/\1>\s*/iu';
+		$stripped = preg_replace( $pattern, '', $description, 1 );
+
+		if ( ! is_string( $stripped ) ) {
+			return $description;
+		}
+
+		$stripped = trim( $stripped );
+		$plain_after = trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $stripped ) ) ?? '' );
+
+		if ( '' === $plain_after || 0 === strcasecmp( $plain_after, $name ) ) {
+			return '';
+		}
+
+		return $stripped;
 	}
 
 	/**

@@ -38,6 +38,23 @@ final class ProductDetail {
 	public static function boot(): void {
 		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_assets' ) );
 		add_action( 'wp', array( self::class, 'configure_single_product_hooks' ), 20 );
+		add_filter( 'woocommerce_get_breadcrumb', array( self::class, 'trim_product_breadcrumb' ), 20 );
+	}
+
+	/**
+	 * Drop the current product name from the trail so it is not repeated above the H1.
+	 *
+	 * @param array<int, array{0?: string, 1?: string}> $crumbs Breadcrumb crumbs.
+	 * @return array<int, array{0?: string, 1?: string}>
+	 */
+	public static function trim_product_breadcrumb( array $crumbs ): array {
+		if ( ! is_product() || count( $crumbs ) < 2 ) {
+			return $crumbs;
+		}
+
+		array_pop( $crumbs );
+
+		return $crumbs;
 	}
 
 	/**
@@ -219,8 +236,8 @@ final class ProductDetail {
 		?>
 		<div class="product-detail__below">
 			<?php self::render_information_section(); ?>
-			<?php self::render_reviews_section(); ?>
 			<?php self::render_related_section(); ?>
+			<?php self::render_reviews_section(); ?>
 			<?php self::render_recently_viewed_section(); ?>
 		</div>
 		<?php
@@ -588,8 +605,8 @@ final class ProductDetail {
 			'productType' => $product->get_type(),
 			'sections'    => array(
 				'information',
-				'reviews',
 				'related',
+				'reviews',
 				'recently-viewed',
 			),
 		);

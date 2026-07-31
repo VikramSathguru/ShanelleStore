@@ -73,6 +73,10 @@
 	--color-sale-border: rgb(212 98 138 / 45%);
 	--color-sale-bg: var(--color-brand-50);
 
+	/* Review stars */
+	--color-rating: #f5c518;
+	--color-rating-empty: var(--color-neutral-300);
+
 	/* -------------------------------------------------------------------------
 	   Surface — Backgrounds & borders
 	   ------------------------------------------------------------------------- */
